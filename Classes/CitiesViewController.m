@@ -1,5 +1,7 @@
 #import "CitiesViewController.h"
 
+#import "PropertyCriteriaViewController.h"
+
 
 @implementation CitiesViewController
 
@@ -64,5 +66,18 @@
     
 	return cell;
 }
+
+
+#pragma mark -
+#pragma mark UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    PropertyCriteriaViewController *propertyCriteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaViewController" bundle:nil];
+    [propertyCriteriaViewController setState:[self state]];
+    [propertyCriteriaViewController setCity:@"Austin"];
+    [[self navigationController] pushViewController:propertyCriteriaViewController animated:YES];
+    [propertyCriteriaViewController release];
+} 
 
 @end
