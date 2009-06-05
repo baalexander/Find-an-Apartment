@@ -14,19 +14,16 @@
     PropertyCriteria *criteria_;
     NSMutableArray *rowIds_;
     
-    NSString *state_;
-    NSString *city_;
-    NSString *postalCode_;
-    
     IBOutlet InputRangeCell *inputRangeCell_;
     IBOutlet InputSimpleCell *inputSimpleCell_;
 }
 
-@property (nonatomic, copy) NSString *state;
-@property (nonatomic, copy) NSString *city;
-@property (nonatomic, copy) NSString *postalCode;
-
 @property (nonatomic, retain) InputRangeCell *inputRangeCell;
 @property (nonatomic, retain) InputSimpleCell *inputSimpleCell;
+
+- (void)setState:(NSString *)state;
+- (void)setCity:(NSString *)city;
+- (void)setPostalCode:(NSString *)postalCode;
+- (void)setCoordinates:(NSString *)coordinates;
 
 @end

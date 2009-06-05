@@ -3,6 +3,7 @@
 #import "FindAnApartmentAppDelegate.h"
 #import "InputRangeCell.h"
 #import "InputSimpleCell.h"
+#import "PropertyUrlConstructor.h"
 
 
 @interface PropertyCriteriaViewController ()
@@ -11,6 +12,8 @@
 @property (nonatomic, assign) NSInteger selectedRow;
 @property (nonatomic, assign) BOOL isEditingRow;
 @property (nonatomic, retain) NSMutableArray *rowIds;
+- (NSString *)formatRangeWithMin:(NSString *)min withMax:(NSString *)max withSymbol:(NSString *)symbol withUnits:(NSString *)units;
+- (BOOL)inputIsValid;
 @end
 
 
@@ -33,15 +36,24 @@ static NSString *kSearch = @"SEARCH";
 @synthesize inputRangeCell = inputRangeCell_;
 @synthesize inputSimpleCell = inputSimpleCell_;
 @synthesize rowIds = rowIds_;
-@synthesize state = state_;
-@synthesize city = city_;
-@synthesize postalCode = postalCode_;
+
+- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
+{
+	if ((self = [super initWithNibName:nibName bundle:nibBundle]))
+	{
+        //Creates PropertyCriteria object
+        FindAnApartmentAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        NSEntityDescription *criteriaEntity = [[[appDelegate managedObjectModel] entitiesByName] objectForKey:@"PropertyCriteria"];
+        PropertyCriteria *criteria = [[PropertyCriteria alloc] initWithEntity:criteriaEntity insertIntoManagedObjectContext:[appDelegate managedObjectContext]];
+        [self setCriteria:criteria];
+        [criteria release];
+	}
+    
+    return self;
+}
 
 - (void)dealloc
 {
-    [state_ release];
-    [city_ release];
-    [postalCode_ release];
     [inputRangeCell_ release];
     [inputSimpleCell_ release];
     
@@ -51,6 +63,26 @@ static NSString *kSearch = @"SEARCH";
 
 #pragma mark -
 #pragma mark PropertyCriteriaViewController
+
+- (void)setState:(NSString *)state
+{
+    [[self criteria] setState:state];
+}
+
+- (void)setCity:(NSString *)city
+{
+    [[self criteria] setCity:city];
+}
+
+- (void)setPostalCode:(NSString *)postalCode
+{
+    [[self criteria] setPostalCode:postalCode];
+}
+
+- (void)setCoordinates:(NSString *)coordinates
+{
+    [[self criteria] setCoordinates:coordinates];
+}
 
 //Returns range in the following formats depending on what parameters are sent:
 //  min - max units
@@ -104,23 +136,98 @@ static NSString *kSearch = @"SEARCH";
     }
 }
 
+//Returns YES if all input is valid. Displays error UIAlertView and returns NO if invalid.
+- (BOOL)inputIsValid
+{	
+	NSString *errorMessage = @"";
+
+	//Validates price
+    NSString *minPrice = [[self criteria] minPrice];
+    NSString *maxPrice = [[self criteria] maxPrice];
+    if ([minPrice length] > 0 && [minPrice integerValue] == 0)
+    {
+        errorMessage = @"Min price must be a valid number.";
+    }
+    else if ([maxPrice length] > 0 && [maxPrice integerValue] == 0)
+    {
+        errorMessage = @"Max price must be a valid number.";
+    }
+	//Validates square feet
+	if ([errorMessage length] == 0)
+	{
+        NSString *minSquareFeet = [[self criteria] minSquareFeet];
+        NSString *maxSquareFeet = [[self criteria] maxSquareFeet];
+        if ([minSquareFeet length] > 0 && [minSquareFeet integerValue] == 0)
+        {
+            errorMessage = @"Min square feet must be a valid number.";
+        }
+        else if ([maxSquareFeet length] > 0 && [maxSquareFeet integerValue] == 0)
+        {
+            errorMessage = @"Max square feet must be a valid number.";
+        }
+	}
+	//Validates bedrooms
+	if ([errorMessage length] == 0)
+	{
+        NSString *minBedrooms = [[self criteria] minBedrooms];
+        NSString *maxBedrooms = [[self criteria] maxBedrooms];
+        if ([minBedrooms length] > 0 && [minBedrooms integerValue] == 0)
+        {
+            errorMessage = @"Min bedrooms must be a valid number.";
+        }
+        else if ([maxBedrooms length] > 0 && [maxBedrooms integerValue] == 0)
+        {
+            errorMessage = @"Max bedrooms must be a valid number.";
+        }
+	}
+	//Validates bathrooms
+	if ([errorMessage length] == 0)
+	{
+        NSString *minBathrooms = [[self criteria] minBathrooms];
+        NSString *maxBathrooms = [[self criteria] maxBathrooms];
+        if ([minBathrooms length] > 0 && [minBathrooms integerValue] == 0)
+        {
+            errorMessage = @"Min bathrooms must be a valid number.";
+        }
+        else if ([maxBathrooms length] > 0 && [maxBathrooms integerValue] == 0)
+        {
+            errorMessage = @"Max bathrooms must be a valid number.";
+        }
+	}
+	
+	if ([errorMessage length] > 0)
+	{
+		UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Invalid input" message:errorMessage delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+		[errorAlert show];
+		[errorAlert release];
+		
+		return NO;
+	}
+	
+	return YES;
+}
+
 
 #pragma mark -
 #pragma mark UIViewController
 
 - (void)viewDidLoad
 {
+    NSLog(@"DID LOAD");
     [super viewDidLoad];
     
     //Sets title to location
     NSString *title;
-    if ([self postalCode] != nil)
+    if ([[self criteria] postalCode] != nil && [[[self criteria] postalCode] length] > 0)
     {
-        title = [self postalCode];
+        title = [[self criteria] postalCode];
     }
-    else if ([self city] != nil && [self state] != nil)
+    else if ([[self criteria] city] != nil 
+             && [[[self criteria] city] length] > 0 
+             && [[self criteria] state] != nil
+             && [[[self criteria] state] length] > 0)
     {
-        title = [NSString stringWithFormat:@"%@, %@", [self city], [self state]];
+        title = [NSString stringWithFormat:@"%@, %@", [[self criteria] city], [[self criteria] state]];
     }
     else
     {
@@ -128,15 +235,10 @@ static NSString *kSearch = @"SEARCH";
     }
     [self setTitle:title];
     
+    //Row Ids outlines the order of the rows in the table
     NSMutableArray *rowIds = [[NSMutableArray alloc] initWithObjects:kSource, kLocation, kPrice, kSquareFeet, kBedrooms, kBathrooms, kSortBy, kSearch, nil];
     [self setRowIds:rowIds];
     [rowIds release];
-    
-    FindAnApartmentAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    NSEntityDescription *criteriaEntity = [[[appDelegate managedObjectModel] entitiesByName] objectForKey:@"PropertyCriteria"];
-    PropertyCriteria *criteria = [[PropertyCriteria alloc] initWithEntity:criteriaEntity insertIntoManagedObjectContext:[appDelegate managedObjectContext]];
-    [self setCriteria:criteria];
-    [criteria release];
     
     [self setSelectedRow:-1];
 }
@@ -241,9 +343,9 @@ static NSInteger kMaxTag = 1;
         else if ([rowId isEqual:kLocation])
         {
             [[cell textLabel] setText:@"street"];
-            if ([[self criteria] street] == nil)
+            if ([[self criteria] street] == nil || [[[self criteria] street] length] == 0)
             {
-                [[cell detailTextLabel] setText:@""];
+                [[cell detailTextLabel] setText:@"(optional)"];
             }
             else
             {
@@ -305,7 +407,17 @@ static NSInteger kMaxTag = 1;
     //Last cell acts as a search button
     if ([indexPath row] == [[self rowIds] count] - 1)
     {
-        //TODO Push results
+        if (![self inputIsValid])
+        {
+            return;
+        }
+        
+        //Gets URL to download
+        PropertyUrlConstructor *urlConstructor = [[PropertyUrlConstructor alloc] init];
+        NSURL *url = [urlConstructor urlFromCriteria:[self criteria]];
+        [urlConstructor release];
+        
+        
     }
     else
     {
