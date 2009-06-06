@@ -1,6 +1,7 @@
 #import "PropertyResultsViewController.h"
 
 #import "FindAnApartmentAppDelegate.h"
+#import "PropertyDetailsViewController.h"
 
 
 //Element name that separates each item in the XML results
@@ -112,7 +113,23 @@ static const char *kItemName = "property";
     [[cell detailTextLabel] setText:[summary subtitle]];
     
 	return cell;
-}    
+}
+
+
+#pragma mark -
+#pragma mark UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //Gets result from relationship with summary
+    PropertySummary *summary = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    PropertyDetails *details = [summary details];    
+    
+    PropertyDetailsViewController *detailsViewController = [[PropertyDetailsViewController alloc] initWithNibName:@"PropertyDetailsView" bundle:nil];
+    [detailsViewController setDetails:details];
+    [[self navigationController] pushViewController:detailsViewController animated:YES];
+    [detailsViewController release];
+}  
 
 
 #pragma mark -
