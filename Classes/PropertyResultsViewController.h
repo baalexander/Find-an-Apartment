@@ -7,7 +7,7 @@
 #import "XmlParser.h"
 
 
-@interface ResultsViewController : UITableViewController <ParserDelegate>
+@interface PropertyResultsViewController : UITableViewController <ParserDelegate>
 {
     XmlParser *parser_;
     

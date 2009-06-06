@@ -1,4 +1,4 @@
-#import "ResultsViewController.h"
+#import "PropertyResultsViewController.h"
 
 #import "FindAnApartmentAppDelegate.h"
 
@@ -8,7 +8,7 @@ static const char *kItemName = "property";
 
 
 // Class extension for private properties and methods.
-@interface ResultsViewController ()
+@interface PropertyResultsViewController ()
 @property (nonatomic, retain) PropertyHistory *history;
 @property (nonatomic, retain) PropertyDetails *details;
 @property (nonatomic, retain) PropertySummary *summary;
@@ -18,7 +18,7 @@ static const char *kItemName = "property";
 @property (nonatomic, retain) NSManagedObjectModel *managedObjectModel;
 @end
 
-@implementation ResultsViewController
+@implementation PropertyResultsViewController
 
 @synthesize history = history_;
 @synthesize details = details_;

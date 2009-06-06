@@ -1,15 +1,13 @@
-#import "CitiesViewController.h"
+#import "PropertyStatesViewController.h"
 
-#import "PropertyCriteriaViewController.h"
+#import "PropertyCitiesViewController.h"
 
 
-@implementation CitiesViewController
-
-@synthesize state = state_;
+@implementation PropertyStatesViewController
 
 
 #pragma mark -
-#pragma mark CitiesViewController
+#pragma mark StatesViewController
 
 - (void)dealloc
 {
@@ -23,8 +21,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self setTitle:@"City"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -62,8 +58,8 @@
     }
     
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-    [[cell textLabel] setText:@"Austin"];
-    
+    [[cell textLabel] setText:@"Texas"];
+
 	return cell;
 }
 
@@ -73,11 +69,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    PropertyCriteriaViewController *propertyCriteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaViewController" bundle:nil];
-    [propertyCriteriaViewController setState:[self state]];
-    [propertyCriteriaViewController setCity:@"Austin"];
-    [[self navigationController] pushViewController:propertyCriteriaViewController animated:YES];
-    [propertyCriteriaViewController release];
-} 
+    PropertyCitiesViewController *citiesViewController = [[PropertyCitiesViewController alloc] initWithNibName:@"CitiesViewController" bundle:nil];
+    [citiesViewController setState:@"Texas"];
+    [[self navigationController] pushViewController:citiesViewController animated:YES];
+    [citiesViewController release];
+}    
 
 @end

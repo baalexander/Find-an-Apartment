@@ -4,7 +4,7 @@
 #import "InputRangeCell.h"
 #import "InputSimpleCell.h"
 #import "PropertyUrlConstructor.h"
-#import "ResultsViewController.h"
+#import "PropertyResultsViewController.h"
 
 
 @interface PropertyCriteriaViewController ()
@@ -418,7 +418,7 @@ static NSInteger kMaxTag = 1;
         NSURL *url = [urlConstructor urlFromCriteria:[self criteria]];
         [urlConstructor release];
         
-        ResultsViewController *resultsViewController = [[ResultsViewController alloc] initWithNibName:@"ResultsViewController" bundle:nil];
+        PropertyResultsViewController *resultsViewController = [[PropertyResultsViewController alloc] initWithNibName:@"PropertyResultsViewController" bundle:nil];
         [[self navigationController] pushViewController:resultsViewController animated:YES];
         [resultsViewController parse:url];
         [resultsViewController release];

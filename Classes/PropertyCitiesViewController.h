@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface CitiesViewController : UITableViewController
+@interface PropertyCitiesViewController : UITableViewController
 {
     @private
         NSString *state_;
