@@ -69,7 +69,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    PropertyCitiesViewController *citiesViewController = [[PropertyCitiesViewController alloc] initWithNibName:@"CitiesViewController" bundle:nil];
+    PropertyCitiesViewController *citiesViewController = [[PropertyCitiesViewController alloc] initWithNibName:@"PropertyCitiesView" bundle:nil];
     [citiesViewController setState:@"Texas"];
     [[self navigationController] pushViewController:citiesViewController animated:YES];
     [citiesViewController release];

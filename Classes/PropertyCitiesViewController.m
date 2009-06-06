@@ -73,7 +73,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaViewController" bundle:nil];
+    PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaView" bundle:nil];
     [criteriaViewController setState:[self state]];
     [criteriaViewController setCity:@"Austin"];
     [[self navigationController] pushViewController:criteriaViewController animated:YES];

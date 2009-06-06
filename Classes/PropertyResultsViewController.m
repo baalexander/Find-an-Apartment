@@ -187,7 +187,7 @@ static const char *kItemName = "property";
         // TODO: Handle the error.
     }
     
-    NSLog(@"%@", [[self history] title]);
+    NSLog(@"HISTORY TITLE: %@", [[self history] title]);
     if (![[self fetchedResultsController] performFetch:&error]) {
         NSLog(@"Error performing fetch.");
         // TODO: Handle the error.

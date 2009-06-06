@@ -214,7 +214,6 @@ static NSString *kSearch = @"SEARCH";
 
 - (void)viewDidLoad
 {
-    NSLog(@"DID LOAD");
     [super viewDidLoad];
     
     //Sets title to location
@@ -418,7 +417,7 @@ static NSInteger kMaxTag = 1;
         NSURL *url = [urlConstructor urlFromCriteria:[self criteria]];
         [urlConstructor release];
         
-        PropertyResultsViewController *resultsViewController = [[PropertyResultsViewController alloc] initWithNibName:@"PropertyResultsViewController" bundle:nil];
+        PropertyResultsViewController *resultsViewController = [[PropertyResultsViewController alloc] initWithNibName:@"PropertyResultsView" bundle:nil];
         [[self navigationController] pushViewController:resultsViewController animated:YES];
         [resultsViewController parse:url];
         [resultsViewController release];
