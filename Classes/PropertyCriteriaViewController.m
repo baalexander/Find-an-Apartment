@@ -4,7 +4,7 @@
 #import "InputRangeCell.h"
 #import "InputSimpleCell.h"
 #import "PropertyUrlConstructor.h"
-#import "PropertyResultsViewController.h"
+#import "PropertyListViewController.h"
 
 
 @interface PropertyCriteriaViewController ()
@@ -417,10 +417,10 @@ static NSInteger kMaxTag = 1;
         NSURL *url = [urlConstructor urlFromCriteria:[self criteria]];
         [urlConstructor release];
         
-        PropertyResultsViewController *resultsViewController = [[PropertyResultsViewController alloc] initWithNibName:@"PropertyResultsView" bundle:nil];
-        [[self navigationController] pushViewController:resultsViewController animated:YES];
-        [resultsViewController parse:url];
-        [resultsViewController release];
+        PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
+        [[self navigationController] pushViewController:listViewController animated:YES];
+        [listViewController parse:url];
+        [listViewController release];
     }
     else
     {

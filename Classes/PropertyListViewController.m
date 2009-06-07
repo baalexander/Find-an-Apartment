@@ -1,4 +1,4 @@
-#import "PropertyResultsViewController.h"
+#import "PropertyListViewController.h"
 
 #import "FindAnApartmentAppDelegate.h"
 #import "PropertyDetailsViewController.h"
@@ -6,10 +6,13 @@
 
 //Element name that separates each item in the XML results
 static const char *kItemName = "property";
+//Segmented Control items
+static NSInteger kListItem = 0;
+static NSInteger kMapItem = 1;
 
 
 // Class extension for private properties and methods.
-@interface PropertyResultsViewController ()
+@interface PropertyListViewController ()
 @property (nonatomic, retain) PropertyHistory *history;
 @property (nonatomic, retain) PropertyDetails *details;
 @property (nonatomic, retain) PropertySummary *summary;
@@ -19,7 +22,7 @@ static const char *kItemName = "property";
 @property (nonatomic, retain) NSManagedObjectModel *managedObjectModel;
 @end
 
-@implementation PropertyResultsViewController
+@implementation PropertyListViewController
 
 @synthesize history = history_;
 @synthesize details = details_;
@@ -42,9 +45,39 @@ static const char *kItemName = "property";
 	[super dealloc];
 }
 
+//The segmented control was clicked, handle it here
+- (IBAction)changeView:(id)sender
+{
+	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+    if ([segmentedControl selectedSegmentIndex] == kMapItem)
+    {
+        //Push map
+    }
+}
+
+
+#pragma mark -
+#pragma mark UIViewController
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // "Segmented" control to the right
+    NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", nil];
+	UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
+    [segmentOptions release];
+    
+    //Set selected segment index must come before addTarget, otherwise the action will be called as if the segment was pressed
+    [segmentedControl setSelectedSegmentIndex:0];
+	[segmentedControl addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventValueChanged];
+	[segmentedControl setFrame:CGRectMake(0, 0, 90, 30)];
+    [segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
+    
+	UIBarButtonItem *segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
+    [segmentedControl release];
+	[[self navigationItem] setRightBarButtonItem:segmentBarItem];
+    [segmentBarItem release];    
 }
 
 - (void)viewWillAppear:(BOOL)animated

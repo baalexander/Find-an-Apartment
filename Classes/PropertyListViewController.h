@@ -7,7 +7,7 @@
 #import "XmlParser.h"
 
 
-@interface PropertyResultsViewController : UITableViewController <ParserDelegate>
+@interface PropertyListViewController : UITableViewController <ParserDelegate>
 {
     XmlParser *parser_;
     
@@ -21,5 +21,6 @@
 }
 
 - (void)parse:(NSURL *)url;
+- (IBAction) changeView:(id)sender;
 
 @end
