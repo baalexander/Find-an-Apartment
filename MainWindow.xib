@@ -68,7 +68,7 @@
 								<string key="IBUITitle">State</string>
 							</object>
 							<reference key="IBUIParentViewController" ref="947943179"/>
-							<string key="IBUINibName">StatesViewController</string>
+							<string key="IBUINibName">PropertyStatesView</string>
 						</object>
 					</object>
 				</object>
@@ -335,6 +335,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/FindAnApartmentAppDelegate.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">PropertyStatesViewController</string>
+					<string key="superclassName">UITableViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/PropertyStatesViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
