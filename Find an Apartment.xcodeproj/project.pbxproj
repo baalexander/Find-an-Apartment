@@ -1,0 +1,503 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
+		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
+		28C3AD8A0F43EF2300507BA6 /* Find_an_Apartment.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 28C3AD890F43EF2300507BA6 /* Find_an_Apartment.xcdatamodel */; };
+		28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D801B30F44B63D00FB423F /* CoreData.framework */; };
+		455BFE400FDC9BC4000BCD39 /* PropertyDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 455BFE3F0FDC9BC4000BCD39 /* PropertyDetailsView.xib */; };
+		457AA2AF0FD8D4FF00F0D16C /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 457AA2AE0FD8D4FF00F0D16C /* libxml2.2.dylib */; };
+		457AA3490FDAC26100F0D16C /* UrlUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA3380FDAC26100F0D16C /* UrlUtil.m */; };
+		457AA34A0FDAC26100F0D16C /* XmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA33A0FDAC26100F0D16C /* XmlParser.m */; };
+		457AA3540FDAC28B00F0D16C /* PropertyCriteria.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA34D0FDAC28B00F0D16C /* PropertyCriteria.m */; };
+		457AA3550FDAC28B00F0D16C /* PropertyDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA34F0FDAC28B00F0D16C /* PropertyDetails.m */; };
+		457AA3560FDAC28B00F0D16C /* PropertyHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA3510FDAC28B00F0D16C /* PropertyHistory.m */; };
+		457AA3570FDAC28B00F0D16C /* PropertySummary.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA3530FDAC28B00F0D16C /* PropertySummary.m */; };
+		457AA38D0FDAC45900F0D16C /* FindAnApartmentAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA3780FDAC45900F0D16C /* FindAnApartmentAppDelegate.m */; };
+		457AA38E0FDAC45900F0D16C /* InputRangeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA37A0FDAC45900F0D16C /* InputRangeCell.m */; };
+		457AA38F0FDAC45900F0D16C /* InputRangeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457AA37B0FDAC45900F0D16C /* InputRangeCell.xib */; };
+		457AA3900FDAC45900F0D16C /* InputSimpleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA37D0FDAC45900F0D16C /* InputSimpleCell.m */; };
+		457AA3910FDAC45900F0D16C /* InputSimpleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457AA37E0FDAC45900F0D16C /* InputSimpleCell.xib */; };
+		457AA3920FDAC45900F0D16C /* PropertyCitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA3800FDAC45900F0D16C /* PropertyCitiesViewController.m */; };
+		457AA3930FDAC45900F0D16C /* PropertyCitiesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457AA3810FDAC45900F0D16C /* PropertyCitiesView.xib */; };
+		457AA3940FDAC45900F0D16C /* PropertyCriteriaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA3830FDAC45900F0D16C /* PropertyCriteriaViewController.m */; };
+		457AA3950FDAC45900F0D16C /* PropertyCriteriaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457AA3840FDAC45900F0D16C /* PropertyCriteriaView.xib */; };
+		457AA3960FDAC45900F0D16C /* PropertyListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA3860FDAC45900F0D16C /* PropertyListViewController.m */; };
+		457AA3970FDAC45900F0D16C /* PropertyListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457AA3870FDAC45900F0D16C /* PropertyListView.xib */; };
+		457AA3980FDAC45900F0D16C /* PropertyStatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA3890FDAC45900F0D16C /* PropertyStatesViewController.m */; };
+		457AA3990FDAC45900F0D16C /* PropertyStatesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457AA38A0FDAC45900F0D16C /* PropertyStatesView.xib */; };
+		457AA39A0FDAC45900F0D16C /* PropertyUrlConstructor.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA38C0FDAC45900F0D16C /* PropertyUrlConstructor.m */; };
+		457AA3E90FDB04B200F0D16C /* PropertyDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA3E70FDB04B200F0D16C /* PropertyDetailsViewController.m */; };
+		458783A60FDB45F7000B4F5D /* PropertyMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */; };
+		458783A70FDB45F7000B4F5D /* PropertyMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458783A50FDB45F7000B4F5D /* PropertyMapView.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		1D6058910D05DD3D006BFB54 /* Find an Apartment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Find an Apartment.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		28C3AD890F43EF2300507BA6 /* Find_an_Apartment.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Find_an_Apartment.xcdatamodel; sourceTree = "<group>"; };
+		28D801B30F44B63D00FB423F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		32CA4F630368D1EE00C91783 /* Find_an_Apartment_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Find_an_Apartment_Prefix.pch; sourceTree = "<group>"; };
+		455BFE3F0FDC9BC4000BCD39 /* PropertyDetailsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyDetailsView.xib; path = Classes/PropertyDetailsView.xib; sourceTree = "<group>"; };
+		457AA2AE0FD8D4FF00F0D16C /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
+		457AA3370FDAC26100F0D16C /* UrlUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlUtil.h; sourceTree = "<group>"; };
+		457AA3380FDAC26100F0D16C /* UrlUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlUtil.m; sourceTree = "<group>"; };
+		457AA3390FDAC26100F0D16C /* XmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XmlParser.h; sourceTree = "<group>"; };
+		457AA33A0FDAC26100F0D16C /* XmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XmlParser.m; sourceTree = "<group>"; };
+		457AA34C0FDAC28B00F0D16C /* PropertyCriteria.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyCriteria.h; sourceTree = "<group>"; };
+		457AA34D0FDAC28B00F0D16C /* PropertyCriteria.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertyCriteria.m; sourceTree = "<group>"; };
+		457AA34E0FDAC28B00F0D16C /* PropertyDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyDetails.h; sourceTree = "<group>"; };
+		457AA34F0FDAC28B00F0D16C /* PropertyDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertyDetails.m; sourceTree = "<group>"; };
+		457AA3500FDAC28B00F0D16C /* PropertyHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyHistory.h; sourceTree = "<group>"; };
+		457AA3510FDAC28B00F0D16C /* PropertyHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertyHistory.m; sourceTree = "<group>"; };
+		457AA3520FDAC28B00F0D16C /* PropertySummary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertySummary.h; sourceTree = "<group>"; };
+		457AA3530FDAC28B00F0D16C /* PropertySummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertySummary.m; sourceTree = "<group>"; };
+		457AA3770FDAC45900F0D16C /* FindAnApartmentAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FindAnApartmentAppDelegate.h; path = Classes/FindAnApartmentAppDelegate.h; sourceTree = "<group>"; };
+		457AA3780FDAC45900F0D16C /* FindAnApartmentAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FindAnApartmentAppDelegate.m; path = Classes/FindAnApartmentAppDelegate.m; sourceTree = "<group>"; };
+		457AA3790FDAC45900F0D16C /* InputRangeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InputRangeCell.h; path = Classes/InputRangeCell.h; sourceTree = "<group>"; };
+		457AA37A0FDAC45900F0D16C /* InputRangeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InputRangeCell.m; path = Classes/InputRangeCell.m; sourceTree = "<group>"; };
+		457AA37B0FDAC45900F0D16C /* InputRangeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = InputRangeCell.xib; path = Classes/InputRangeCell.xib; sourceTree = "<group>"; };
+		457AA37C0FDAC45900F0D16C /* InputSimpleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InputSimpleCell.h; path = Classes/InputSimpleCell.h; sourceTree = "<group>"; };
+		457AA37D0FDAC45900F0D16C /* InputSimpleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InputSimpleCell.m; path = Classes/InputSimpleCell.m; sourceTree = "<group>"; };
+		457AA37E0FDAC45900F0D16C /* InputSimpleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = InputSimpleCell.xib; path = Classes/InputSimpleCell.xib; sourceTree = "<group>"; };
+		457AA37F0FDAC45900F0D16C /* PropertyCitiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyCitiesViewController.h; path = Classes/PropertyCitiesViewController.h; sourceTree = "<group>"; };
+		457AA3800FDAC45900F0D16C /* PropertyCitiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyCitiesViewController.m; path = Classes/PropertyCitiesViewController.m; sourceTree = "<group>"; };
+		457AA3810FDAC45900F0D16C /* PropertyCitiesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyCitiesView.xib; path = Classes/PropertyCitiesView.xib; sourceTree = "<group>"; };
+		457AA3820FDAC45900F0D16C /* PropertyCriteriaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyCriteriaViewController.h; path = Classes/PropertyCriteriaViewController.h; sourceTree = "<group>"; };
+		457AA3830FDAC45900F0D16C /* PropertyCriteriaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyCriteriaViewController.m; path = Classes/PropertyCriteriaViewController.m; sourceTree = "<group>"; };
+		457AA3840FDAC45900F0D16C /* PropertyCriteriaView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyCriteriaView.xib; path = Classes/PropertyCriteriaView.xib; sourceTree = "<group>"; };
+		457AA3850FDAC45900F0D16C /* PropertyListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyListViewController.h; path = Classes/PropertyListViewController.h; sourceTree = "<group>"; };
+		457AA3860FDAC45900F0D16C /* PropertyListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyListViewController.m; path = Classes/PropertyListViewController.m; sourceTree = "<group>"; };
+		457AA3870FDAC45900F0D16C /* PropertyListView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyListView.xib; path = Classes/PropertyListView.xib; sourceTree = "<group>"; };
+		457AA3880FDAC45900F0D16C /* PropertyStatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyStatesViewController.h; path = Classes/PropertyStatesViewController.h; sourceTree = "<group>"; };
+		457AA3890FDAC45900F0D16C /* PropertyStatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyStatesViewController.m; path = Classes/PropertyStatesViewController.m; sourceTree = "<group>"; };
+		457AA38A0FDAC45900F0D16C /* PropertyStatesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyStatesView.xib; path = Classes/PropertyStatesView.xib; sourceTree = "<group>"; };
+		457AA38B0FDAC45900F0D16C /* PropertyUrlConstructor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyUrlConstructor.h; sourceTree = "<group>"; };
+		457AA38C0FDAC45900F0D16C /* PropertyUrlConstructor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertyUrlConstructor.m; sourceTree = "<group>"; };
+		457AA3E60FDB04B200F0D16C /* PropertyDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyDetailsViewController.h; path = Classes/PropertyDetailsViewController.h; sourceTree = "<group>"; };
+		457AA3E70FDB04B200F0D16C /* PropertyDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyDetailsViewController.m; path = Classes/PropertyDetailsViewController.m; sourceTree = "<group>"; };
+		458783A30FDB45F7000B4F5D /* PropertyMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyMapViewController.h; path = Classes/PropertyMapViewController.h; sourceTree = "<group>"; };
+		458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyMapViewController.m; path = Classes/PropertyMapViewController.m; sourceTree = "<group>"; };
+		458783A50FDB45F7000B4F5D /* PropertyMapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyMapView.xib; path = Classes/PropertyMapView.xib; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* Find_an_Apartment-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Find_an_Apartment-Info.plist"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1D60588F0D05DD3D006BFB54 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
+				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
+				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
+				28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */,
+				457AA2AF0FD8D4FF00F0D16C /* libxml2.2.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				455BFE520FDC9E99000BCD39 /* Property */,
+				455BFE530FDC9EDF000BCD39 /* Utility */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1D6058910D05DD3D006BFB54 /* Find an Apartment.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				455BFE710FDCA0BF000BCD39 /* App Delegate */,
+				455BFE600FDC9F7C000BCD39 /* Controllers */,
+				455BFE510FDC9E47000BCD39 /* Views */,
+				457AA34B0FDAC27000F0D16C /* Model classes */,
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = CustomTemplate;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32CA4F630368D1EE00C91783 /* Find_an_Apartment_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				28C3AD890F43EF2300507BA6 /* Find_an_Apartment.xcdatamodel */,
+				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
+				8D1107310486CEB800E47090 /* Find_an_Apartment-Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				457AA2AE0FD8D4FF00F0D16C /* libxml2.2.dylib */,
+				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
+				1D30AB110D05D00D00671497 /* Foundation.framework */,
+				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
+				28D801B30F44B63D00FB423F /* CoreData.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		455BFE510FDC9E47000BCD39 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				455BFE640FDCA012000BCD39 /* General UI */,
+				455BFE630FDCA004000BCD39 /* Property */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		455BFE520FDC9E99000BCD39 /* Property */ = {
+			isa = PBXGroup;
+			children = (
+				457AA38B0FDAC45900F0D16C /* PropertyUrlConstructor.h */,
+				457AA38C0FDAC45900F0D16C /* PropertyUrlConstructor.m */,
+			);
+			name = Property;
+			sourceTree = "<group>";
+		};
+		455BFE530FDC9EDF000BCD39 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				457AA3370FDAC26100F0D16C /* UrlUtil.h */,
+				457AA3380FDAC26100F0D16C /* UrlUtil.m */,
+				457AA3390FDAC26100F0D16C /* XmlParser.h */,
+				457AA33A0FDAC26100F0D16C /* XmlParser.m */,
+			);
+			name = Utility;
+			sourceTree = "<group>";
+		};
+		455BFE600FDC9F7C000BCD39 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				455BFE650FDCA022000BCD39 /* General UI */,
+				455BFE610FDC9F84000BCD39 /* Property */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		455BFE610FDC9F84000BCD39 /* Property */ = {
+			isa = PBXGroup;
+			children = (
+				457AA37F0FDAC45900F0D16C /* PropertyCitiesViewController.h */,
+				457AA3800FDAC45900F0D16C /* PropertyCitiesViewController.m */,
+				457AA3820FDAC45900F0D16C /* PropertyCriteriaViewController.h */,
+				457AA3830FDAC45900F0D16C /* PropertyCriteriaViewController.m */,
+				457AA3E60FDB04B200F0D16C /* PropertyDetailsViewController.h */,
+				457AA3E70FDB04B200F0D16C /* PropertyDetailsViewController.m */,
+				457AA3850FDAC45900F0D16C /* PropertyListViewController.h */,
+				457AA3860FDAC45900F0D16C /* PropertyListViewController.m */,
+				458783A30FDB45F7000B4F5D /* PropertyMapViewController.h */,
+				458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */,
+				457AA3880FDAC45900F0D16C /* PropertyStatesViewController.h */,
+				457AA3890FDAC45900F0D16C /* PropertyStatesViewController.m */,
+			);
+			name = Property;
+			sourceTree = "<group>";
+		};
+		455BFE630FDCA004000BCD39 /* Property */ = {
+			isa = PBXGroup;
+			children = (
+				457AA3810FDAC45900F0D16C /* PropertyCitiesView.xib */,
+				457AA3840FDAC45900F0D16C /* PropertyCriteriaView.xib */,
+				457AA3870FDAC45900F0D16C /* PropertyListView.xib */,
+				457AA38A0FDAC45900F0D16C /* PropertyStatesView.xib */,
+				455BFE3F0FDC9BC4000BCD39 /* PropertyDetailsView.xib */,
+				458783A50FDB45F7000B4F5D /* PropertyMapView.xib */,
+			);
+			name = Property;
+			sourceTree = "<group>";
+		};
+		455BFE640FDCA012000BCD39 /* General UI */ = {
+			isa = PBXGroup;
+			children = (
+				457AA37B0FDAC45900F0D16C /* InputRangeCell.xib */,
+				457AA37E0FDAC45900F0D16C /* InputSimpleCell.xib */,
+			);
+			name = "General UI";
+			sourceTree = "<group>";
+		};
+		455BFE650FDCA022000BCD39 /* General UI */ = {
+			isa = PBXGroup;
+			children = (
+				457AA3790FDAC45900F0D16C /* InputRangeCell.h */,
+				457AA37A0FDAC45900F0D16C /* InputRangeCell.m */,
+				457AA37C0FDAC45900F0D16C /* InputSimpleCell.h */,
+				457AA37D0FDAC45900F0D16C /* InputSimpleCell.m */,
+			);
+			name = "General UI";
+			sourceTree = "<group>";
+		};
+		455BFE660FDCA036000BCD39 /* Property */ = {
+			isa = PBXGroup;
+			children = (
+				457AA34C0FDAC28B00F0D16C /* PropertyCriteria.h */,
+				457AA34D0FDAC28B00F0D16C /* PropertyCriteria.m */,
+				457AA34E0FDAC28B00F0D16C /* PropertyDetails.h */,
+				457AA34F0FDAC28B00F0D16C /* PropertyDetails.m */,
+				457AA3500FDAC28B00F0D16C /* PropertyHistory.h */,
+				457AA3510FDAC28B00F0D16C /* PropertyHistory.m */,
+				457AA3520FDAC28B00F0D16C /* PropertySummary.h */,
+				457AA3530FDAC28B00F0D16C /* PropertySummary.m */,
+			);
+			name = Property;
+			sourceTree = "<group>";
+		};
+		455BFE710FDCA0BF000BCD39 /* App Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				457AA3770FDAC45900F0D16C /* FindAnApartmentAppDelegate.h */,
+				457AA3780FDAC45900F0D16C /* FindAnApartmentAppDelegate.m */,
+			);
+			name = "App Delegate";
+			sourceTree = "<group>";
+		};
+		457AA34B0FDAC27000F0D16C /* Model classes */ = {
+			isa = PBXGroup;
+			children = (
+				455BFE660FDCA036000BCD39 /* Property */,
+			);
+			name = "Model classes";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1D6058900D05DD3D006BFB54 /* Find an Apartment */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Find an Apartment" */;
+			buildPhases = (
+				1D60588D0D05DD3D006BFB54 /* Resources */,
+				1D60588E0D05DD3D006BFB54 /* Sources */,
+				1D60588F0D05DD3D006BFB54 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Find an Apartment";
+			productName = "Find an Apartment";
+			productReference = 1D6058910D05DD3D006BFB54 /* Find an Apartment.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Find an Apartment" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1D6058900D05DD3D006BFB54 /* Find an Apartment */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1D60588D0D05DD3D006BFB54 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
+				457AA38F0FDAC45900F0D16C /* InputRangeCell.xib in Resources */,
+				457AA3910FDAC45900F0D16C /* InputSimpleCell.xib in Resources */,
+				457AA3930FDAC45900F0D16C /* PropertyCitiesView.xib in Resources */,
+				457AA3950FDAC45900F0D16C /* PropertyCriteriaView.xib in Resources */,
+				457AA3970FDAC45900F0D16C /* PropertyListView.xib in Resources */,
+				457AA3990FDAC45900F0D16C /* PropertyStatesView.xib in Resources */,
+				458783A70FDB45F7000B4F5D /* PropertyMapView.xib in Resources */,
+				455BFE400FDC9BC4000BCD39 /* PropertyDetailsView.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1D60588E0D05DD3D006BFB54 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
+				28C3AD8A0F43EF2300507BA6 /* Find_an_Apartment.xcdatamodel in Sources */,
+				457AA3490FDAC26100F0D16C /* UrlUtil.m in Sources */,
+				457AA34A0FDAC26100F0D16C /* XmlParser.m in Sources */,
+				457AA3540FDAC28B00F0D16C /* PropertyCriteria.m in Sources */,
+				457AA3550FDAC28B00F0D16C /* PropertyDetails.m in Sources */,
+				457AA3560FDAC28B00F0D16C /* PropertyHistory.m in Sources */,
+				457AA3570FDAC28B00F0D16C /* PropertySummary.m in Sources */,
+				457AA38D0FDAC45900F0D16C /* FindAnApartmentAppDelegate.m in Sources */,
+				457AA38E0FDAC45900F0D16C /* InputRangeCell.m in Sources */,
+				457AA3900FDAC45900F0D16C /* InputSimpleCell.m in Sources */,
+				457AA3920FDAC45900F0D16C /* PropertyCitiesViewController.m in Sources */,
+				457AA3940FDAC45900F0D16C /* PropertyCriteriaViewController.m in Sources */,
+				457AA3960FDAC45900F0D16C /* PropertyListViewController.m in Sources */,
+				457AA3980FDAC45900F0D16C /* PropertyStatesViewController.m in Sources */,
+				457AA39A0FDAC45900F0D16C /* PropertyUrlConstructor.m in Sources */,
+				457AA3E90FDB04B200F0D16C /* PropertyDetailsViewController.m in Sources */,
+				458783A60FDB45F7000B4F5D /* PropertyMapViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1D6058940D05DD3E006BFB54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/Volumes/Skiiing2/CD/ViewBased/Unknown Path/System/Library/Frameworks\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Find_an_Apartment_Prefix.pch;
+				INFOPLIST_FILE = "Find_an_Apartment-Info.plist";
+				PRODUCT_NAME = "Find an Apartment";
+			};
+			name = Debug;
+		};
+		1D6058950D05DD3E006BFB54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/Volumes/Skiiing2/CD/ViewBased/Unknown Path/System/Library/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Find_an_Apartment_Prefix.pch;
+				INFOPLIST_FILE = "Find_an_Apartment-Info.plist";
+				PRODUCT_NAME = "Find an Apartment";
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.0.sdk/usr/include/libxml2;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = iphoneos3.0;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = iphoneos3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Find an Apartment" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D6058940D05DD3E006BFB54 /* Debug */,
+				1D6058950D05DD3E006BFB54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Find an Apartment" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}
