@@ -2,6 +2,7 @@
 
 #import "FindAnApartmentAppDelegate.h"
 #import "PropertyDetailsViewController.h"
+#import "PropertyMapViewController.h"
 
 
 //Element name that separates each item in the XML results
@@ -13,6 +14,7 @@ static NSInteger kMapItem = 1;
 
 // Class extension for private properties and methods.
 @interface PropertyListViewController ()
+@property (nonatomic, assign) BOOL isParsing;
 @property (nonatomic, retain) PropertyHistory *history;
 @property (nonatomic, retain) PropertyDetails *details;
 @property (nonatomic, retain) PropertySummary *summary;
@@ -24,6 +26,7 @@ static NSInteger kMapItem = 1;
 
 @implementation PropertyListViewController
 
+@synthesize isParsing = isParsing_;
 @synthesize history = history_;
 @synthesize details = details_;
 @synthesize summary = summary_;
@@ -31,6 +34,20 @@ static NSInteger kMapItem = 1;
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize managedObjectContext = managedObjectContext_;
 @synthesize managedObjectModel = managedObjectModel_;
+
+
+#pragma mark -
+#pragma mark PropertyListViewController
+
+- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
+{
+	if ((self = [super initWithNibName:nibName bundle:nibBundle]))
+	{
+        [self setIsParsing:NO];
+	}
+    
+    return self;
+}
 
 - (void)dealloc
 {
@@ -48,11 +65,42 @@ static NSInteger kMapItem = 1;
 //The segmented control was clicked, handle it here
 - (IBAction)changeView:(id)sender
 {
+    //Set the break point only to show the comments above. Delete break point and this comment when read.
 	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+    //Bring up map
     if ([segmentedControl selectedSegmentIndex] == kMapItem)
     {
-        //Push map
+        PropertyMapViewController *mapViewController = [[PropertyMapViewController alloc] initWithNibName:@"PropertyMapView" bundle:nil];
+        
+        NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithArray:[[self navigationController] viewControllers]];
+        [viewControllers replaceObjectAtIndex:[viewControllers count] - 1 withObject:mapViewController];
+        [mapViewController release];
+        [[self navigationController] setViewControllers:viewControllers animated:NO];
+        [viewControllers release];
+        
+        //Another option instead of replacing the view controllers is presenting a modal view controller of the map. Not sure about back button though or how to switch back to list. List option could still be a segment controller and just dismiss the modal view controller when pressing "list". Back button could do something similar?
+        //[[self navigationController] presentModalViewController:mapViewController animated:YES];
     }
+}
+
+// This method will be called repeatedly - once each time the user choses to parse.
+- (void)parse:(NSURL *)url
+{
+    [self setIsParsing:YES];
+    
+    //Create history entity
+    NSEntityDescription *historyEntity = [[[self managedObjectModel] entitiesByName] objectForKey:@"PropertyHistory"];
+    PropertyHistory *history = [[PropertyHistory alloc] initWithEntity:historyEntity insertIntoManagedObjectContext:[self managedObjectContext]];
+    [self setHistory:history];
+    [history release];
+    [[self history] setCreated:[NSDate date]];
+    
+    // Create the parser, set its delegate, and start it.
+    XmlParser *parser = [[XmlParser alloc] init];
+    [self setParser:parser];
+    [parser release];
+    [[self parser] setDelegate:self];
+    [[self parser] startWithUrl:url withItemDelimeter:kItemName];
 }
 
 
@@ -63,13 +111,23 @@ static NSInteger kMapItem = 1;
 {
     [super viewDidLoad];
     
-    // "Segmented" control to the right
+    //If fetched objects is nil and not currently parsing results, the call perform fetch to get the most recent results. This would happen when switching from Map to List view. If the parse function already performed, then it has retrieved the results. This very much assumes that the parse function is being called before the view is loading.
+    if (![self isParsing] && [[self fetchedResultsController] fetchedObjects] == nil)
+    {
+        if (![[self fetchedResultsController] performFetch:nil])
+        {
+            NSLog(@"Error performing fetch in viewDidLoad.");
+            // TODO: Handle the error.
+        }        
+    }
+    
+    //Segmented control
     NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", nil];
 	UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
     [segmentOptions release];
     
     //Set selected segment index must come before addTarget, otherwise the action will be called as if the segment was pressed
-    [segmentedControl setSelectedSegmentIndex:0];
+    [segmentedControl setSelectedSegmentIndex:kListItem];
 	[segmentedControl addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventValueChanged];
 	[segmentedControl setFrame:CGRectMake(0, 0, 90, 30)];
     [segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
@@ -87,24 +145,6 @@ static NSInteger kMapItem = 1;
     {
         [[self tableView] deselectRowAtIndexPath:selectedRowIndexPath animated:NO];
     }
-}
-
-// This method will be called repeatedly - once each time the user choses to parse.
-- (void)parse:(NSURL *)url
-{
-    //Create history entity
-    NSEntityDescription *historyEntity = [[[self managedObjectModel] entitiesByName] objectForKey:@"PropertyHistory"];
-    PropertyHistory *history = [[PropertyHistory alloc] initWithEntity:historyEntity insertIntoManagedObjectContext:[self managedObjectContext]];
-    [self setHistory:history];
-    [history release];
-    [[self history] setCreated:[NSDate date]];
-    
-    // Create the parser, set its delegate, and start it.
-    XmlParser *parser = [[XmlParser alloc] init];
-    [self setParser:parser];
-    [parser release];
-    [[self parser] setDelegate:self];
-    [[self parser] startWithUrl:url withItemDelimeter:kItemName];
 }
 
 
@@ -197,6 +237,33 @@ static NSInteger kMapItem = 1;
 {
     if (fetchedResultsController_ == nil)
     {
+        if ([self history] == nil)
+        {
+            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+            NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:[self managedObjectContext]];
+            [fetchRequest setEntity:entity];
+            
+            //Sorts so most recent is first
+            NSSortDescriptor *createdDescriptor = [[NSSortDescriptor alloc] initWithKey:@"created" ascending:NO];
+            NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:createdDescriptor, nil];
+            [createdDescriptor release];
+            [fetchRequest setSortDescriptors:sortDescriptors];
+            [sortDescriptors release];
+
+            //Only concerned about the most recent
+            [fetchRequest setFetchLimit:1];
+            
+            NSError *error = nil;
+            NSArray *fetchResults = [[self managedObjectContext] executeFetchRequest:fetchRequest error:&error];
+            if (fetchResults == nil)
+            {
+                NSLog(@"Error fetching most recent history results.");
+                //TODO Handle the error.
+            }
+            
+            [self setHistory:[fetchResults objectAtIndex:0]];
+        }
+        
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertySummary" inManagedObjectContext:[self managedObjectContext]];
         [fetchRequest setEntity:entity];
@@ -219,7 +286,7 @@ static NSInteger kMapItem = 1;
                                                                                                               cacheName:@"Root"];
         [fetchRequest release];
         [self setFetchedResultsController:fetchedResultsController];
-        [fetchedResultsController release];        
+        [fetchedResultsController release];
     }
     
 	return fetchedResultsController_;
@@ -236,14 +303,15 @@ static NSInteger kMapItem = 1;
         NSLog(@"Error saving context.");
         // TODO: Handle the error.
     }
-    
-    NSLog(@"HISTORY TITLE: %@", [[self history] title]);
+
     if (![[self fetchedResultsController] performFetch:&error]) {
         NSLog(@"Error performing fetch.");
         // TODO: Handle the error.
     }
     
     [[self tableView] reloadData];
+    
+    [self setIsParsing:NO];
 }
 
 - (void)parser:(XmlParser *)parser addElement:(NSString *)element withValue:(NSString *)value
@@ -369,6 +437,8 @@ static NSInteger kMapItem = 1;
 
 - (void)parser:(XmlParser *)parser didFailWithError:(NSError *)error
 {
+    [self setIsParsing:NO];
+    
     NSLog(@"Parser did fail with error.");
     // TODO handle errors as appropriate to your application...
 }

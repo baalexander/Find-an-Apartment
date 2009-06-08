@@ -275,7 +275,8 @@ static NSInteger kMaxTag = 1;
     NSString *rowId = [[self rowIds] objectAtIndex:[indexPath row]];
     
     //Returns input cell
-    if ([indexPath row] == [self selectedRow])
+    //The reason for the > 0 and NSInteger cast is because comparing signed to unsigned integer
+    if ([self selectedRow] >= 0 && [self selectedRow] == (NSInteger)[indexPath row])
     {
         //Returns input range cell
         if ([rowId isEqual:kPrice] || [rowId isEqual:kSquareFeet] || [rowId isEqual:kBedrooms] || [rowId isEqual:kBathrooms])
@@ -418,14 +419,15 @@ static NSInteger kMaxTag = 1;
         [urlConstructor release];
         
         PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
-        [[self navigationController] pushViewController:listViewController animated:YES];
+        //Must call parse BEFORE pushing to view. Otherwise, an unecessary perform fetch is done in the view controller.
         [listViewController parse:url];
+        [[self navigationController] pushViewController:listViewController animated:YES];
         [listViewController release];
     }
     else
     {
         //If pressing a row that's already in edit mode (was selected last), then resets to unedit mode
-        if ([indexPath row] == [self selectedRow])
+        if ([self selectedRow] >= 0 && [self selectedRow] == (NSInteger)[indexPath row])
         {
             [self setSelectedRow:-1];
         }

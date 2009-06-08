@@ -9,6 +9,9 @@
 
 @interface PropertyListViewController : UITableViewController <ParserDelegate>
 {
+    //Determines if view controller is in the middle of a parsing operation
+    BOOL isParsing_;
+    
     XmlParser *parser_;
     
     //Core Data objects
