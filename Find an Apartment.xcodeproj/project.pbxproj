@@ -39,6 +39,8 @@
 		457AA3E90FDB04B200F0D16C /* PropertyDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA3E70FDB04B200F0D16C /* PropertyDetailsViewController.m */; };
 		458783A60FDB45F7000B4F5D /* PropertyMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */; };
 		458783A70FDB45F7000B4F5D /* PropertyMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458783A50FDB45F7000B4F5D /* PropertyMapView.xib */; };
+		45C974180FDCCA150021EE6D /* PropertyHistoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C974150FDCCA150021EE6D /* PropertyHistoryView.xib */; };
+		45C974190FDCCA150021EE6D /* PropertyHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C974170FDCCA150021EE6D /* PropertyHistoryViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,6 +94,9 @@
 		458783A30FDB45F7000B4F5D /* PropertyMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyMapViewController.h; path = Classes/PropertyMapViewController.h; sourceTree = "<group>"; };
 		458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyMapViewController.m; path = Classes/PropertyMapViewController.m; sourceTree = "<group>"; };
 		458783A50FDB45F7000B4F5D /* PropertyMapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyMapView.xib; path = Classes/PropertyMapView.xib; sourceTree = "<group>"; };
+		45C974150FDCCA150021EE6D /* PropertyHistoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyHistoryView.xib; path = Classes/PropertyHistoryView.xib; sourceTree = "<group>"; };
+		45C974160FDCCA150021EE6D /* PropertyHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyHistoryViewController.h; path = Classes/PropertyHistoryViewController.h; sourceTree = "<group>"; };
+		45C974170FDCCA150021EE6D /* PropertyHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyHistoryViewController.m; path = Classes/PropertyHistoryViewController.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Find_an_Apartment-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Find_an_Apartment-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -222,6 +227,8 @@
 				457AA3830FDAC45900F0D16C /* PropertyCriteriaViewController.m */,
 				457AA3E60FDB04B200F0D16C /* PropertyDetailsViewController.h */,
 				457AA3E70FDB04B200F0D16C /* PropertyDetailsViewController.m */,
+				45C974160FDCCA150021EE6D /* PropertyHistoryViewController.h */,
+				45C974170FDCCA150021EE6D /* PropertyHistoryViewController.m */,
 				457AA3850FDAC45900F0D16C /* PropertyListViewController.h */,
 				457AA3860FDAC45900F0D16C /* PropertyListViewController.m */,
 				458783A30FDB45F7000B4F5D /* PropertyMapViewController.h */,
@@ -237,10 +244,11 @@
 			children = (
 				457AA3810FDAC45900F0D16C /* PropertyCitiesView.xib */,
 				457AA3840FDAC45900F0D16C /* PropertyCriteriaView.xib */,
-				457AA3870FDAC45900F0D16C /* PropertyListView.xib */,
-				457AA38A0FDAC45900F0D16C /* PropertyStatesView.xib */,
 				455BFE3F0FDC9BC4000BCD39 /* PropertyDetailsView.xib */,
+				45C974150FDCCA150021EE6D /* PropertyHistoryView.xib */,
+				457AA3870FDAC45900F0D16C /* PropertyListView.xib */,
 				458783A50FDB45F7000B4F5D /* PropertyMapView.xib */,
+				457AA38A0FDAC45900F0D16C /* PropertyStatesView.xib */,
 			);
 			name = Property;
 			sourceTree = "<group>";
@@ -348,6 +356,7 @@
 				457AA3990FDAC45900F0D16C /* PropertyStatesView.xib in Resources */,
 				458783A70FDB45F7000B4F5D /* PropertyMapView.xib in Resources */,
 				455BFE400FDC9BC4000BCD39 /* PropertyDetailsView.xib in Resources */,
+				45C974180FDCCA150021EE6D /* PropertyHistoryView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,6 +385,7 @@
 				457AA39A0FDAC45900F0D16C /* PropertyUrlConstructor.m in Sources */,
 				457AA3E90FDB04B200F0D16C /* PropertyDetailsViewController.m in Sources */,
 				458783A60FDB45F7000B4F5D /* PropertyMapViewController.m in Sources */,
+				45C974190FDCCA150021EE6D /* PropertyHistoryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

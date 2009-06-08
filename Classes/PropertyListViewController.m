@@ -15,7 +15,6 @@ static NSInteger kMapItem = 1;
 // Class extension for private properties and methods.
 @interface PropertyListViewController ()
 @property (nonatomic, assign) BOOL isParsing;
-@property (nonatomic, retain) PropertyHistory *history;
 @property (nonatomic, retain) PropertyDetails *details;
 @property (nonatomic, retain) PropertySummary *summary;
 @property (nonatomic, retain) XmlParser *parser;
@@ -151,6 +150,8 @@ static NSInteger kMapItem = 1;
 #pragma mark -
 #pragma mark UITableViewDataSource
 
+static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
+
 /*
  The data source methods are handled primarily by the fetch results controller
  */
@@ -171,13 +172,11 @@ static NSInteger kMapItem = 1;
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{    
-    static NSString *CellIdentifier = @"Cell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+{        
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSimpleCellId];
     if (cell == nil)
     {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kSimpleCellId] autorelease];
     }
     
     // Configure the cell to show the book's title
@@ -213,7 +212,7 @@ static NSInteger kMapItem = 1;
     if (managedObjectContext_ == nil)
     {
         FindAnApartmentAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        [self setManagedObjectContext:appDelegate.managedObjectContext];
+        [self setManagedObjectContext:[appDelegate managedObjectContext]];
     }
     
     return managedObjectContext_;
@@ -224,7 +223,7 @@ static NSInteger kMapItem = 1;
     if (managedObjectModel_ == nil)
     {
         FindAnApartmentAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        [self setManagedObjectModel:appDelegate.managedObjectModel];
+        [self setManagedObjectModel:[appDelegate managedObjectModel]];
     }
     
     return managedObjectModel_;
@@ -239,9 +238,14 @@ static NSInteger kMapItem = 1;
     {
         if ([self history] == nil)
         {
+            //FIXME: TODO OMG
+            //The code below fetches the most recent History. BUT the most recent history may not be the right one. For example, the History view controller passes ANY of the Histories into it!
             NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
             NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:[self managedObjectContext]];
             [fetchRequest setEntity:entity];
+            
+            //No subentities
+            [fetchRequest setIncludesSubentities:NO];
             
             //Sorts so most recent is first
             NSSortDescriptor *createdDescriptor = [[NSSortDescriptor alloc] initWithKey:@"created" ascending:NO];
@@ -258,7 +262,7 @@ static NSInteger kMapItem = 1;
             if (fetchResults == nil)
             {
                 NSLog(@"Error fetching most recent history results.");
-                //TODO Handle the error.
+                //TODO: Handle the error.
             }
             
             [self setHistory:[fetchResults objectAtIndex:0]];
@@ -267,6 +271,9 @@ static NSInteger kMapItem = 1;
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertySummary" inManagedObjectContext:[self managedObjectContext]];
         [fetchRequest setEntity:entity];
+        
+        //No subentities
+        [fetchRequest setIncludesSubentities:NO];
         
         // Create the sort descriptors array.
         NSSortDescriptor *titleDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
@@ -293,6 +300,7 @@ static NSInteger kMapItem = 1;
 }    
 
 
+#pragma mark -
 #pragma mark <ParserDelegate> Implementation
 
 - (void)parserDidEndParsingData:(XmlParser *)parser
@@ -330,8 +338,7 @@ static NSInteger kMapItem = 1;
     //Summary attributes
     else if ([element isEqual:@"title"])
     {
-        NSString *link = [NSString stringWithFormat:@"%@:%@", [[self history] created], value];
-        [[self summary] setTitle:link];
+        [[self summary] setTitle:value];
     }
     else if ([element isEqual:@"subtitle"])
     {
@@ -414,12 +421,12 @@ static NSInteger kMapItem = 1;
 
 - (void)parserDidBeginItem:(XmlParser *)parser
 {
-    NSEntityDescription *resultEntity = [[[self managedObjectModel] entitiesByName] objectForKey: @"PropertyDetails"];
+    NSEntityDescription *resultEntity = [[[self managedObjectModel] entitiesByName] objectForKey:@"PropertyDetails"];
     PropertyDetails *details = [[PropertyDetails alloc] initWithEntity:resultEntity insertIntoManagedObjectContext:[self managedObjectContext]];
     [self setDetails:details];
     [details release];
     
-    NSEntityDescription *summaryEntity = [[[self managedObjectModel] entitiesByName] objectForKey: @"PropertySummary"];
+    NSEntityDescription *summaryEntity = [[[self managedObjectModel] entitiesByName] objectForKey:@"PropertySummary"];
     PropertySummary *summary = [[PropertySummary alloc] initWithEntity:summaryEntity insertIntoManagedObjectContext:[self managedObjectContext]];
     [self setSummary:summary];
     [summary release];
@@ -440,7 +447,7 @@ static NSInteger kMapItem = 1;
     [self setIsParsing:NO];
     
     NSLog(@"Parser did fail with error.");
-    // TODO handle errors as appropriate to your application...
+    // TODO: handle errors as appropriate to your application...
 }
 
 @end

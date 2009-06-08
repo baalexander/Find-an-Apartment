@@ -3,7 +3,7 @@
 #import "PropertyListViewController.h"
 
 
-//TODO put these in a file shared by List and Maps instead of duplicating
+//TODO: put these in a file shared by List and Maps instead of duplicating
 static NSInteger kListItem = 0;
 static NSInteger kMapItem = 1;
 

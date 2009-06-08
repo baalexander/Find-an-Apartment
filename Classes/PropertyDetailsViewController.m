@@ -105,7 +105,7 @@
     }
     if ([[self details] email] != nil)
     {
-        //TODO Validate email before adding?
+        //TODO: Validate email before adding?
         [contactSection setObject:[[self details] email] forKey:@"email"];
     }
     if ([[self details] agent] != nil)
@@ -130,7 +130,7 @@
         [[self sectionDetails] addObject:contactSection];
     }
     
-    //TODO Images section
+    //TODO: Images section
 
     //Description section
     NSMutableDictionary *descriptionSection = [NSMutableDictionary dictionary];

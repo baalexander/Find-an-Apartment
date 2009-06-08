@@ -23,7 +23,10 @@
     NSManagedObjectModel *managedObjectModel_;
 }
 
+//Public property so History view controller can set
+@property (nonatomic, retain) PropertyHistory *history;
+
 - (void)parse:(NSURL *)url;
-- (IBAction) changeView:(id)sender;
+- (IBAction)changeView:(id)sender;
 
 @end

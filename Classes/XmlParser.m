@@ -281,7 +281,7 @@ static void	charactersFoundSAX(void *ctx, const xmlChar *ch, int len)
  */
 static void errorEncounteredSAX(void *ctx, const char *msg, ...)
 {
-    //TODO Call parseError on main thread with initialized error message using *msg
+    //TODO: Call parseError on main thread with initialized error message using *msg
     printf(msg);
 }
 
