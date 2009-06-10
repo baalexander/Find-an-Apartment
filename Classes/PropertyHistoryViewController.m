@@ -143,19 +143,20 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:[self managedObjectContext]];
         [fetchRequest setEntity:entity];
-        
+
         //No subentities
         [fetchRequest setIncludesSubentities:NO];
-        
+
         //Sorts so most recent is first
         NSSortDescriptor *createdDescriptor = [[NSSortDescriptor alloc] initWithKey:@"created" ascending:NO];
         NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:createdDescriptor, nil];
         [createdDescriptor release];
         [fetchRequest setSortDescriptors:sortDescriptors];
         [sortDescriptors release];
-        
+
         NSError *error = nil;
         NSArray *fetchResults = [[self managedObjectContext] executeFetchRequest:fetchRequest error:&error];
+        //WTF: CHECK Do I need this call for results??? 
         if (fetchResults == nil)
         {
             NSLog(@"Error fetching most recent history results.");

@@ -5,12 +5,15 @@
 
 @implementation PropertyStatesViewController
 
+@synthesize managedObjectContext = managedObjectContext_;
 
 #pragma mark -
 #pragma mark StatesViewController
 
 - (void)dealloc
 {
+    [managedObjectContext_ release];
+    
     [super dealloc];
 }
 
@@ -70,6 +73,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     PropertyCitiesViewController *citiesViewController = [[PropertyCitiesViewController alloc] initWithNibName:@"PropertyCitiesView" bundle:nil];
+    //[citiesViewController setManagedObjectContext:[self managedObjectContext]];
     [citiesViewController setState:@"Texas"];
     [[self navigationController] pushViewController:citiesViewController animated:YES];
     [citiesViewController release];
