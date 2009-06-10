@@ -171,8 +171,10 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
-    //Figure out the view controller type to set any values needed before hitting it the first time. Like managed object contexts.
-    //If a navigation controller, then need to figure its visible view controller
+    //Figure out the view controller type to pass any values needed before hitting it the first time. Like managed object contexts.
+    //Will only be comparing the view controller to the root view controller of each tab. If not the root view controller, then the view controller is a child of the root view controller implying the root view controller has already been initialized with the correct parameters so nothing to do.
+    
+    //If a navigation controller, then need to figure its visible view controller.
     if ([viewController isKindOfClass:[UINavigationController class]])
     {
         UINavigationController *navigationViewController = (UINavigationController *)viewController;
