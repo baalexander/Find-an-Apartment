@@ -59,6 +59,7 @@ static xmlSAXHandler simpleSAXHandlerStruct;
 
 - (void)dealloc
 {
+    //TODO: Dealloc everything you can!
     [super dealloc];
 }
 

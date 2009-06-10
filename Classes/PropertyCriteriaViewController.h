@@ -1,5 +1,8 @@
 #import <UIKit/UIKit.h>
 
+#import "State.h"
+#import "City.h"
+#import "PostalCode.h"
 #import "PropertyCriteria.h"
 
 
@@ -8,22 +11,32 @@
 
 @interface PropertyCriteriaViewController : UITableViewController <UITextFieldDelegate>
 {
-    UITextField *currentTextField_;
-    NSInteger selectedRow_;
-    BOOL isEditingRow_;
-    PropertyCriteria *criteria_;
-    NSMutableArray *rowIds_;
-    
-    IBOutlet InputRangeCell *inputRangeCell_;
-    IBOutlet InputSimpleCell *inputSimpleCell_;
+    @private
+        NSManagedObjectContext *mainObjectContext_;
+        
+        State *state_;
+        City *city_;
+        PostalCode *postalCode_;
+        NSString *coordinates_;
+        PropertyCriteria *criteria_;
+        
+        UITextField *currentTextField_;
+        NSInteger selectedRow_;
+        BOOL isEditingRow_;
+        NSMutableArray *rowIds_;
+        
+        IBOutlet InputRangeCell *inputRangeCell_;
+        IBOutlet InputSimpleCell *inputSimpleCell_;
 }
+
+@property (nonatomic, retain) NSManagedObjectContext *mainObjectContext;
+
+@property (nonatomic, retain) State *state;
+@property (nonatomic, retain) City *city;
+@property (nonatomic, retain) PostalCode *postalCode;
+@property (nonatomic, copy) NSString *coordinates;
 
 @property (nonatomic, retain) InputRangeCell *inputRangeCell;
 @property (nonatomic, retain) InputSimpleCell *inputSimpleCell;
-
-- (void)setState:(NSString *)state;
-- (void)setCity:(NSString *)city;
-- (void)setPostalCode:(NSString *)postalCode;
-- (void)setCoordinates:(NSString *)coordinates;
 
 @end

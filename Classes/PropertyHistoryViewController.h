@@ -3,10 +3,12 @@
 
 @interface PropertyHistoryViewController : UITableViewController
 {
-    //Core Data objects
-    NSFetchedResultsController *fetchedResultsController_;
-    NSManagedObjectContext *managedObjectContext_;
-    NSManagedObjectModel *managedObjectModel_;
+    @private
+        //Core Data objects
+        NSFetchedResultsController *fetchedResultsController_;
+        NSManagedObjectContext *mainObjectContext_;
 }
+
+@property (nonatomic, retain) NSManagedObjectContext *mainObjectContext;
 
 @end

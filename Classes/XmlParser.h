@@ -25,26 +25,26 @@
 // This approach to parsing uses NSURLConnection to asychronously retrieve the XML data. libxml's SAX parsing supports chunked parsing, with no requirement for the chunks to be discrete blocks of well formed XML. The primary purpose of this class is to start the download, configure the parser with a set of C callback functions, and pass downloaded data to it. In addition, the class maintains a number of state variables for the parsing.
 @interface XmlParser : NSObject
 {
-@private
-    //Delegate to call back parsed information
-    id <ParserDelegate> delegate_;
-    // Reference to the libxml parser context
-    xmlParserCtxtPtr context_;
-    // Handles asynchronous retrieval of the XML
-    NSURLConnection *connection_;
-    // Overall state of the parser, used to exit the run loop.
-    BOOL done_;
-    // State variable used to determine whether or not to ignore a given XML element
-    BOOL parsingAnItem_;
-    // The following state variables deal with getting character data from XML elements. This is a potentially expensive 
-    // operation. The character data in a given element may be delivered over the course of multiple callbacks, so that
-    // data must be appended to a buffer. The optimal way of doing this is to use a C string buffer that grows exponentially.
-    // When all the characters have been delivered, an NSString is constructed and the buffer is reset.
-    BOOL storingCharacters_;
-    NSMutableData *characterBuffer_;
-    //Element name and length to signify new item to parse
-    const char *itemDelimiter_;
-    NSUInteger itemDelimiterLength_;
+    @private
+        //Delegate to call back parsed information
+        id <ParserDelegate> delegate_;
+        // Reference to the libxml parser context
+        xmlParserCtxtPtr context_;
+        // Handles asynchronous retrieval of the XML
+        NSURLConnection *connection_;
+        // Overall state of the parser, used to exit the run loop.
+        BOOL done_;
+        // State variable used to determine whether or not to ignore a given XML element
+        BOOL parsingAnItem_;
+        // The following state variables deal with getting character data from XML elements. This is a potentially expensive 
+        // operation. The character data in a given element may be delivered over the course of multiple callbacks, so that
+        // data must be appended to a buffer. The optimal way of doing this is to use a C string buffer that grows exponentially.
+        // When all the characters have been delivered, an NSString is constructed and the buffer is reset.
+        BOOL storingCharacters_;
+        NSMutableData *characterBuffer_;
+        //Element name and length to signify new item to parse
+        const char *itemDelimiter_;
+        NSUInteger itemDelimiterLength_;
 }
 
 @property (nonatomic, assign) id <ParserDelegate> delegate;

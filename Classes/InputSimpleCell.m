@@ -5,6 +5,10 @@
 
 @synthesize input = input_;
 
+
+#pragma mark -
+#pragma mark InputSimpleCell
+
 - (void)dealloc
 {
     [input_ release];

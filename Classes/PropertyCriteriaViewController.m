@@ -1,6 +1,5 @@
 #import "PropertyCriteriaViewController.h"
 
-#import "FindAnApartmentAppDelegate.h"
 #import "InputRangeCell.h"
 #import "InputSimpleCell.h"
 #import "PropertyUrlConstructor.h"
@@ -8,13 +7,16 @@
 
 
 @interface PropertyCriteriaViewController ()
+
 @property (nonatomic, retain) UITextField *currentTextField;
 @property (nonatomic, retain) PropertyCriteria *criteria;
 @property (nonatomic, assign) NSInteger selectedRow;
 @property (nonatomic, assign) BOOL isEditingRow;
 @property (nonatomic, retain) NSMutableArray *rowIds;
+
 - (NSString *)formatRangeWithMin:(NSString *)min withMax:(NSString *)max withSymbol:(NSString *)symbol withUnits:(NSString *)units;
 - (BOOL)inputIsValid;
+
 @end
 
 
@@ -30,24 +32,28 @@ static NSString *kSearch = @"SEARCH";
 
 @implementation PropertyCriteriaViewController
 
-@synthesize currentTextField = currentTextField_;
+@synthesize mainObjectContext = mainObjectContext_;
+@synthesize state = state_;
+@synthesize city = city_;
+@synthesize postalCode = postalCode_;
+@synthesize coordinates = coordinates_;
 @synthesize criteria = criteria_;
+@synthesize currentTextField = currentTextField_;
+@synthesize rowIds = rowIds_;
 @synthesize selectedRow = selectedRow_;
 @synthesize isEditingRow = isEditingRow_;
 @synthesize inputRangeCell = inputRangeCell_;
 @synthesize inputSimpleCell = inputSimpleCell_;
-@synthesize rowIds = rowIds_;
+
+
+#pragma mark -
+#pragma mark PropertyCriteriaViewController
 
 - (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
 {
 	if ((self = [super initWithNibName:nibName bundle:nibBundle]))
 	{
-        //Creates PropertyCriteria object
-        FindAnApartmentAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        NSEntityDescription *criteriaEntity = [[[appDelegate managedObjectModel] entitiesByName] objectForKey:@"PropertyCriteria"];
-        PropertyCriteria *criteria = [[PropertyCriteria alloc] initWithEntity:criteriaEntity insertIntoManagedObjectContext:[appDelegate managedObjectContext]];
-        [self setCriteria:criteria];
-        [criteria release];
+        
 	}
     
     return self;
@@ -55,34 +61,21 @@ static NSString *kSearch = @"SEARCH";
 
 - (void)dealloc
 {
+    [mainObjectContext_ release];
+    
+    [state_ release];
+    [city_ release];
+    [postalCode_ release];
+    [coordinates_ release];
+    [criteria_ release];
+    
+    [currentTextField_ release];
+    [rowIds_ release];
+    
     [inputRangeCell_ release];
     [inputSimpleCell_ release];
     
     [super dealloc];
-}
-
-
-#pragma mark -
-#pragma mark PropertyCriteriaViewController
-
-- (void)setState:(NSString *)state
-{
-    [[self criteria] setState:state];
-}
-
-- (void)setCity:(NSString *)city
-{
-    [[self criteria] setCity:city];
-}
-
-- (void)setPostalCode:(NSString *)postalCode
-{
-    [[self criteria] setPostalCode:postalCode];
-}
-
-- (void)setCoordinates:(NSString *)coordinates
-{
-    [[self criteria] setCoordinates:coordinates];
 }
 
 //Returns range in the following formats depending on what parameters are sent:
@@ -216,6 +209,17 @@ static NSString *kSearch = @"SEARCH";
 {
     [super viewDidLoad];
     
+    //Creates Criteria object to hold all the user input
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyCriteria" inManagedObjectContext:[self mainObjectContext]];
+    PropertyCriteria *criteria = [[PropertyCriteria alloc] initWithEntity:entity insertIntoManagedObjectContext:[self mainObjectContext]];
+    [self setCriteria:criteria];
+    [criteria release];
+    //Fills criteria in with passed in information
+    [[self criteria] setState:[[self state] name]];    
+    [[self criteria] setCity:[[self city] name]];
+    [[self criteria] setPostalCode:[[self postalCode] name]];
+    [[self criteria] setCoordinates:[self coordinates]];
+    
     //Sets title to location
     NSString *title;
     if ([[self criteria] postalCode] != nil && [[[self criteria] postalCode] length] > 0)
@@ -240,6 +244,7 @@ static NSString *kSearch = @"SEARCH";
     [self setRowIds:rowIds];
     [rowIds release];
     
+    //Deselect all rows
     [self setSelectedRow:-1];
 }
 
@@ -251,6 +256,7 @@ static NSString *kSearch = @"SEARCH";
 
 - (void)viewDidUnload
 {
+    
 }
 
 
@@ -261,8 +267,7 @@ static NSString *kInputRangeCellId = @"INPUT_RANGE_CELL_ID";
 static NSString *kInputSimpleCellId = @"INPUT_SIMPLE_CELL_ID";
 static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 static NSString *kButtonCellId = @"BUTTON_CELL_ID";
-static NSInteger kMinTag = 0;
-static NSInteger kMaxTag = 1;
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -418,8 +423,15 @@ static NSInteger kMaxTag = 1;
         NSURL *url = [urlConstructor urlFromCriteria:[self criteria]];
         [urlConstructor release];
         
+        //Create History object with this Criteria
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:[self mainObjectContext]];
+        PropertyHistory *history = [[PropertyHistory alloc] initWithEntity:entity insertIntoManagedObjectContext:[self mainObjectContext]];
+        [history setCriteria:[self criteria]];
+        
         PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
-        //Must call parse BEFORE pushing to view. Otherwise, an unecessary perform fetch is done in the view controller.
+        [listViewController setHistory:history];
+        [history release];
+        //(TODO: Re-evaluate this claim after History fetching when nil fixed, like when going from map to list)Must call parse BEFORE pushing to view. Otherwise, an unecessary perform fetch is done in the view controller.
         [listViewController parse:url];
         [[self navigationController] pushViewController:listViewController animated:YES];
         [listViewController release];
@@ -444,6 +456,10 @@ static NSInteger kMaxTag = 1;
 
 #pragma mark -
 #pragma mark UITextFieldDelegate
+
+static NSInteger kMinTag = 0;
+static NSInteger kMaxTag = 1;
+
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {

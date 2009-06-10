@@ -3,17 +3,67 @@
 #import "PropertyCriteriaViewController.h"
 
 
+@interface PropertyCitiesViewController ()
+@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+@end
+
+
 @implementation PropertyCitiesViewController
 
+@synthesize fetchedResultsController = fetchedResultsController_;
+@synthesize mainObjectContext = mainObjectContext_;
 @synthesize state = state_;
 
 
 #pragma mark -
 #pragma mark CitiesViewController
 
+- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
+{
+	if ((self = [super initWithNibName:nibName bundle:nibBundle]))
+	{
+        
+	}
+    
+    return self;
+}
+
 - (void)dealloc
 {
+    [fetchedResultsController_ release];
+    [mainObjectContext_ release];
+    [state_ release];
+    
     [super dealloc];
+}
+
+- (NSFetchedResultsController *)fetchedResultsController
+{
+    if (fetchedResultsController_ == nil)
+    {
+        NSManagedObjectContext *geographyObjectContext = [[self state] managedObjectContext];
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"City" inManagedObjectContext:geographyObjectContext];
+        [fetchRequest setEntity:entity];
+        
+        NSSortDescriptor *nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:nameDescriptor, nil];
+        [nameDescriptor release];
+        [fetchRequest setSortDescriptors:sortDescriptors];
+        [sortDescriptors release];
+        
+        // Create and initialize the fetch results controller.
+        NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
+                                                                                                   managedObjectContext:geographyObjectContext
+                                                                                                     sectionNameKeyPath:nil 
+                                                                                                              cacheName:@"Cities"];
+        [fetchRequest release];
+        [self setFetchedResultsController:fetchedResultsController];
+        [fetchedResultsController release];
+    }
+    
+	return fetchedResultsController_;
 }
 
 
@@ -25,6 +75,15 @@
     [super viewDidLoad];
     
     [self setTitle:@"City"];
+    
+    NSError *error = nil;
+    [[self fetchedResultsController] performFetch:&error];
+    if (error != nil)
+    {
+        NSLog(@"Error performing fetch in states view controller.");
+        //TODO: Handle error
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -40,29 +99,31 @@
 #pragma mark -
 #pragma mark UITableViewDataSource
 
+static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
+
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return [[[self fetchedResultsController] sections] count];
 }
 
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-	return 1;
+{	
+	id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
+	return [sectionInfo numberOfObjects];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {    
-    static NSString *CellIdentifier = @"Cell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSimpleCellId];
     if (cell == nil)
     {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSimpleCellId] autorelease];
     }
-    
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-    [[cell textLabel] setText:@"Austin"];
+    
+	City *city = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+	[[cell textLabel] setText:[[city name] description]];
     
 	return cell;
 }
@@ -73,11 +134,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    City *city = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    
     PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaView" bundle:nil];
     [criteriaViewController setState:[self state]];
-    [criteriaViewController setCity:@"Austin"];
+    [criteriaViewController setCity:city];
+    [criteriaViewController setMainObjectContext:[self mainObjectContext]];
     [[self navigationController] pushViewController:criteriaViewController animated:YES];
     [criteriaViewController release];
-} 
+}
 
 @end

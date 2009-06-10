@@ -1,6 +1,5 @@
 #import "PropertyListViewController.h"
 
-#import "FindAnApartmentAppDelegate.h"
 #import "PropertyDetailsViewController.h"
 #import "PropertyMapViewController.h"
 
@@ -19,8 +18,6 @@ static NSInteger kMapItem = 1;
 @property (nonatomic, retain) PropertySummary *summary;
 @property (nonatomic, retain) XmlParser *parser;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, retain) NSManagedObjectModel *managedObjectModel;
 @end
 
 @implementation PropertyListViewController
@@ -31,8 +28,6 @@ static NSInteger kMapItem = 1;
 @synthesize summary = summary_;
 @synthesize parser = parser_;
 @synthesize fetchedResultsController = fetchedResultsController_;
-@synthesize managedObjectContext = managedObjectContext_;
-@synthesize managedObjectModel = managedObjectModel_;
 
 
 #pragma mark -
@@ -55,8 +50,6 @@ static NSInteger kMapItem = 1;
     [summary_ release];
     [parser_ release];
     [fetchedResultsController_ release];
-    [managedObjectContext_ release];
-    [managedObjectModel_ release];
     
 	[super dealloc];
 }
@@ -64,8 +57,8 @@ static NSInteger kMapItem = 1;
 //The segmented control was clicked, handle it here
 - (IBAction)changeView:(id)sender
 {
-    //Set the break point only to show the comments above. Delete break point and this comment when read.
 	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+
     //Bring up map
     if ([segmentedControl selectedSegmentIndex] == kMapItem)
     {
@@ -82,16 +75,11 @@ static NSInteger kMapItem = 1;
     }
 }
 
-// This method will be called repeatedly - once each time the user choses to parse.
 - (void)parse:(NSURL *)url
 {
     [self setIsParsing:YES];
-    
-    //Create history entity
-    NSEntityDescription *historyEntity = [[[self managedObjectModel] entitiesByName] objectForKey:@"PropertyHistory"];
-    PropertyHistory *history = [[PropertyHistory alloc] initWithEntity:historyEntity insertIntoManagedObjectContext:[self managedObjectContext]];
-    [self setHistory:history];
-    [history release];
+
+    //Requires History to be set before this function can be called
     [[self history] setCreated:[NSDate date]];
     
     // Create the parser, set its delegate, and start it.
@@ -100,6 +88,69 @@ static NSInteger kMapItem = 1;
     [parser release];
     [[self parser] setDelegate:self];
     [[self parser] startWithUrl:url withItemDelimeter:kItemName];
+}
+
+- (NSFetchedResultsController *)fetchedResultsController
+{
+    if (fetchedResultsController_ == nil)
+    {
+        if ([self history] == nil)
+        {
+            //            //FIXME: TODO: OMG: The code below fetches the most recent History. BUT the most recent history may not be the right one. For example, the History view controller passes ANY of the Histories into it!
+            //            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+            //            NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:[self managedObjectContext]];
+            //            [fetchRequest setEntity:entity];
+            //            
+            //            //Sorts so most recent is first
+            //            NSSortDescriptor *createdDescriptor = [[NSSortDescriptor alloc] initWithKey:@"created" ascending:NO];
+            //            NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:createdDescriptor, nil];
+            //            [createdDescriptor release];
+            //            [fetchRequest setSortDescriptors:sortDescriptors];
+            //            [sortDescriptors release];
+            //
+            //            //Only concerned about the most recent
+            //            [fetchRequest setFetchLimit:1];
+            //            
+            //            NSError *error = nil;
+            //            NSArray *fetchResults = [[self managedObjectContext] executeFetchRequest:fetchRequest error:&error];
+            //            if (fetchResults == nil)
+            //            {
+            //                NSLog(@"Error fetching most recent history results.");
+            //                //TODO: Handle the error.
+            //            }
+            //            
+            //            [self setHistory:[fetchResults objectAtIndex:0]];
+        }
+        
+        //Get managed object context from History
+        NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertySummary" inManagedObjectContext:managedObjectContext];
+        [fetchRequest setEntity:entity];
+        
+        // Create the sort descriptors array.
+        NSSortDescriptor *titleDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
+        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:titleDescriptor, nil];
+        [titleDescriptor release];
+        [fetchRequest setSortDescriptors:sortDescriptors];
+        [sortDescriptors release];
+        
+        //Search all summaries for the most recent search (summaries with this stored history)
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(history = %@)", [self history]];
+        [fetchRequest setPredicate:predicate];
+        
+        // Create and initialize the fetch results controller.
+        NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
+                                                                                                   managedObjectContext:managedObjectContext
+                                                                                                     sectionNameKeyPath:nil 
+                                                                                                              cacheName:@"Properties"];
+        [fetchRequest release];
+        [self setFetchedResultsController:fetchedResultsController];
+        [fetchedResultsController release];
+    }
+    
+	return fetchedResultsController_;
 }
 
 
@@ -152,25 +203,18 @@ static NSInteger kMapItem = 1;
 
 static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
-/*
- The data source methods are handled primarily by the fetch results controller
- */
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return [[[self fetchedResultsController] sections] count];
 }
 
-
-// Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {	
 	id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
 	return [sectionInfo numberOfObjects];
 }
 
-
-// Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {        
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSimpleCellId];
@@ -179,7 +223,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kSimpleCellId] autorelease];
     }
     
-    // Configure the cell to show the book's title
+    // Configure the cell to show the item's title
 	PropertySummary *summary = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 	[[cell textLabel] setText:[summary title]];
     [[cell detailTextLabel] setText:[summary subtitle]];
@@ -205,108 +249,14 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
 
 #pragma mark -
-#pragma mark Core Data objects
-
-- (NSManagedObjectContext *)managedObjectContext
-{
-    if (managedObjectContext_ == nil)
-    {
-        FindAnApartmentAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        [self setManagedObjectContext:[appDelegate managedObjectContext]];
-    }
-    
-    return managedObjectContext_;
-}
-
-- (NSManagedObjectModel *)managedObjectModel
-{
-    if (managedObjectModel_ == nil)
-    {
-        FindAnApartmentAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        [self setManagedObjectModel:[appDelegate managedObjectModel]];
-    }
-    
-    return managedObjectModel_;
-}
-
-/**
- Returns the fetched results controller. Creates and configures the controller if necessary.
- */
-- (NSFetchedResultsController *)fetchedResultsController
-{
-    if (fetchedResultsController_ == nil)
-    {
-        if ([self history] == nil)
-        {
-            //FIXME: TODO OMG
-            //The code below fetches the most recent History. BUT the most recent history may not be the right one. For example, the History view controller passes ANY of the Histories into it!
-            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-            NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:[self managedObjectContext]];
-            [fetchRequest setEntity:entity];
-            
-            //No subentities
-            [fetchRequest setIncludesSubentities:NO];
-            
-            //Sorts so most recent is first
-            NSSortDescriptor *createdDescriptor = [[NSSortDescriptor alloc] initWithKey:@"created" ascending:NO];
-            NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:createdDescriptor, nil];
-            [createdDescriptor release];
-            [fetchRequest setSortDescriptors:sortDescriptors];
-            [sortDescriptors release];
-
-            //Only concerned about the most recent
-            [fetchRequest setFetchLimit:1];
-            
-            NSError *error = nil;
-            NSArray *fetchResults = [[self managedObjectContext] executeFetchRequest:fetchRequest error:&error];
-            if (fetchResults == nil)
-            {
-                NSLog(@"Error fetching most recent history results.");
-                //TODO: Handle the error.
-            }
-            
-            [self setHistory:[fetchResults objectAtIndex:0]];
-        }
-        
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertySummary" inManagedObjectContext:[self managedObjectContext]];
-        [fetchRequest setEntity:entity];
-        
-        //No subentities
-        [fetchRequest setIncludesSubentities:NO];
-        
-        // Create the sort descriptors array.
-        NSSortDescriptor *titleDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
-        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:titleDescriptor, nil];
-        [titleDescriptor release];
-        [fetchRequest setSortDescriptors:sortDescriptors];
-        [sortDescriptors release];
-        
-        //Search all summaries for the most recent search (summaries with this stored history)
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(history = %@)", [self history]];
-        [fetchRequest setPredicate:predicate];
-        
-        // Create and initialize the fetch results controller.
-        NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
-                                                                                                   managedObjectContext:[self managedObjectContext] 
-                                                                                                     sectionNameKeyPath:nil 
-                                                                                                              cacheName:@"Root"];
-        [fetchRequest release];
-        [self setFetchedResultsController:fetchedResultsController];
-        [fetchedResultsController release];
-    }
-    
-	return fetchedResultsController_;
-}    
-
-
-#pragma mark -
-#pragma mark <ParserDelegate> Implementation
+#pragma mark ParserDelegate
 
 - (void)parserDidEndParsingData:(XmlParser *)parser
-{    
+{
+    NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
+    
     NSError *error;
-    if (![[self managedObjectContext] save:&error])
+    if (![managedObjectContext save:&error])
     {
         NSLog(@"Error saving context.");
         // TODO: Handle the error.
@@ -421,13 +371,15 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
 - (void)parserDidBeginItem:(XmlParser *)parser
 {
-    NSEntityDescription *resultEntity = [[[self managedObjectModel] entitiesByName] objectForKey:@"PropertyDetails"];
-    PropertyDetails *details = [[PropertyDetails alloc] initWithEntity:resultEntity insertIntoManagedObjectContext:[self managedObjectContext]];
+    NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
+    
+    NSEntityDescription *detailsEntity = [NSEntityDescription entityForName:@"PropertyDetails" inManagedObjectContext:managedObjectContext];
+    PropertyDetails *details = [[PropertyDetails alloc] initWithEntity:detailsEntity insertIntoManagedObjectContext:managedObjectContext];
     [self setDetails:details];
     [details release];
-    
-    NSEntityDescription *summaryEntity = [[[self managedObjectModel] entitiesByName] objectForKey:@"PropertySummary"];
-    PropertySummary *summary = [[PropertySummary alloc] initWithEntity:summaryEntity insertIntoManagedObjectContext:[self managedObjectContext]];
+
+    NSEntityDescription *summaryEntity = [NSEntityDescription entityForName:@"PropertySummary" inManagedObjectContext:managedObjectContext];
+    PropertySummary *summary = [[PropertySummary alloc] initWithEntity:summaryEntity insertIntoManagedObjectContext:managedObjectContext];
     [self setSummary:summary];
     [summary release];
     

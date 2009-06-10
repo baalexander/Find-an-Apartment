@@ -4,9 +4,12 @@
 @interface PropertyStatesViewController : UITableViewController
 {
     @private
-        NSManagedObjectContext *managedObjectContext_;
+        NSFetchedResultsController *fetchedResultsController_;
+        NSManagedObjectContext *mainObjectContext_;
+        NSManagedObjectContext *geographyObjectContext_;
 }
 
-@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain) NSManagedObjectContext *mainObjectContext;
+@property (nonatomic, retain) NSManagedObjectContext *geographyObjectContext;
 
 @end

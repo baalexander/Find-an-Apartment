@@ -1,13 +1,17 @@
 #import <UIKit/UIKit.h>
 
+#import "State.h"
+
 
 @interface PropertyCitiesViewController : UITableViewController
 {
     @private
-        NSString *state_;
+        NSFetchedResultsController *fetchedResultsController_;
+        NSManagedObjectContext *mainObjectContext_;
+        State *state_;
 }
 
-
-@property (nonatomic, copy) NSString *state;
+@property (nonatomic, retain) NSManagedObjectContext *mainObjectContext;
+@property (nonatomic, retain) State *state;
 
 @end

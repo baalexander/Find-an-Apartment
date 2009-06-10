@@ -3,6 +3,10 @@
 
 @implementation UrlUtil
 
+
+#pragma mark -
+#pragma mark UrlUtil
+
 //Encodes URL so can be embedded within another URL.
 + (NSString *)encodeEmbeddedUrl:(NSString *)url
 {

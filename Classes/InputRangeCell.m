@@ -6,6 +6,10 @@
 @synthesize minRange = minRange_;
 @synthesize maxRange = maxRange_;
 
+
+#pragma mark -
+#pragma mark InputRangeCell
+
 - (void)dealloc
 {
     [minRange_ release];

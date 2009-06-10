@@ -21,6 +21,10 @@
 
 @synthesize criteria = criteria_;
 
+
+#pragma mark -
+#pragma mark PropertyUrlConstructor
+
 - (id)init
 {
 	if ((self = [super init]))
@@ -38,10 +42,6 @@
 	
 	[super dealloc];
 }
-
-
-#pragma mark -
-#pragma mark PropertyUrlConstructor
 
 - (NSString *)deviceParams
 {

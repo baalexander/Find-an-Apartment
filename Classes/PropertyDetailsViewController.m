@@ -169,6 +169,7 @@
 
 static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return [[self sectionTitles] count];
