@@ -63,6 +63,7 @@ static NSInteger kMapItem = 1;
     if ([segmentedControl selectedSegmentIndex] == kMapItem)
     {
         PropertyMapViewController *mapViewController = [[PropertyMapViewController alloc] initWithNibName:@"PropertyMapView" bundle:nil];
+        [mapViewController setHistory:[self history]];
         
         NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithArray:[[self navigationController] viewControllers]];
         [viewControllers replaceObjectAtIndex:[viewControllers count] - 1 withObject:mapViewController];
@@ -94,32 +95,10 @@ static NSInteger kMapItem = 1;
 {
     if (fetchedResultsController_ == nil)
     {
+        //History should NEVER be nil. Must always set before calling list view.
         if ([self history] == nil)
         {
-            //            //FIXME: TODO: OMG: The code below fetches the most recent History. BUT the most recent history may not be the right one. For example, the History view controller passes ANY of the Histories into it!
-            //            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-            //            NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:[self managedObjectContext]];
-            //            [fetchRequest setEntity:entity];
-            //            
-            //            //Sorts so most recent is first
-            //            NSSortDescriptor *createdDescriptor = [[NSSortDescriptor alloc] initWithKey:@"created" ascending:NO];
-            //            NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:createdDescriptor, nil];
-            //            [createdDescriptor release];
-            //            [fetchRequest setSortDescriptors:sortDescriptors];
-            //            [sortDescriptors release];
-            //
-            //            //Only concerned about the most recent
-            //            [fetchRequest setFetchLimit:1];
-            //            
-            //            NSError *error = nil;
-            //            NSArray *fetchResults = [[self managedObjectContext] executeFetchRequest:fetchRequest error:&error];
-            //            if (fetchResults == nil)
-            //            {
-            //                NSLog(@"Error fetching most recent history results.");
-            //                //TODO: Handle the error.
-            //            }
-            //            
-            //            [self setHistory:[fetchResults objectAtIndex:0]];
+            NSLog(@"Error: History is nil in fetched results controller in List view controller.");
         }
         
         //Get managed object context from History
