@@ -94,7 +94,7 @@
     NSString *postalCode = [[self criteria] postalCode];
     if (postalCode != nil && [postalCode length] > 0)
     {
-        [location appendFormat:@"&postalCode=%@", [UrlUtil encodeUrl:postalCode]];
+        [location appendFormat:@"&postal_code=%@", [UrlUtil encodeUrl:postalCode]];
     }
     
     NSString *city = [[self criteria] city];
