@@ -10,10 +10,13 @@
 @interface PropertyListViewController : UITableViewController <ParserDelegate>
 {
     @private
+        //Parsing objects
+        XmlParser *parser_;
+        //Counter for keeping track of distance. Assumes results always sorted by distance, so assigns an incrementing value to each item it parses
+        //Example: first property (assumed closest) has distance = 0, second property (assumed second closest) has distance = 1, and so on
+        NSInteger distance_;
         //Determines if view controller is in the middle of a parsing operation
         BOOL isParsing_;
-        
-        XmlParser *parser_;
         
         //Core Data objects
         PropertyHistory *history_;

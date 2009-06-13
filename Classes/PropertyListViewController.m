@@ -1,5 +1,6 @@
 #import "PropertyListViewController.h"
 
+#import "PropertyCriteria.h"
 #import "PropertyDetailsViewController.h"
 #import "PropertyMapViewController.h"
 
@@ -13,20 +14,22 @@ static NSInteger kMapItem = 1;
 
 // Class extension for private properties and methods.
 @interface PropertyListViewController ()
+@property (nonatomic, retain) XmlParser *parser;
+@property (nonatomic, assign) NSInteger distance;
 @property (nonatomic, assign) BOOL isParsing;
 @property (nonatomic, retain) PropertyDetails *details;
 @property (nonatomic, retain) PropertySummary *summary;
-@property (nonatomic, retain) XmlParser *parser;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @end
 
 @implementation PropertyListViewController
 
+@synthesize parser = parser_;
+@synthesize distance = distance_;
 @synthesize isParsing = isParsing_;
 @synthesize history = history_;
 @synthesize details = details_;
 @synthesize summary = summary_;
-@synthesize parser = parser_;
 @synthesize fetchedResultsController = fetchedResultsController_;
 
 
@@ -37,6 +40,7 @@ static NSInteger kMapItem = 1;
 {
 	if ((self = [super initWithNibName:nibName bundle:nibBundle]))
 	{
+        [self setDistance:0];
         [self setIsParsing:NO];
 	}
     
@@ -108,10 +112,25 @@ static NSInteger kMapItem = 1;
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertySummary" inManagedObjectContext:managedObjectContext];
         [fetchRequest setEntity:entity];
         
-        // Create the sort descriptors array.
-        NSSortDescriptor *titleDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
-        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:titleDescriptor, nil];
-        [titleDescriptor release];
+        //Create the sort descriptors array based on the users sort by selection.
+        PropertyCriteria *criteria = [[self history] criteria];
+        NSSortDescriptor *descriptor;
+        //TODO: Move these strings somewhere so Criteria, Url Constructor, and this don't have duplicated hardcoded strings
+        if ([[criteria sortBy] isEqual:@"price (low to high)"])
+        {
+            descriptor = [[NSSortDescriptor alloc] initWithKey:@"price" ascending:YES];
+        }
+        else if ([[criteria sortBy] isEqual:@"price (high to low)"])
+        {
+            descriptor = [[NSSortDescriptor alloc] initWithKey:@"price" ascending:NO];
+        }
+        //Distance is the default search
+        else
+        {
+            descriptor = [[NSSortDescriptor alloc] initWithKey:@"distance" ascending:YES];
+        }
+        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:descriptor, nil];
+        [descriptor release];
         [fetchRequest setSortDescriptors:sortDescriptors];
         [sortDescriptors release];
         
@@ -253,6 +272,11 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
 - (void)parser:(XmlParser *)parser addElement:(NSString *)element withValue:(NSString *)value
 {
+    if (value == nil || [value length] == 0)
+    {
+        return;
+    }
+    
     //Shared attributes
     if ([element isEqual:@"link"])
     {
@@ -261,8 +285,10 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     }
     else if ([element isEqual:@"price"])
     {
-        [[self summary] setPrice:value];
-        [[self details] setPrice:value];
+        NSNumber *price = [[NSNumber alloc] initWithInteger:[value integerValue]];
+        
+        [[self summary] setPrice:price];
+        [[self details] setPrice:price];
     }
     //Summary attributes
     else if ([element isEqual:@"title"])
@@ -326,10 +352,6 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     {
         [[self details] setLotSize:value];
     }
-    else if ([element isEqual:@"price"])
-    {
-        [[self details] setPrice:value];
-    }
     else if ([element isEqual:@"school"])
     {
         [[self details] setSchool:value];
@@ -366,6 +388,12 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     [[self summary] setHistory:[self history]];
     [[self summary] setDetails:[self details]];
     [[self details] setSummary:[self summary]];
+    
+    //Sets distance. Assume results are ordered by ascending distance. This keeps track of that in the summary for sorting since the results are stored in an unordered set.
+    NSNumber *distance = [[NSNumber alloc] initWithInteger:[self distance]];
+    [[self summary] setDistance:distance];
+    [distance release];
+    [self setDistance:[self distance] + 1];
 }
 
 - (void)parserDidEndItem:(XmlParser *)parser

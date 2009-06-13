@@ -57,7 +57,14 @@
     NSMutableDictionary *financeSection = [NSMutableDictionary dictionary];
     if ([[self details] price] != nil)
     {
-        [financeSection setObject:[[self details] price] forKey:@"price"];
+        //Formats NSNumber as currency with no cents
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+        [formatter setMinimumFractionDigits:0];
+        NSString *price = [formatter stringFromNumber:[[self details] price]];
+        [formatter release];
+        
+        [financeSection setObject:price forKey:@"price"];
     }
     if ([financeSection count] > 0)
     {

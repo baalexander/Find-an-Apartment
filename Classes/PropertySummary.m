@@ -6,9 +6,11 @@
 @implementation PropertySummary 
 
 @dynamic summary;
+@dynamic location;
 @dynamic subtitle;
 @dynamic price;
 @dynamic title;
+@dynamic distance;
 @dynamic link;
 @dynamic history;
 @dynamic details;

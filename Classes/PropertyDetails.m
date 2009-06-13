@@ -1,5 +1,6 @@
 #import "PropertyDetails.h"
 
+#import "PropertySummary.h"
 
 @implementation PropertyDetails 
 

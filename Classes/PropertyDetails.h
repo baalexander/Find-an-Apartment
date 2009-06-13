@@ -1,5 +1,6 @@
 #import <CoreData/CoreData.h>
 
+@class PropertySummary;
 
 @interface PropertyDetails :  NSManagedObject  
 {
@@ -18,11 +19,11 @@
 @property (nonatomic, retain) NSString * copyright;
 @property (nonatomic, retain) NSString * bathrooms;
 @property (nonatomic, retain) NSString * details;
-@property (nonatomic, retain) NSString * price;
+@property (nonatomic, retain) NSNumber * price;
 @property (nonatomic, retain) NSString * school;
 @property (nonatomic, retain) NSString * source;
 @property (nonatomic, retain) NSString * imageLink;
-@property (nonatomic, retain) NSManagedObject * summary;
+@property (nonatomic, retain) PropertySummary * summary;
 
 @end
 
