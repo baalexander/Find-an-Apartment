@@ -5,6 +5,7 @@
 #import "PropertyDetails.h"
 #import "PropertySummary.h"
 #import "XmlParser.h"
+#import "SummaryCell.h"
 
 
 @interface PropertyListViewController : UITableViewController <ParserDelegate>
@@ -22,11 +23,13 @@
         PropertyHistory *history_;
         PropertyDetails *details_;
         PropertySummary *summary_;
-        
         NSFetchedResultsController *fetchedResultsController_;
+    
+        IBOutlet SummaryCell *summaryCell_;
 }
 
 @property (nonatomic, retain) PropertyHistory *history;
+@property (nonatomic, retain) SummaryCell *summaryCell;
 
 - (void)parse:(NSURL *)url;
 - (IBAction)changeView:(id)sender;

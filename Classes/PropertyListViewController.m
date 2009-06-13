@@ -31,6 +31,7 @@ static NSInteger kMapItem = 1;
 @synthesize details = details_;
 @synthesize summary = summary_;
 @synthesize fetchedResultsController = fetchedResultsController_;
+@synthesize summaryCell = summaryCell_;
 
 
 #pragma mark -
@@ -199,7 +200,8 @@ static NSInteger kMapItem = 1;
 #pragma mark -
 #pragma mark UITableViewDataSource
 
-static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
+//This must match the identifier of in the Xib. Otherwise, will never reuse a cell.
+static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -214,19 +216,28 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{        
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSimpleCellId];
-    if (cell == nil)
+{
+    [self setSummaryCell:(SummaryCell *)[tableView dequeueReusableCellWithIdentifier:kSummaryCellId]];
+    if ([self summaryCell] == nil)
     {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kSimpleCellId] autorelease];
+        [[NSBundle mainBundle] loadNibNamed:@"SummaryCell" owner:self options:nil];
     }
-    
-    // Configure the cell to show the item's title
+
+    //Configures cell with Summary data
 	PropertySummary *summary = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-	[[cell textLabel] setText:[summary title]];
-    [[cell detailTextLabel] setText:[summary subtitle]];
+    [[[self summaryCell] title] setText:[summary title]];
+    [[[self summaryCell] subtitle] setText:[summary subtitle]];
+    [[[self summaryCell] summary] setText:[summary summary]];
     
-	return cell;
+    //Formats NSNumber as currency with no cents
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setMinimumFractionDigits:0];
+    NSString *price = [formatter stringFromNumber:[summary price]];
+    [formatter release];
+    [[[self summaryCell] price] setText:price];
+    
+    return [self summaryCell];
 }
 
 
@@ -243,7 +254,12 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     [detailsViewController setDetails:details];
     [[self navigationController] pushViewController:detailsViewController animated:YES];
     [detailsViewController release];
-}  
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 68;
+}
 
 
 #pragma mark -

@@ -16,6 +16,8 @@
 		455BFE400FDC9BC4000BCD39 /* PropertyDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 455BFE3F0FDC9BC4000BCD39 /* PropertyDetailsView.xib */; };
 		457930A30FE3601C008E2ACD /* PropertyDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 457930A00FE3601C008E2ACD /* PropertyDetails.m */; };
 		457930A40FE3601C008E2ACD /* PropertySummary.m in Sources */ = {isa = PBXBuildFile; fileRef = 457930A20FE3601C008E2ACD /* PropertySummary.m */; };
+		457931010FE36A08008E2ACD /* SummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 457930FF0FE36A08008E2ACD /* SummaryCell.m */; };
+		457931020FE36A08008E2ACD /* SummaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457931000FE36A08008E2ACD /* SummaryCell.xib */; };
 		457AA2AF0FD8D4FF00F0D16C /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 457AA2AE0FD8D4FF00F0D16C /* libxml2.2.dylib */; };
 		457AA3490FDAC26100F0D16C /* UrlUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA3380FDAC26100F0D16C /* UrlUtil.m */; };
 		457AA34A0FDAC26100F0D16C /* XmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA33A0FDAC26100F0D16C /* XmlParser.m */; };
@@ -61,6 +63,9 @@
 		457930A00FE3601C008E2ACD /* PropertyDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyDetails.m; path = Classes/PropertyDetails.m; sourceTree = "<group>"; };
 		457930A10FE3601C008E2ACD /* PropertySummary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertySummary.h; path = Classes/PropertySummary.h; sourceTree = "<group>"; };
 		457930A20FE3601C008E2ACD /* PropertySummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertySummary.m; path = Classes/PropertySummary.m; sourceTree = "<group>"; };
+		457930FE0FE36A08008E2ACD /* SummaryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SummaryCell.h; path = Classes/SummaryCell.h; sourceTree = "<group>"; };
+		457930FF0FE36A08008E2ACD /* SummaryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SummaryCell.m; path = Classes/SummaryCell.m; sourceTree = "<group>"; };
+		457931000FE36A08008E2ACD /* SummaryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SummaryCell.xib; path = Classes/SummaryCell.xib; sourceTree = "<group>"; };
 		457AA2AE0FD8D4FF00F0D16C /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		457AA3370FDAC26100F0D16C /* UrlUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlUtil.h; sourceTree = "<group>"; };
 		457AA3380FDAC26100F0D16C /* UrlUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlUtil.m; sourceTree = "<group>"; };
@@ -270,6 +275,7 @@
 			children = (
 				457AA37B0FDAC45900F0D16C /* InputRangeCell.xib */,
 				457AA37E0FDAC45900F0D16C /* InputSimpleCell.xib */,
+				457931000FE36A08008E2ACD /* SummaryCell.xib */,
 			);
 			name = "General UI";
 			sourceTree = "<group>";
@@ -281,6 +287,8 @@
 				457AA37A0FDAC45900F0D16C /* InputRangeCell.m */,
 				457AA37C0FDAC45900F0D16C /* InputSimpleCell.h */,
 				457AA37D0FDAC45900F0D16C /* InputSimpleCell.m */,
+				457930FE0FE36A08008E2ACD /* SummaryCell.h */,
+				457930FF0FE36A08008E2ACD /* SummaryCell.m */,
 			);
 			name = "General UI";
 			sourceTree = "<group>";
@@ -383,6 +391,7 @@
 				458783A70FDB45F7000B4F5D /* PropertyMapView.xib in Resources */,
 				455BFE400FDC9BC4000BCD39 /* PropertyDetailsView.xib in Resources */,
 				45C974180FDCCA150021EE6D /* PropertyHistoryView.xib in Resources */,
+				457931020FE36A08008E2ACD /* SummaryCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,6 +425,7 @@
 				45858DFF0FDEF55D003F8831 /* State.m in Sources */,
 				457930A30FE3601C008E2ACD /* PropertyDetails.m in Sources */,
 				457930A40FE3601C008E2ACD /* PropertySummary.m in Sources */,
+				457931010FE36A08008E2ACD /* SummaryCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
