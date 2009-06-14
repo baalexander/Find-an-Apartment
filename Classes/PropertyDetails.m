@@ -12,7 +12,6 @@
 @dynamic copyrightLink;
 @dynamic squareFeet;
 @dynamic link;
-@dynamic lotSize;
 @dynamic location;
 @dynamic copyright;
 @dynamic bathrooms;

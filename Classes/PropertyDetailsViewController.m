@@ -61,10 +61,8 @@
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
         [formatter setMinimumFractionDigits:0];
-        NSString *price = [formatter stringFromNumber:[[self details] price]];
+        [financeSection setObject:[formatter stringFromNumber:[[self details] price]] forKey:@"price"];
         [formatter release];
-        
-        [financeSection setObject:price forKey:@"price"];
     }
     if ([financeSection count] > 0)
     {
@@ -76,23 +74,29 @@
     NSMutableDictionary *detailsSection = [NSMutableDictionary dictionary];
     if ([[self details] squareFeet] != nil)
     {
-        [detailsSection setObject:[[self details] squareFeet] forKey:@"sq feet"];
+        //Formats NSNumber
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        [detailsSection setObject:[formatter stringFromNumber:[[self details] squareFeet]] forKey:@"sq feet"];
+        [formatter release];
     }
     if ([[self details] bedrooms] != nil)
     {
-        [detailsSection setObject:[[self details] bedrooms] forKey:@"bedrooms"];
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        [detailsSection setObject:[formatter stringFromNumber:[[self details] bedrooms]] forKey:@"bedrooms"];
+        [formatter release];        
     }
     if ([[self details] bathrooms] != nil)
     {
-        [detailsSection setObject:[[self details] bathrooms] forKey:@"bathrooms"];
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        [detailsSection setObject:[formatter stringFromNumber:[[self details] bathrooms]] forKey:@"bathrooms"];
+        [formatter release];
     }    
     if ([[self details] year] != nil)
     {
-        [detailsSection setObject:[[self details] year] forKey:@"year"];
-    }
-    if ([[self details] lotSize] != nil)
-    {
-        [detailsSection setObject:[[self details] lotSize] forKey:@"lot size"];
+        [detailsSection setObject:[[[self details] year] stringValue] forKey:@"year"];
     }
     if ([[self details] school] != nil)
     {

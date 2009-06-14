@@ -301,10 +301,10 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     }
     else if ([element isEqual:@"price"])
     {
-        NSNumber *price = [[NSNumber alloc] initWithInteger:[value integerValue]];
-        
-        [[self summary] setPrice:price];
-        [[self details] setPrice:price];
+        NSNumber *number = [[NSNumber alloc] initWithInteger:[value integerValue]];
+        [[self summary] setPrice:number];
+        [[self details] setPrice:number];
+        [number release];
     }
     //Summary attributes
     else if ([element isEqual:@"title"])
@@ -326,11 +326,15 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     }        
     else if ([element isEqual:@"bathrooms"])
     {
-        [[self details] setBathrooms:value];
+        NSNumber *number = [[NSNumber alloc] initWithFloat:[value floatValue]];
+        [[self details] setBathrooms:number];
+        [number release];
     }
     else if ([element isEqual:@"bedrooms"])
     {
-        [[self details] setBedrooms:value];
+        NSNumber *number = [[NSNumber alloc] initWithInteger:[value integerValue]];
+        [[self details] setBedrooms:number];
+        [number release];
     }
     else if ([element isEqual:@"broker"])
     {
@@ -364,10 +368,6 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     {
         [[self details] setLocation:value];
     }
-    else if ([element isEqual:@"lot_size"])
-    {
-        [[self details] setLotSize:value];
-    }
     else if ([element isEqual:@"school"])
     {
         [[self details] setSchool:value];
@@ -378,11 +378,15 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     }
     else if ([element isEqual:@"square_feet"])
     {
-        [[self details] setSquareFeet:value];
+        NSNumber *number = [[NSNumber alloc] initWithInteger:[value integerValue]];
+        [[self details] setSquareFeet:number];
+        [number release];
     }
     else if ([element isEqual:@"year"])
     {
-        [[self details] setYear:value];
+        NSNumber *number = [[NSNumber alloc] initWithInteger:[value integerValue]];
+        [[self details] setYear:number];
+        [number release];
     }
 }
 
