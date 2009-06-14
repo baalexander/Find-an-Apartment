@@ -1,5 +1,6 @@
 #import "PropertyCriteria.h"
 
+#import "PropertyHistory.h"
 
 @implementation PropertyCriteria 
 

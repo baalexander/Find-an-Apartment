@@ -11,7 +11,7 @@
 - (NSString *)deviceParams;
 - (NSString *)location;
 - (NSString *)price;
-- (NSString *)rangeWithMin:(NSString *)min withMax:(NSString *)max withUnits:(NSString *)units;
+- (NSString *)rangeWithMin:(NSNumber *)min withMax:(NSNumber *)max withUnits:(NSString *)units;
 - (NSString *)saleType;
 - (NSString *)sortBy;
 - (NSString *)squareFeet;
@@ -57,18 +57,18 @@
 	return url;
 }
 
-- (NSString *)rangeWithMin:(NSString *)min withMax:(NSString *)max withUnits:(NSString *)units
+- (NSString *)rangeWithMin:(NSNumber *)min withMax:(NSNumber *)max withUnits:(NSString *)units
 {
  	NSMutableString *range = [NSMutableString string];
 	
-	if (min != nil && [min length] > 0)
+	if (min != nil && [min integerValue] > 0)
 	{
-		[range appendFormat:@"&min_%@=%@", units, min];
+		[range appendFormat:@"&min_%@=%@", units, [min stringValue]];
 	}
 	
-	if (max != nil && [max length] > 0)
+	if (max != nil && [max integerValue] > 0)
 	{
-		[range appendFormat:@"&max_%@=%@", units, max];
+		[range appendFormat:@"&max_%@=%@", units, [max stringValue]];
 	}
 	
 	return range;   

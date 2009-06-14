@@ -16,8 +16,8 @@
 @property (nonatomic, assign) BOOL isEditingRow;
 @property (nonatomic, retain) NSMutableArray *rowIds;
 
-- (NSString *)formatRangeWithMin:(NSString *)min withMax:(NSString *)max withSymbol:(NSString *)symbol withUnits:(NSString *)units;
-- (BOOL)inputIsValid;
+- (NSString *)formatRangeWithMin:(NSNumber *)min withMax:(NSNumber *)max withUnits:(NSString *)units;
+- (NSString *)formatCurrencyRangeWithMin:(NSNumber *)min withMax:(NSNumber *)max;
 
 @end
 
@@ -74,13 +74,9 @@
 //  min - max units
 //  0 - max units
 //  min+ units
-- (NSString *)formatRangeWithMin:(NSString *)min withMax:(NSString *)max withSymbol:(NSString *)symbol withUnits:(NSString *)units
+- (NSString *)formatRangeWithMin:(NSNumber *)min withMax:(NSNumber *)max withUnits:(NSString *)units
 {
     //Placeholders
-    if (symbol == nil)
-    {
-        symbol = @"";
-    }
     if (units == nil)
     {
         units = @"";
@@ -90,107 +86,75 @@
         units = [NSString stringWithFormat:@" %@", units];
     }
     
-    //Formats min and max numbers
+    //Number formatter
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     
-    NSNumber *minNumber = [[NSNumber alloc] initWithInteger:[min integerValue]];
-    NSString *formattedMin = [formatter stringFromNumber:minNumber];
-    [minNumber release];
-    NSNumber *maxNumber = [[NSNumber alloc] initWithInteger:[max integerValue]];
-    NSString *formattedMax = [formatter stringFromNumber:maxNumber];
-    [maxNumber release];
+    //Formates a zero number for replacing empty values in range
+    NSNumber *zeroNumber = [[NSNumber alloc] initWithInteger:0];
+    NSString *formattedZero = [formatter stringFromNumber:zeroNumber];
+    [zeroNumber release];
+    
+    //Formats min and max numbers
+    NSString *formattedMin = [formatter stringFromNumber:min];
+    NSString *formattedMax = [formatter stringFromNumber:max];
     
     [formatter release];
     
     //Returns range based on which values were provided
-    if ([formattedMin isEqual:@"0"] && [formattedMax isEqual:@"0"])
+    if (min == nil && max == nil)
     {
-        return [NSString stringWithFormat:@"%@0+%@", symbol, units];
+        return [NSString stringWithFormat:@"%@+%@", formattedZero, units];
     }
-    else if ([formattedMin isEqual:@"0"])
+    else if (min == nil)
     {
-        return [NSString stringWithFormat:@"%@0 - %@%@%@", symbol, symbol, formattedMax, units];
+        return [NSString stringWithFormat:@"%@ - %@%@", formattedZero, formattedMax, units];
     }
-    else if ([formattedMax isEqual:@"0"])
+    else if (max == nil)
     {
-        return [NSString stringWithFormat:@"%@%@+%@", symbol, formattedMin, units];
+        return [NSString stringWithFormat:@"%@+%@", formattedMin, units];
     }
     else
     {
-        return [NSString stringWithFormat:@"%@%@ - %@%@%@", symbol, formattedMin, symbol, formattedMax, units];
+        return [NSString stringWithFormat:@"%@ - %@%@", formattedMin, formattedMax, units];
     }
 }
 
-//Returns YES if all input is valid. Displays error UIAlertView and returns NO if invalid.
-- (BOOL)inputIsValid
-{	
-	NSString *errorMessage = @"";
-
-	//Validates price
-    NSString *minPrice = [[self criteria] minPrice];
-    NSString *maxPrice = [[self criteria] maxPrice];
-    if ([minPrice length] > 0 && [minPrice integerValue] == 0)
+- (NSString *)formatCurrencyRangeWithMin:(NSNumber *)min withMax:(NSNumber *)max
+{
+    //Currency formatter
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setMinimumFractionDigits:0];
+    
+    //Formates a zero number for replacing empty values in range
+    NSNumber *zeroNumber = [[NSNumber alloc] initWithInteger:0];
+    NSString *formattedZero = [formatter stringFromNumber:zeroNumber];
+    [zeroNumber release];
+    
+    //Formats min and max numbers
+    NSString *formattedMin = [formatter stringFromNumber:min];
+    NSString *formattedMax = [formatter stringFromNumber:max];
+    
+    [formatter release];
+    
+    //Returns range based on which values were provided
+    if (min == nil && max == nil)
     {
-        errorMessage = @"Min price must be a valid number.";
+        return [NSString stringWithFormat:@"%@+", formattedZero];
     }
-    else if ([maxPrice length] > 0 && [maxPrice integerValue] == 0)
+    else if (min == nil)
     {
-        errorMessage = @"Max price must be a valid number.";
+        return [NSString stringWithFormat:@"%@ - %@", formattedZero, formattedMax];
     }
-	//Validates square feet
-	if ([errorMessage length] == 0)
-	{
-        NSString *minSquareFeet = [[self criteria] minSquareFeet];
-        NSString *maxSquareFeet = [[self criteria] maxSquareFeet];
-        if ([minSquareFeet length] > 0 && [minSquareFeet integerValue] == 0)
-        {
-            errorMessage = @"Min square feet must be a valid number.";
-        }
-        else if ([maxSquareFeet length] > 0 && [maxSquareFeet integerValue] == 0)
-        {
-            errorMessage = @"Max square feet must be a valid number.";
-        }
-	}
-	//Validates bedrooms
-	if ([errorMessage length] == 0)
-	{
-        NSString *minBedrooms = [[self criteria] minBedrooms];
-        NSString *maxBedrooms = [[self criteria] maxBedrooms];
-        if ([minBedrooms length] > 0 && [minBedrooms integerValue] == 0)
-        {
-            errorMessage = @"Min bedrooms must be a valid number.";
-        }
-        else if ([maxBedrooms length] > 0 && [maxBedrooms integerValue] == 0)
-        {
-            errorMessage = @"Max bedrooms must be a valid number.";
-        }
-	}
-	//Validates bathrooms
-	if ([errorMessage length] == 0)
-	{
-        NSString *minBathrooms = [[self criteria] minBathrooms];
-        NSString *maxBathrooms = [[self criteria] maxBathrooms];
-        if ([minBathrooms length] > 0 && [minBathrooms integerValue] == 0)
-        {
-            errorMessage = @"Min bathrooms must be a valid number.";
-        }
-        else if ([maxBathrooms length] > 0 && [maxBathrooms integerValue] == 0)
-        {
-            errorMessage = @"Max bathrooms must be a valid number.";
-        }
-	}
-	
-	if ([errorMessage length] > 0)
-	{
-		UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Invalid input" message:errorMessage delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-		[errorAlert show];
-		[errorAlert release];
-		
-		return NO;
-	}
-	
-	return YES;
+    else if (max == nil)
+    {
+        return [NSString stringWithFormat:@"%@+", formattedMin];
+    }
+    else
+    {
+        return [NSString stringWithFormat:@"%@ - %@", formattedMin, formattedMax];
+    }
 }
 
 
@@ -293,23 +257,23 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
             }
             if ([rowId isEqual:kPrice])
             {
-                [[[self inputRangeCell] minRange] setText:[[self criteria] minPrice]];
-                [[[self inputRangeCell] maxRange] setText:[[self criteria] maxPrice]];
+                [[[self inputRangeCell] minRange] setText:[[[self criteria] minPrice] stringValue]];
+                [[[self inputRangeCell] maxRange] setText:[[[self criteria] maxPrice] stringValue]];
             }
             else if ([rowId isEqual:kSquareFeet])
             {
-                [[[self inputRangeCell] minRange] setText:[[self criteria] minSquareFeet]];
-                [[[self inputRangeCell] maxRange] setText:[[self criteria] maxSquareFeet]];
+                [[[self inputRangeCell] minRange] setText:[[[self criteria] minSquareFeet] stringValue]];
+                [[[self inputRangeCell] maxRange] setText:[[[self criteria] maxSquareFeet] stringValue]];
             }
             else if ([rowId isEqual:kBedrooms])
             {
-                [[[self inputRangeCell] minRange] setText:[[self criteria] minBedrooms]];
-                [[[self inputRangeCell] maxRange] setText:[[self criteria] maxBedrooms]];
+                [[[self inputRangeCell] minRange] setText:[[[self criteria] minBedrooms] stringValue]];
+                [[[self inputRangeCell] maxRange] setText:[[[self criteria] maxBedrooms] stringValue]];
             }
             else if ([rowId isEqual:kBathrooms])
             {
-                [[[self inputRangeCell] minRange] setText:[[self criteria] minBathrooms]];
-                [[[self inputRangeCell] maxRange] setText:[[self criteria] maxBathrooms]];
+                [[[self inputRangeCell] minRange] setText:[[[self criteria] minBathrooms] stringValue]];
+                [[[self inputRangeCell] maxRange] setText:[[[self criteria] maxBathrooms] stringValue]];
             }
             
             return [self inputRangeCell];            
@@ -375,22 +339,22 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
         else if ([rowId isEqual:kPrice])
         {
             [[cell textLabel] setText:@"price"];
-            [[cell detailTextLabel] setText:[self formatRangeWithMin:[[self criteria] minPrice] withMax:[[self criteria] maxPrice] withSymbol:@"$" withUnits:nil]];
+            [[cell detailTextLabel] setText:[self formatCurrencyRangeWithMin:[[self criteria] minPrice] withMax:[[self criteria] maxPrice]]];
         }
         else if ([rowId isEqual:kSquareFeet])
         {
             [[cell textLabel] setText:@"sq feet"];
-            [[cell detailTextLabel] setText:[self formatRangeWithMin:[[self criteria] minSquareFeet] withMax:[[self criteria] maxSquareFeet] withSymbol:nil withUnits:@"sqft"]];
+            [[cell detailTextLabel] setText:[self formatRangeWithMin:[[self criteria] minSquareFeet] withMax:[[self criteria] maxSquareFeet] withUnits:@"sqft"]];
         }
         else if ([rowId isEqual:kBedrooms])
         {
             [[cell textLabel] setText:@"bedrooms"];
-            [[cell detailTextLabel] setText:[self formatRangeWithMin:[[self criteria] minBedrooms] withMax:[[self criteria] maxBedrooms] withSymbol:nil withUnits:@"rooms"]];
+            [[cell detailTextLabel] setText:[self formatRangeWithMin:[[self criteria] minBedrooms] withMax:[[self criteria] maxBedrooms] withUnits:@"rooms"]];
         }
         else if ([rowId isEqual:kBathrooms])
         {
             [[cell textLabel] setText:@"bathrooms"];
-            [[cell detailTextLabel] setText:[self formatRangeWithMin:[[self criteria] minBathrooms] withMax:[[self criteria] maxBathrooms] withSymbol:nil withUnits:@"baths"]];
+            [[cell detailTextLabel] setText:[self formatRangeWithMin:[[self criteria] minBathrooms] withMax:[[self criteria] maxBathrooms] withUnits:@"baths"]];
         }
         else if ([rowId isEqual:kSortBy])
         {
@@ -415,11 +379,6 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
     //Selected the search button, begins searching
     if ([rowId isEqual:kSearch])
     {
-        if (![self inputIsValid])
-        {
-            return;
-        }
-        
         //Gets URL to download
         PropertyUrlConstructor *urlConstructor = [[PropertyUrlConstructor alloc] init];
         NSURL *url = [urlConstructor urlFromCriteria:[self criteria]];
@@ -478,55 +437,64 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
     NSString *rowId = [[self rowIds] objectAtIndex:[self selectedRow]];
     NSString *text = [textField text];
     
-    //Sets the correct Criteria attribute to the inputted value
-    //Tag values set in the Xib are used to distinguish between the min and max input text fields
+    //Sets the correct Criteria attribute to the inputted valu
     if ([rowId isEqual:kLocation])
     {
         [[self criteria] setStreet:text];
     }
     else if ([rowId isEqual:kPrice])
     {
+        //Why not create this Number earlier for all to share? Because could be initializing from an int or a float (like Bathrooms).
+        NSNumber *number = [[NSNumber alloc] initWithInteger:[text integerValue]];
+        //Tag values set in the Xib are used to distinguish between the min and max input text fields
         if ([textField tag] == kMinTag)
         {
-            [[self criteria] setMinPrice:text];
+            [[self criteria] setMinPrice:number];
         }
         else if ([textField tag] == kMaxTag)
         {
-            [[self criteria] setMaxPrice:text];
+            [[self criteria] setMaxPrice:number];
         }
+        [number release];
     }
     else if ([rowId isEqual:kSquareFeet])
     {
+        NSNumber *number = [[NSNumber alloc] initWithInteger:[text integerValue]];
         if ([textField tag] == kMinTag)
         {
-            [[self criteria] setMinSquareFeet:text];
+            [[self criteria] setMinSquareFeet:number];
         }
         else if ([textField tag] == kMaxTag)
         {
-            [[self criteria] setMaxSquareFeet:text];
+            [[self criteria] setMaxSquareFeet:number];
         }
+        [number release];
     }
     else if ([rowId isEqual:kBedrooms])
     {
+        NSNumber *number = [[NSNumber alloc] initWithInteger:[text integerValue]];
         if ([textField tag] == kMinTag)
         {
-            [[self criteria] setMinBedrooms:text];
+            [[self criteria] setMinBedrooms:number];
         }
         else if ([textField tag] == kMaxTag)
         {
-            [[self criteria] setMaxBedrooms:text];
+            [[self criteria] setMaxBedrooms:number];
         }
+        [number release];
     }
     else if ([rowId isEqual:kBathrooms])
     {
+        NSNumber *number = [[NSNumber alloc] initWithFloat:[text floatValue]];
         if ([textField tag] == kMinTag)
         {
-            [[self criteria] setMinBathrooms:text];
+            [[self criteria] setMinBathrooms:number];
         }
         else if ([textField tag] == kMaxTag)
         {
-            [[self criteria] setMaxBathrooms:text];
+            [[self criteria] setMaxBathrooms:number];
         }
+        [number release];
     }
     
     [self setCurrentTextField:nil];
