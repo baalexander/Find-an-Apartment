@@ -1,9 +1,11 @@
 #import "PropertyCriteriaViewController.h"
 
+#import "PropertyCriteriaConstants.h"
 #import "InputRangeCell.h"
 #import "InputSimpleCell.h"
 #import "PropertyUrlConstructor.h"
 #import "PropertyListViewController.h"
+#import "PropertySortChoicesViewController.h"
 
 
 @interface PropertyCriteriaViewController ()
@@ -18,16 +20,6 @@
 - (BOOL)inputIsValid;
 
 @end
-
-
-static NSString *kSource = @"SOURCE";
-static NSString *kLocation = @"LOCATION";
-static NSString *kPrice = @"PRICE";
-static NSString *kSquareFeet = @"SQUARE_FEET";
-static NSString *kBedrooms = @"BEDROOMS";
-static NSString *kBathrooms = @"BATHROOMS";
-static NSString *kSortBy = @"SORT_BY";
-static NSString *kSearch = @"SEARCH";
 
 
 @implementation PropertyCriteriaViewController
@@ -118,7 +110,7 @@ static NSString *kSearch = @"SEARCH";
     }
     else if ([formattedMin isEqual:@"0"])
     {
-        return [NSString stringWithFormat:@"%@0-%@%@%@", symbol, symbol, formattedMax, units];
+        return [NSString stringWithFormat:@"%@0 - %@%@%@", symbol, symbol, formattedMax, units];
     }
     else if ([formattedMax isEqual:@"0"])
     {
@@ -205,6 +197,14 @@ static NSString *kSearch = @"SEARCH";
 #pragma mark -
 #pragma mark UIViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    //If selecting a choices view controller like Sort By choices, then need to reload any changes it may have made on the Criteria
+    [[self tableView] reloadData]; 
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -279,7 +279,7 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
 {
     NSString *rowId = [[self rowIds] objectAtIndex:[indexPath row]];
     
-    //Returns input cell
+    //Returns an input cell
     //The reason for the > 0 and NSInteger cast is because comparing signed to unsigned integer
     if ([self selectedRow] >= 0 && [self selectedRow] == (NSInteger)[indexPath row])
     {
@@ -330,8 +330,22 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
             return [self inputSimpleCell]; 
         }
     }
-    //Returns simple cell
-    else if ([indexPath row] < [[self rowIds] count] - 1)
+    //Returns a button cell
+    else if ([rowId isEqual:kSearch])
+    {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kButtonCellId];
+        if (cell == nil)
+        {
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kButtonCellId] autorelease];
+        }
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        [[cell textLabel] setText:@"Search"];
+        [[cell textLabel] setTextAlignment:UITextAlignmentCenter];
+        
+        return cell;        
+    }
+    //Returns a simple cell
+    else
     {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSimpleCellId];
         if (cell == nil)
@@ -388,20 +402,6 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
         
         return cell;
     }
-    //Last row is a button
-    else
-    {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kButtonCellId];
-        if (cell == nil)
-        {
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kButtonCellId] autorelease];
-        }
-        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-        [[cell textLabel] setText:@"Search"];
-        [[cell textLabel] setTextAlignment:UITextAlignmentCenter];
-        
-        return cell;
-    }
 }
 
 
@@ -410,8 +410,10 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //Last cell acts as a search button
-    if ([indexPath row] == [[self rowIds] count] - 1)
+    NSString *rowId = [[self rowIds] objectAtIndex:[indexPath row]];
+    
+    //Selected the search button, begins searching
+    if ([rowId isEqual:kSearch])
     {
         if (![self inputIsValid])
         {
@@ -436,6 +438,15 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
         [[self navigationController] pushViewController:listViewController animated:YES];
         [listViewController release];
     }
+    //Selected sort by, brings up list of sort choices
+    else if ([rowId isEqual:kSortBy]) 
+    {
+        PropertySortChoicesViewController *choicesViewController = [[PropertySortChoicesViewController alloc] initWithNibName:@"PropertySortChoicesView" bundle:nil];
+        [choicesViewController setCriteria:[self criteria]];
+        [[self navigationController] pushViewController:choicesViewController animated:YES];
+        [choicesViewController release];
+    }
+    //Puts the cell in edit mode or view mode if already in edit mode
     else
     {
         //If pressing a row that's already in edit mode (was selected last), then resets to unedit mode
@@ -457,10 +468,6 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
 #pragma mark -
 #pragma mark UITextFieldDelegate
 
-static NSInteger kMinTag = 0;
-static NSInteger kMaxTag = 1;
-
-
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     [self setCurrentTextField:textField];
@@ -472,6 +479,7 @@ static NSInteger kMaxTag = 1;
     NSString *text = [textField text];
     
     //Sets the correct Criteria attribute to the inputted value
+    //Tag values set in the Xib are used to distinguish between the min and max input text fields
     if ([rowId isEqual:kLocation])
     {
         [[self criteria] setStreet:text];

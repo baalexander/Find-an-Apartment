@@ -1,5 +1,6 @@
 #import "PropertyUrlConstructor.h"
 
+#import "PropertyCriteriaConstants.h"
 #import "UrlUtil.h"
 
 
@@ -140,13 +141,13 @@
 {
 	NSString *choice = [[self criteria] sortBy];
 	
-	if ([choice isEqual:@"price (high to low)"])
+	if ([choice isEqual:kSortByPriceAscending])
 	{
-		return @"&sort_by=age&sort_order=descending";
+        return @"&sort_by=age&sort_order=ascending";
 	}
-	else if ([choice isEqual:@"price (low to high)"])
+	else if ([choice isEqual:kSortByPriceDescending])
 	{
-		return @"&sort_by=age&sort_order=ascending";
+        return @"&sort_by=age&sort_order=descending";
 	}
 	//Default sort is distance
 	else

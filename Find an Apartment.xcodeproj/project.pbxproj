@@ -18,6 +18,8 @@
 		457930A40FE3601C008E2ACD /* PropertySummary.m in Sources */ = {isa = PBXBuildFile; fileRef = 457930A20FE3601C008E2ACD /* PropertySummary.m */; };
 		457931010FE36A08008E2ACD /* SummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 457930FF0FE36A08008E2ACD /* SummaryCell.m */; };
 		457931020FE36A08008E2ACD /* SummaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457931000FE36A08008E2ACD /* SummaryCell.xib */; };
+		4579324C0FE59783008E2ACD /* PropertySortChoicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4579324B0FE59783008E2ACD /* PropertySortChoicesViewController.m */; };
+		4579324E0FE59791008E2ACD /* PropertySortChoicesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4579324D0FE59791008E2ACD /* PropertySortChoicesView.xib */; };
 		457AA2AF0FD8D4FF00F0D16C /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 457AA2AE0FD8D4FF00F0D16C /* libxml2.2.dylib */; };
 		457AA3490FDAC26100F0D16C /* UrlUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA3380FDAC26100F0D16C /* UrlUtil.m */; };
 		457AA34A0FDAC26100F0D16C /* XmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA33A0FDAC26100F0D16C /* XmlParser.m */; };
@@ -66,6 +68,10 @@
 		457930FE0FE36A08008E2ACD /* SummaryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SummaryCell.h; path = Classes/SummaryCell.h; sourceTree = "<group>"; };
 		457930FF0FE36A08008E2ACD /* SummaryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SummaryCell.m; path = Classes/SummaryCell.m; sourceTree = "<group>"; };
 		457931000FE36A08008E2ACD /* SummaryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SummaryCell.xib; path = Classes/SummaryCell.xib; sourceTree = "<group>"; };
+		457932490FE59771008E2ACD /* PropertyCriteriaConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyCriteriaConstants.h; path = Classes/PropertyCriteriaConstants.h; sourceTree = "<group>"; };
+		4579324A0FE59783008E2ACD /* PropertySortChoicesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertySortChoicesViewController.h; path = Classes/PropertySortChoicesViewController.h; sourceTree = "<group>"; };
+		4579324B0FE59783008E2ACD /* PropertySortChoicesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertySortChoicesViewController.m; path = Classes/PropertySortChoicesViewController.m; sourceTree = "<group>"; };
+		4579324D0FE59791008E2ACD /* PropertySortChoicesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertySortChoicesView.xib; path = Classes/PropertySortChoicesView.xib; sourceTree = "<group>"; };
 		457AA2AE0FD8D4FF00F0D16C /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		457AA3370FDAC26100F0D16C /* UrlUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlUtil.h; sourceTree = "<group>"; };
 		457AA3380FDAC26100F0D16C /* UrlUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlUtil.m; sourceTree = "<group>"; };
@@ -152,6 +158,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				457931EC0FE58F84008E2ACD /* Constants */,
 				455BFE710FDCA0BF000BCD39 /* App Delegate */,
 				455BFE600FDC9F7C000BCD39 /* Controllers */,
 				455BFE510FDC9E47000BCD39 /* Views */,
@@ -250,6 +257,8 @@
 				457AA3860FDAC45900F0D16C /* PropertyListViewController.m */,
 				458783A30FDB45F7000B4F5D /* PropertyMapViewController.h */,
 				458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */,
+				4579324A0FE59783008E2ACD /* PropertySortChoicesViewController.h */,
+				4579324B0FE59783008E2ACD /* PropertySortChoicesViewController.m */,
 				457AA3880FDAC45900F0D16C /* PropertyStatesViewController.h */,
 				457AA3890FDAC45900F0D16C /* PropertyStatesViewController.m */,
 			);
@@ -265,6 +274,7 @@
 				45C974150FDCCA150021EE6D /* PropertyHistoryView.xib */,
 				457AA3870FDAC45900F0D16C /* PropertyListView.xib */,
 				458783A50FDB45F7000B4F5D /* PropertyMapView.xib */,
+				4579324D0FE59791008E2ACD /* PropertySortChoicesView.xib */,
 				457AA38A0FDAC45900F0D16C /* PropertyStatesView.xib */,
 			);
 			name = Property;
@@ -315,6 +325,14 @@
 				457AA3780FDAC45900F0D16C /* FindAnApartmentAppDelegate.m */,
 			);
 			name = "App Delegate";
+			sourceTree = "<group>";
+		};
+		457931EC0FE58F84008E2ACD /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				457932490FE59771008E2ACD /* PropertyCriteriaConstants.h */,
+			);
+			name = Constants;
 			sourceTree = "<group>";
 		};
 		457AA34B0FDAC27000F0D16C /* Model */ = {
@@ -392,6 +410,7 @@
 				455BFE400FDC9BC4000BCD39 /* PropertyDetailsView.xib in Resources */,
 				45C974180FDCCA150021EE6D /* PropertyHistoryView.xib in Resources */,
 				457931020FE36A08008E2ACD /* SummaryCell.xib in Resources */,
+				4579324E0FE59791008E2ACD /* PropertySortChoicesView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,6 +445,7 @@
 				457930A30FE3601C008E2ACD /* PropertyDetails.m in Sources */,
 				457930A40FE3601C008E2ACD /* PropertySummary.m in Sources */,
 				457931010FE36A08008E2ACD /* SummaryCell.m in Sources */,
+				4579324C0FE59783008E2ACD /* PropertySortChoicesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
