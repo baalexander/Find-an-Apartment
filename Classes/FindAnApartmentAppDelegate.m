@@ -2,6 +2,7 @@
 
 #import "PropertyStatesViewController.h"
 #import "PropertyHistoryViewController.h"
+#import "PropertyFavoritesViewController.h"
 #import "State.h"
 #import "City.h"
 #import "PostalCode.h"
@@ -192,6 +193,18 @@
             PropertyHistoryViewController *historyViewController = (PropertyHistoryViewController *)visibleViewController;
             [historyViewController setMainObjectContext:[self mainObjectContext]];
             
+        }
+        //If the visibile view controller is a Property Favorites view controller...
+        else if ([visibleViewController isKindOfClass:[PropertyFavoritesViewController class]])
+        {
+            PropertyFavoritesViewController *favoritesViewController = (PropertyFavoritesViewController *)visibleViewController;
+            //History will be nil the first time initializing the view controller
+            //This check avoids an unnecessary fetch
+            if ([favoritesViewController history] == nil)
+            {
+                PropertyHistory *history = [PropertyFavoritesViewController favoriteHistoryFromContext:[self mainObjectContext]];
+                [favoritesViewController setHistory:history];
+            }
         }
     }    
 }

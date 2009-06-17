@@ -1,5 +1,7 @@
 #import "PropertyDetailsViewController.h"
 
+#import "PropertyFavoritesViewController.h"
+
 
 @interface PropertyDetailsViewController ()
 @property (nonatomic, retain) NSMutableArray *sectionTitles;
@@ -16,6 +18,16 @@
 #pragma mark -
 #pragma mark PropertyDetailsViewController
 
+- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
+{
+	if ((self = [super initWithNibName:nibName bundle:nibBundle]))
+	{
+        
+	}
+    
+    return self;
+}
+
 - (void)dealloc
 {
     [details_ release];
@@ -23,6 +35,24 @@
     [sectionDetails_ release];
     
     [super dealloc];
+}
+
+- (void)share:(id)sender
+{
+    NSLog(@"Share Property button selected.");
+}
+
+- (void)addToFavorites:(id)sender
+{
+    PropertySummary *summary = [[self details] summary];
+    if (![PropertyFavoritesViewController addProperty:summary])
+    {
+        NSLog(@"Already in favorites.");
+    }
+    else
+    {
+        NSLog(@"Added to favorites.");
+    }
 }
 
 - (void)setDetails:(PropertyDetails *)details

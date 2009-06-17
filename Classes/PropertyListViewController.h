@@ -30,6 +30,8 @@
 
 @property (nonatomic, retain) PropertyHistory *history;
 @property (nonatomic, retain) SummaryCell *summaryCell;
+//This is "public" since needs to be inherited by Favorites. Would be protected if such a thing existed.
+@property (nonatomic, retain, readonly) NSFetchedResultsController *fetchedResultsController;
 
 - (void)parse:(NSURL *)url;
 - (IBAction)changeView:(id)sender;

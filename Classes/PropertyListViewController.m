@@ -19,7 +19,7 @@ static NSInteger kMapItem = 1;
 @property (nonatomic, assign) BOOL isParsing;
 @property (nonatomic, retain) PropertyDetails *details;
 @property (nonatomic, retain) PropertySummary *summary;
-@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, retain, readwrite) NSFetchedResultsController *fetchedResultsController;
 @end
 
 @implementation PropertyListViewController

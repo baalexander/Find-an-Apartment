@@ -3,7 +3,7 @@
 #import "PropertyDetails.h"
 
 
-@interface PropertyDetailsViewController : UITableViewController
+@interface PropertyDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 {
     @private
         PropertyDetails *details_;
@@ -12,5 +12,8 @@
 }
 
 @property (nonatomic, retain) PropertyDetails *details;
+
+- (IBAction)share:(id)sender;
+- (IBAction)addToFavorites:(id)sender;
 
 @end
