@@ -123,6 +123,14 @@ static BOOL isDirty = NO;
     {
         NSEntityDescription *historyEntity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:managedObjectContext];
         PropertyHistory *history = [[PropertyHistory alloc] initWithEntity:historyEntity insertIntoManagedObjectContext:managedObjectContext];
+        
+        //Sets History attributes
+        [history setTitle:@"Favorites"];
+        
+        NSDate *now = [[NSDate alloc] init];
+        [history setCreated:now];
+        [now release];
+
         NSNumber *yesObject = [[NSNumber alloc] initWithBool:YES];
         [history setIsFavorite:yesObject];
         [yesObject release];

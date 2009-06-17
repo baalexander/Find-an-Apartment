@@ -51,6 +51,10 @@
         [fetchRequest setSortDescriptors:sortDescriptors];
         [sortDescriptors release];
         
+        //Ignores Favorites history
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(isFavorite == NO)"];
+        [fetchRequest setPredicate:predicate];
+        
         // Create and initialize the fetch results controller.
         NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
                                                                                                    managedObjectContext:[self mainObjectContext] 
@@ -113,7 +117,8 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSimpleCellId] autorelease];
     }
-
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    
 	PropertyHistory *history = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 	[[cell textLabel] setText:[[history created] description]];
     
