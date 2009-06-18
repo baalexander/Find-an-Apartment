@@ -120,7 +120,8 @@
 //Geographical data is stored in its own persistent storage
 - (NSPersistentStoreCoordinator *)geographyStoreCoordinator
 {
-    if (geographyStoreCoordinator_ != nil) {
+    if (geographyStoreCoordinator_ != nil) 
+    {
         return geographyStoreCoordinator_;
     }
 	
@@ -129,9 +130,11 @@
     // Check to see if the store already exists
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	// Copy the default store if necessary
-	if (![fileManager fileExistsAtPath:storePath]) {
+	if (![fileManager fileExistsAtPath:storePath]) 
+    {
 		NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"Geography" ofType:@"sqlite"];
-		if (defaultStorePath) {
+		if (defaultStorePath) 
+        {
 			[fileManager copyItemAtPath:defaultStorePath toPath:storePath error:NULL];
 		}
 	}
@@ -141,7 +144,8 @@
 	NSError *error;
 	
     geographyStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];
-    if (![geographyStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error]) {
+    if (![geographyStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error])
+    {
         // Handle the error.
 		NSLog(@"error: %@", error);
     }    
