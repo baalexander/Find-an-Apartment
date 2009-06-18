@@ -116,16 +116,6 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     return [[sectionInfo name] substringToIndex:(NSUInteger)1];
 }
 
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView 
-{
-    NSArray *sections = [[self fetchedResultsController] sections];
-    NSMutableArray *sectionTitles = [NSMutableArray arrayWithCapacity:[sections count]];
-    for(id<NSFetchedResultsSectionInfo> sectionInfo in sections) {
-        [sectionTitles addObject:[[sectionInfo name] substringToIndex:(NSUInteger)1]];
-    }
-    return sectionTitles;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSimpleCellId];
@@ -133,7 +123,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSimpleCellId] autorelease];
     }
-    //[cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     
 	State *state = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 	[[cell textLabel] setText:[[state name] description]];
