@@ -11,4 +11,6 @@
 + (BOOL)isPropertyAFavorite:(PropertySummary *)summary;
 + (PropertyHistory *)favoriteHistoryFromContext:(NSManagedObjectContext *)managedObjectContext;
 
+- (IBAction)edit:(id)sender;
+
 @end

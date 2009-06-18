@@ -8,9 +8,11 @@
 #import "SummaryCell.h"
 
 
-@interface PropertyListViewController : UITableViewController <ParserDelegate>
+@interface PropertyListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ParserDelegate>
 {
     @private
+        UITableView *tableView_;
+    
         //Parsing objects
         XmlParser *parser_;
         //Counter for keeping track of distance. Assumes results always sorted by distance, so assigns an incrementing value to each item it parses
@@ -27,6 +29,8 @@
     
         IBOutlet SummaryCell *summaryCell_;
 }
+
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
 
 @property (nonatomic, retain) PropertyHistory *history;
 @property (nonatomic, retain) SummaryCell *summaryCell;

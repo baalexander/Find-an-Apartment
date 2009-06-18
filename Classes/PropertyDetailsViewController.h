@@ -6,10 +6,14 @@
 @interface PropertyDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 {
     @private
+        UITableView *tableView_;
+    
         PropertyDetails *details_;
         NSMutableArray *sectionTitles_;
         NSMutableArray *sectionDetails_;
 }
+
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
 
 @property (nonatomic, retain) PropertyDetails *details;
 

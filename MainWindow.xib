@@ -71,7 +71,7 @@
 								<string key="IBUITitle">Favorites</string>
 							</object>
 							<reference key="IBUIParentViewController" ref="628923912"/>
-							<string key="IBUINibName">PropertyListView</string>
+							<string key="IBUINibName">PropertyFavoritesView</string>
 						</object>
 					</object>
 				</object>

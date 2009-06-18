@@ -144,9 +144,39 @@ static BOOL isDirty = NO;
     }
 }
 
+- (void)edit:(id)sender
+{
+	//Switches editing status
+	BOOL isEditing = ![[self tableView] isEditing];
+	[[self tableView] setEditing:isEditing animated:YES];
+	
+	if ([[self tableView] isEditing])
+	{
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(edit:)];
+        [[self navigationItem] setLeftBarButtonItem:doneButton];
+        [doneButton release];        
+	}
+	else
+	{
+        UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(edit:)];
+        [[self navigationItem] setLeftBarButtonItem:editButton];
+        [editButton release];        
+	}    
+}
+
 
 #pragma mark -
 #pragma mark UIViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    //Add the Edit button to the left in the navigation bar
+    UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(edit:)];
+	[[self navigationItem] setLeftBarButtonItem:editButton];
+	[editButton release];
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {

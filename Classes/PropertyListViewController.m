@@ -24,6 +24,7 @@ static NSInteger kMapItem = 1;
 
 @implementation PropertyListViewController
 
+@synthesize tableView = tableView_;
 @synthesize parser = parser_;
 @synthesize distance = distance_;
 @synthesize isParsing = isParsing_;
@@ -50,6 +51,7 @@ static NSInteger kMapItem = 1;
 
 - (void)dealloc
 {
+    [tableView_ release];
     [history_ release];
     [details_ release];
     [summary_ release];

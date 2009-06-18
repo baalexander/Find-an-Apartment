@@ -10,6 +10,7 @@
 
 @implementation PropertyDetailsViewController
 
+@synthesize tableView = tableView_;
 @synthesize details = details_;
 @synthesize sectionTitles = sectionTitles_;
 @synthesize sectionDetails = sectionDetails_;
@@ -30,6 +31,7 @@
 
 - (void)dealloc
 {
+    [tableView_ release];
     [details_ release];
     [sectionTitles_ release];
     [sectionDetails_ release];
