@@ -18,4 +18,8 @@
 @dynamic cities;
 @dynamic postalCodes;
 
+- (NSString *)sectionCharacter {
+    return [[self name] substringToIndex:1];
+}
+
 @end

@@ -47,6 +47,9 @@
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"City" inManagedObjectContext:geographyObjectContext];
         [fetchRequest setEntity:entity];
         
+        NSPredicate *fetchPredicate = [NSPredicate predicateWithFormat:@"state == %@", [self state]];
+        [fetchRequest setPredicate:fetchPredicate];
+        
         NSSortDescriptor *nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
         NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:nameDescriptor, nil];
         [nameDescriptor release];
@@ -56,7 +59,7 @@
         // Create and initialize the fetch results controller.
         NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
                                                                                                    managedObjectContext:geographyObjectContext
-                                                                                                     sectionNameKeyPath:nil 
+                                                                                                     sectionNameKeyPath:@"sectionCharacter" 
                                                                                                               cacheName:@"Cities"];
         [fetchRequest release];
         [self setFetchedResultsController:fetchedResultsController];
@@ -111,6 +114,12 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 {	
 	id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
 	return [sectionInfo numberOfObjects];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
+{
+    id<NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
+    return [[sectionInfo name] substringToIndex:(NSUInteger)1];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

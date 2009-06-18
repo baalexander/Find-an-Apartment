@@ -120,20 +120,32 @@
 //Geographical data is stored in its own persistent storage
 - (NSPersistentStoreCoordinator *)geographyStoreCoordinator
 {
-    if (geographyStoreCoordinator_ == nil)
-    {	
-        NSPersistentStoreCoordinator *persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-        [self setGeographyStoreCoordinator:persistentStoreCoordinator];
-        [persistentStoreCoordinator release];
-        
-        NSURL *storeUrl = [NSURL fileURLWithPath:[[self applicationDocumentsDirectory] stringByAppendingPathComponent:@"Geography.sqlite"]];
-        NSError *error;
-        if (![[self geographyStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error])
-        {
-            NSLog(@"Error adding persitent store for Geography");
-            //TODO: Handle error
-        }    
+    if (geographyStoreCoordinator_ != nil) {
+        return geographyStoreCoordinator_;
     }
+	
+	NSString *storePath = [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"Geography.sqlite"];
+	
+    // Check to see if the store already exists
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	// Copy the default store if necessary
+	if (![fileManager fileExistsAtPath:storePath]) {
+		NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"Geography" ofType:@"sqlite"];
+		if (defaultStorePath) {
+			[fileManager copyItemAtPath:defaultStorePath toPath:storePath error:NULL];
+		}
+	}
+    
+	NSURL *storeUrl = [NSURL fileURLWithPath:storePath];
+	
+	NSError *error;
+    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
+	
+    geographyStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];
+    if (![geographyStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:options error:&error]) {
+        // Handle the error.
+		NSLog(@"error: %@", error);
+    }    
 	
     return geographyStoreCoordinator_;
 }

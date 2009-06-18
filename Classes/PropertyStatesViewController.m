@@ -55,7 +55,7 @@
         // Create and initialize the fetch results controller.
         NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
                                                                                                    managedObjectContext:[self geographyObjectContext] 
-                                                                                                     sectionNameKeyPath:nil 
+                                                                                                     sectionNameKeyPath:@"sectionCharacter"
                                                                                                               cacheName:@"States"];
         [fetchRequest release];
         [self setFetchedResultsController:fetchedResultsController];
@@ -108,6 +108,12 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 {	
 	id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
 	return [sectionInfo numberOfObjects];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
+{
+    id<NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
+    return [[sectionInfo name] substringToIndex:(NSUInteger)1];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
