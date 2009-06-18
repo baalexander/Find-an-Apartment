@@ -15,4 +15,8 @@
 @dynamic name;
 @dynamic state;
 
+- (NSString *)sectionCharacter {
+    return [[self name] substringToIndex:1];
+}
+
 @end
