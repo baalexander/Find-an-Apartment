@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface PropertyHistoryViewController : UITableViewController
+@interface PropertyHistoryViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 {
     @private
         //Core Data objects

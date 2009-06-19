@@ -63,6 +63,8 @@
         [fetchRequest release];
         [self setFetchedResultsController:fetchedResultsController];
         [fetchedResultsController release];
+        
+        [[self fetchedResultsController] setDelegate:self];
     }
     
 	return fetchedResultsController_;
@@ -101,13 +103,25 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[[self fetchedResultsController] sections] count];
+    NSInteger count = [[[self fetchedResultsController] sections] count];
+    
+	if (count == 0) {
+		count = 1;
+	}
+	
+    return count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {	
-	id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
-	return [sectionInfo numberOfObjects];
+    NSInteger numberOfRows = 0;
+	
+    if ([[[self fetchedResultsController] sections] count] > 0) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
+        numberOfRows = [sectionInfo numberOfObjects];
+    }
+    
+    return numberOfRows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -137,6 +151,52 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     [listViewController setHistory:history];
     [[self navigationController] pushViewController:listViewController animated:YES];
     [listViewController release];
-}    
+}
+
+
+#pragma mark -
+#pragma mark NSFetchedResultsControllerDelegate
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+	// The fetch controller is about to start sending change notifications, so prepare the table view for updates.
+	[[self tableView] beginUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
+{
+    if (type == NSFetchedResultsChangeInsert)
+    {
+        //When inserting into History, the most recent search results will be at the top. The default newIndexPath is at the end.
+        NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow:0 inSection:[newIndexPath section]];
+        NSArray *indexPaths = [[NSArray alloc] initWithObjects:firstIndexPath, nil];
+        [[self tableView] insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        [indexPaths release];
+    }
+	else if (type == NSFetchedResultsChangeDelete)
+    {
+        NSArray *indexPaths = [[NSArray alloc] initWithObjects:indexPath, nil];
+        [[self tableView] deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        [indexPaths release];
+	}
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
+{
+    if (type == NSFetchedResultsChangeInsert)
+    {
+        [[self tableView] insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+    }
+    else if (type == NSFetchedResultsChangeDelete)
+    {
+        [[self tableView] deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+	// The fetch controller has sent all current change notifications, so tell the table view to process all updates.
+	[[self tableView] endUpdates];
+}
 
 @end
