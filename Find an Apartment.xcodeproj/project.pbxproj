@@ -44,6 +44,7 @@
 		45858DE40FDEF476003F8831 /* Find_an_Apartment.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 45858DE30FDEF476003F8831 /* Find_an_Apartment.xcdatamodel */; };
 		458783A60FDB45F7000B4F5D /* PropertyMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */; };
 		458783A70FDB45F7000B4F5D /* PropertyMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458783A50FDB45F7000B4F5D /* PropertyMapView.xib */; };
+		45C767840FEC2E9100C75D90 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 45C767830FEC2E9100C75D90 /* Icon.png */; };
 		45C974180FDCCA150021EE6D /* PropertyHistoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C974150FDCCA150021EE6D /* PropertyHistoryView.xib */; };
 		45C974190FDCCA150021EE6D /* PropertyHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C974170FDCCA150021EE6D /* PropertyHistoryViewController.m */; };
 		45FF76C80FE9FF810053B4D8 /* PropertyFavoritesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */; };
@@ -114,6 +115,7 @@
 		458783A30FDB45F7000B4F5D /* PropertyMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyMapViewController.h; path = Classes/PropertyMapViewController.h; sourceTree = "<group>"; };
 		458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyMapViewController.m; path = Classes/PropertyMapViewController.m; sourceTree = "<group>"; };
 		458783A50FDB45F7000B4F5D /* PropertyMapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyMapView.xib; path = Classes/PropertyMapView.xib; sourceTree = "<group>"; };
+		45C767830FEC2E9100C75D90 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		45C974150FDCCA150021EE6D /* PropertyHistoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyHistoryView.xib; path = Classes/PropertyHistoryView.xib; sourceTree = "<group>"; };
 		45C974160FDCCA150021EE6D /* PropertyHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyHistoryViewController.h; path = Classes/PropertyHistoryViewController.h; sourceTree = "<group>"; };
 		45C974170FDCCA150021EE6D /* PropertyHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyHistoryViewController.m; path = Classes/PropertyHistoryViewController.m; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				45C767830FEC2E9100C75D90 /* Icon.png */,
 				DD8C53470FE9F8AE0056F3B7 /* Geography.sqlite */,
 				DDA9D36E0FE9E6DC0087D357 /* Geography.xcdatamodel */,
 				45858DE30FDEF476003F8831 /* Find_an_Apartment.xcdatamodel */,
@@ -424,6 +427,7 @@
 				4579324E0FE59791008E2ACD /* PropertySortChoicesView.xib in Resources */,
 				DD8C53480FE9F8AE0056F3B7 /* Geography.sqlite in Resources */,
 				45FF76C80FE9FF810053B4D8 /* PropertyFavoritesView.xib in Resources */,
+				45C767840FEC2E9100C75D90 /* Icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
