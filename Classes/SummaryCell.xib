@@ -8,6 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="4"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -43,9 +44,8 @@
 							<object class="IBUILabel" id="878440273">
 								<reference key="NSNextResponder" ref="890810326"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 5}, {200, 15}}</string>
+								<string key="NSFrame">{{15, 5}, {200, 15}}</string>
 								<reference key="NSSuperview" ref="890810326"/>
-								<reference key="NSWindow"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -59,8 +59,8 @@
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MCAwIDAAA</bytes>
 								</object>
-								<object class="NSColor" key="IBUIHighlightedColor">
-									<int key="NSColorSpace">2</int>
+								<object class="NSColor" key="IBUIHighlightedColor" id="983310302">
+									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MSAxIDEAA</bytes>
 								</object>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -70,9 +70,8 @@
 							<object class="IBUILabel" id="446541689">
 								<reference key="NSNextResponder" ref="890810326"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 24}, {200, 14}}</string>
+								<string key="NSFrame">{{15, 24}, {200, 14}}</string>
 								<reference key="NSSuperview" ref="890810326"/>
-								<reference key="NSWindow"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -83,10 +82,7 @@
 									<int key="NSfFlags">16</int>
 								</object>
 								<reference key="IBUITextColor" ref="1027726881"/>
-								<object class="NSColor" key="IBUIHighlightedColor">
-									<int key="NSColorSpace">2</int>
-									<bytes key="NSRGB">MSAxIDEAA</bytes>
-								</object>
+								<reference key="IBUIHighlightedColor" ref="983310302"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">1.000000e+01</float>
@@ -94,9 +90,8 @@
 							<object class="IBUILabel" id="608525043">
 								<reference key="NSNextResponder" ref="890810326"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 44}, {280, 14}}</string>
+								<string key="NSFrame">{{15, 44}, {280, 14}}</string>
 								<reference key="NSSuperview" ref="890810326"/>
-								<reference key="NSWindow"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -119,7 +114,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{220, 5}, {80, 14}}</string>
 								<reference key="NSSuperview" ref="890810326"/>
-								<reference key="NSWindow"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -129,10 +123,7 @@
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MCAwIDEAA</bytes>
 								</object>
-								<object class="NSColor" key="IBUIHighlightedColor">
-									<int key="NSColorSpace">2</int>
-									<bytes key="NSRGB">MSAxIDEAA</bytes>
-								</object>
+								<reference key="IBUIHighlightedColor" ref="983310302"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">1.000000e+01</float>
@@ -141,7 +132,6 @@
 						</object>
 						<string key="NSFrameSize">{320, 67}</string>
 						<reference key="NSSuperview" ref="760829398"/>
-						<reference key="NSWindow"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
@@ -154,11 +144,7 @@
 				</object>
 				<string key="NSFrameSize">{320, 68}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
-				<object class="NSColor" key="IBUIBackgroundColor">
-					<int key="NSColorSpace">1</int>
-					<bytes key="NSRGB">MSAxIDEAA</bytes>
-				</object>
+				<reference key="IBUIBackgroundColor" ref="983310302"/>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<int key="IBUISeparatorStyle">1</int>
 				<reference key="IBUIContentView" ref="890810326"/>
@@ -319,14 +305,23 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
 					<string key="className">PropertyListViewController</string>
-					<string key="superclassName">UITableViewController</string>
+					<string key="superclassName">UIViewController</string>
 					<object class="NSMutableDictionary" key="actions">
 						<string key="NS.key.0">changeView:</string>
 						<string key="NS.object.0">id</string>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">summaryCell_</string>
-						<string key="NS.object.0">SummaryCell</string>
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSMutableArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>summaryCell_</string>
+							<string>tableView</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>SummaryCell</string>
+							<string>UITableView</string>
+						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
