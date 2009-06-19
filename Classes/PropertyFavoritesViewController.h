@@ -3,7 +3,7 @@
 #import "PropertyListViewController.h"
 #import "PropertySummary.h"
 
-@interface PropertyFavoritesViewController : PropertyListViewController
+@interface PropertyFavoritesViewController : PropertyListViewController <NSFetchedResultsControllerDelegate>
 {
 }
 

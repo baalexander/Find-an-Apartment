@@ -1,16 +1,26 @@
 #import "PropertyFavoritesViewController.h"
 
-//Dirty when a property added to favorites, but have not refetched
-//This prevents unnecessary fetches
-//Static because many of the functions that access this are static
-static BOOL isDirty = NO;
-
 
 @implementation PropertyFavoritesViewController
 
 
 #pragma mark -
 #pragma mark PropertyFavoritesViewController
+
+- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
+{
+	if ((self = [super initWithNibName:nibName bundle:nibBundle]))
+	{
+
+	}
+    
+    return self;
+}
+
+- (void)dealloc
+{
+	[super dealloc];
+}
 
 //Performas a deep copy on the property then adds to favorites.
 //Returns NO if property is already in favorites.
@@ -63,8 +73,6 @@ static BOOL isDirty = NO;
     {
         NSLog(@"Error saving favorites History.");
     }
-    
-    isDirty = YES;
 
     return YES;
 }
@@ -164,6 +172,39 @@ static BOOL isDirty = NO;
 	}    
 }
 
+- (NSFetchedResultsController *)fetchedResultsController
+{
+    NSFetchedResultsController *fetchedResultsController = [super fetchedResultsController];
+    [fetchedResultsController setDelegate:self];
+    
+    return fetchedResultsController;
+}
+
+
+#pragma mark -
+#pragma mark UITableViewDataSource
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if (editingStyle == UITableViewCellEditingStyleDelete)
+	{
+        //Deletes the summary, should cascade to delete Details
+        PropertySummary *summary = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+        NSManagedObjectContext *managedObjectContext = [summary managedObjectContext];
+        [managedObjectContext deleteObject:summary];
+		
+        // Commit the change.
+		NSError *error;
+		if (![managedObjectContext save:&error])
+        {
+            //TODO: Handle error
+            NSLog(@"Error saving the deletion in Favorites.");
+        }
+        
+        //The fetched results controller delegate calls will handle changes to the table
+    }
+}
+
 
 #pragma mark -
 #pragma mark UIViewController
@@ -178,23 +219,48 @@ static BOOL isDirty = NO;
 	[editButton release];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
 
-    //Is dirty when a favorite was added but have not updated the fetched results controller
-    if (isDirty)
+#pragma mark -
+#pragma mark NSFetchedResultsControllerDelegate
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+	// The fetch controller is about to start sending change notifications, so prepare the table view for updates.
+	[[self tableView] beginUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
+{
+    if (type == NSFetchedResultsChangeInsert)
     {
-        if (![[self fetchedResultsController] performFetch:nil])
-        {
-            NSLog(@"Error performing fetch in favorite's view will appear.");
-            // TODO: Handle the error.
-        }
-        
-        [[self tableView] reloadData];
-        
-        isDirty = NO;
+        NSArray *indexPaths = [[NSArray alloc] initWithObjects:newIndexPath, nil];
+        [[self tableView] insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        [indexPaths release];
     }
+	else if (type == NSFetchedResultsChangeDelete)
+    {
+        NSArray *indexPaths = [[NSArray alloc] initWithObjects:indexPath, nil];
+        [[self tableView] deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        [indexPaths release];
+	}
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
+{
+    if (type == NSFetchedResultsChangeInsert)
+    {
+        [[self tableView] insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+    }
+    else if (type == NSFetchedResultsChangeDelete)
+    {
+        [[self tableView] deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+	// The fetch controller has sent all current change notifications, so tell the table view to process all updates.
+	[[self tableView] endUpdates];
 }
 
 @end

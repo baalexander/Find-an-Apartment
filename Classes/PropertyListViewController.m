@@ -210,13 +210,25 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[[self fetchedResultsController] sections] count];
+    NSInteger count = [[[self fetchedResultsController] sections] count];
+    
+	if (count == 0) {
+		count = 1;
+	}
+	
+    return count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {	
-	id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
-	return [sectionInfo numberOfObjects];
+    NSInteger numberOfRows = 0;
+	
+    if ([[[self fetchedResultsController] sections] count] > 0) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
+        numberOfRows = [sectionInfo numberOfObjects];
+    }
+    
+    return numberOfRows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
