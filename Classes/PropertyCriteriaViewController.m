@@ -400,14 +400,6 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
         
         //Sets History title to this views Title (should be the location)
         [history setTitle:[self title]];
-        //Sets History subtitle to criteria
-//        //Uncomment the subtitle logic below when subtitle is added as an attribute to History. Then delete this comment!
-//        NSMutableString *historySubtitle = [[NSMutableString alloc] init];
-//        [historySubtitle appendString:[self formatCurrencyRangeWithMin:[[self criteria] minPrice] withMax:[[self criteria] maxPrice]]];
-//        [historySubtitle appendFormat:@", %@", [self formatRangeWithMin:[[self criteria] minSquareFeet] withMax:[[self criteria] maxSquareFeet] withUnits:@"sqft"]];
-//        [historySubtitle appendFormat:@", %@", [self formatRangeWithMin:[[self criteria] minBedrooms] withMax:[[self criteria] maxBedrooms] withUnits:@"rooms"]];
-//        [history setSubtitle:historySubtitle];
-//        [historySubtitle release];
         
         PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
         [listViewController setHistory:history];

@@ -192,7 +192,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     
 	PropertyHistory *history = [[self fetchedResultsController] objectAtIndexPath:indexPath];
     [[cell textLabel] setText:[history title]];
-    //TODO: Replace created with History's subtitle attribute when added
+
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
