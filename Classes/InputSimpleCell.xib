@@ -84,6 +84,7 @@
 				</object>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<int key="IBUISeparatorStyle">1</int>
+				<int key="IBUISelectionStyle">0</int>
 				<reference key="IBUIContentView" ref="794698169"/>
 				<string key="IBUIReuseIdentifier">INPUT_SIMPLE_CELL_ID</string>
 			</object>

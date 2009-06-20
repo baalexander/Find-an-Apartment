@@ -45,7 +45,7 @@
 {
 	if ((self = [super initWithNibName:nibName bundle:nibBundle]))
 	{
-        
+
 	}
     
     return self;
@@ -316,6 +316,10 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
         {
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:kSimpleCellId] autorelease];
         }
+        //Prevents selection background popping up quickly when pressed. Sometimes it's too quick to see, but this prevents it from showing up at all.
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        //Since reusing cells, need to reset this to None
+        [cell setAccessoryType:UITableViewCellAccessoryNone];
         
         if ([rowId isEqual:kSource])
         {
@@ -374,6 +378,13 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //If currently editing an input field, returns that text field.
+    //This fixes all sorts of quacky issues when the user does not manually press Return
+    if ([self currentTextField] != nil)
+    {
+        [self textFieldShouldReturn:[self currentTextField]];
+    }
+
     NSString *rowId = [[self rowIds] objectAtIndex:[indexPath row]];
     
     //Selected the search button, begins searching
@@ -392,6 +403,7 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
         PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
         [listViewController setHistory:history];
         [history release];
+        
         //(TODO: Re-evaluate this claim after History fetching when nil fixed, like when going from map to list)Must call parse BEFORE pushing to view. Otherwise, an unecessary perform fetch is done in the view controller.
         [listViewController parse:url];
         [[self navigationController] pushViewController:listViewController animated:YES];
