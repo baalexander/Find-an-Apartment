@@ -395,8 +395,8 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
         PropertyUrlConstructor *urlConstructor = [[PropertyUrlConstructor alloc] init];
         NSURL *url = [urlConstructor urlFromCriteria:[self criteria]];
         [urlConstructor release];
-        
-        PropertyHistory *history = [PropertyHistoryViewController historyFromCriteria:[self criteria]];
+
+        PropertyHistory *history = [PropertyHistoryViewController historyWithCopyOfCriteria:[self criteria]];
         
         //Sets History title to this views Title (should be the location)
         [history setTitle:[self title]];

@@ -292,6 +292,10 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     
     if ([[[self history] summaries] count] == 0)
     {
+        //Do not record these results
+        NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
+        [managedObjectContext deleteObject:[self history]];
+        
         UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:nil
                                                              message:@"No properties found." 
                                                             delegate:self 
@@ -458,6 +462,10 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 - (void)parser:(XmlParser *)parser didFailWithError:(NSError *)error
 {
     [self setIsParsing:NO];
+    
+    //Do not record these results
+    NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
+    [managedObjectContext deleteObject:[self history]];    
     
     UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error finding results" 
 														 message:[error localizedDescription] 

@@ -1,6 +1,7 @@
 #import "PropertyHistoryViewController.h"
 
 #import "PropertyHistory.h"
+#import "PropertyCriteria.h"
 #import "PropertyListViewController.h"
 
 
@@ -36,16 +37,28 @@
 	[super dealloc];
 }
 
-+ (PropertyHistory *)historyFromCriteria:(PropertyCriteria *)criteria
+//Does a deep copy of Criteria and adds to an autoreleased History object
+//Did not name copyCriteriaIntoHistory because having the word "copy" or "new" at the beginning implies a copied object or non-autoreleased object will be returned
++ (PropertyHistory *)historyWithCopyOfCriteria:(PropertyCriteria *)criteria
 {
     NSManagedObjectContext *managedObjectContext = [criteria managedObjectContext];
+    
+    //Deep copies the Criteria. This will prevent conflicts when deleting the History but going back to the criteria page and trying to research. For example, when no results, the History is deleted, not saved, and so is the Criteria. But if the user went one page back and researched and had results, the context would not be able to save since the Criteria was actually deleted from the context.
+    NSEntityDescription *criteriaEntity = [NSEntityDescription entityForName:@"PropertyCriteria" inManagedObjectContext:managedObjectContext];
+    PropertyCriteria *copyCriteria = [[PropertyCriteria alloc] initWithEntity:criteriaEntity insertIntoManagedObjectContext:managedObjectContext];
+    NSDictionary *criteriaAttributes = [criteriaEntity attributesByName];
+    for (NSString *key in criteriaAttributes)
+    {
+        [copyCriteria setValue:[criteria valueForKey:key] forKey:key];
+    }
 
-    //Create History object
+    //Create History object, note the autorelease because needs to be returned
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:managedObjectContext];
     PropertyHistory *history = [[[PropertyHistory alloc] initWithEntity:entity insertIntoManagedObjectContext:managedObjectContext] autorelease];
     
-    //Sets relationships
-    [history setCriteria:criteria];
+    //Sets relationships to the COPY criteria
+    [history setCriteria:copyCriteria];
+    [copyCriteria release];
     
     //Sets attributes
     NSDate *now = [[NSDate alloc] init];

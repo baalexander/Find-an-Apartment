@@ -13,7 +13,7 @@
 
 @property (nonatomic, retain) NSManagedObjectContext *mainObjectContext;
 
-+ (PropertyHistory *)historyFromCriteria:(PropertyCriteria *)criteria;
++ (PropertyHistory *)historyWithCopyOfCriteria:(PropertyCriteria *)criteria;
 + (void)deleteOldHistoryObjects:(NSManagedObjectContext *)managedObjectContext;
 
 @end
