@@ -8,7 +8,7 @@
 #import "SummaryCell.h"
 
 
-@interface PropertyListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ParserDelegate>
+@interface PropertyListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, ParserDelegate>
 {
     @private
         UITableView *tableView_;

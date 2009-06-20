@@ -279,10 +279,35 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 
 
 #pragma mark -
+#pragma mark UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    [[self navigationController] popViewControllerAnimated:YES];
+}
+
+
+
+#pragma mark -
 #pragma mark ParserDelegate
 
 - (void)parserDidEndParsingData:(XmlParser *)parser
 {
+    [self setIsParsing:NO];
+    
+    if ([[[self history] summaries] count] == 0)
+    {
+        UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:nil
+                                                             message:@"No properties found." 
+                                                            delegate:self 
+                                                   cancelButtonTitle:@"Ok"
+                                                   otherButtonTitles:nil];
+        [errorAlert show];
+        [errorAlert release];
+        
+        return;
+    }
+    
     NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
     
     NSError *error;
@@ -298,8 +323,6 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     }
     
     [[self tableView] reloadData];
-    
-    [self setIsParsing:NO];
 }
 
 - (void)parser:(XmlParser *)parser addElement:(NSString *)element withValue:(NSString *)value
@@ -441,8 +464,13 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 {
     [self setIsParsing:NO];
     
-    NSLog(@"Parser did fail with error.");
-    // TODO: handle errors as appropriate to your application...
+    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error finding results" 
+														 message:[error localizedDescription] 
+														delegate:self 
+											   cancelButtonTitle:@"Ok"
+											   otherButtonTitles:nil];
+	[errorAlert show];
+	[errorAlert release];
 }
 
 @end
