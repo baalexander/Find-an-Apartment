@@ -24,9 +24,9 @@
 	[super dealloc];
 }
 
-//Performas a deep copy on the property then adds to favorites.
+//Performas a deep copy on the property then adds to favorites. Is not called copyProperty because the copy prefix implies returning a copied object.
 //Returns NO if property is already in favorites.
-+ (BOOL)addProperty:(PropertySummary *)summary
++ (BOOL)addCopyOfProperty:(PropertySummary *)summary
 {
     //Do NOT add if already a favorite
     if ([PropertyFavoritesViewController isPropertyAFavorite:summary])
@@ -65,9 +65,11 @@
     
     //Copies relationships
     [copySummary setDetails:copyDetails];
+    [copyDetails release];
     
     //Adds summary to favorites History
     [history addSummariesObject:copySummary];
+    [copySummary release];
     
     //Saves!
     NSError *error = nil;

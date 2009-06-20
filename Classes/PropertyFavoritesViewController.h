@@ -9,7 +9,7 @@
 {
 }
 
-+ (BOOL)addProperty:(PropertySummary *)summary;
++ (BOOL)addCopyOfProperty:(PropertySummary *)summary;
 + (BOOL)isPropertyAFavorite:(PropertySummary *)summary;
 + (PropertyHistory *)favoriteHistoryFromContext:(NSManagedObjectContext *)managedObjectContext;
 

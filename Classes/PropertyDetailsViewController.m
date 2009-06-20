@@ -57,7 +57,7 @@
 - (void)addToFavorites:(id)sender
 {
     PropertySummary *summary = [[self details] summary];
-    if (![PropertyFavoritesViewController addProperty:summary])
+    if (![PropertyFavoritesViewController addCopyOfProperty:summary])
     {
         //TODO: Show alert
         NSLog(@"Already in favorites.");
