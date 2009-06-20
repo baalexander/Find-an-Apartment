@@ -130,7 +130,7 @@
 								<int key="IBUITextAlignment">2</int>
 							</object>
 						</object>
-						<string key="NSFrameSize">{320, 67}</string>
+						<string key="NSFrameSize">{300, 67}</string>
 						<reference key="NSSuperview" ref="760829398"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -147,6 +147,7 @@
 				<reference key="IBUIBackgroundColor" ref="983310302"/>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<int key="IBUISeparatorStyle">1</int>
+				<int key="IBUIAccessoryType">1</int>
 				<reference key="IBUIContentView" ref="890810326"/>
 				<string key="IBUIReuseIdentifier">SUMMARY_CELL_ID</string>
 			</object>
