@@ -49,6 +49,7 @@
 		45C7682C0FEC804100C75D90 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45C7682B0FEC804100C75D90 /* MessageUI.framework */; };
 		45C974180FDCCA150021EE6D /* PropertyHistoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C974150FDCCA150021EE6D /* PropertyHistoryView.xib */; };
 		45C974190FDCCA150021EE6D /* PropertyHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C974170FDCCA150021EE6D /* PropertyHistoryViewController.m */; };
+		45D93C6E0FECAC1C00AD4A5B /* locate.png in Resources */ = {isa = PBXBuildFile; fileRef = 45D93C6D0FECAC1C00AD4A5B /* locate.png */; };
 		45FF76C80FE9FF810053B4D8 /* PropertyFavoritesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */; };
 		DD8C53480FE9F8AE0056F3B7 /* Geography.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = DD8C53470FE9F8AE0056F3B7 /* Geography.sqlite */; };
 		DDA9D36F0FE9E6DC0087D357 /* Geography.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = DDA9D36E0FE9E6DC0087D357 /* Geography.xcdatamodel */; };
@@ -124,6 +125,7 @@
 		45C974150FDCCA150021EE6D /* PropertyHistoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyHistoryView.xib; path = Classes/PropertyHistoryView.xib; sourceTree = "<group>"; };
 		45C974160FDCCA150021EE6D /* PropertyHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyHistoryViewController.h; path = Classes/PropertyHistoryViewController.h; sourceTree = "<group>"; };
 		45C974170FDCCA150021EE6D /* PropertyHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyHistoryViewController.m; path = Classes/PropertyHistoryViewController.m; sourceTree = "<group>"; };
+		45D93C6D0FECAC1C00AD4A5B /* locate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = locate.png; path = Images/locate.png; sourceTree = "<group>"; };
 		45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyFavoritesView.xib; path = Classes/PropertyFavoritesView.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Find_an_Apartment-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Find_an_Apartment-Info.plist"; sourceTree = "<group>"; };
 		DD8C53470FE9F8AE0056F3B7 /* Geography.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Geography.sqlite; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				45D93C6A0FECABA800AD4A5B /* Images */,
 				457931EC0FE58F84008E2ACD /* Constants */,
 				455BFE710FDCA0BF000BCD39 /* App Delegate */,
 				455BFE600FDC9F7C000BCD39 /* Controllers */,
@@ -380,6 +383,14 @@
 			name = Geography;
 			sourceTree = "<group>";
 		};
+		45D93C6A0FECABA800AD4A5B /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				45D93C6D0FECAC1C00AD4A5B /* locate.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -437,6 +448,7 @@
 				DD8C53480FE9F8AE0056F3B7 /* Geography.sqlite in Resources */,
 				45FF76C80FE9FF810053B4D8 /* PropertyFavoritesView.xib in Resources */,
 				45C767840FEC2E9100C75D90 /* Icon.png in Resources */,
+				45D93C6E0FECAC1C00AD4A5B /* locate.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
