@@ -186,12 +186,19 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSimpleCellId];
     if (cell == nil)
     {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSimpleCellId] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kSimpleCellId] autorelease];
     }
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     
 	PropertyHistory *history = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-	[[cell textLabel] setText:[[history created] description]];
+    [[cell textLabel] setText:[history title]];
+    //TODO: Replace created with History's subtitle attribute when added
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    NSString *formattedDate = [dateFormatter stringFromDate:[history created]];
+    [[cell detailTextLabel] setText:formattedDate];
+    [dateFormatter release];
     
 	return cell;
 }
