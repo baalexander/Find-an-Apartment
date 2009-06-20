@@ -86,11 +86,6 @@ static NSInteger kMapItem = 1;
 - (void)parse:(NSURL *)url
 {
     [self setIsParsing:YES];
-
-    //Requires History to be set before this function can be called
-    NSDate *now = [[NSDate alloc] init];
-    [[self history] setCreated:now];
-    [now release];
     
     // Create the parser, set its delegate, and start it.
     XmlParser *parser = [[XmlParser alloc] init];

@@ -36,6 +36,63 @@
 	[super dealloc];
 }
 
++ (PropertyHistory *)historyFromCriteria:(PropertyCriteria *)criteria
+{
+    NSManagedObjectContext *managedObjectContext = [criteria managedObjectContext];
+
+    //Create History object
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:managedObjectContext];
+    PropertyHistory *history = [[[PropertyHistory alloc] initWithEntity:entity insertIntoManagedObjectContext:managedObjectContext] autorelease];
+    
+    //Sets relationships
+    [history setCriteria:criteria];
+    
+    //Sets attributes
+    NSDate *now = [[NSDate alloc] init];
+    [history setCreated:now];
+    [now release];
+    
+    //Deletes old History objects
+    [PropertyHistoryViewController deleteOldHistoryObjects:managedObjectContext];
+    
+    return history;
+}
+
+//Keep only the most recent History objects
++ (void)deleteOldHistoryObjects:(NSManagedObjectContext *)managedObjectContext
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    //Sorts so most recent is first
+    NSSortDescriptor *createdDescriptor = [[NSSortDescriptor alloc] initWithKey:@"created" ascending:NO];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:createdDescriptor, nil];
+    [createdDescriptor release];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    [sortDescriptors release];
+    
+    //Ignores Favorites history
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(isFavorite == NO)"];
+    [fetchRequest setPredicate:predicate];
+    
+	NSError *error = nil;
+	NSArray *fetchResults = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	if (fetchResults == nil)
+    {
+		// Handle the error.
+        NSLog(@"Error fetching recent History objects in historyFromCriteria.");
+        
+        return;
+	}
+    
+    for (NSUInteger i = 9; i < [fetchResults count]; i++)
+    {
+        PropertyHistory *history = [fetchResults objectAtIndex:i];
+        [managedObjectContext deleteObject:history];
+    }
+}
+
 - (NSFetchedResultsController *)fetchedResultsController
 {
     if (fetchedResultsController_ == nil)

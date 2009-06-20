@@ -1,5 +1,6 @@
 #import "PropertyCriteriaViewController.h"
 
+#import "PropertyHistoryViewController.h"
 #import "PropertyCriteriaConstants.h"
 #import "InputRangeCell.h"
 #import "InputSimpleCell.h"
@@ -395,14 +396,10 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
         NSURL *url = [urlConstructor urlFromCriteria:[self criteria]];
         [urlConstructor release];
         
-        //Create History object with this Criteria
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:[self mainObjectContext]];
-        PropertyHistory *history = [[PropertyHistory alloc] initWithEntity:entity insertIntoManagedObjectContext:[self mainObjectContext]];
-        [history setCriteria:[self criteria]];
-        
+        //Create History object and adds to List view controller (required by List view controller)
+        PropertyHistory *history = [PropertyHistoryViewController historyFromCriteria:[self criteria]];
         PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
         [listViewController setHistory:history];
-        [history release];
         
         //(TODO: Re-evaluate this claim after History fetching when nil fixed, like when going from map to list)Must call parse BEFORE pushing to view. Otherwise, an unecessary perform fetch is done in the view controller.
         [listViewController parse:url];

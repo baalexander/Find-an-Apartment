@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+#import "PropertyHistory.h"
+
 
 @interface PropertyHistoryViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 {
@@ -10,5 +12,8 @@
 }
 
 @property (nonatomic, retain) NSManagedObjectContext *mainObjectContext;
+
++ (PropertyHistory *)historyFromCriteria:(PropertyCriteria *)criteria;
++ (void)deleteOldHistoryObjects:(NSManagedObjectContext *)managedObjectContext;
 
 @end
