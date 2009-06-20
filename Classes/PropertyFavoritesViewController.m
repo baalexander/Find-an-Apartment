@@ -1,5 +1,7 @@
 #import "PropertyFavoritesViewController.h"
 
+#import "PropertyListEmailerViewController.h"
+
 
 @implementation PropertyFavoritesViewController
 
@@ -152,6 +154,18 @@
     }
 }
 
+- (void)share:(id)sender
+{    
+    PropertyListEmailerViewController *listEmailer = [[PropertyListEmailerViewController alloc] init];
+    [listEmailer setMailComposeDelegate:self];
+    
+    NSArray *properties = [[self fetchedResultsController] fetchedObjects];
+    [listEmailer setProperties:properties];
+	
+	[self presentModalViewController:listEmailer animated:YES];
+    [listEmailer release];
+}
+
 - (void)edit:(id)sender
 {
 	//Switches editing status
@@ -261,6 +275,16 @@
 {
 	// The fetch controller has sent all current change notifications, so tell the table view to process all updates.
 	[[self tableView] endUpdates];
+}
+
+
+#pragma mark -
+#pragma mark MFMailComposeViewControllerDelegate
+
+// Dismisses the email composition interface when users tap Cancel or Send.
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
+{	
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 @end

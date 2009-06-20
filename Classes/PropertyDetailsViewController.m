@@ -1,6 +1,7 @@
 #import "PropertyDetailsViewController.h"
 
 #import "PropertyFavoritesViewController.h"
+#import "PropertyListEmailerViewController.h"
 
 
 @interface PropertyDetailsViewController ()
@@ -41,7 +42,16 @@
 
 - (void)share:(id)sender
 {
-    NSLog(@"Share Property button selected.");
+    PropertyListEmailerViewController *listEmailer = [[PropertyListEmailerViewController alloc] init];
+    [listEmailer setMailComposeDelegate:self];
+    
+    PropertySummary *summary = [[self details] summary];
+    NSArray *properties = [[NSArray alloc] initWithObjects:summary, nil];
+    [listEmailer setProperties:properties];
+    [properties release];
+	
+	[self presentModalViewController:listEmailer animated:YES];
+    [listEmailer release];
 }
 
 - (void)addToFavorites:(id)sender
@@ -49,6 +59,7 @@
     PropertySummary *summary = [[self details] summary];
     if (![PropertyFavoritesViewController addProperty:summary])
     {
+        //TODO: Show alert
         NSLog(@"Already in favorites.");
     }
     else
@@ -248,6 +259,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 	return cell;
 }
 
+
 #pragma mark -
 #pragma mark UITableViewDelegate
 
@@ -257,5 +269,13 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 }    
 
 
+#pragma mark -
+#pragma mark MFMailComposeViewControllerDelegate
+
+// Dismisses the email composition interface when users tap Cancel or Send.
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
+{	
+	[self dismissModalViewControllerAnimated:YES];
+}
 
 @end

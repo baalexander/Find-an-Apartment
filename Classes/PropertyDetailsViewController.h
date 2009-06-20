@@ -1,9 +1,11 @@
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
+#import <MessageUI/MFMailComposeViewController.h>
 
 #import "PropertyDetails.h"
 
 
-@interface PropertyDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface PropertyDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate>
 {
     @private
         UITableView *tableView_;

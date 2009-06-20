@@ -45,6 +45,8 @@
 		458783A60FDB45F7000B4F5D /* PropertyMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */; };
 		458783A70FDB45F7000B4F5D /* PropertyMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458783A50FDB45F7000B4F5D /* PropertyMapView.xib */; };
 		45C767840FEC2E9100C75D90 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 45C767830FEC2E9100C75D90 /* Icon.png */; };
+		45C767CA0FEC7A1C00C75D90 /* PropertyListEmailerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C767C80FEC7A1C00C75D90 /* PropertyListEmailerViewController.m */; };
+		45C7682C0FEC804100C75D90 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45C7682B0FEC804100C75D90 /* MessageUI.framework */; };
 		45C974180FDCCA150021EE6D /* PropertyHistoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C974150FDCCA150021EE6D /* PropertyHistoryView.xib */; };
 		45C974190FDCCA150021EE6D /* PropertyHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C974170FDCCA150021EE6D /* PropertyHistoryViewController.m */; };
 		45FF76C80FE9FF810053B4D8 /* PropertyFavoritesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */; };
@@ -116,6 +118,9 @@
 		458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyMapViewController.m; path = Classes/PropertyMapViewController.m; sourceTree = "<group>"; };
 		458783A50FDB45F7000B4F5D /* PropertyMapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyMapView.xib; path = Classes/PropertyMapView.xib; sourceTree = "<group>"; };
 		45C767830FEC2E9100C75D90 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		45C767C70FEC7A1C00C75D90 /* PropertyListEmailerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyListEmailerViewController.h; path = Classes/PropertyListEmailerViewController.h; sourceTree = "<group>"; };
+		45C767C80FEC7A1C00C75D90 /* PropertyListEmailerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyListEmailerViewController.m; path = Classes/PropertyListEmailerViewController.m; sourceTree = "<group>"; };
+		45C7682B0FEC804100C75D90 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		45C974150FDCCA150021EE6D /* PropertyHistoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyHistoryView.xib; path = Classes/PropertyHistoryView.xib; sourceTree = "<group>"; };
 		45C974160FDCCA150021EE6D /* PropertyHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyHistoryViewController.h; path = Classes/PropertyHistoryViewController.h; sourceTree = "<group>"; };
 		45C974170FDCCA150021EE6D /* PropertyHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyHistoryViewController.m; path = Classes/PropertyHistoryViewController.m; sourceTree = "<group>"; };
@@ -141,6 +146,7 @@
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
 				28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */,
 				457AA2AF0FD8D4FF00F0D16C /* libxml2.2.dylib in Frameworks */,
+				45C7682C0FEC804100C75D90 /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,6 +212,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				45C7682B0FEC804100C75D90 /* MessageUI.framework */,
 				457AA2AE0FD8D4FF00F0D16C /* libxml2.2.dylib */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
@@ -266,6 +273,8 @@
 				4579337F0FE5ED93008E2ACD /* PropertyFavoritesViewController.m */,
 				45C974160FDCCA150021EE6D /* PropertyHistoryViewController.h */,
 				45C974170FDCCA150021EE6D /* PropertyHistoryViewController.m */,
+				45C767C70FEC7A1C00C75D90 /* PropertyListEmailerViewController.h */,
+				45C767C80FEC7A1C00C75D90 /* PropertyListEmailerViewController.m */,
 				457AA3850FDAC45900F0D16C /* PropertyListViewController.h */,
 				457AA3860FDAC45900F0D16C /* PropertyListViewController.m */,
 				458783A30FDB45F7000B4F5D /* PropertyMapViewController.h */,
@@ -464,6 +473,7 @@
 				457933800FE5ED93008E2ACD /* PropertyFavoritesViewController.m in Sources */,
 				457934BA0FE73A50008E2ACD /* PropertyHistory.m in Sources */,
 				DDA9D36F0FE9E6DC0087D357 /* Geography.xcdatamodel in Sources */,
+				45C767CA0FEC7A1C00C75D90 /* PropertyListEmailerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
