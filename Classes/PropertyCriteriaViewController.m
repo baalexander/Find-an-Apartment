@@ -337,21 +337,19 @@
     //Selected the search button, begins searching
     if ([rowId isEqual:kSearch])
     {
-        //Gets URL to download
+        PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
+        
+        //Sets History
+        PropertyHistory *history = [PropertyHistoryViewController historyWithCopyOfCriteria:[self criteria]];
+        [history setTitle:[self title]];
+        [listViewController setHistory:history];
+        
+        //Turns Criteria into URL then parses
         PropertyUrlConstructor *urlConstructor = [[PropertyUrlConstructor alloc] init];
         NSURL *url = [urlConstructor urlFromCriteria:[self criteria]];
         [urlConstructor release];
-
-        PropertyHistory *history = [PropertyHistoryViewController historyWithCopyOfCriteria:[self criteria]];
-        
-        //Sets History title to this views Title (should be the location)
-        [history setTitle:[self title]];
-        
-        PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
-        [listViewController setHistory:history];
-        
-        //(TODO: Re-evaluate this claim after History fetching when nil fixed, like when going from map to list)Must call parse BEFORE pushing to view. Otherwise, an unecessary perform fetch is done in the view controller.
         [listViewController parse:url];
+
         [[self navigationController] pushViewController:listViewController animated:YES];
         [listViewController release];
     }
