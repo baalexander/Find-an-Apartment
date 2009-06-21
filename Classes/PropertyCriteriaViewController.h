@@ -1,8 +1,7 @@
 #import <UIKit/UIKit.h>
 
 #import "State.h"
-#import "City.h"
-#import "PostalCode.h"
+#import "CityOrPostalCode.h"
 #import "PropertyCriteria.h"
 
 
@@ -15,8 +14,8 @@
         NSManagedObjectContext *mainObjectContext_;
         
         State *state_;
-        City *city_;
-        PostalCode *postalCode_;
+        CityOrPostalCode *city_;
+        CityOrPostalCode *postalCode_;
         NSString *coordinates_;
         PropertyCriteria *criteria_;
         
@@ -32,8 +31,8 @@
 @property (nonatomic, retain) NSManagedObjectContext *mainObjectContext;
 
 @property (nonatomic, retain) State *state;
-@property (nonatomic, retain) City *city;
-@property (nonatomic, retain) PostalCode *postalCode;
+@property (nonatomic, retain) CityOrPostalCode *city;
+@property (nonatomic, retain) CityOrPostalCode *postalCode;
 @property (nonatomic, copy) NSString *coordinates;
 
 @property (nonatomic, retain) InputRangeCell *inputRangeCell;

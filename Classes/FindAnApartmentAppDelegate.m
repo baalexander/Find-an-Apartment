@@ -4,8 +4,7 @@
 #import "PropertyHistoryViewController.h"
 #import "PropertyFavoritesViewController.h"
 #import "State.h"
-#import "City.h"
-#import "PostalCode.h"
+#import "CityOrPostalCode.h"
 
 
 @interface FindAnApartmentAppDelegate ()
@@ -143,6 +142,7 @@
 	
 	NSError *error;
 	
+    // NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
     geographyStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];
     if (![geographyStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error])
     {

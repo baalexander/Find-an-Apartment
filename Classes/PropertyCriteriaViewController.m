@@ -181,8 +181,8 @@
     [criteria release];
     //Fills criteria in with passed in information
     [[self criteria] setState:[[self state] name]];    
-    [[self criteria] setCity:[[self city] name]];
-    [[self criteria] setPostalCode:[[[self postalCode] postalCode] stringValue]];
+    [[self criteria] setCity:[[self city] value]];
+    [[self criteria] setPostalCode:[[self postalCode] value]];
     [[self criteria] setCoordinates:[self coordinates]];
     
     //Sets title to location

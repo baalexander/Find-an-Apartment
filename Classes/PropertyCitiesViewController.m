@@ -1,6 +1,7 @@
 #import "PropertyCitiesViewController.h"
 
 #import "PropertyCriteriaViewController.h"
+#import "CityOrPostalCode.h"
 
 
 @interface PropertyCitiesViewController ()
@@ -44,14 +45,15 @@
         NSManagedObjectContext *geographyObjectContext = [[self state] managedObjectContext];
         
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"City" inManagedObjectContext:geographyObjectContext];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"CityOrPostalCode" inManagedObjectContext:geographyObjectContext];
         [fetchRequest setEntity:entity];
         
         NSPredicate *fetchPredicate = [NSPredicate predicateWithFormat:@"state == %@", [self state]];
         [fetchRequest setPredicate:fetchPredicate];
         
-        NSSortDescriptor *nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:nameDescriptor, nil];
+        NSSortDescriptor *cityDescriptor = [[NSSortDescriptor alloc] initWithKey:@"isCity" ascending:NO];
+        NSSortDescriptor *nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"value" ascending:YES];
+        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:cityDescriptor, nameDescriptor, nil];
         [nameDescriptor release];
         [fetchRequest setSortDescriptors:sortDescriptors];
         [sortDescriptors release];
@@ -131,8 +133,8 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     }
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     
-	City *city = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-	[[cell textLabel] setText:[[city name] description]];
+	CityOrPostalCode *city = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+	[[cell textLabel] setText:[[city value] description]];
     
 	return cell;
 }
@@ -143,7 +145,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    City *city = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    CityOrPostalCode *city = [[self fetchedResultsController] objectAtIndexPath:indexPath];
     
     PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaView" bundle:nil];
     [criteriaViewController setState:[self state]];
