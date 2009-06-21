@@ -1,6 +1,7 @@
 #import "PropertyListEmailerViewController.h"
 
 #import "PropertySummary.h"
+#import "StringFormatter.h"
 
 
 @interface PropertyListEmailerViewController ()
@@ -64,12 +65,7 @@
     }
     if ([summary price] != nil && [summary price]  > 0)
     {
-        //Formats NSNumber as currency with no cents
-        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-        [formatter setMinimumFractionDigits:0];
-        [body appendFormat:@"%@<br/>", [formatter stringFromNumber:[summary price]]];
-        [formatter release];
+        [body appendFormat:@"%@<br/>", [StringFormatter formatCurrency:[summary price]]];
     }
     if ([summary summary] != nil && [[summary summary] length] > 0)
     {

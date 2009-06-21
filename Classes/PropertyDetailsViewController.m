@@ -2,6 +2,7 @@
 
 #import "PropertyFavoritesViewController.h"
 #import "PropertyListEmailerViewController.h"
+#import "StringFormatter.h"
 
 
 @interface PropertyDetailsViewController ()
@@ -100,12 +101,7 @@
     NSMutableDictionary *financeSection = [NSMutableDictionary dictionary];
     if ([[self details] price] != nil)
     {
-        //Formats NSNumber as currency with no cents
-        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-        [formatter setMinimumFractionDigits:0];
-        [financeSection setObject:[formatter stringFromNumber:[[self details] price]] forKey:@"price"];
-        [formatter release];
+        [financeSection setObject:[StringFormatter formatCurrency:[[self details] price]] forKey:@"price"];
     }
     if ([financeSection count] > 0)
     {
@@ -117,25 +113,15 @@
     NSMutableDictionary *detailsSection = [NSMutableDictionary dictionary];
     if ([[self details] squareFeet] != nil)
     {
-        //Formats NSNumber
-        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-        [detailsSection setObject:[formatter stringFromNumber:[[self details] squareFeet]] forKey:@"sq feet"];
-        [formatter release];
+        [detailsSection setObject:[StringFormatter formatNumber:[[self details] squareFeet]] forKey:@"sq feet"];
     }
     if ([[self details] bedrooms] != nil)
     {
-        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-        [detailsSection setObject:[formatter stringFromNumber:[[self details] bedrooms]] forKey:@"bedrooms"];
-        [formatter release];        
+        [detailsSection setObject:[StringFormatter formatNumber:[[self details] bedrooms]] forKey:@"bedrooms"];
     }
     if ([[self details] bathrooms] != nil)
     {
-        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-        [detailsSection setObject:[formatter stringFromNumber:[[self details] bathrooms]] forKey:@"bathrooms"];
-        [formatter release];
+        [detailsSection setObject:[StringFormatter formatNumber:[[self details] bathrooms]] forKey:@"bathrooms"];
     }    
     if ([[self details] year] != nil)
     {

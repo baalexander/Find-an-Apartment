@@ -7,6 +7,7 @@
 #import "PropertyUrlConstructor.h"
 #import "PropertyListViewController.h"
 #import "PropertySortChoicesViewController.h"
+#import "StringFormatter.h"
 
 
 @interface PropertyCriteriaViewController ()
@@ -16,9 +17,6 @@
 @property (nonatomic, assign) NSInteger selectedRow;
 @property (nonatomic, assign) BOOL isEditingRow;
 @property (nonatomic, retain) NSMutableArray *rowIds;
-
-- (NSString *)formatRangeWithMin:(NSNumber *)min withMax:(NSNumber *)max withUnits:(NSString *)units;
-- (NSString *)formatCurrencyRangeWithMin:(NSNumber *)min withMax:(NSNumber *)max;
 
 @end
 
@@ -69,93 +67,6 @@
     [inputSimpleCell_ release];
     
     [super dealloc];
-}
-
-//Returns range in the following formats depending on what parameters are sent:
-//  min - max units
-//  0 - max units
-//  min+ units
-- (NSString *)formatRangeWithMin:(NSNumber *)min withMax:(NSNumber *)max withUnits:(NSString *)units
-{
-    //Placeholders
-    if (units == nil)
-    {
-        units = @"";
-    }
-    else
-    {
-        units = [NSString stringWithFormat:@" %@", units];
-    }
-    
-    //Number formatter
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-    
-    //Formates a zero number for replacing empty values in range
-    NSNumber *zeroNumber = [[NSNumber alloc] initWithInteger:0];
-    NSString *formattedZero = [formatter stringFromNumber:zeroNumber];
-    [zeroNumber release];
-    
-    //Formats min and max numbers
-    NSString *formattedMin = [formatter stringFromNumber:min];
-    NSString *formattedMax = [formatter stringFromNumber:max];
-    
-    [formatter release];
-    
-    //Returns range based on which values were provided
-    if (min == nil && max == nil)
-    {
-        return [NSString stringWithFormat:@"%@+%@", formattedZero, units];
-    }
-    else if (min == nil)
-    {
-        return [NSString stringWithFormat:@"%@ - %@%@", formattedZero, formattedMax, units];
-    }
-    else if (max == nil)
-    {
-        return [NSString stringWithFormat:@"%@+%@", formattedMin, units];
-    }
-    else
-    {
-        return [NSString stringWithFormat:@"%@ - %@%@", formattedMin, formattedMax, units];
-    }
-}
-
-- (NSString *)formatCurrencyRangeWithMin:(NSNumber *)min withMax:(NSNumber *)max
-{
-    //Currency formatter
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-    [formatter setMinimumFractionDigits:0];
-    
-    //Formates a zero number for replacing empty values in range
-    NSNumber *zeroNumber = [[NSNumber alloc] initWithInteger:0];
-    NSString *formattedZero = [formatter stringFromNumber:zeroNumber];
-    [zeroNumber release];
-    
-    //Formats min and max numbers
-    NSString *formattedMin = [formatter stringFromNumber:min];
-    NSString *formattedMax = [formatter stringFromNumber:max];
-    
-    [formatter release];
-    
-    //Returns range based on which values were provided
-    if (min == nil && max == nil)
-    {
-        return [NSString stringWithFormat:@"%@+", formattedZero];
-    }
-    else if (min == nil)
-    {
-        return [NSString stringWithFormat:@"%@ - %@", formattedZero, formattedMax];
-    }
-    else if (max == nil)
-    {
-        return [NSString stringWithFormat:@"%@+", formattedMin];
-    }
-    else
-    {
-        return [NSString stringWithFormat:@"%@ - %@", formattedMin, formattedMax];
-    }
 }
 
 
@@ -357,22 +268,22 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
         else if ([rowId isEqual:kPrice])
         {
             [[cell textLabel] setText:@"price"];
-            [[cell detailTextLabel] setText:[self formatCurrencyRangeWithMin:[[self criteria] minPrice] withMax:[[self criteria] maxPrice]]];
+            [[cell detailTextLabel] setText:[StringFormatter formatCurrencyRangeWithMin:[[self criteria] minPrice] withMax:[[self criteria] maxPrice]]];
         }
         else if ([rowId isEqual:kSquareFeet])
         {
             [[cell textLabel] setText:@"sq feet"];
-            [[cell detailTextLabel] setText:[self formatRangeWithMin:[[self criteria] minSquareFeet] withMax:[[self criteria] maxSquareFeet] withUnits:@"sqft"]];
+            [[cell detailTextLabel] setText:[StringFormatter formatRangeWithMin:[[self criteria] minSquareFeet] withMax:[[self criteria] maxSquareFeet] withUnits:@"sqft"]];
         }
         else if ([rowId isEqual:kBedrooms])
         {
             [[cell textLabel] setText:@"bedrooms"];
-            [[cell detailTextLabel] setText:[self formatRangeWithMin:[[self criteria] minBedrooms] withMax:[[self criteria] maxBedrooms] withUnits:@"rooms"]];
+            [[cell detailTextLabel] setText:[StringFormatter formatRangeWithMin:[[self criteria] minBedrooms] withMax:[[self criteria] maxBedrooms] withUnits:@"rooms"]];
         }
         else if ([rowId isEqual:kBathrooms])
         {
             [[cell textLabel] setText:@"bathrooms"];
-            [[cell detailTextLabel] setText:[self formatRangeWithMin:[[self criteria] minBathrooms] withMax:[[self criteria] maxBathrooms] withUnits:@"baths"]];
+            [[cell detailTextLabel] setText:[StringFormatter formatRangeWithMin:[[self criteria] minBathrooms] withMax:[[self criteria] maxBathrooms] withUnits:@"baths"]];
         }
         else if ([rowId isEqual:kSortBy])
         {

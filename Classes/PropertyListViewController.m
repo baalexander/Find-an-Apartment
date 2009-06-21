@@ -3,6 +3,7 @@
 #import "PropertyCriteria.h"
 #import "PropertyDetailsViewController.h"
 #import "PropertyMapViewController.h"
+#import "StringFormatter.h"
 
 
 //Element name that separates each item in the XML results
@@ -240,12 +241,7 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     [[[self summaryCell] subtitle] setText:[summary subtitle]];
     [[[self summaryCell] summary] setText:[summary summary]];
     
-    //Formats NSNumber as currency with no cents
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-    [formatter setMinimumFractionDigits:0];
-    NSString *price = [formatter stringFromNumber:[summary price]];
-    [formatter release];
+    NSString *price = [StringFormatter formatCurrency:[summary price]];
     [[[self summaryCell] price] setText:price];
     
     return [self summaryCell];
