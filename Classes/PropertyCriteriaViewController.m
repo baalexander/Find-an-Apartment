@@ -18,6 +18,11 @@
 @property (nonatomic, assign) BOOL isEditingRow;
 @property (nonatomic, retain) NSMutableArray *rowIds;
 
+- (InputRangeCell *)inputRangeCellWithMin:(NSNumber *)min withMax:(NSNumber *)max;
+- (InputSimpleCell *)inputSimpleCellWithText:(NSString *)text;
+- (UITableViewCell *)simpleCellWithText:(NSString *)text withDetail:(NSString *)detailText;
+- (UITableViewCell *)buttonCellWithText:(NSString *)text;
+
 @end
 
 
@@ -69,6 +74,73 @@
     [super dealloc];
 }
 
+- (InputRangeCell *)inputRangeCellWithMin:(NSNumber *)min withMax:(NSNumber *)max
+{
+    static NSString *kInputRangeCellId = @"INPUT_RANGE_CELL_ID";
+    
+    [self setInputRangeCell:(InputRangeCell *)[[self tableView] dequeueReusableCellWithIdentifier:kInputRangeCellId]];
+    if ([self inputRangeCell] == nil)
+    {
+        [[NSBundle mainBundle] loadNibNamed:@"InputRangeCell" owner:self options:nil];
+    }
+    
+    [[[self inputRangeCell] minRange] setText:[min stringValue]];
+    [[[self inputRangeCell] maxRange] setText:[max stringValue]];
+    
+    return [self inputRangeCell];
+}
+
+- (InputSimpleCell *)inputSimpleCellWithText:(NSString *)text
+{
+    static NSString *kInputSimpleCellId = @"INPUT_SIMPLE_CELL_ID";
+    
+    [self setInputSimpleCell:(InputSimpleCell *)[[self tableView] dequeueReusableCellWithIdentifier:kInputSimpleCellId]];
+    if ([self inputSimpleCell] == nil)
+    {
+        [[NSBundle mainBundle] loadNibNamed:@"InputSimpleCell" owner:self options:nil];
+    }
+    
+    [[[self inputSimpleCell] input] setText:text];
+    
+    return [self inputSimpleCell];
+}
+
+- (UITableViewCell *)simpleCellWithText:(NSString *)text withDetail:(NSString *)detailText
+{
+    static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
+    
+    UITableViewCell *cell = [[self tableView] dequeueReusableCellWithIdentifier:kSimpleCellId];
+    if (cell == nil)
+    {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:kSimpleCellId] autorelease];
+    }
+    //Prevents selection background popping up quickly when pressed. Sometimes it's too quick to see, but this prevents it from showing up at all.
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    //Since reusing cells, need to reset this to None
+    [cell setAccessoryType:UITableViewCellAccessoryNone];
+    
+    [[cell textLabel] setText:text];
+    [[cell detailTextLabel] setText:detailText];
+    
+    return cell;
+}
+
+- (UITableViewCell *)buttonCellWithText:(NSString *)text
+{
+    static NSString *kButtonCellId = @"BUTTON_CELL_ID";
+    
+    UITableViewCell *cell = [[self tableView] dequeueReusableCellWithIdentifier:kButtonCellId];
+    if (cell == nil)
+    {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kButtonCellId] autorelease];
+    }
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    [[cell textLabel] setText:text];
+    [[cell textLabel] setTextAlignment:UITextAlignmentCenter];
+        
+    return cell;
+}
+
 
 #pragma mark -
 #pragma mark UIViewController
@@ -115,15 +187,14 @@
     }
     [self setTitle:title];
     
-    //Row Ids outlines the order of the rows in the table
-    NSMutableArray *rowIds = [[NSMutableArray alloc] initWithObjects:kLocation, kKeywords, kPrice, kSquareFeet, kBedrooms, kBathrooms, kSortBy, kSearch, nil];
+    //Row Ids outlines the order of the rows in the table. The integer value of each constant does NOT impact the order.
+    NSMutableArray *rowIds = [[NSMutableArray alloc] initWithObjects:kStreet, kKeywords, kPrice, kSquareFeet, kBedrooms, kBathrooms, kSortBy, kSearch, nil];
     [self setRowIds:rowIds];
     [rowIds release];
     
     //Deselect all rows
     [self setSelectedRow:-1];
 }
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -139,162 +210,113 @@
 #pragma mark -
 #pragma mark UITableViewDataSource
 
-static NSString *kInputRangeCellId = @"INPUT_RANGE_CELL_ID";
-static NSString *kInputSimpleCellId = @"INPUT_SIMPLE_CELL_ID";
-static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
-static NSString *kButtonCellId = @"BUTTON_CELL_ID";
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [[self rowIds] count];
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *rowId = [[self rowIds] objectAtIndex:[indexPath row]];
-    
-    //Returns an input cell
+    //If this cell is the selected cell, then returns a cell for inputting
     //The reason for the > 0 and NSInteger cast is because comparing signed to unsigned integer
-    if ([self selectedRow] >= 0 && [self selectedRow] == (NSInteger)[indexPath row])
+    BOOL isSelectedRow = [self selectedRow] >= 0 && [self selectedRow] == (NSInteger)[indexPath row];
+    
+    //When selected, these cells display a simple input cell
+    if ([rowId isEqual:kStreet])
     {
-        //Returns input range cell
-        if ([rowId isEqual:kPrice] || [rowId isEqual:kSquareFeet] || [rowId isEqual:kBedrooms] || [rowId isEqual:kBathrooms])
+        if (isSelectedRow)
         {
-            [self setInputRangeCell:(InputRangeCell *)[tableView dequeueReusableCellWithIdentifier:kInputRangeCellId]];
-            if ([self inputRangeCell] == nil)
-            {
-                [[NSBundle mainBundle] loadNibNamed:@"InputRangeCell" owner:self options:nil];
-            }
-            
-            if ([rowId isEqual:kPrice])
-            {
-                [[[self inputRangeCell] minRange] setText:[[[self criteria] minPrice] stringValue]];
-                [[[self inputRangeCell] maxRange] setText:[[[self criteria] maxPrice] stringValue]];
-            }
-            else if ([rowId isEqual:kSquareFeet])
-            {
-                [[[self inputRangeCell] minRange] setText:[[[self criteria] minSquareFeet] stringValue]];
-                [[[self inputRangeCell] maxRange] setText:[[[self criteria] maxSquareFeet] stringValue]];
-            }
-            else if ([rowId isEqual:kBedrooms])
-            {
-                [[[self inputRangeCell] minRange] setText:[[[self criteria] minBedrooms] stringValue]];
-                [[[self inputRangeCell] maxRange] setText:[[[self criteria] maxBedrooms] stringValue]];
-            }
-            else if ([rowId isEqual:kBathrooms])
-            {
-                [[[self inputRangeCell] minRange] setText:[[[self criteria] minBathrooms] stringValue]];
-                [[[self inputRangeCell] maxRange] setText:[[[self criteria] maxBathrooms] stringValue]];
-            }
-            
-            return [self inputRangeCell];            
+            return [self inputSimpleCellWithText:[[self criteria] street]];
         }
-        //Returns input simple cell
         else
         {
-            [self setInputSimpleCell:(InputSimpleCell *)[tableView dequeueReusableCellWithIdentifier:kInputSimpleCellId]];
-            if ([self inputSimpleCell] == nil)
+            NSString *detailText = @"(optional)";
+            if ([[self criteria] street] != nil && [[[self criteria] street] length] > 0)
             {
-                [[NSBundle mainBundle] loadNibNamed:@"InputSimpleCell" owner:self options:nil];
+                detailText = [[self criteria] street];
             }
             
-            if ([rowId isEqual:kLocation])
-            {
-                [[[self inputSimpleCell] input] setText:[[self criteria] street]];
-            }
-            else if ([rowId isEqual:kKeywords])
-            {
-                [[[self inputSimpleCell] input] setText:[[self criteria] keywords]];
-            }
-            
-            return [self inputSimpleCell]; 
+            return [self simpleCellWithText:@"street" withDetail:detailText];
         }
     }
-    //Returns a button cell
-    else if ([rowId isEqual:kSearch])
+    else if ([rowId isEqual:kKeywords])
     {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kButtonCellId];
-        if (cell == nil)
+        if (isSelectedRow)
         {
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kButtonCellId] autorelease];
+            return [self inputSimpleCellWithText:[[self criteria] keywords]];
         }
+        else
+        {
+            NSString *detailText = @"(optional)";
+            if ([[self criteria] keywords] != nil && [[[self criteria] keywords] length] > 0)
+            {
+                detailText = [[self criteria] keywords];
+            }
+            
+            return [self simpleCellWithText:@"keywords" withDetail:detailText];
+        }
+    }        
+    //When selected, these cells display an input range cell
+    else if ([rowId isEqual:kPrice])
+    {
+        if (isSelectedRow)
+        {
+            return [self inputRangeCellWithMin:[[self criteria] minPrice] withMax:[[self criteria] maxPrice]];
+        }
+        else
+        {            
+            return [self simpleCellWithText:@"price" withDetail:[StringFormatter formatCurrencyRangeWithMin:[[self criteria] minPrice] withMax:[[self criteria] maxPrice]]];
+        }
+    }
+    else if ([rowId isEqual:kSquareFeet])
+    {
+        if (isSelectedRow)
+        {
+            return [self inputRangeCellWithMin:[[self criteria] minSquareFeet] withMax:[[self criteria] maxSquareFeet]];
+        }
+        else
+        {            
+            return [self simpleCellWithText:@"sq feet" withDetail:[StringFormatter formatRangeWithMin:[[self criteria] minSquareFeet] withMax:[[self criteria] maxSquareFeet] withUnits:@"sqft"]];
+        }
+    }
+    else if ([rowId isEqual:kBedrooms])
+    {
+        if (isSelectedRow)
+        {
+            return [self inputRangeCellWithMin:[[self criteria] minBedrooms] withMax:[[self criteria] maxBedrooms]];
+        }
+        else
+        {            
+            return [self simpleCellWithText:@"bedrooms" withDetail:[StringFormatter formatRangeWithMin:[[self criteria] minBedrooms] withMax:[[self criteria] maxBedrooms] withUnits:@"rooms"]];
+        }
+    }
+    else if ([rowId isEqual:kBathrooms])
+    {
+        if (isSelectedRow)
+        {
+            return [self inputRangeCellWithMin:[[self criteria] minBathrooms] withMax:[[self criteria] maxBathrooms]];
+        }
+        else
+        {            
+            return [self simpleCellWithText:@"bathrooms" withDetail:[StringFormatter formatRangeWithMin:[[self criteria] minBathrooms] withMax:[[self criteria] maxBathrooms] withUnits:@"baths"]];
+        }
+    }
+    //When selected, these cells bring up a choices view controller.
+    else if ([rowId isEqual:kSortBy])
+    {
+        UITableViewCell *cell = [self simpleCellWithText:@"sort by" withDetail:[[self criteria] sortBy]];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-        [[cell textLabel] setText:@"Search"];
-        [[cell textLabel] setTextAlignment:UITextAlignmentCenter];
-        
-        return cell;        
-    }
-    //Returns a simple cell
-    else
-    {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSimpleCellId];
-        if (cell == nil)
-        {
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:kSimpleCellId] autorelease];
-        }
-        //Prevents selection background popping up quickly when pressed. Sometimes it's too quick to see, but this prevents it from showing up at all.
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        //Since reusing cells, need to reset this to None
-        [cell setAccessoryType:UITableViewCellAccessoryNone];
-
-        if ([rowId isEqual:kLocation])
-        {
-            [[cell textLabel] setText:@"street"];
-            
-            if ([[self criteria] street] == nil || [[[self criteria] street] length] == 0)
-            {
-                [[cell detailTextLabel] setText:@"(optional)"];
-            }
-            else
-            {
-                [[cell detailTextLabel] setText:[[self criteria] street]];
-            }
-        }        
-        else if ([rowId isEqual:kKeywords])
-        {
-            [[cell textLabel] setText:@"keywords"];
-            
-            if ([[self criteria] keywords] == nil || [[[self criteria] keywords] length] == 0)
-            {
-                [[cell detailTextLabel] setText:@"(optional)"];
-            }
-            else
-            {
-                [[cell detailTextLabel] setText:[[self criteria] keywords]];
-            }
-        }
-        else if ([rowId isEqual:kPrice])
-        {
-            [[cell textLabel] setText:@"price"];
-            [[cell detailTextLabel] setText:[StringFormatter formatCurrencyRangeWithMin:[[self criteria] minPrice] withMax:[[self criteria] maxPrice]]];
-        }
-        else if ([rowId isEqual:kSquareFeet])
-        {
-            [[cell textLabel] setText:@"sq feet"];
-            [[cell detailTextLabel] setText:[StringFormatter formatRangeWithMin:[[self criteria] minSquareFeet] withMax:[[self criteria] maxSquareFeet] withUnits:@"sqft"]];
-        }
-        else if ([rowId isEqual:kBedrooms])
-        {
-            [[cell textLabel] setText:@"bedrooms"];
-            [[cell detailTextLabel] setText:[StringFormatter formatRangeWithMin:[[self criteria] minBedrooms] withMax:[[self criteria] maxBedrooms] withUnits:@"rooms"]];
-        }
-        else if ([rowId isEqual:kBathrooms])
-        {
-            [[cell textLabel] setText:@"bathrooms"];
-            [[cell detailTextLabel] setText:[StringFormatter formatRangeWithMin:[[self criteria] minBathrooms] withMax:[[self criteria] maxBathrooms] withUnits:@"baths"]];
-        }
-        else if ([rowId isEqual:kSortBy])
-        {
-            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-            
-            [[cell textLabel] setText:@"sort by"];
-            [[cell detailTextLabel] setText:[[self criteria] sortBy]];            
-        }
         
         return cell;
     }
+    else if ([rowId isEqual:kSearch])
+    {
+        return [self buttonCellWithText:@"Search"];
+    }
+    
+    return nil;
 }
 
 
@@ -374,7 +396,7 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
     NSString *text = [textField text];
     
     //Sets the correct Criteria attribute to the inputted valu
-    if ([rowId isEqual:kLocation])
+    if ([rowId isEqual:kStreet])
     {
         [[self criteria] setStreet:text];
     }

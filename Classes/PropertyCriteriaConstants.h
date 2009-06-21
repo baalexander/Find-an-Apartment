@@ -1,5 +1,5 @@
 //Criteria rows
-#define kLocation @"LOCATION"
+#define kStreet @"STREET"
 #define kKeywords @"KEYWORDS"
 #define kPrice @"PRICE"
 #define kSquareFeet @"SQUARE_FEET"
