@@ -246,12 +246,12 @@
 		455BFE530FDC9EDF000BCD39 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				45D93FA70FEEE5E800AD4A5B /* StringFormatter.h */,
+				45D93FA80FEEE5E800AD4A5B /* StringFormatter.m */,
 				457AA3370FDAC26100F0D16C /* UrlUtil.h */,
 				457AA3380FDAC26100F0D16C /* UrlUtil.m */,
 				457AA3390FDAC26100F0D16C /* XmlParser.h */,
 				457AA33A0FDAC26100F0D16C /* XmlParser.m */,
-				45D93FA70FEEE5E800AD4A5B /* StringFormatter.h */,
-				45D93FA80FEEE5E800AD4A5B /* StringFormatter.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
