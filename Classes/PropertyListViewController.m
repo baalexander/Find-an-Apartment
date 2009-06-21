@@ -40,11 +40,11 @@ static NSInteger kMapItem = 1;
 
 - (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
 {
-	if ((self = [super initWithNibName:nibName bundle:nibBundle]))
-	{
+    if ((self = [super initWithNibName:nibName bundle:nibBundle]))
+    {
         [self setDistance:0];
         [self setIsParsing:NO];
-	}
+    }
     
     return self;
 }
@@ -58,13 +58,13 @@ static NSInteger kMapItem = 1;
     [parser_ release];
     [fetchedResultsController_ release];
     
-	[super dealloc];
+    [super dealloc];
 }
 
 //The segmented control was clicked, handle it here
 - (IBAction)changeView:(id)sender
 {
-	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
 
     //Bring up map
     if ([segmentedControl selectedSegmentIndex] == kMapItem)
@@ -148,7 +148,7 @@ static NSInteger kMapItem = 1;
         [fetchedResultsController release];
     }
     
-	return fetchedResultsController_;
+    return fetchedResultsController_;
 }
 
 
@@ -171,18 +171,18 @@ static NSInteger kMapItem = 1;
     
     //Segmented control
     NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", nil];
-	UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
+    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
     [segmentOptions release];
     
     //Set selected segment index must come before addTarget, otherwise the action will be called as if the segment was pressed
     [segmentedControl setSelectedSegmentIndex:kListItem];
-	[segmentedControl addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventValueChanged];
-	[segmentedControl setFrame:CGRectMake(0, 0, 90, 30)];
+    [segmentedControl addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventValueChanged];
+    [segmentedControl setFrame:CGRectMake(0, 0, 90, 30)];
     [segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
     
-	UIBarButtonItem *segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
+    UIBarButtonItem *segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
     [segmentedControl release];
-	[[self navigationItem] setRightBarButtonItem:segmentBarItem];
+    [[self navigationItem] setRightBarButtonItem:segmentBarItem];
     [segmentBarItem release];    
 }
 
@@ -207,17 +207,17 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 {
     NSInteger count = [[[self fetchedResultsController] sections] count];
     
-	if (count == 0) {
-		count = 1;
-	}
-	
+    if (count == 0) {
+        count = 1;
+    }
+    
     return count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{	
+{    
     NSInteger numberOfRows = 0;
-	
+    
     if ([[[self fetchedResultsController] sections] count] > 0) {
         id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
         numberOfRows = [sectionInfo numberOfObjects];
@@ -235,7 +235,7 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     }
 
     //Configures cell with Summary data
-	PropertySummary *summary = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    PropertySummary *summary = [[self fetchedResultsController] objectAtIndexPath:indexPath];
     [[[self summaryCell] title] setText:[summary title]];
     [[[self summaryCell] subtitle] setText:[summary subtitle]];
     [[[self summaryCell] summary] setText:[summary summary]];
@@ -468,12 +468,12 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     [managedObjectContext deleteObject:[self history]];    
     
     UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error finding results" 
-														 message:[error localizedDescription] 
-														delegate:self 
-											   cancelButtonTitle:@"Ok"
-											   otherButtonTitles:nil];
-	[errorAlert show];
-	[errorAlert release];
+                                                         message:[error localizedDescription] 
+                                                        delegate:self 
+                                               cancelButtonTitle:@"Ok"
+                                               otherButtonTitles:nil];
+    [errorAlert show];
+    [errorAlert release];
 }
 
 @end

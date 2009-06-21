@@ -27,7 +27,7 @@
 
 - (void)layoutSubviews
 {
-	[super layoutSubviews];
+    [super layoutSubviews];
     
     //Hide the price label when editing to make room for the delete button
     [[self price] setHidden:[self isEditing]];

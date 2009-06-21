@@ -5,8 +5,8 @@
 // Function prototypes for SAX callbacks. This sample implements a minimal subset of SAX callbacks.
 // Depending on your application's needs, you might want to implement more callbacks.
 static void startElementSAX(void *ctx, const xmlChar *localname, const xmlChar *prefix, const xmlChar *URI, int nb_namespaces, const xmlChar **namespaces, int nb_attributes, int nb_defaulted, const xmlChar **attributes);
-static void	endElementSAX(void *ctx, const xmlChar *localname, const xmlChar *prefix, const xmlChar *URI);
-static void	charactersFoundSAX(void * ctx, const xmlChar * ch, int len);
+static void    endElementSAX(void *ctx, const xmlChar *localname, const xmlChar *prefix, const xmlChar *URI);
+static void    charactersFoundSAX(void * ctx, const xmlChar * ch, int len);
 static void errorEncounteredSAX(void * ctx, const char * msg, ...);
 
 // Forward reference. The structure is defined in full at the end of the file.
@@ -48,7 +48,7 @@ static xmlSAXHandler simpleSAXHandlerStruct;
 #pragma mark XmlParser (Initialize/Dealloc)
 
 - (id)init
-{	
+{    
     if ((self = [super init]))
     {
         
@@ -231,7 +231,7 @@ static void startElementSAX(void *ctx, const xmlChar *localname, const xmlChar *
  care about, this means we have all the character data. The next step is to create an NSString using the buffer
  contents and store that with the current Song object.
  */
-static void	endElementSAX(void *ctx, const xmlChar *localname, const xmlChar *prefix, const xmlChar *URI)
+static void    endElementSAX(void *ctx, const xmlChar *localname, const xmlChar *prefix, const xmlChar *URI)
 {
     XmlParser *parser = (XmlParser *)ctx;
     if ([parser parsingAnItem] == NO)
@@ -264,7 +264,7 @@ static void	endElementSAX(void *ctx, const xmlChar *localname, const xmlChar *pr
 /*
  This callback is invoked when the parser encounters character data inside a node. The parser class determines how to use the character data.
  */
-static void	charactersFoundSAX(void *ctx, const xmlChar *ch, int len)
+static void    charactersFoundSAX(void *ctx, const xmlChar *ch, int len)
 {
     XmlParser *parser = (XmlParser *)ctx;
     // A state variable, "storingCharacters", is set when nodes of interest begin and end. 

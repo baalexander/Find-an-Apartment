@@ -21,10 +21,10 @@
 
 - (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
 {
-	if ((self = [super initWithNibName:nibName bundle:nibBundle]))
-	{
+    if ((self = [super initWithNibName:nibName bundle:nibBundle]))
+    {
         
-	}
+    }
     
     return self;
 }
@@ -62,7 +62,7 @@
         [fetchedResultsController release];
     }
     
-	return fetchedResultsController_;
+    return fetchedResultsController_;
 }
 
 
@@ -105,9 +105,9 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{	
-	id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
-	return [sectionInfo numberOfObjects];
+{    
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
+    return [sectionInfo numberOfObjects];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
@@ -125,10 +125,10 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     }
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     
-	State *state = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-	[[cell textLabel] setText:[[state name] description]];
+    State *state = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    [[cell textLabel] setText:[[state name] description]];
     
-	return cell;
+    return cell;
 }
 
 

@@ -18,12 +18,12 @@
 
 - (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
 {
-	if ((self = [super initWithNibName:nibName bundle:nibBundle]))
-	{
+    if ((self = [super initWithNibName:nibName bundle:nibBundle]))
+    {
         NSArray *choices = [[NSArray alloc] initWithObjects:kSortByPriceAscending, kSortByPriceDescending, kSortByDistance, nil];
         [self setChoices:choices];
         [choices release];
-	}
+    }
     
     return self;
 }

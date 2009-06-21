@@ -56,25 +56,25 @@
 - (NSString *)propertyToHtml:(PropertySummary *)summary
 {
     NSMutableString *body = [NSMutableString string];
-	[body appendFormat:@"<a href=\"%@\">%@</a><br/>", [summary link], [summary title]];
-	
-	if ([summary subtitle] != nil && [[summary subtitle] length] > 0)
-	{
-		[body appendFormat:@"%@<br/>", [summary subtitle]];
-	}
-	if ([summary price] != nil && [summary price]  > 0)
-	{
+    [body appendFormat:@"<a href=\"%@\">%@</a><br/>", [summary link], [summary title]];
+    
+    if ([summary subtitle] != nil && [[summary subtitle] length] > 0)
+    {
+        [body appendFormat:@"%@<br/>", [summary subtitle]];
+    }
+    if ([summary price] != nil && [summary price]  > 0)
+    {
         //Formats NSNumber as currency with no cents
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
         [formatter setMinimumFractionDigits:0];
         [body appendFormat:@"%@<br/>", [formatter stringFromNumber:[summary price]]];
         [formatter release];
-	}
-	if ([summary summary] != nil && [[summary summary] length] > 0)
-	{
-		[body appendFormat:@"%@<br/>", [summary summary]];
-	}
+    }
+    if ([summary summary] != nil && [[summary summary] length] > 0)
+    {
+        [body appendFormat:@"%@<br/>", [summary summary]];
+    }
     
     return body;
 }

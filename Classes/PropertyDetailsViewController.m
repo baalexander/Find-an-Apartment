@@ -22,10 +22,10 @@
 
 - (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
 {
-	if ((self = [super initWithNibName:nibName bundle:nibBundle]))
-	{
+    if ((self = [super initWithNibName:nibName bundle:nibBundle]))
+    {
         
-	}
+    }
     
     return self;
 }
@@ -49,8 +49,8 @@
     NSArray *properties = [[NSArray alloc] initWithObjects:summary, nil];
     [listEmailer setProperties:properties];
     [properties release];
-	
-	[self presentModalViewController:listEmailer animated:YES];
+    
+    [self presentModalViewController:listEmailer animated:YES];
     [listEmailer release];
 }
 
@@ -256,7 +256,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     [[cell textLabel] setText:key];
     [[cell detailTextLabel] setText:[details objectForKey:key]];
     
-	return cell;
+    return cell;
 }
 
 
@@ -274,8 +274,8 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
 // Dismisses the email composition interface when users tap Cancel or Send.
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
-{	
-	[self dismissModalViewControllerAnimated:YES];
+{    
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 @end

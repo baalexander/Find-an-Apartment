@@ -18,8 +18,8 @@ static NSInteger kMapItem = 1;
 
 - (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
 {
-	if ((self = [super initWithNibName:nibName bundle:nibBundle]))
-	{
+    if ((self = [super initWithNibName:nibName bundle:nibBundle]))
+    {
 
     }
     
@@ -36,7 +36,7 @@ static NSInteger kMapItem = 1;
 //The segmented control was clicked, handle it here
 - (IBAction)changeView:(id)sender
 {
-	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     
     //Bring up list view. Releases this view.
     if ([segmentedControl selectedSegmentIndex] == kListItem)
@@ -62,26 +62,26 @@ static NSInteger kMapItem = 1;
     
     //Segmented control
     NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", nil];
-	UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
+    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
     [segmentOptions release];
     
     //Set selected segment index must come before addTarget, otherwise the action will be called as if the segment was pressed
     [segmentedControl setSelectedSegmentIndex:kMapItem];
-	[segmentedControl addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventValueChanged];
-	[segmentedControl setFrame:CGRectMake(0, 0, 90, 30)];
+    [segmentedControl addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventValueChanged];
+    [segmentedControl setFrame:CGRectMake(0, 0, 90, 30)];
     [segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
     
-	UIBarButtonItem *segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
+    UIBarButtonItem *segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
     [segmentedControl release];
-	[[self navigationItem] setRightBarButtonItem:segmentBarItem];
+    [[self navigationItem] setRightBarButtonItem:segmentBarItem];
     [segmentBarItem release];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
+    
+    // Release any cached data, images, etc that aren't in use.
 }
 
 - (void)viewDidUnload

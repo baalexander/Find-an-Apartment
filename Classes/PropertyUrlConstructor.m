@@ -29,50 +29,50 @@
 
 - (id)init
 {
-	if ((self = [super init]))
-	{
-		
-	}
-	
-	return self;
+    if ((self = [super init]))
+    {
+        
+    }
+    
+    return self;
 }
 
 
 - (void)dealloc
 {
-	[criteria_ release];
-	
-	[super dealloc];
+    [criteria_ release];
+    
+    [super dealloc];
 }
 
 - (NSString *)deviceParams
 {
-	NSMutableString *url = [NSMutableString string];
-	//Assumes deviceParams is first set of params for URL so does not prepend with '&'
-	[url appendString:@"device_brand=Apple"];
-	[url appendFormat:@"&device_model=%@", [UrlUtil encodeUrl:[UIDevice currentDevice].model]];
-	[url appendFormat:@"&device_serial_number=%@", [UrlUtil encodeUrl:[UIDevice currentDevice].uniqueIdentifier]];
-	[url appendFormat:@"&system_name=%@", [UrlUtil encodeUrl:[UIDevice currentDevice].systemName]];
-	[url appendFormat:@"&system_version=%@", [UrlUtil encodeUrl:[UIDevice currentDevice].systemVersion]];
-	
-	return url;
+    NSMutableString *url = [NSMutableString string];
+    //Assumes deviceParams is first set of params for URL so does not prepend with '&'
+    [url appendString:@"device_brand=Apple"];
+    [url appendFormat:@"&device_model=%@", [UrlUtil encodeUrl:[UIDevice currentDevice].model]];
+    [url appendFormat:@"&device_serial_number=%@", [UrlUtil encodeUrl:[UIDevice currentDevice].uniqueIdentifier]];
+    [url appendFormat:@"&system_name=%@", [UrlUtil encodeUrl:[UIDevice currentDevice].systemName]];
+    [url appendFormat:@"&system_version=%@", [UrlUtil encodeUrl:[UIDevice currentDevice].systemVersion]];
+    
+    return url;
 }
 
 - (NSString *)rangeWithMin:(NSNumber *)min withMax:(NSNumber *)max withUnits:(NSString *)units
 {
- 	NSMutableString *range = [NSMutableString string];
-	
-	if (min != nil && [min integerValue] > 0)
-	{
-		[range appendFormat:@"&min_%@=%@", units, [min stringValue]];
-	}
-	
-	if (max != nil && [max integerValue] > 0)
-	{
-		[range appendFormat:@"&max_%@=%@", units, [max stringValue]];
-	}
-	
-	return range;   
+     NSMutableString *range = [NSMutableString string];
+    
+    if (min != nil && [min integerValue] > 0)
+    {
+        [range appendFormat:@"&min_%@=%@", units, [min stringValue]];
+    }
+    
+    if (max != nil && [max integerValue] > 0)
+    {
+        [range appendFormat:@"&max_%@=%@", units, [max stringValue]];
+    }
+    
+    return range;   
 }
 
 - (NSString *)bathrooms
@@ -146,26 +146,26 @@
 
 - (NSString *)saleType
 {
-	return @"&sale_type=for_sale";
+    return @"&sale_type=for_sale";
 }
 
 - (NSString *)sortBy
 {
-	NSString *choice = [[self criteria] sortBy];
-	
-	if ([choice isEqual:kSortByPriceAscending])
-	{
+    NSString *choice = [[self criteria] sortBy];
+    
+    if ([choice isEqual:kSortByPriceAscending])
+    {
         return @"&sort_by=age&sort_order=ascending";
-	}
-	else if ([choice isEqual:kSortByPriceDescending])
-	{
+    }
+    else if ([choice isEqual:kSortByPriceDescending])
+    {
         return @"&sort_by=age&sort_order=descending";
-	}
-	//Default sort is distance
-	else
-	{
-		return @"&sort_by=distance&sort_order=ascending";
-	}
+    }
+    //Default sort is distance
+    else
+    {
+        return @"&sort_by=distance&sort_order=ascending";
+    }
 }
 
 - (NSString *)squareFeet
@@ -177,30 +177,30 @@
 
 - (NSURL *)urlFromCriteria:(PropertyCriteria *)criteria
 {
-	[self setCriteria:criteria];
-	
-	//Creates base URL
-	NSString *baseUrl = @"http://www.alexandermobile.com/REST/Finder/v3/properties/view.xml?";
-	NSMutableString *mutableUrl = [[NSMutableString alloc] initWithString:baseUrl];
-	
-	//Appends device params
-	[mutableUrl appendString:[self deviceParams]];
-	
-	//Appends fields from user input
-	[mutableUrl appendString:[self location]];
+    [self setCriteria:criteria];
+    
+    //Creates base URL
+    NSString *baseUrl = @"http://www.alexandermobile.com/REST/Finder/v3/properties/view.xml?";
+    NSMutableString *mutableUrl = [[NSMutableString alloc] initWithString:baseUrl];
+    
+    //Appends device params
+    [mutableUrl appendString:[self deviceParams]];
+    
+    //Appends fields from user input
+    [mutableUrl appendString:[self location]];
     [mutableUrl appendString:[self keywords]];
-	[mutableUrl appendString:[self price]];
-	[mutableUrl appendString:[self squareFeet]];
-	[mutableUrl appendString:[self bedrooms]];
-	[mutableUrl appendString:[self bathrooms]];
-	[mutableUrl appendString:[self sortBy]];
-	[mutableUrl appendString:[self saleType]];
-	
-	NSURL *url = [[[NSURL alloc] initWithString:mutableUrl] autorelease];
-	NSLog(@"URL:%@", url);
-	[mutableUrl release];
-	
-	return url;
+    [mutableUrl appendString:[self price]];
+    [mutableUrl appendString:[self squareFeet]];
+    [mutableUrl appendString:[self bedrooms]];
+    [mutableUrl appendString:[self bathrooms]];
+    [mutableUrl appendString:[self sortBy]];
+    [mutableUrl appendString:[self saleType]];
+    
+    NSURL *url = [[[NSURL alloc] initWithString:mutableUrl] autorelease];
+    NSLog(@"URL:%@", url);
+    [mutableUrl release];
+    
+    return url;
 }
 
 @end

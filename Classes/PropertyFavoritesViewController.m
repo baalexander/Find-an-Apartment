@@ -11,17 +11,17 @@
 
 - (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
 {
-	if ((self = [super initWithNibName:nibName bundle:nibBundle]))
-	{
+    if ((self = [super initWithNibName:nibName bundle:nibBundle]))
+    {
 
-	}
+    }
     
     return self;
 }
 
 - (void)dealloc
 {
-	[super dealloc];
+    [super dealloc];
 }
 
 //Performas a deep copy on the property then adds to favorites. Is not called copyProperty because the copy prefix implies returning a copied object.
@@ -98,13 +98,13 @@
     [predicates release];
     [fetchRequest setPredicate:compoundPredicate];
     
-	NSError *error = nil;
-	NSArray *fetchResults = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	if (fetchResults == nil)
+    NSError *error = nil;
+    NSArray *fetchResults = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (fetchResults == nil)
     {
-		// Handle the error.
+        // Handle the error.
         NSLog(@"Error checking if property is a favorite.");
-	}
+    }
 
     return [fetchResults count] > 0;
 }
@@ -120,15 +120,15 @@
     
     [fetchRequest setFetchLimit:1];
     
-	NSError *error = nil;
-	NSArray *fetchResults = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	if (fetchResults == nil)
+    NSError *error = nil;
+    NSArray *fetchResults = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (fetchResults == nil)
     {
-		// Handle the error.
+        // Handle the error.
         NSLog(@"Error fetching favorites History object.");
         
         return nil;
-	}
+    }
     
     //No favorites History, creates a new one
     if ([fetchResults count] == 0)
@@ -163,29 +163,29 @@
     
     NSArray *properties = [[self fetchedResultsController] fetchedObjects];
     [listEmailer setProperties:properties];
-	
-	[self presentModalViewController:listEmailer animated:YES];
+    
+    [self presentModalViewController:listEmailer animated:YES];
     [listEmailer release];
 }
 
 - (void)edit:(id)sender
 {
-	//Switches editing status
-	BOOL isEditing = ![[self tableView] isEditing];
-	[[self tableView] setEditing:isEditing animated:YES];
-	
-	if ([[self tableView] isEditing])
-	{
+    //Switches editing status
+    BOOL isEditing = ![[self tableView] isEditing];
+    [[self tableView] setEditing:isEditing animated:YES];
+    
+    if ([[self tableView] isEditing])
+    {
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(edit:)];
         [[self navigationItem] setLeftBarButtonItem:doneButton];
         [doneButton release];        
-	}
-	else
-	{
+    }
+    else
+    {
         UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(edit:)];
         [[self navigationItem] setLeftBarButtonItem:editButton];
         [editButton release];        
-	}    
+    }    
 }
 
 - (NSFetchedResultsController *)fetchedResultsController
@@ -202,16 +202,16 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (editingStyle == UITableViewCellEditingStyleDelete)
-	{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
         //Deletes the summary, should cascade to delete Details
         PropertySummary *summary = [[self fetchedResultsController] objectAtIndexPath:indexPath];
         NSManagedObjectContext *managedObjectContext = [summary managedObjectContext];
         [managedObjectContext deleteObject:summary];
-		
+        
         // Commit the change.
-		NSError *error;
-		if (![managedObjectContext save:&error])
+        NSError *error;
+        if (![managedObjectContext save:&error])
         {
             //TODO: Handle error
             NSLog(@"Error saving the deletion in Favorites.");
@@ -231,8 +231,8 @@
     
     //Add the Edit button to the left in the navigation bar
     UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(edit:)];
-	[[self navigationItem] setLeftBarButtonItem:editButton];
-	[editButton release];
+    [[self navigationItem] setLeftBarButtonItem:editButton];
+    [editButton release];
 }
 
 
@@ -241,8 +241,8 @@
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
-	// The fetch controller is about to start sending change notifications, so prepare the table view for updates.
-	[[self tableView] beginUpdates];
+    // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
+    [[self tableView] beginUpdates];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
@@ -253,12 +253,12 @@
         [[self tableView] insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
         [indexPaths release];
     }
-	else if (type == NSFetchedResultsChangeDelete)
+    else if (type == NSFetchedResultsChangeDelete)
     {
         NSArray *indexPaths = [[NSArray alloc] initWithObjects:indexPath, nil];
         [[self tableView] deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
         [indexPaths release];
-	}
+    }
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
@@ -275,8 +275,8 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-	// The fetch controller has sent all current change notifications, so tell the table view to process all updates.
-	[[self tableView] endUpdates];
+    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
+    [[self tableView] endUpdates];
 }
 
 
@@ -285,8 +285,8 @@
 
 // Dismisses the email composition interface when users tap Cancel or Send.
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
-{	
-	[self dismissModalViewControllerAnimated:YES];
+{    
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 @end

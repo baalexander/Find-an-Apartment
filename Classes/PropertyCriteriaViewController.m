@@ -44,10 +44,10 @@
 
 - (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
 {
-	if ((self = [super initWithNibName:nibName bundle:nibBundle]))
-	{
+    if ((self = [super initWithNibName:nibName bundle:nibBundle]))
+    {
 
-	}
+    }
     
     return self;
 }
@@ -533,7 +533,7 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
 {
     [[self currentTextField] resignFirstResponder];
     
-	return YES;
+    return YES;
 }
 
 @end
