@@ -38,14 +38,14 @@
 - (void)dealloc
 {
     [tabBarController_ release];
-	[window_ release];
+    [window_ release];
     [managedObjectModel_ release];
     [mainObjectContext_ release];
     [mainStoreCoordinator_ release];
     [geographyObjectContext_ release];
     [geographyStoreCoordinator_ release];
     
-	[super dealloc];
+    [super dealloc];
 }
 
 //Returns the path to the application's documents directory.
@@ -85,7 +85,7 @@
 - (NSPersistentStoreCoordinator *)mainStoreCoordinator
 {
     if (mainStoreCoordinator_ == nil)
-    {	
+    {    
         NSPersistentStoreCoordinator *persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
         [self setMainStoreCoordinator:persistentStoreCoordinator];
         [persistentStoreCoordinator release];
@@ -98,7 +98,7 @@
             //TODO: Handle error
         }    
     }
-	
+    
     return mainStoreCoordinator_;
 }
 
@@ -119,37 +119,42 @@
 //Geographical data is stored in its own persistent storage
 - (NSPersistentStoreCoordinator *)geographyStoreCoordinator
 {
-    if (geographyStoreCoordinator_ != nil) 
-    {
-        return geographyStoreCoordinator_;
-    }
-	
-	NSString *storePath = [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"Geography.sqlite"];
-	
-    // Check to see if the store already exists
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	// Copy the default store if necessary
-	if (![fileManager fileExistsAtPath:storePath]) 
-    {
-		NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"Geography" ofType:@"sqlite"];
-		if (defaultStorePath) 
+    if (geographyStoreCoordinator_ == nil) 
+    {    
+        NSString *storePath = [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"Geography.sqlite"];
+        
+        // Check to see if the store already exists
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        // Copy the default store if necessary
+        if (![fileManager fileExistsAtPath:storePath]) 
         {
-			[fileManager copyItemAtPath:defaultStorePath toPath:storePath error:NULL];
-		}
-	}
+            NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"Geography" ofType:@"sqlite"];
+            if (defaultStorePath) 
+            {
+                [fileManager copyItemAtPath:defaultStorePath toPath:storePath error:NULL];
+            }
+        }
+        
+        NSURL *storeUrl = [NSURL fileURLWithPath:storePath];
+        
+        NSError *error;
+        
+        NSMutableDictionary *options = nil;
+        //Implement options when updating the model. Then comment options back out.
+        options = [NSMutableDictionary dictionary];
+        //Uncomment the line below to ignore version hash checks
+        [options setObject:[NSNumber numberWithBool:YES] forKey:NSIgnorePersistentStoreVersioningOption];
+        //When migrating, uncomment the setObject lines belows
+        //[options setObject:[NSNumber numberWithBool:YES] forKey:NSMigratePersistentStoresAutomaticallyOption];
+        //[options setObject:[NSNumber numberWithBool:YES] forKey:NSInferMappingModelAutomaticallyOption];
+        geographyStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];
+        if (![geographyStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:options error:&error])
+        {
+            // Handle the error.
+            NSLog(@"error: %@", error);
+        }
+    }
     
-	NSURL *storeUrl = [NSURL fileURLWithPath:storePath];
-	
-	NSError *error;
-	
-    // NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
-    geographyStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];
-    if (![geographyStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error])
-    {
-        // Handle the error.
-		NSLog(@"error: %@", error);
-    }    
-	
     return geographyStoreCoordinator_;
 }
 
@@ -167,16 +172,16 @@
 
 //applicationWillTerminate: saves changes in the application's managed object context before the application terminates.
 - (void)applicationWillTerminate:(UIApplication *)application
-{	
+{    
     NSError *error;
     if (mainObjectContext_ != nil)
     {
         if ([[self mainObjectContext] hasChanges] && ![[self mainObjectContext] save:&error])
         {
-			// Handle error
+            // Handle error
             NSLog(@"Error when saving context in application will terminate.");
-			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-			exit(-1);  // Fail
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            exit(-1);  // Fail
         } 
     }
 }

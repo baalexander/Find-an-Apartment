@@ -205,7 +205,7 @@
     [self setTitle:title];
     
     //Row Ids outlines the order of the rows in the table
-    NSMutableArray *rowIds = [[NSMutableArray alloc] initWithObjects:kSource, kLocation, kPrice, kSquareFeet, kBedrooms, kBathrooms, kSortBy, kSearch, nil];
+    NSMutableArray *rowIds = [[NSMutableArray alloc] initWithObjects:kLocation, kKeywords, kPrice, kSquareFeet, kBedrooms, kBathrooms, kSortBy, kSearch, nil];
     [self setRowIds:rowIds];
     [rowIds release];
     
@@ -256,6 +256,7 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
             {
                 [[NSBundle mainBundle] loadNibNamed:@"InputRangeCell" owner:self options:nil];
             }
+            
             if ([rowId isEqual:kPrice])
             {
                 [[[self inputRangeCell] minRange] setText:[[[self criteria] minPrice] stringValue]];
@@ -287,9 +288,14 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
             {
                 [[NSBundle mainBundle] loadNibNamed:@"InputSimpleCell" owner:self options:nil];
             }
+            
             if ([rowId isEqual:kLocation])
             {
                 [[[self inputSimpleCell] input] setText:[[self criteria] street]];
+            }
+            else if ([rowId isEqual:kKeywords])
+            {
+                [[[self inputSimpleCell] input] setText:[[self criteria] keywords]];
             }
             
             return [self inputSimpleCell]; 
@@ -321,17 +327,11 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         //Since reusing cells, need to reset this to None
         [cell setAccessoryType:UITableViewCellAccessoryNone];
-        
-        if ([rowId isEqual:kSource])
-        {
-            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-            
-            [[cell textLabel] setText:@"source"];
-            [[cell detailTextLabel] setText:[[self criteria] searchSource]];
-        }
-        else if ([rowId isEqual:kLocation])
+
+        if ([rowId isEqual:kLocation])
         {
             [[cell textLabel] setText:@"street"];
+            
             if ([[self criteria] street] == nil || [[[self criteria] street] length] == 0)
             {
                 [[cell detailTextLabel] setText:@"(optional)"];
@@ -339,6 +339,19 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
             else
             {
                 [[cell detailTextLabel] setText:[[self criteria] street]];
+            }
+        }        
+        else if ([rowId isEqual:kKeywords])
+        {
+            [[cell textLabel] setText:@"keywords"];
+            
+            if ([[self criteria] keywords] == nil || [[[self criteria] keywords] length] == 0)
+            {
+                [[cell detailTextLabel] setText:@"(optional)"];
+            }
+            else
+            {
+                [[cell detailTextLabel] setText:[[self criteria] keywords]];
             }
         }
         else if ([rowId isEqual:kPrice])
@@ -453,6 +466,10 @@ static NSString *kButtonCellId = @"BUTTON_CELL_ID";
     if ([rowId isEqual:kLocation])
     {
         [[self criteria] setStreet:text];
+    }
+    else if ([rowId isEqual:kKeywords])
+    {
+        [[self criteria] setKeywords:text];
     }
     else if ([rowId isEqual:kPrice])
     {

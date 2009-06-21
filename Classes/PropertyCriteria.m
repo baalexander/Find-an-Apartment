@@ -15,10 +15,10 @@
 @dynamic maxBathrooms;
 @dynamic city;
 @dynamic street;
-@dynamic searchSource;
 @dynamic minBedrooms;
 @dynamic maxPrice;
 @dynamic minBathrooms;
+@dynamic keywords;
 @dynamic history;
 
 @end

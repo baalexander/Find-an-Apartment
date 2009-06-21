@@ -6,9 +6,10 @@
 
 @interface PropertyUrlConstructor ()
 @property (nonatomic, retain) PropertyCriteria *criteria;
+- (NSString *)deviceParams;
 - (NSString *)bathrooms;
 - (NSString *)bedrooms;
-- (NSString *)deviceParams;
+- (NSString *)keywords;
 - (NSString *)location;
 - (NSString *)price;
 - (NSString *)rangeWithMin:(NSNumber *)min withMax:(NSNumber *)max withUnits:(NSString *)units;
@@ -86,6 +87,17 @@
     return [self rangeWithMin:[[self criteria] minBedrooms] 
                       withMax:[[self criteria] maxBedrooms] 
                     withUnits:@"bedrooms"];
+}
+
+- (NSString *)keywords
+{
+    NSString *keywords = [[self criteria] keywords];
+    if (keywords == nil || [keywords length] == 0)
+    {
+        return @"";
+    }
+    
+    return [NSString stringWithFormat:@"&keywords=%@", [UrlUtil encodeUrl:keywords]];
 }
 
 - (NSString *)location
@@ -176,6 +188,7 @@
 	
 	//Appends fields from user input
 	[mutableUrl appendString:[self location]];
+    [mutableUrl appendString:[self keywords]];
 	[mutableUrl appendString:[self price]];
 	[mutableUrl appendString:[self squareFeet]];
 	[mutableUrl appendString:[self bedrooms]];
