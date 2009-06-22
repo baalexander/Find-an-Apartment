@@ -51,6 +51,8 @@
 		45D93EDE0FEEDB0B00AD4A5B /* PropertyCriteria.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D93EDB0FEEDB0B00AD4A5B /* PropertyCriteria.m */; };
 		45D93EDF0FEEDB0B00AD4A5B /* PropertyHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D93EDD0FEEDB0B00AD4A5B /* PropertyHistory.m */; };
 		45D93FA90FEEE5E800AD4A5B /* StringFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D93FA80FEEE5E800AD4A5B /* StringFormatter.m */; };
+		45D9401E0FEFDA3600AD4A5B /* LocationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D9401C0FEFDA3600AD4A5B /* LocationCell.m */; };
+		45D9401F0FEFDA3600AD4A5B /* LocationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D9401D0FEFDA3600AD4A5B /* LocationCell.xib */; };
 		45FF76C80FE9FF810053B4D8 /* PropertyFavoritesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */; };
 		DD4581260FEEC7B500783A46 /* Geography.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = DD4581250FEEC7B500783A46 /* Geography.xcdatamodel */; };
 		DD45814C0FEEC86300783A46 /* CityOrPostalCode.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4581490FEEC86300783A46 /* CityOrPostalCode.m */; };
@@ -128,6 +130,9 @@
 		45D93EDD0FEEDB0B00AD4A5B /* PropertyHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyHistory.m; path = Classes/PropertyHistory.m; sourceTree = "<group>"; };
 		45D93FA70FEEE5E800AD4A5B /* StringFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringFormatter.h; sourceTree = "<group>"; };
 		45D93FA80FEEE5E800AD4A5B /* StringFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringFormatter.m; sourceTree = "<group>"; };
+		45D9401B0FEFDA3600AD4A5B /* LocationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocationCell.h; path = Classes/LocationCell.h; sourceTree = "<group>"; };
+		45D9401C0FEFDA3600AD4A5B /* LocationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocationCell.m; path = Classes/LocationCell.m; sourceTree = "<group>"; };
+		45D9401D0FEFDA3600AD4A5B /* LocationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = LocationCell.xib; path = Classes/LocationCell.xib; sourceTree = "<group>"; };
 		45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyFavoritesView.xib; path = Classes/PropertyFavoritesView.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Find_an_Apartment-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Find_an_Apartment-Info.plist"; sourceTree = "<group>"; };
 		DD4581250FEEC7B500783A46 /* Geography.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Geography.xcdatamodel; sourceTree = "<group>"; };
@@ -313,6 +318,7 @@
 			children = (
 				457AA37B0FDAC45900F0D16C /* InputRangeCell.xib */,
 				457AA37E0FDAC45900F0D16C /* InputSimpleCell.xib */,
+				45D9401D0FEFDA3600AD4A5B /* LocationCell.xib */,
 				457931000FE36A08008E2ACD /* SummaryCell.xib */,
 			);
 			name = "General UI";
@@ -325,6 +331,8 @@
 				457AA37A0FDAC45900F0D16C /* InputRangeCell.m */,
 				457AA37C0FDAC45900F0D16C /* InputSimpleCell.h */,
 				457AA37D0FDAC45900F0D16C /* InputSimpleCell.m */,
+				45D9401B0FEFDA3600AD4A5B /* LocationCell.h */,
+				45D9401C0FEFDA3600AD4A5B /* LocationCell.m */,
 				457930FE0FE36A08008E2ACD /* SummaryCell.h */,
 				457930FF0FE36A08008E2ACD /* SummaryCell.m */,
 			);
@@ -449,6 +457,7 @@
 				45FF76C80FE9FF810053B4D8 /* PropertyFavoritesView.xib in Resources */,
 				45C767840FEC2E9100C75D90 /* Icon.png in Resources */,
 				45D93C6E0FECAC1C00AD4A5B /* locate.png in Resources */,
+				45D9401F0FEFDA3600AD4A5B /* LocationCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,6 +495,7 @@
 				45D93EDE0FEEDB0B00AD4A5B /* PropertyCriteria.m in Sources */,
 				45D93EDF0FEEDB0B00AD4A5B /* PropertyHistory.m in Sources */,
 				45D93FA90FEEE5E800AD4A5B /* StringFormatter.m in Sources */,
+				45D9401E0FEFDA3600AD4A5B /* LocationCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

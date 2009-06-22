@@ -16,6 +16,7 @@
 @synthesize details = details_;
 @synthesize sectionTitles = sectionTitles_;
 @synthesize sectionDetails = sectionDetails_;
+@synthesize locationCell = locationCell_;
 
 
 #pragma mark -
@@ -37,6 +38,7 @@
     [details_ release];
     [sectionTitles_ release];
     [sectionDetails_ release];
+    [locationCell_ release];
     
     [super dealloc];
 }
@@ -227,12 +229,43 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     return [[details allKeys] count];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *details = [[self sectionDetails] objectAtIndex:[indexPath section]];
+    NSArray *keys = [details allKeys];
+    NSString *key = [keys objectAtIndex:[indexPath row]];
+    
+    if ([key isEqual:@"location"])
+    {
+        return [LocationCell height];
+    }
+    
+    //Returns default row height
+    return [[self tableView] rowHeight];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {        
     NSDictionary *details = [[self sectionDetails] objectAtIndex:[indexPath section]];
     NSArray *keys = [details allKeys];
     NSString *key = [keys objectAtIndex:[indexPath row]];
+    NSString *detail = [details objectForKey:key];
     
+    if ([key isEqual:@"location"])
+    {        
+        static NSString *kLocationCell = @"LOCATION_CELL_ID";
+        
+        [self setLocationCell:(LocationCell *)[[self tableView] dequeueReusableCellWithIdentifier:kLocationCell]];
+        if ([self locationCell] == nil)
+        {
+            [[NSBundle mainBundle] loadNibNamed:@"LocationCell" owner:self options:nil];
+        }
+        [[self locationCell] setLocation:detail];
+        
+        return [self locationCell];
+    }
+    
+    //Default cell
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSimpleCellId];
     if (cell == nil)
     {
@@ -240,7 +273,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     }
 
     [[cell textLabel] setText:key];
-    [[cell detailTextLabel] setText:[details objectForKey:key]];
+    [[cell detailTextLabel] setText:detail];
     
     return cell;
 }
