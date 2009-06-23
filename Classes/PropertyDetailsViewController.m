@@ -4,6 +4,7 @@
 #import "PropertyListEmailerViewController.h"
 #import "StringFormatter.h"
 
+
 static NSInteger kPrevious = 0;
 static NSInteger kNext = 1;
 
@@ -98,6 +99,11 @@ static NSInteger kNext = 1;
     }
 }
 
+- (BOOL)hasDisclosureIndicator:(NSString *)key
+{
+    return [key isEqual:@"images"] || [key isEqual:@"link"] || [key isEqual:@"email"] || [key isEqual:@"location"];
+}
+
 - (void)setDetails:(PropertyDetails *)details
 {
     //Retain/release
@@ -171,6 +177,7 @@ static NSInteger kNext = 1;
     
     //Contact section
     NSMutableDictionary *contactSection = [[NSMutableDictionary alloc] init];
+    [contactSection setObject:@"brandon_alexander@alexandermobile.com" forKey:@"email"];
     if ([[self details] source] != nil)
     {
         [contactSection setObject:[[self details] source] forKey:@"source"];
@@ -361,10 +368,15 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     }
     
     //Adds disclosure indicator if...
-    if ([key isEqual:@"images"])
+    if ([self hasDisclosureIndicator:key])
     {
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     }
+    else
+    {
+        [cell setAccessoryType:UITableViewCellAccessoryNone];
+    }
+    
 
     [[cell textLabel] setText:key];
     [[cell detailTextLabel] setText:detail];
@@ -376,9 +388,42 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 #pragma mark -
 #pragma mark UITableViewDelegate
 
+//Enables/Disables cell for selection based on if selectable
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *details = [[self sectionDetails] objectAtIndex:[indexPath section]];
+    NSArray *keys = [details allKeys];
+    NSString *key = [keys objectAtIndex:[indexPath row]];
+    
+    if ([self hasDisclosureIndicator:key])
+    {
+        return indexPath;
+    }
+    else
+    {
+        return nil;
+    }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSDictionary *details = [[self sectionDetails] objectAtIndex:[indexPath section]];
+    NSArray *keys = [details allKeys];
+    NSString *key = [keys objectAtIndex:[indexPath row]];
+    NSString *detail = [details objectForKey:key];
     
+    if ([key isEqual:@"email"])
+    {
+        MFMailComposeViewController *emailer = [[MFMailComposeViewController alloc] init];
+        [emailer setMailComposeDelegate:self];
+        
+        NSArray *toRecipients = [[NSArray alloc] initWithObjects:detail, nil];
+        [emailer setToRecipients:toRecipients];
+        [toRecipients release];
+        
+        [self presentModalViewController:emailer animated:YES];
+        [emailer release];
+    }
 }    
 
 
@@ -389,6 +434,9 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
 {    
     [self dismissModalViewControllerAnimated:YES];
+    
+	NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
+	[[self tableView] deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end
