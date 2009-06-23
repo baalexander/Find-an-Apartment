@@ -4,6 +4,9 @@
 #import "PropertyListEmailerViewController.h"
 #import "StringFormatter.h"
 
+static NSInteger kPrevious = 0;
+static NSInteger kNext = 1;
+
 
 @interface PropertyDetailsViewController ()
 @property (nonatomic, retain) NSMutableArray *sectionTitles;
@@ -12,6 +15,7 @@
 
 @implementation PropertyDetailsViewController
 
+@synthesize delegate = delegate_;
 @synthesize tableView = tableView_;
 @synthesize details = details_;
 @synthesize sectionTitles = sectionTitles_;
@@ -41,6 +45,28 @@
     [locationCell_ release];
     
     [super dealloc];
+}
+
+- (IBAction)previousNext:(id)sender
+{
+	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+    NSInteger selectedSegment = [segmentedControl selectedSegmentIndex];
+    if (selectedSegment == kPrevious)
+    {
+        PropertyDetails *details = [[self delegate] detailsPrevious:self];
+        [self setDetails:details];
+    }
+    else if (selectedSegment == kNext)
+    {
+        PropertyDetails *details = [[self delegate] detailsNext:self];
+        [self setDetails:details];        
+    }
+    
+    NSString *title = [[NSString alloc] initWithFormat:@"%d of %d", [[self delegate] detailsIndex:self] + 1, [[self delegate] detailsCount:self]];
+    [self setTitle:title];
+    [title release];
+    
+    [[self tableView] reloadData];
 }
 
 - (void)share:(id)sender
@@ -213,6 +239,28 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //Sets title to: "1 of 50"
+    NSString *title = [[NSString alloc] initWithFormat:@"%d of %d", [[self delegate] detailsIndex:self] + 1, [[self delegate] detailsCount:self]];
+    [self setTitle:title];
+    [title release];    
+    
+    //Segmented control to the right
+	UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:
+                                            [NSArray arrayWithObjects:
+                                             [UIImage imageNamed:@"up.png"],
+                                             [UIImage imageNamed:@"down.png"],
+                                             nil]];
+	[segmentedControl addTarget:self action:@selector(previousNext:) forControlEvents:UIControlEventValueChanged];
+	[segmentedControl setFrame:CGRectMake(0, 0, 90, 30)];
+	[segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
+	[segmentedControl setMomentary:YES];
+    
+	UIBarButtonItem *segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
+    [segmentedControl release];
+    
+	[[self navigationItem] setRightBarButtonItem:segmentBarItem];
+    [segmentBarItem release];
 }
 
 - (void)didReceiveMemoryWarning

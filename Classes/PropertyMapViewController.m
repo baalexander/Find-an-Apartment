@@ -41,6 +41,7 @@ static NSInteger kMapItem = 1;
     //Bring up list view. Releases this view.
     if ([segmentedControl selectedSegmentIndex] == kListItem)
     {
+        //FIXME: What if called from the Favorites view controller? Then needs to load PropertyFavoritesView
         PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
         [listViewController setHistory:[self history]];
         
@@ -86,6 +87,31 @@ static NSInteger kMapItem = 1;
 
 - (void)viewDidUnload
 {
+}
+
+
+//PropertyDetailsDelegate is used by Property Details view controller's segment control for previous/next
+#pragma mark -
+#pragma mark PropertyDetailsDelegate
+
+- (NSInteger)detailsIndex:(PropertyDetailsViewController *)details
+{
+    return -1;
+}
+
+- (NSInteger)detailsCount:(PropertyDetailsViewController *)details
+{
+    return -1;
+}
+
+- (PropertyDetails *)detailsPrevious:(PropertyDetailsViewController *)details
+{
+    return nil;
+}
+
+- (PropertyDetails *)detailsNext:(PropertyDetailsViewController *)details
+{
+    return nil;
 }
 
 @end
