@@ -20,7 +20,7 @@
 {
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
     {
-        NSArray *choices = [[NSArray alloc] initWithObjects:kSortByPriceAscending, kSortByPriceDescending, kSortByDistance, nil];
+        NSArray *choices = [[NSArray alloc] initWithObjects:kCriteriaSortByPriceAscending, kCriteriaSortByPriceDescending, kCriteriaSortByDistance, nil];
         [self setChoices:choices];
         [choices release];
     }

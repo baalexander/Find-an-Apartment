@@ -7,14 +7,13 @@
         UITabBarController *tabBarController_;
         PropertyStatesViewController *statesViewController_;
     
-        //Shared Core Data stack
-        NSManagedObjectModel *managedObjectModel_;
-    
         //Main Core Data stack
+        NSManagedObjectModel *mainObjectModel_;
         NSManagedObjectContext *mainObjectContext_;
         NSPersistentStoreCoordinator *mainStoreCoordinator_;
 
         //Geography Core Data stack
+        NSManagedObjectModel *geographyObjectModel_;
         NSManagedObjectContext *geographyObjectContext_;
         NSPersistentStoreCoordinator *geographyStoreCoordinator_;        
 }
@@ -23,11 +22,11 @@
 @property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
 @property (nonatomic, retain) IBOutlet PropertyStatesViewController *statesViewController;
 
-@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
-
+@property (nonatomic, retain, readonly) NSManagedObjectModel *mainObjectModel;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *mainObjectContext;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *mainStoreCoordinator;
 
+@property (nonatomic, retain, readonly) NSManagedObjectModel *geographyObjectModel;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *geographyObjectContext;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *geographyStoreCoordinator;
 

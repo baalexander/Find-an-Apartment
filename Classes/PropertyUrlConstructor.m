@@ -153,11 +153,11 @@
 {
     NSString *choice = [[self criteria] sortBy];
     
-    if ([choice isEqual:kSortByPriceAscending])
+    if ([choice isEqual:kCriteriaSortByPriceAscending])
     {
         return @"&sort_by=age&sort_order=ascending";
     }
-    else if ([choice isEqual:kSortByPriceDescending])
+    else if ([choice isEqual:kCriteriaSortByPriceDescending])
     {
         return @"&sort_by=age&sort_order=descending";
     }

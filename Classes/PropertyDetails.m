@@ -1,6 +1,7 @@
 #import "PropertyDetails.h"
 
 #import "PropertySummary.h"
+#import "PropertyImage.h"
 
 @implementation PropertyDetails 
 
@@ -19,7 +20,7 @@
 @dynamic price;
 @dynamic school;
 @dynamic source;
-@dynamic imageLink;
 @dynamic summary;
+@dynamic images;
 
 @end

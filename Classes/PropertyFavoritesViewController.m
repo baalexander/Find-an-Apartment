@@ -1,6 +1,7 @@
 #import "PropertyFavoritesViewController.h"
 
 #import "PropertyListEmailerViewController.h"
+#import "PropertyImage.h"
 
 
 @implementation PropertyFavoritesViewController
@@ -63,7 +64,24 @@
         [copyDetails setValue:[details valueForKey:key] forKey:key];
     }
     
-    //Copies relationships
+    //Deep copies the Images
+    NSSet *images = [details images];
+    for (PropertyImage *image in images)
+    {
+        NSEntityDescription *imageEntity = [NSEntityDescription entityForName:@"PropertyImage" inManagedObjectContext:managedObjectContext];
+        PropertyImage *copyImage = [[PropertyImage alloc] initWithEntity:imageEntity insertIntoManagedObjectContext:managedObjectContext];
+        NSDictionary *imageAttributes = [imageEntity attributesByName];
+        for (NSString *key in imageAttributes)
+        {
+            [copyImage setValue:[image valueForKey:key] forKey:key];
+        }
+        
+        //Adds to Copy Details
+        [copyDetails addImagesObject:copyImage];
+        [copyImage release];
+    }
+    
+    //Adds details to summary
     [copySummary setDetails:copyDetails];
     [copyDetails release];
     

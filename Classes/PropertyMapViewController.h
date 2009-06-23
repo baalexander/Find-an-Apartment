@@ -1,9 +1,10 @@
 #import <UIKit/UIKit.h>
 
 #import "PropertyHistory.h"
+#import "PropertyDetailsViewController.h"
 
 
-@interface PropertyMapViewController : UIViewController
+@interface PropertyMapViewController : UIViewController <PropertyDetailsDelegate>
 {
     @private
         PropertyHistory *history_;

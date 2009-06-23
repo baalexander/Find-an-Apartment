@@ -9,11 +9,11 @@
 
 @interface FindAnApartmentAppDelegate ()
 
-@property (nonatomic, retain, readwrite) NSManagedObjectModel *managedObjectModel;
-
+@property (nonatomic, retain, readwrite) NSManagedObjectModel *mainObjectModel;
 @property (nonatomic, retain, readwrite) NSManagedObjectContext *mainObjectContext;
 @property (nonatomic, retain, readwrite) NSPersistentStoreCoordinator *mainStoreCoordinator;
 
+@property (nonatomic, retain, readwrite) NSManagedObjectModel *geographyObjectModel;
 @property (nonatomic, retain, readwrite) NSManagedObjectContext *geographyObjectContext;
 @property (nonatomic, retain, readwrite) NSPersistentStoreCoordinator *geographyStoreCoordinator;
 
@@ -25,9 +25,10 @@
 @synthesize window = window_;
 @synthesize tabBarController = tabBarController_;
 @synthesize statesViewController = statesViewController_;
-@synthesize managedObjectModel = managedObjectModel_;
+@synthesize mainObjectModel = mainObjectModel_;
 @synthesize mainObjectContext = mainObjectContext_;
 @synthesize mainStoreCoordinator = mainStoreCoordinator_;
+@synthesize geographyObjectModel = geographyObjectModel_;
 @synthesize geographyObjectContext = geographyObjectContext_;
 @synthesize geographyStoreCoordinator = geographyStoreCoordinator_;
 
@@ -39,9 +40,10 @@
 {
     [tabBarController_ release];
     [window_ release];
-    [managedObjectModel_ release];
+    [mainObjectModel_ release];
     [mainObjectContext_ release];
     [mainStoreCoordinator_ release];
+    [geographyObjectModel_ release];
     [geographyObjectContext_ release];
     [geographyStoreCoordinator_ release];
     
@@ -57,15 +59,17 @@
     return basePath;
 }
 
-//Created object model based on *all* models found in the application.
-- (NSManagedObjectModel *)managedObjectModel
+- (NSManagedObjectModel *)mainObjectModel
 {
-    if (managedObjectModel_ == nil)
+    if (mainObjectModel_ == nil)
     {
-        [self setManagedObjectModel:[NSManagedObjectModel mergedModelFromBundles:nil]];
+        NSString *modelPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"Find_an_Apartment" ofType:@"mom"];
+        NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL fileURLWithPath:modelPath]];
+        [self setMainObjectModel:managedObjectModel];
+        [managedObjectModel release];
     }
     
-    return managedObjectModel_;
+    return mainObjectModel_;
 }
 
 - (NSManagedObjectContext *)mainObjectContext
@@ -86,7 +90,7 @@
 {
     if (mainStoreCoordinator_ == nil)
     {    
-        NSPersistentStoreCoordinator *persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+        NSPersistentStoreCoordinator *persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self mainObjectModel]];
         [self setMainStoreCoordinator:persistentStoreCoordinator];
         [persistentStoreCoordinator release];
         
@@ -100,6 +104,19 @@
     }
     
     return mainStoreCoordinator_;
+}
+
+- (NSManagedObjectModel *)geographyObjectModel
+{
+    if (geographyObjectModel_ == nil)
+    {
+        NSString *modelPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"Geography" ofType:@"mom"];
+        NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL fileURLWithPath:modelPath]];
+        [self setGeographyObjectModel:managedObjectModel];
+        [managedObjectModel release];
+    }
+    
+    return geographyObjectModel_;
 }
 
 - (NSManagedObjectContext *)geographyObjectContext
@@ -135,10 +152,10 @@
             }
         }
         
-        NSURL *storeUrl = [NSURL fileURLWithPath:storePath];
-        
-        NSError *error;
-        
+        NSPersistentStoreCoordinator *persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self geographyObjectModel]];
+        [self setGeographyStoreCoordinator:persistentStoreCoordinator];
+        [persistentStoreCoordinator release];
+
         NSMutableDictionary *options = nil;
         //Implement options when updating the model. Then comment options back out.
         options = [NSMutableDictionary dictionary];
@@ -146,9 +163,10 @@
         [options setObject:[NSNumber numberWithBool:YES] forKey:NSIgnorePersistentStoreVersioningOption];
         //When migrating, uncomment the setObject lines belows
         //[options setObject:[NSNumber numberWithBool:YES] forKey:NSMigratePersistentStoresAutomaticallyOption];
-        //[options setObject:[NSNumber numberWithBool:YES] forKey:NSInferMappingModelAutomaticallyOption];
-        geographyStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];
-        if (![geographyStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:options error:&error])
+        //[options setObject:[NSNumber numberWithBool:YES] forKey:NSInferMappingModelAutomaticallyOption];        
+        NSURL *storeUrl = [NSURL fileURLWithPath:storePath];
+        NSError *error;
+        if (![[self geographyStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:options error:&error])
         {
             // Handle the error.
             NSLog(@"error: %@", error);
@@ -164,6 +182,9 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application
 {
+    //Change status bar
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+    
     [[self statesViewController] setMainObjectContext:[self mainObjectContext]];
     [[self statesViewController] setGeographyObjectContext:[self geographyObjectContext]];
     [[self window] addSubview:[[self tabBarController] view]];

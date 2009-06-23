@@ -1,5 +1,6 @@
 #import "PropertyListViewController.h"
 
+#import "PropertyImage.h"
 #import "PropertyCriteria.h"
 #import "PropertyDetailsViewController.h"
 #import "PropertyMapViewController.h"
@@ -21,6 +22,7 @@ static NSInteger kMapItem = 1;
 @property (nonatomic, retain) PropertyDetails *details;
 @property (nonatomic, retain) PropertySummary *summary;
 @property (nonatomic, retain, readwrite) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, assign) NSInteger selectedIndex;
 @end
 
 @implementation PropertyListViewController
@@ -34,6 +36,7 @@ static NSInteger kMapItem = 1;
 @synthesize summary = summary_;
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize summaryCell = summaryCell_;
+@synthesize selectedIndex = selectedIndex_;
 
 
 #pragma mark -
@@ -45,6 +48,7 @@ static NSInteger kMapItem = 1;
     {
         [self setDistance:0];
         [self setIsParsing:NO];
+        [self setSelectedIndex:0];
     }
     
     return self;
@@ -208,7 +212,8 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 {
     NSInteger count = [[[self fetchedResultsController] sections] count];
     
-    if (count == 0) {
+    if (count == 0)
+    {
         count = 1;
     }
     
@@ -219,7 +224,8 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 {    
     NSInteger numberOfRows = 0;
     
-    if ([[[self fetchedResultsController] sections] count] > 0) {
+    if ([[[self fetchedResultsController] sections] count] > 0)
+    {
         id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
         numberOfRows = [sectionInfo numberOfObjects];
     }
@@ -253,11 +259,14 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self setSelectedIndex:[indexPath row]];
+    
     //Gets result from relationship with summary
     PropertySummary *summary = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-    PropertyDetails *details = [summary details];    
+    PropertyDetails *details = [summary details];   
     
     PropertyDetailsViewController *detailsViewController = [[PropertyDetailsViewController alloc] initWithNibName:@"PropertyDetailsView" bundle:nil];
+    [detailsViewController setDelegate:self];
     [detailsViewController setDetails:details];
     [[self navigationController] pushViewController:detailsViewController animated:YES];
     [detailsViewController release];
@@ -277,6 +286,54 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     [[self navigationController] popViewControllerAnimated:YES];
 }
 
+
+#pragma mark -
+#pragma mark PropertyDetailsDelegate
+
+- (NSInteger)detailsIndex:(PropertyDetailsViewController *)details
+{
+    return [self selectedIndex];
+}
+
+- (NSInteger)detailsCount:(PropertyDetailsViewController *)details
+{
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:0];
+    return [sectionInfo numberOfObjects];
+}
+
+- (PropertyDetails *)detailsPrevious:(PropertyDetailsViewController *)details
+{
+    if ([self selectedIndex] > 0)
+    {
+        [self setSelectedIndex:[self selectedIndex] - 1];
+    }
+    else
+    {
+        [self setSelectedIndex:[self detailsCount:details] - 1];
+    }
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[self selectedIndex] inSection:0];
+    PropertySummary *summary = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    
+    return [summary details];
+}
+
+- (PropertyDetails *)detailsNext:(PropertyDetailsViewController *)details
+{
+    if ([self selectedIndex] < [self detailsCount:details] - 1)
+    {
+        [self setSelectedIndex:[self selectedIndex] + 1];
+    }
+    else
+    {
+        [self setSelectedIndex:0];
+    }
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[self selectedIndex] inSection:0];
+    PropertySummary *summary = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    
+    return [summary details];
+}
 
 
 #pragma mark -
@@ -353,7 +410,7 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     {
         [[self summary] setSummary:value];
     }
-    //Result attributes
+    //Details attributes
     else if ([element isEqual:@"agent"])
     {
         [[self details] setAgent:value];
@@ -392,7 +449,14 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     }
     else if ([element isEqual:@"image_link"])
     {
-        [[self details] setImageLink:value];
+        NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
+        
+        NSEntityDescription *imageEntity = [NSEntityDescription entityForName:@"PropertyImage" inManagedObjectContext:managedObjectContext];
+        PropertyImage *image = [[PropertyImage alloc] initWithEntity:imageEntity insertIntoManagedObjectContext:managedObjectContext];
+        [image setUrl:value];
+        
+        [[self details] addImagesObject:image];
+        [image release];
     }
     else if ([element isEqual:@"link"])
     {

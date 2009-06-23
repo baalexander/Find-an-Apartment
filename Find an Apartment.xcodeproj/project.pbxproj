@@ -13,13 +13,14 @@
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D801B30F44B63D00FB423F /* CoreData.framework */; };
+		453EE36E0FF084DB0044390F /* DescriptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453EE36D0FF084DB0044390F /* DescriptionCell.xib */; };
+		453EE3710FF084EC0044390F /* DescriptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 453EE3700FF084EC0044390F /* DescriptionCell.m */; };
 		455BFE400FDC9BC4000BCD39 /* PropertyDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 455BFE3F0FDC9BC4000BCD39 /* PropertyDetailsView.xib */; };
 		457930A40FE3601C008E2ACD /* PropertySummary.m in Sources */ = {isa = PBXBuildFile; fileRef = 457930A20FE3601C008E2ACD /* PropertySummary.m */; };
 		457931010FE36A08008E2ACD /* SummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 457930FF0FE36A08008E2ACD /* SummaryCell.m */; };
 		457931020FE36A08008E2ACD /* SummaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457931000FE36A08008E2ACD /* SummaryCell.xib */; };
 		4579324C0FE59783008E2ACD /* PropertySortChoicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4579324B0FE59783008E2ACD /* PropertySortChoicesViewController.m */; };
 		4579324E0FE59791008E2ACD /* PropertySortChoicesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4579324D0FE59791008E2ACD /* PropertySortChoicesView.xib */; };
-		457933160FE5AFB7008E2ACD /* PropertyDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 457933150FE5AFB7008E2ACD /* PropertyDetails.m */; };
 		457933800FE5ED93008E2ACD /* PropertyFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4579337F0FE5ED93008E2ACD /* PropertyFavoritesViewController.m */; };
 		457AA2AF0FD8D4FF00F0D16C /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 457AA2AE0FD8D4FF00F0D16C /* libxml2.2.dylib */; };
 		457AA3490FDAC26100F0D16C /* UrlUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA3380FDAC26100F0D16C /* UrlUtil.m */; };
@@ -51,6 +52,12 @@
 		45D93EDE0FEEDB0B00AD4A5B /* PropertyCriteria.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D93EDB0FEEDB0B00AD4A5B /* PropertyCriteria.m */; };
 		45D93EDF0FEEDB0B00AD4A5B /* PropertyHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D93EDD0FEEDB0B00AD4A5B /* PropertyHistory.m */; };
 		45D93FA90FEEE5E800AD4A5B /* StringFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D93FA80FEEE5E800AD4A5B /* StringFormatter.m */; };
+		45D9401E0FEFDA3600AD4A5B /* LocationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D9401C0FEFDA3600AD4A5B /* LocationCell.m */; };
+		45D9401F0FEFDA3600AD4A5B /* LocationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D9401D0FEFDA3600AD4A5B /* LocationCell.xib */; };
+		45D9419A0FF02BF000AD4A5B /* PropertyImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D941980FF02BF000AD4A5B /* PropertyImage.m */; };
+		45D941DE0FF051B600AD4A5B /* PropertyDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D941DD0FF051B600AD4A5B /* PropertyDetails.m */; };
+		45D9422A0FF0696C00AD4A5B /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = 45D942280FF0696C00AD4A5B /* down.png */; };
+		45D9422B0FF0696C00AD4A5B /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = 45D942290FF0696C00AD4A5B /* up.png */; };
 		45FF76C80FE9FF810053B4D8 /* PropertyFavoritesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */; };
 		DD4581260FEEC7B500783A46 /* Geography.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = DD4581250FEEC7B500783A46 /* Geography.xcdatamodel */; };
 		DD45814C0FEEC86300783A46 /* CityOrPostalCode.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4581490FEEC86300783A46 /* CityOrPostalCode.m */; };
@@ -67,6 +74,9 @@
 		28D801B30F44B63D00FB423F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Find_an_Apartment_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Find_an_Apartment_Prefix.pch; sourceTree = "<group>"; };
+		453EE36D0FF084DB0044390F /* DescriptionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DescriptionCell.xib; path = Classes/DescriptionCell.xib; sourceTree = "<group>"; };
+		453EE36F0FF084EC0044390F /* DescriptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DescriptionCell.h; path = Classes/DescriptionCell.h; sourceTree = "<group>"; };
+		453EE3700FF084EC0044390F /* DescriptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DescriptionCell.m; path = Classes/DescriptionCell.m; sourceTree = "<group>"; };
 		455BFE3F0FDC9BC4000BCD39 /* PropertyDetailsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyDetailsView.xib; path = Classes/PropertyDetailsView.xib; sourceTree = "<group>"; };
 		457930A10FE3601C008E2ACD /* PropertySummary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertySummary.h; path = Classes/PropertySummary.h; sourceTree = "<group>"; };
 		457930A20FE3601C008E2ACD /* PropertySummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertySummary.m; path = Classes/PropertySummary.m; sourceTree = "<group>"; };
@@ -77,8 +87,6 @@
 		4579324A0FE59783008E2ACD /* PropertySortChoicesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertySortChoicesViewController.h; path = Classes/PropertySortChoicesViewController.h; sourceTree = "<group>"; };
 		4579324B0FE59783008E2ACD /* PropertySortChoicesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertySortChoicesViewController.m; path = Classes/PropertySortChoicesViewController.m; sourceTree = "<group>"; };
 		4579324D0FE59791008E2ACD /* PropertySortChoicesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertySortChoicesView.xib; path = Classes/PropertySortChoicesView.xib; sourceTree = "<group>"; };
-		457933140FE5AFB7008E2ACD /* PropertyDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyDetails.h; path = Classes/PropertyDetails.h; sourceTree = "<group>"; };
-		457933150FE5AFB7008E2ACD /* PropertyDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyDetails.m; path = Classes/PropertyDetails.m; sourceTree = "<group>"; };
 		4579337E0FE5ED93008E2ACD /* PropertyFavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyFavoritesViewController.h; path = Classes/PropertyFavoritesViewController.h; sourceTree = "<group>"; };
 		4579337F0FE5ED93008E2ACD /* PropertyFavoritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyFavoritesViewController.m; path = Classes/PropertyFavoritesViewController.m; sourceTree = "<group>"; };
 		457AA2AE0FD8D4FF00F0D16C /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
@@ -114,6 +122,7 @@
 		458783A30FDB45F7000B4F5D /* PropertyMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyMapViewController.h; path = Classes/PropertyMapViewController.h; sourceTree = "<group>"; };
 		458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyMapViewController.m; path = Classes/PropertyMapViewController.m; sourceTree = "<group>"; };
 		458783A50FDB45F7000B4F5D /* PropertyMapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyMapView.xib; path = Classes/PropertyMapView.xib; sourceTree = "<group>"; };
+		45991A220FF0927F00627B7D /* PropertyDetailsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyDetailsConstants.h; path = Classes/PropertyDetailsConstants.h; sourceTree = "<group>"; };
 		45C767830FEC2E9100C75D90 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		45C767C70FEC7A1C00C75D90 /* PropertyListEmailerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyListEmailerViewController.h; path = Classes/PropertyListEmailerViewController.h; sourceTree = "<group>"; };
 		45C767C80FEC7A1C00C75D90 /* PropertyListEmailerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyListEmailerViewController.m; path = Classes/PropertyListEmailerViewController.m; sourceTree = "<group>"; };
@@ -128,6 +137,15 @@
 		45D93EDD0FEEDB0B00AD4A5B /* PropertyHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyHistory.m; path = Classes/PropertyHistory.m; sourceTree = "<group>"; };
 		45D93FA70FEEE5E800AD4A5B /* StringFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringFormatter.h; sourceTree = "<group>"; };
 		45D93FA80FEEE5E800AD4A5B /* StringFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringFormatter.m; sourceTree = "<group>"; };
+		45D9401B0FEFDA3600AD4A5B /* LocationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocationCell.h; path = Classes/LocationCell.h; sourceTree = "<group>"; };
+		45D9401C0FEFDA3600AD4A5B /* LocationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocationCell.m; path = Classes/LocationCell.m; sourceTree = "<group>"; };
+		45D9401D0FEFDA3600AD4A5B /* LocationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = LocationCell.xib; path = Classes/LocationCell.xib; sourceTree = "<group>"; };
+		45D941970FF02BF000AD4A5B /* PropertyImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyImage.h; path = Classes/PropertyImage.h; sourceTree = "<group>"; };
+		45D941980FF02BF000AD4A5B /* PropertyImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyImage.m; path = Classes/PropertyImage.m; sourceTree = "<group>"; };
+		45D941DC0FF051B600AD4A5B /* PropertyDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyDetails.h; path = Classes/PropertyDetails.h; sourceTree = "<group>"; };
+		45D941DD0FF051B600AD4A5B /* PropertyDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyDetails.m; path = Classes/PropertyDetails.m; sourceTree = "<group>"; };
+		45D942280FF0696C00AD4A5B /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = down.png; path = Images/down.png; sourceTree = "<group>"; };
+		45D942290FF0696C00AD4A5B /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = up.png; path = Images/up.png; sourceTree = "<group>"; };
 		45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyFavoritesView.xib; path = Classes/PropertyFavoritesView.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Find_an_Apartment-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Find_an_Apartment-Info.plist"; sourceTree = "<group>"; };
 		DD4581250FEEC7B500783A46 /* Geography.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Geography.xcdatamodel; sourceTree = "<group>"; };
@@ -311,8 +329,10 @@
 		455BFE640FDCA012000BCD39 /* General UI */ = {
 			isa = PBXGroup;
 			children = (
+				453EE36D0FF084DB0044390F /* DescriptionCell.xib */,
 				457AA37B0FDAC45900F0D16C /* InputRangeCell.xib */,
 				457AA37E0FDAC45900F0D16C /* InputSimpleCell.xib */,
+				45D9401D0FEFDA3600AD4A5B /* LocationCell.xib */,
 				457931000FE36A08008E2ACD /* SummaryCell.xib */,
 			);
 			name = "General UI";
@@ -321,10 +341,14 @@
 		455BFE650FDCA022000BCD39 /* General UI */ = {
 			isa = PBXGroup;
 			children = (
+				453EE36F0FF084EC0044390F /* DescriptionCell.h */,
+				453EE3700FF084EC0044390F /* DescriptionCell.m */,
 				457AA3790FDAC45900F0D16C /* InputRangeCell.h */,
 				457AA37A0FDAC45900F0D16C /* InputRangeCell.m */,
 				457AA37C0FDAC45900F0D16C /* InputSimpleCell.h */,
 				457AA37D0FDAC45900F0D16C /* InputSimpleCell.m */,
+				45D9401B0FEFDA3600AD4A5B /* LocationCell.h */,
+				45D9401C0FEFDA3600AD4A5B /* LocationCell.m */,
 				457930FE0FE36A08008E2ACD /* SummaryCell.h */,
 				457930FF0FE36A08008E2ACD /* SummaryCell.m */,
 			);
@@ -336,10 +360,12 @@
 			children = (
 				45D93EDA0FEEDB0B00AD4A5B /* PropertyCriteria.h */,
 				45D93EDB0FEEDB0B00AD4A5B /* PropertyCriteria.m */,
-				457933140FE5AFB7008E2ACD /* PropertyDetails.h */,
-				457933150FE5AFB7008E2ACD /* PropertyDetails.m */,
+				45D941DC0FF051B600AD4A5B /* PropertyDetails.h */,
+				45D941DD0FF051B600AD4A5B /* PropertyDetails.m */,
 				45D93EDC0FEEDB0B00AD4A5B /* PropertyHistory.h */,
 				45D93EDD0FEEDB0B00AD4A5B /* PropertyHistory.m */,
+				45D941970FF02BF000AD4A5B /* PropertyImage.h */,
+				45D941980FF02BF000AD4A5B /* PropertyImage.m */,
 				457930A10FE3601C008E2ACD /* PropertySummary.h */,
 				457930A20FE3601C008E2ACD /* PropertySummary.m */,
 			);
@@ -359,6 +385,7 @@
 			isa = PBXGroup;
 			children = (
 				457932490FE59771008E2ACD /* PropertyCriteriaConstants.h */,
+				45991A220FF0927F00627B7D /* PropertyDetailsConstants.h */,
 			);
 			name = Constants;
 			sourceTree = "<group>";
@@ -386,6 +413,8 @@
 		45D93C6A0FECABA800AD4A5B /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				45D942280FF0696C00AD4A5B /* down.png */,
+				45D942290FF0696C00AD4A5B /* up.png */,
 				45D93C6D0FECAC1C00AD4A5B /* locate.png */,
 			);
 			name = Images;
@@ -449,6 +478,10 @@
 				45FF76C80FE9FF810053B4D8 /* PropertyFavoritesView.xib in Resources */,
 				45C767840FEC2E9100C75D90 /* Icon.png in Resources */,
 				45D93C6E0FECAC1C00AD4A5B /* locate.png in Resources */,
+				45D9401F0FEFDA3600AD4A5B /* LocationCell.xib in Resources */,
+				45D9422A0FF0696C00AD4A5B /* down.png in Resources */,
+				45D9422B0FF0696C00AD4A5B /* up.png in Resources */,
+				453EE36E0FF084DB0044390F /* DescriptionCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,7 +510,6 @@
 				457930A40FE3601C008E2ACD /* PropertySummary.m in Sources */,
 				457931010FE36A08008E2ACD /* SummaryCell.m in Sources */,
 				4579324C0FE59783008E2ACD /* PropertySortChoicesViewController.m in Sources */,
-				457933160FE5AFB7008E2ACD /* PropertyDetails.m in Sources */,
 				457933800FE5ED93008E2ACD /* PropertyFavoritesViewController.m in Sources */,
 				45C767CA0FEC7A1C00C75D90 /* PropertyListEmailerViewController.m in Sources */,
 				DD4581260FEEC7B500783A46 /* Geography.xcdatamodel in Sources */,
@@ -486,6 +518,10 @@
 				45D93EDE0FEEDB0B00AD4A5B /* PropertyCriteria.m in Sources */,
 				45D93EDF0FEEDB0B00AD4A5B /* PropertyHistory.m in Sources */,
 				45D93FA90FEEE5E800AD4A5B /* StringFormatter.m in Sources */,
+				45D9401E0FEFDA3600AD4A5B /* LocationCell.m in Sources */,
+				45D9419A0FF02BF000AD4A5B /* PropertyImage.m in Sources */,
+				45D941DE0FF051B600AD4A5B /* PropertyDetails.m in Sources */,
+				453EE3710FF084EC0044390F /* DescriptionCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

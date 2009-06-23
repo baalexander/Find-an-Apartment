@@ -6,9 +6,10 @@
 #import "PropertySummary.h"
 #import "XmlParser.h"
 #import "SummaryCell.h"
+#import "PropertyDetailsViewController.h"
 
 
-@interface PropertyListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, ParserDelegate>
+@interface PropertyListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, ParserDelegate, PropertyDetailsDelegate>
 {
     @private
         UITableView *tableView_;
@@ -26,6 +27,8 @@
         PropertyDetails *details_;
         PropertySummary *summary_;
         NSFetchedResultsController *fetchedResultsController_;
+    
+        NSInteger selectedIndex_;
     
         IBOutlet SummaryCell *summaryCell_;
 }
