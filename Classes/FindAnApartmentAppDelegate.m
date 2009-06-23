@@ -158,9 +158,9 @@
 
         NSMutableDictionary *options = nil;
         //Implement options when updating the model. Then comment options back out.
-        options = [NSMutableDictionary dictionary];
+        //options = [NSMutableDictionary dictionary];
         //Uncomment the line below to ignore version hash checks
-        [options setObject:[NSNumber numberWithBool:YES] forKey:NSIgnorePersistentStoreVersioningOption];
+        //[options setObject:[NSNumber numberWithBool:YES] forKey:NSIgnorePersistentStoreVersioningOption];
         //When migrating, uncomment the setObject lines belows
         //[options setObject:[NSNumber numberWithBool:YES] forKey:NSMigratePersistentStoresAutomaticallyOption];
         //[options setObject:[NSNumber numberWithBool:YES] forKey:NSInferMappingModelAutomaticallyOption];        
