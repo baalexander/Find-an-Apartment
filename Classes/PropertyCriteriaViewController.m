@@ -188,7 +188,7 @@
     [self setTitle:title];
     
     //Row Ids outlines the order of the rows in the table. The integer value of each constant does NOT impact the order.
-    NSMutableArray *rowIds = [[NSMutableArray alloc] initWithObjects:kStreet, kKeywords, kPrice, kSquareFeet, kBedrooms, kBathrooms, kSortBy, kSearch, nil];
+    NSMutableArray *rowIds = [[NSMutableArray alloc] initWithObjects:kCriteriaStreet, kCriteriaKeywords, kCriteriaPrice, kCriteriaSquareFeet, kCriteriaBedrooms, kCriteriaBathrooms, kCriteriaSortBy, kCriteriaSearch, nil];
     [self setRowIds:rowIds];
     [rowIds release];
     
@@ -224,7 +224,7 @@
     BOOL isSelectedRow = [self selectedRow] >= 0 && [self selectedRow] == (NSInteger)[indexPath row];
     
     //When selected, these cells display a simple input cell
-    if ([rowId isEqual:kStreet])
+    if ([rowId isEqual:kCriteriaStreet])
     {
         if (isSelectedRow)
         {
@@ -241,7 +241,7 @@
             return [self simpleCellWithText:@"street" withDetail:detailText];
         }
     }
-    else if ([rowId isEqual:kKeywords])
+    else if ([rowId isEqual:kCriteriaKeywords])
     {
         if (isSelectedRow)
         {
@@ -259,7 +259,7 @@
         }
     }        
     //When selected, these cells display an input range cell
-    else if ([rowId isEqual:kPrice])
+    else if ([rowId isEqual:kCriteriaPrice])
     {
         if (isSelectedRow)
         {
@@ -270,7 +270,7 @@
             return [self simpleCellWithText:@"price" withDetail:[StringFormatter formatCurrencyRangeWithMin:[[self criteria] minPrice] withMax:[[self criteria] maxPrice]]];
         }
     }
-    else if ([rowId isEqual:kSquareFeet])
+    else if ([rowId isEqual:kCriteriaSquareFeet])
     {
         if (isSelectedRow)
         {
@@ -281,7 +281,7 @@
             return [self simpleCellWithText:@"sq feet" withDetail:[StringFormatter formatRangeWithMin:[[self criteria] minSquareFeet] withMax:[[self criteria] maxSquareFeet] withUnits:@"sqft"]];
         }
     }
-    else if ([rowId isEqual:kBedrooms])
+    else if ([rowId isEqual:kCriteriaBedrooms])
     {
         if (isSelectedRow)
         {
@@ -292,7 +292,7 @@
             return [self simpleCellWithText:@"bedrooms" withDetail:[StringFormatter formatRangeWithMin:[[self criteria] minBedrooms] withMax:[[self criteria] maxBedrooms] withUnits:@"rooms"]];
         }
     }
-    else if ([rowId isEqual:kBathrooms])
+    else if ([rowId isEqual:kCriteriaBathrooms])
     {
         if (isSelectedRow)
         {
@@ -304,14 +304,14 @@
         }
     }
     //When selected, these cells bring up a choices view controller.
-    else if ([rowId isEqual:kSortBy])
+    else if ([rowId isEqual:kCriteriaSortBy])
     {
         UITableViewCell *cell = [self simpleCellWithText:@"sort by" withDetail:[[self criteria] sortBy]];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         
         return cell;
     }
-    else if ([rowId isEqual:kSearch])
+    else if ([rowId isEqual:kCriteriaSearch])
     {
         return [self buttonCellWithText:@"Search"];
     }
@@ -335,7 +335,7 @@
     NSString *rowId = [[self rowIds] objectAtIndex:[indexPath row]];
     
     //Selected the search button, begins searching
-    if ([rowId isEqual:kSearch])
+    if ([rowId isEqual:kCriteriaSearch])
     {
         PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
         
@@ -354,7 +354,7 @@
         [listViewController release];
     }
     //Selected sort by, brings up list of sort choices
-    else if ([rowId isEqual:kSortBy]) 
+    else if ([rowId isEqual:kCriteriaSortBy]) 
     {
         PropertySortChoicesViewController *choicesViewController = [[PropertySortChoicesViewController alloc] initWithNibName:@"PropertySortChoicesView" bundle:nil];
         [choicesViewController setCriteria:[self criteria]];
@@ -394,63 +394,63 @@
     NSString *text = [textField text];
     
     //Sets the correct Criteria attribute to the inputted valu
-    if ([rowId isEqual:kStreet])
+    if ([rowId isEqual:kCriteriaStreet])
     {
         [[self criteria] setStreet:text];
     }
-    else if ([rowId isEqual:kKeywords])
+    else if ([rowId isEqual:kCriteriaKeywords])
     {
         [[self criteria] setKeywords:text];
     }
-    else if ([rowId isEqual:kPrice])
+    else if ([rowId isEqual:kCriteriaPrice])
     {
         //Why not create this Number earlier for all to share? Because could be initializing from an int or a float (like Bathrooms).
         NSNumber *number = [[NSNumber alloc] initWithInteger:[text integerValue]];
         //Tag values set in the Xib are used to distinguish between the min and max input text fields
-        if ([textField tag] == kMinTag)
+        if ([textField tag] == kCriteriaMinTag)
         {
             [[self criteria] setMinPrice:number];
         }
-        else if ([textField tag] == kMaxTag)
+        else if ([textField tag] == kCriteriaMaxTag)
         {
             [[self criteria] setMaxPrice:number];
         }
         [number release];
     }
-    else if ([rowId isEqual:kSquareFeet])
+    else if ([rowId isEqual:kCriteriaSquareFeet])
     {
         NSNumber *number = [[NSNumber alloc] initWithInteger:[text integerValue]];
-        if ([textField tag] == kMinTag)
+        if ([textField tag] == kCriteriaMinTag)
         {
             [[self criteria] setMinSquareFeet:number];
         }
-        else if ([textField tag] == kMaxTag)
+        else if ([textField tag] == kCriteriaMaxTag)
         {
             [[self criteria] setMaxSquareFeet:number];
         }
         [number release];
     }
-    else if ([rowId isEqual:kBedrooms])
+    else if ([rowId isEqual:kCriteriaBedrooms])
     {
         NSNumber *number = [[NSNumber alloc] initWithInteger:[text integerValue]];
-        if ([textField tag] == kMinTag)
+        if ([textField tag] == kCriteriaMinTag)
         {
             [[self criteria] setMinBedrooms:number];
         }
-        else if ([textField tag] == kMaxTag)
+        else if ([textField tag] == kCriteriaMaxTag)
         {
             [[self criteria] setMaxBedrooms:number];
         }
         [number release];
     }
-    else if ([rowId isEqual:kBathrooms])
+    else if ([rowId isEqual:kCriteriaBathrooms])
     {
         NSNumber *number = [[NSNumber alloc] initWithFloat:[text floatValue]];
-        if ([textField tag] == kMinTag)
+        if ([textField tag] == kCriteriaMinTag)
         {
             [[self criteria] setMinBathrooms:number];
         }
-        else if ([textField tag] == kMaxTag)
+        else if ([textField tag] == kCriteriaMaxTag)
         {
             [[self criteria] setMaxBathrooms:number];
         }

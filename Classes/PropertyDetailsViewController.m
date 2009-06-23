@@ -1,12 +1,9 @@
 #import "PropertyDetailsViewController.h"
 
+#import "PropertyDetailsConstants.h"
 #import "PropertyFavoritesViewController.h"
 #import "PropertyListEmailerViewController.h"
 #import "StringFormatter.h"
-
-
-static NSInteger kPrevious = 0;
-static NSInteger kNext = 1;
 
 
 @interface PropertyDetailsViewController ()
@@ -53,12 +50,12 @@ static NSInteger kNext = 1;
 {
 	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     NSInteger selectedSegment = [segmentedControl selectedSegmentIndex];
-    if (selectedSegment == kPrevious)
+    if (selectedSegment == kDetailsPrevious)
     {
         PropertyDetails *details = [[self delegate] detailsPrevious:self];
         [self setDetails:details];
     }
-    else if (selectedSegment == kNext)
+    else if (selectedSegment == kDetailsNext)
     {
         PropertyDetails *details = [[self delegate] detailsNext:self];
         [self setDetails:details];        
@@ -101,7 +98,7 @@ static NSInteger kNext = 1;
 
 - (BOOL)hasDisclosureIndicator:(NSString *)key
 {
-    return [key isEqual:@"images"] || [key isEqual:@"link"] || [key isEqual:@"email"] || [key isEqual:@"location"];
+    return [key isEqual:kDetailsImages] || [key isEqual:kDetailsLink] || [key isEqual:kDetailsEmail] || [key isEqual:kDetailsLocation];
 }
 
 - (void)setDetails:(PropertyDetails *)details
@@ -124,7 +121,7 @@ static NSInteger kNext = 1;
     NSMutableDictionary *locationSection = [[NSMutableDictionary alloc] init];
     if ([[self details] location] != nil)
     {
-        [locationSection setObject:[[self details] location] forKey:@"location"];
+        [locationSection setObject:[[self details] location] forKey:kDetailsLocation];
     }
     if ([locationSection count] > 0)
     {
@@ -137,7 +134,7 @@ static NSInteger kNext = 1;
     NSMutableDictionary *financeSection = [[NSMutableDictionary alloc] init];
     if ([[self details] price] != nil)
     {
-        [financeSection setObject:[StringFormatter formatCurrency:[[self details] price]] forKey:@"price"];
+        [financeSection setObject:[StringFormatter formatCurrency:[[self details] price]] forKey:kDetailsPrice];
     }
     if ([financeSection count] > 0)
     {
@@ -150,23 +147,23 @@ static NSInteger kNext = 1;
     NSMutableDictionary *detailsSection = [[NSMutableDictionary alloc] init];
     if ([[self details] squareFeet] != nil)
     {
-        [detailsSection setObject:[StringFormatter formatNumber:[[self details] squareFeet]] forKey:@"sq feet"];
+        [detailsSection setObject:[StringFormatter formatNumber:[[self details] squareFeet]] forKey:kDetailsSquareFeet];
     }
     if ([[self details] bedrooms] != nil)
     {
-        [detailsSection setObject:[StringFormatter formatNumber:[[self details] bedrooms]] forKey:@"bedrooms"];
+        [detailsSection setObject:[StringFormatter formatNumber:[[self details] bedrooms]] forKey:kDetailsBedrooms];
     }
     if ([[self details] bathrooms] != nil)
     {
-        [detailsSection setObject:[StringFormatter formatNumber:[[self details] bathrooms]] forKey:@"bathrooms"];
+        [detailsSection setObject:[StringFormatter formatNumber:[[self details] bathrooms]] forKey:kDetailsBathrooms];
     }    
     if ([[self details] year] != nil)
     {
-        [detailsSection setObject:[[[self details] year] stringValue] forKey:@"year"];
+        [detailsSection setObject:[[[self details] year] stringValue] forKey:kDetailsYear];
     }
     if ([[self details] school] != nil)
     {
-        [detailsSection setObject:[[self details] school] forKey:@"school"];
+        [detailsSection setObject:[[self details] school] forKey:kDetailsSchool];
     }        
     if ([detailsSection count] > 0)
     {
@@ -177,32 +174,27 @@ static NSInteger kNext = 1;
     
     //Contact section
     NSMutableDictionary *contactSection = [[NSMutableDictionary alloc] init];
-    [contactSection setObject:@"brandon_alexander@alexandermobile.com" forKey:@"email"];
     if ([[self details] source] != nil)
     {
-        [contactSection setObject:[[self details] source] forKey:@"source"];
+        [contactSection setObject:[[self details] source] forKey:kDetailsSource];
     }
     if ([[self details] email] != nil)
     {
         //TODO: Validate email before adding?
-        [contactSection setObject:[[self details] email] forKey:@"email"];
+        [contactSection setObject:[[self details] email] forKey:kDetailsEmail];
     }
     if ([[self details] agent] != nil)
     {
-        [contactSection setObject:[[self details] agent] forKey:@"agent"];
+        [contactSection setObject:[[self details] agent] forKey:kDetailsAgent];
     }    
     if ([[self details] broker] != nil)
     {
-        [contactSection setObject:[[self details] broker] forKey:@"broker"];
+        [contactSection setObject:[[self details] broker] forKey:kDetailsBroker];
     }
     if ([[self details] link] != nil)
     {
-        [contactSection setObject:[[self details] link] forKey:@"link"];
-    }
-    if ([[self details] copyright] != nil)
-    {
-        [contactSection setObject:[[self details] copyright] forKey:@"copyright"];
-    }        
+        [contactSection setObject:[[self details] link] forKey:kDetailsLink];
+    }  
     if ([contactSection count] > 0)
     {
         [[self sectionTitles] addObject:@"Source"];
@@ -216,7 +208,7 @@ static NSInteger kNext = 1;
     if (images != nil && [images count] > 0)
     {
         NSNumber *imageCount = [[NSNumber alloc] initWithUnsignedInteger:[images count]];
-        [imagesSection setObject:[StringFormatter formatNumber:imageCount] forKey:@"images"];
+        [imagesSection setObject:[StringFormatter formatNumber:imageCount] forKey:kDetailsImages];
         [imageCount release];
     }
     if ([imagesSection count] > 0)
@@ -230,7 +222,7 @@ static NSInteger kNext = 1;
     NSMutableDictionary *descriptionSection = [[NSMutableDictionary alloc] init];
     if ([[self details] details] != nil)
     {
-        [descriptionSection setObject:[[self details] details] forKey:@"description"];
+        [descriptionSection setObject:[[self details] details] forKey:kDetailsDescription];
     }
     if ([descriptionSection count] > 0)
     {
@@ -310,11 +302,11 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     NSArray *keys = [details allKeys];
     NSString *key = [keys objectAtIndex:[indexPath row]];
     
-    if ([key isEqual:@"location"])
+    if ([key isEqual:kDetailsLocation])
     {
         return [LocationCell height];
     }
-    else if ([key isEqual:@"description"])
+    else if ([key isEqual:kDetailsDescription])
     {
         return [DescriptionCell height];
     }
@@ -331,7 +323,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     NSString *detail = [details objectForKey:key];
     
     //Location cell
-    if ([key isEqual:@"location"])
+    if ([key isEqual:kDetailsLocation])
     {        
         static NSString *kLocationCell = @"LOCATION_CELL_ID";
         
@@ -346,7 +338,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     }
     
     //Description cell
-    if ([key isEqual:@"description"])
+    if ([key isEqual:kDetailsDescription])
     {        
         static NSString *kDescriptionCell = @"DESCRIPTION_CELL_ID";
         
@@ -412,7 +404,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     NSString *key = [keys objectAtIndex:[indexPath row]];
     NSString *detail = [details objectForKey:key];
     
-    if ([key isEqual:@"email"])
+    if ([key isEqual:kDetailsEmail])
     {
         MFMailComposeViewController *emailer = [[MFMailComposeViewController alloc] init];
         [emailer setMailComposeDelegate:self];
