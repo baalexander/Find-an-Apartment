@@ -4,6 +4,7 @@
 
 #import "PropertyDetails.h"
 #import "LocationCell.h"
+#import "DescriptionCell.h"
 
 @class PropertyDetailsViewController;
 
@@ -32,12 +33,14 @@
         NSMutableArray *sectionDetails_;
     
         IBOutlet LocationCell *locationCell_;
+        IBOutlet DescriptionCell *descriptionCell_;
 }
 
 @property (nonatomic, assign) id<PropertyDetailsDelegate> delegate;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) PropertyDetails *details;
 @property (nonatomic, retain) LocationCell *locationCell;
+@property (nonatomic, retain) DescriptionCell *descriptionCell;
 
 - (IBAction)share:(id)sender;
 - (IBAction)addToFavorites:(id)sender;

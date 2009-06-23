@@ -21,6 +21,7 @@ static NSInteger kNext = 1;
 @synthesize sectionTitles = sectionTitles_;
 @synthesize sectionDetails = sectionDetails_;
 @synthesize locationCell = locationCell_;
+@synthesize descriptionCell = descriptionCell_;
 
 
 #pragma mark -
@@ -306,6 +307,10 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     {
         return [LocationCell height];
     }
+    else if ([key isEqual:@"description"])
+    {
+        return [DescriptionCell height];
+    }
     
     //Returns default row height
     return [[self tableView] rowHeight];
@@ -331,6 +336,21 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
         [[self locationCell] setLocation:detail];
         
         return [self locationCell];
+    }
+    
+    //Description cell
+    if ([key isEqual:@"description"])
+    {        
+        static NSString *kDescriptionCell = @"DESCRIPTION_CELL_ID";
+        
+        [self setDescriptionCell:(DescriptionCell *)[[self tableView] dequeueReusableCellWithIdentifier:kDescriptionCell]];
+        if ([self descriptionCell] == nil)
+        {
+            [[NSBundle mainBundle] loadNibNamed:@"DescriptionCell" owner:self options:nil];
+        }
+        [[[self descriptionCell] textView] setText:detail];
+        
+        return [self descriptionCell];
     }
     
     //Default cell
