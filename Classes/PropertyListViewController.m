@@ -1,5 +1,6 @@
 #import "PropertyListViewController.h"
 
+#import "PropertyImage.h"
 #import "PropertyCriteria.h"
 #import "PropertyDetailsViewController.h"
 #import "PropertyMapViewController.h"
@@ -208,7 +209,8 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 {
     NSInteger count = [[[self fetchedResultsController] sections] count];
     
-    if (count == 0) {
+    if (count == 0)
+    {
         count = 1;
     }
     
@@ -219,7 +221,8 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 {    
     NSInteger numberOfRows = 0;
     
-    if ([[[self fetchedResultsController] sections] count] > 0) {
+    if ([[[self fetchedResultsController] sections] count] > 0)
+    {
         id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
         numberOfRows = [sectionInfo numberOfObjects];
     }
@@ -353,7 +356,7 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     {
         [[self summary] setSummary:value];
     }
-    //Result attributes
+    //Details attributes
     else if ([element isEqual:@"agent"])
     {
         [[self details] setAgent:value];
@@ -392,7 +395,14 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     }
     else if ([element isEqual:@"image_link"])
     {
-        [[self details] setImageLink:value];
+        NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
+        
+        NSEntityDescription *imageEntity = [NSEntityDescription entityForName:@"PropertyImage" inManagedObjectContext:managedObjectContext];
+        PropertyImage *image = [[PropertyImage alloc] initWithEntity:imageEntity insertIntoManagedObjectContext:managedObjectContext];
+        [image setUrl:value];
+        
+        [[self details] addImagesObject:image];
+        [image release];
     }
     else if ([element isEqual:@"link"])
     {

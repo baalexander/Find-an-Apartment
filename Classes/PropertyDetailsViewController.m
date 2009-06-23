@@ -88,7 +88,7 @@
     [sectionDetails release];
     
     //Location section
-    NSMutableDictionary *locationSection = [NSMutableDictionary dictionary];
+    NSMutableDictionary *locationSection = [[NSMutableDictionary alloc] init];
     if ([[self details] location] != nil)
     {
         [locationSection setObject:[[self details] location] forKey:@"location"];
@@ -98,9 +98,10 @@
         [[self sectionTitles] addObject:@"Location"];
         [[self sectionDetails] addObject:locationSection];
     }
+    [locationSection release];
     
     //Finance section
-    NSMutableDictionary *financeSection = [NSMutableDictionary dictionary];
+    NSMutableDictionary *financeSection = [[NSMutableDictionary alloc] init];
     if ([[self details] price] != nil)
     {
         [financeSection setObject:[StringFormatter formatCurrency:[[self details] price]] forKey:@"price"];
@@ -110,9 +111,10 @@
         [[self sectionTitles] addObject:@"Finance"];
         [[self sectionDetails] addObject:financeSection];
     }
+    [financeSection release];
     
     //Details section
-    NSMutableDictionary *detailsSection = [NSMutableDictionary dictionary];
+    NSMutableDictionary *detailsSection = [[NSMutableDictionary alloc] init];
     if ([[self details] squareFeet] != nil)
     {
         [detailsSection setObject:[StringFormatter formatNumber:[[self details] squareFeet]] forKey:@"sq feet"];
@@ -138,9 +140,10 @@
         [[self sectionTitles] addObject:@"Details"];
         [[self sectionDetails] addObject:detailsSection];
     }
+    [detailsSection release];
     
     //Contact section
-    NSMutableDictionary *contactSection = [NSMutableDictionary dictionary];
+    NSMutableDictionary *contactSection = [[NSMutableDictionary alloc] init];
     if ([[self details] source] != nil)
     {
         [contactSection setObject:[[self details] source] forKey:@"source"];
@@ -171,11 +174,26 @@
         [[self sectionTitles] addObject:@"Source"];
         [[self sectionDetails] addObject:contactSection];
     }
+    [contactSection release];
     
-    //TODO: Images section
+    //Media section
+    NSMutableDictionary *imagesSection = [[NSMutableDictionary alloc] init];
+    NSSet *images = [[self details] images];
+    if (images != nil && [images count] > 0)
+    {
+        NSNumber *imageCount = [[NSNumber alloc] initWithUnsignedInteger:[images count]];
+        [imagesSection setObject:[StringFormatter formatNumber:imageCount] forKey:@"images"];
+        [imageCount release];
+    }
+    if ([imagesSection count] > 0)
+    {
+        [[self sectionTitles] addObject:@"Media"];
+        [[self sectionDetails] addObject:imagesSection];
+    }
+    [imagesSection release];
 
     //Description section
-    NSMutableDictionary *descriptionSection = [NSMutableDictionary dictionary];
+    NSMutableDictionary *descriptionSection = [[NSMutableDictionary alloc] init];
     if ([[self details] details] != nil)
     {
         [descriptionSection setObject:[[self details] details] forKey:@"description"];
@@ -185,6 +203,7 @@
         [[self sectionTitles] addObject:@"Description"];
         [[self sectionDetails] addObject:descriptionSection];
     }
+    [descriptionSection release];
 }
 
 
@@ -251,6 +270,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     NSString *key = [keys objectAtIndex:[indexPath row]];
     NSString *detail = [details objectForKey:key];
     
+    //Location cell
     if ([key isEqual:@"location"])
     {        
         static NSString *kLocationCell = @"LOCATION_CELL_ID";
@@ -270,6 +290,12 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     if (cell == nil)
     {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:kSimpleCellId] autorelease];
+    }
+    
+    //Adds disclosure indicator if...
+    if ([key isEqual:@"images"])
+    {
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     }
 
     [[cell textLabel] setText:key];

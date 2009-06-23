@@ -1,6 +1,7 @@
 #import <CoreData/CoreData.h>
 
 @class PropertySummary;
+@class PropertyImage;
 
 @interface PropertyDetails :  NSManagedObject  
 {
@@ -21,10 +22,17 @@
 @property (nonatomic, retain) NSNumber * price;
 @property (nonatomic, retain) NSString * school;
 @property (nonatomic, retain) NSString * source;
-@property (nonatomic, retain) NSString * imageLink;
 @property (nonatomic, retain) PropertySummary * summary;
+@property (nonatomic, retain) NSSet* images;
 
 @end
 
 
+@interface PropertyDetails (CoreDataGeneratedAccessors)
+- (void)addImagesObject:(PropertyImage *)value;
+- (void)removeImagesObject:(PropertyImage *)value;
+- (void)addImages:(NSSet *)value;
+- (void)removeImages:(NSSet *)value;
+
+@end
 
