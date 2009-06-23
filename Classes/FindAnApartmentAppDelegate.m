@@ -182,6 +182,9 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application
 {
+    //Change status bar
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+    
     [[self statesViewController] setMainObjectContext:[self mainObjectContext]];
     [[self statesViewController] setGeographyObjectContext:[self geographyObjectContext]];
     [[self window] addSubview:[[self tabBarController] view]];
