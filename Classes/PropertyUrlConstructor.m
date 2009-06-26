@@ -146,7 +146,7 @@
 
 - (NSString *)saleType
 {
-    return @"&sale_type=for_sale";
+    return @"&sale_type=for_rent";
 }
 
 - (NSString *)sortBy
@@ -180,7 +180,7 @@
     [self setCriteria:criteria];
     
     //Creates base URL
-    NSString *baseUrl = @"http://www.alexandermobile.com/REST/Finder/v3/properties/view.xml?";
+    NSString *baseUrl = @"http://www.alexandermobile.com/real_estate/properties/view.xml?";
     NSMutableString *mutableUrl = [[NSMutableString alloc] initWithString:baseUrl];
     
     //Appends device params
