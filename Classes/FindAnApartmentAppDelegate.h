@@ -1,4 +1,4 @@
-@class PropertyStatesViewController;
+@class PropertyStatesViewController, LocationManager;
 
 @interface FindAnApartmentAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate>
 {
@@ -15,7 +15,9 @@
         //Geography Core Data stack
         NSManagedObjectModel *geographyObjectModel_;
         NSManagedObjectContext *geographyObjectContext_;
-        NSPersistentStoreCoordinator *geographyStoreCoordinator_;        
+        NSPersistentStoreCoordinator *geographyStoreCoordinator_;
+        
+        LocationManager *locationManager_;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
@@ -29,6 +31,8 @@
 @property (nonatomic, retain, readonly) NSManagedObjectModel *geographyObjectModel;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *geographyObjectContext;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *geographyStoreCoordinator;
+
+@property (nonatomic, retain, readonly) LocationManager *locationManager;
 
 @property (nonatomic, readonly) NSString *applicationDocumentsDirectory;
 

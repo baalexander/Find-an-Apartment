@@ -63,6 +63,9 @@
 		DD45814C0FEEC86300783A46 /* CityOrPostalCode.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4581490FEEC86300783A46 /* CityOrPostalCode.m */; };
 		DD45814D0FEEC86300783A46 /* State.m in Sources */ = {isa = PBXBuildFile; fileRef = DD45814B0FEEC86300783A46 /* State.m */; };
 		DD8C53480FE9F8AE0056F3B7 /* Geography.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = DD8C53470FE9F8AE0056F3B7 /* Geography.sqlite */; };
+		DD9B5E1C0FF42D0600348478 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD9B5E1B0FF42D0600348478 /* CoreLocation.framework */; };
+		DD9B5F2B0FF4432E00348478 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD9B5F2A0FF4432E00348478 /* MapKit.framework */; };
+		DD9B613E0FF45FED00348478 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD9B613D0FF45FED00348478 /* LocationManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -154,6 +157,10 @@
 		DD45814A0FEEC86300783A46 /* State.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = State.h; path = Classes/State.h; sourceTree = "<group>"; };
 		DD45814B0FEEC86300783A46 /* State.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = State.m; path = Classes/State.m; sourceTree = "<group>"; };
 		DD8C53470FE9F8AE0056F3B7 /* Geography.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Geography.sqlite; sourceTree = "<group>"; };
+		DD9B5E1B0FF42D0600348478 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		DD9B5F2A0FF4432E00348478 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		DD9B613C0FF45FED00348478 /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
+		DD9B613D0FF45FED00348478 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +174,8 @@
 				28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */,
 				457AA2AF0FD8D4FF00F0D16C /* libxml2.2.dylib in Frameworks */,
 				45C7682C0FEC804100C75D90 /* MessageUI.framework in Frameworks */,
+				DD9B5E1C0FF42D0600348478 /* CoreLocation.framework in Frameworks */,
+				DD9B5F2B0FF4432E00348478 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,6 +242,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DD9B5F2A0FF4432E00348478 /* MapKit.framework */,
+				DD9B5E1B0FF42D0600348478 /* CoreLocation.framework */,
 				45C7682B0FEC804100C75D90 /* MessageUI.framework */,
 				457AA2AE0FD8D4FF00F0D16C /* libxml2.2.dylib */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
@@ -270,6 +281,8 @@
 				457AA3380FDAC26100F0D16C /* UrlUtil.m */,
 				457AA3390FDAC26100F0D16C /* XmlParser.h */,
 				457AA33A0FDAC26100F0D16C /* XmlParser.m */,
+				DD9B613C0FF45FED00348478 /* LocationManager.h */,
+				DD9B613D0FF45FED00348478 /* LocationManager.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -522,6 +535,7 @@
 				45D9419A0FF02BF000AD4A5B /* PropertyImage.m in Sources */,
 				45D941DE0FF051B600AD4A5B /* PropertyDetails.m in Sources */,
 				453EE3710FF084EC0044390F /* DescriptionCell.m in Sources */,
+				DD9B613E0FF45FED00348478 /* LocationManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

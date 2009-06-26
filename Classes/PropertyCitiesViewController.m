@@ -1,5 +1,6 @@
 #import "PropertyCitiesViewController.h"
 
+#import "LocationManager.h"
 #import "PropertyCriteriaViewController.h"
 #import "CityOrPostalCode.h"
 
@@ -14,6 +15,7 @@
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize mainObjectContext = mainObjectContext_;
 @synthesize state = state_;
+@synthesize locationManager = locationManager_;
 
 
 #pragma mark -
@@ -22,8 +24,7 @@
 - (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
 {
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
-    {
-        
+    {        
     }
     
     return self;
@@ -31,6 +32,7 @@
 
 - (void)dealloc
 {
+    [locationManager_ release];
     [fetchedResultsController_ release];
     [mainObjectContext_ release];
     [state_ release];
@@ -55,6 +57,7 @@
         NSSortDescriptor *nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"value" ascending:YES];
         NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:cityDescriptor, nameDescriptor, nil];
         [nameDescriptor release];
+        [cityDescriptor release];
         [fetchRequest setSortDescriptors:sortDescriptors];
         [sortDescriptors release];
         
@@ -78,6 +81,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Setup the location button
+    UIBarButtonItem *locationBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"locate.png"]
+                                                                    style:UIBarButtonItemStyleBordered 
+                                                                   target:[self locationManager] action:@selector(locateUser)];
+    self.navigationItem.rightBarButtonItem = locationBtn;
+    [[self locationManager] setLocationCaller:self];
     
     [self setTitle:@"City"];
     
@@ -151,6 +161,18 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     [criteriaViewController setState:[self state]];
     [criteriaViewController setCity:city];
     [criteriaViewController setMainObjectContext:[self mainObjectContext]];
+    [[self navigationController] pushViewController:criteriaViewController animated:YES];
+    [criteriaViewController release];
+}
+
+
+#pragma mark -
+#pragma mark Location Callback
+
+- (void)useCriteria:(PropertyCriteria *)criteria
+{
+    PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] init];
+    [criteriaViewController setCriteria:criteria];
     [[self navigationController] pushViewController:criteriaViewController animated:YES];
     [criteriaViewController release];
 }

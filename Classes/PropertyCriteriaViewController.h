@@ -34,6 +34,7 @@
 @property (nonatomic, retain) CityOrPostalCode *city;
 @property (nonatomic, retain) CityOrPostalCode *postalCode;
 @property (nonatomic, copy) NSString *coordinates;
+@property (nonatomic, retain) PropertyCriteria *criteria;
 
 @property (nonatomic, retain) InputRangeCell *inputRangeCell;
 @property (nonatomic, retain) InputSimpleCell *inputSimpleCell;

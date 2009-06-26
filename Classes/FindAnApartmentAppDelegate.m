@@ -1,10 +1,11 @@
 #import "FindAnApartmentAppDelegate.h"
 
-#import "PropertyStatesViewController.h"
 #import "PropertyHistoryViewController.h"
 #import "PropertyFavoritesViewController.h"
+#import "PropertyStatesViewController.h"
 #import "State.h"
 #import "CityOrPostalCode.h"
+#import "LocationManager.h"
 
 
 @interface FindAnApartmentAppDelegate ()
@@ -16,6 +17,8 @@
 @property (nonatomic, retain, readwrite) NSManagedObjectModel *geographyObjectModel;
 @property (nonatomic, retain, readwrite) NSManagedObjectContext *geographyObjectContext;
 @property (nonatomic, retain, readwrite) NSPersistentStoreCoordinator *geographyStoreCoordinator;
+
+@property (nonatomic, retain, readwrite) LocationManager *locationManager;
 
 @end
 
@@ -31,6 +34,7 @@
 @synthesize geographyObjectModel = geographyObjectModel_;
 @synthesize geographyObjectContext = geographyObjectContext_;
 @synthesize geographyStoreCoordinator = geographyStoreCoordinator_;
+@synthesize locationManager = locationManager_;
 
 
 #pragma mark -
@@ -45,8 +49,7 @@
     [mainStoreCoordinator_ release];
     [geographyObjectModel_ release];
     [geographyObjectContext_ release];
-    [geographyStoreCoordinator_ release];
-    
+    [geographyStoreCoordinator_ release];    
     [super dealloc];
 }
 
@@ -185,8 +188,14 @@
     //Change status bar
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
     
+    LocationManager *locationManager = [[LocationManager alloc] init];
+    [locationManager setMainObjectContext:[self mainObjectContext]];
+    [self setLocationManager:locationManager];
+    [locationManager release];
+    
     [[self statesViewController] setMainObjectContext:[self mainObjectContext]];
     [[self statesViewController] setGeographyObjectContext:[self geographyObjectContext]];
+    [[self statesViewController] setLocationManager:[self locationManager]];
     [[self window] addSubview:[[self tabBarController] view]];
     [[self window] makeKeyAndVisible];
 }

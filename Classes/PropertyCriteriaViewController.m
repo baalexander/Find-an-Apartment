@@ -13,7 +13,7 @@
 @interface PropertyCriteriaViewController ()
 
 @property (nonatomic, retain) UITextField *currentTextField;
-@property (nonatomic, retain) PropertyCriteria *criteria;
+//@property (nonatomic, retain) PropertyCriteria *criteria;
 @property (nonatomic, assign) NSInteger selectedRow;
 @property (nonatomic, assign) BOOL isEditingRow;
 @property (nonatomic, retain) NSMutableArray *rowIds;
@@ -156,18 +156,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    //Creates Criteria object to hold all the user input
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyCriteria" inManagedObjectContext:[self mainObjectContext]];
-    PropertyCriteria *criteria = [[PropertyCriteria alloc] initWithEntity:entity insertIntoManagedObjectContext:[self mainObjectContext]];
-    [self setCriteria:criteria];
-    [criteria release];
-    //Fills criteria in with passed in information
-    [[self criteria] setState:[[self state] name]];    
-    [[self criteria] setCity:[[self city] value]];
-    [[self criteria] setPostalCode:[[self postalCode] value]];
-    [[self criteria] setCoordinates:[self coordinates]];
-    
+
+    if([self criteria] == nil)
+    {
+        //Creates Criteria object to hold all the user input
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyCriteria" inManagedObjectContext:[self mainObjectContext]];
+        PropertyCriteria *criteria = [[PropertyCriteria alloc] initWithEntity:entity insertIntoManagedObjectContext:[self mainObjectContext]];
+        [self setCriteria:criteria];
+        [criteria release];
+        //Fills criteria in with passed in information
+        [[self criteria] setState:[[self state] name]];    
+        [[self criteria] setCity:[[self city] value]];
+        [[self criteria] setPostalCode:[[self postalCode] value]];
+        [[self criteria] setCoordinates:[self coordinates]];
+    }
     //Sets title to location
     NSString *title;
     if ([[self criteria] postalCode] != nil && [[[self criteria] postalCode] length] > 0)

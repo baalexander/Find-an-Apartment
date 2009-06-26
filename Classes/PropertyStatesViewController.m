@@ -2,6 +2,8 @@
 
 #import "State.h"
 #import "PropertyCitiesViewController.h"
+#import "PropertyCriteriaViewController.h"
+#import "LocationManager.h"
 
 
 @interface PropertyStatesViewController ()
@@ -14,6 +16,7 @@
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize mainObjectContext = mainObjectContext_;
 @synthesize geographyObjectContext = geographyObjectContext_;
+@synthesize locationManager = locationManager_;
 
 
 #pragma mark -
@@ -23,7 +26,6 @@
 {
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
     {
-        
     }
     
     return self;
@@ -31,6 +33,7 @@
 
 - (void)dealloc
 {
+    [locationManager_ release];
     [fetchedResultsController_ release];
     [mainObjectContext_ release];
     [geographyObjectContext_ release];
@@ -72,6 +75,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Setup the location button
+    UIBarButtonItem *locationBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"locate.png"]
+                                                                    style:UIBarButtonItemStyleBordered 
+                                                                   target:[self locationManager] action:@selector(locateUser)];
+    self.navigationItem.rightBarButtonItem = locationBtn;
+    [[self locationManager] setLocationCaller:self];
     
     NSError *error = nil;
     [[self fetchedResultsController] performFetch:&error];
@@ -142,8 +152,21 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     PropertyCitiesViewController *citiesViewController = [[PropertyCitiesViewController alloc] initWithNibName:@"PropertyCitiesView" bundle:nil];
     [citiesViewController setState:state];
     [citiesViewController setMainObjectContext:[self mainObjectContext]];
+    [citiesViewController setLocationManager:[self locationManager]];
     [[self navigationController] pushViewController:citiesViewController animated:YES];
     [citiesViewController release];
+}
+
+
+#pragma mark -
+#pragma mark Location Callback
+
+- (void)useCriteria:(PropertyCriteria *)criteria
+{
+    PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] init];
+    [criteriaViewController setCriteria:criteria];
+    [[self navigationController] pushViewController:criteriaViewController animated:YES];
+    [criteriaViewController release];
 }
 
 @end
