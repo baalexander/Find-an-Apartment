@@ -54,7 +54,7 @@
 
     //Create History object, note the autorelease because needs to be returned
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:managedObjectContext];
-    PropertyHistory *history = [[[PropertyHistory alloc] initWithEntity:entity insertIntoManagedObjectContext:managedObjectContext] autorelease];
+    PropertyHistory *history = [[PropertyHistory alloc] initWithEntity:entity insertIntoManagedObjectContext:managedObjectContext];
     
     //Sets relationships to the COPY criteria
     [history setCriteria:copyCriteria];
@@ -91,6 +91,7 @@
     
     NSError *error = nil;
     NSArray *fetchResults = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    [fetchRequest release];
     if (fetchResults == nil)
     {
         // Handle the error.

@@ -345,6 +345,7 @@
         PropertyHistory *history = [PropertyHistoryViewController historyWithCopyOfCriteria:[self criteria]];
         [history setTitle:[self title]];
         [listViewController setHistory:history];
+        [history release];
         
         //Turns Criteria into URL then parses
         PropertyUrlConstructor *urlConstructor = [[PropertyUrlConstructor alloc] init];

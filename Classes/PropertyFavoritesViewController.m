@@ -118,6 +118,7 @@
     
     NSError *error = nil;
     NSArray *fetchResults = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    [fetchRequest release];
     if (fetchResults == nil)
     {
         // Handle the error.
@@ -140,6 +141,7 @@
     
     NSError *error = nil;
     NSArray *fetchResults = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    [fetchRequest release];
     if (fetchResults == nil)
     {
         // Handle the error.
