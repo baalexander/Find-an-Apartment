@@ -175,7 +175,11 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    State *state = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    State *state;
+    if(tableView == [[self searchDisplayController] searchResultsTableView])
+        state = [self.filteredContent objectAtIndex:indexPath.row];
+    else
+        state = [[self fetchedResultsController] objectAtIndexPath:indexPath];
     
     PropertyCitiesViewController *citiesViewController = [[PropertyCitiesViewController alloc] initWithNibName:@"PropertyCitiesView" bundle:nil];
     [citiesViewController setState:state];
