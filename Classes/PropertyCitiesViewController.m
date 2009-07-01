@@ -101,7 +101,6 @@
 	self.searchBar.scopeButtonTitles = [NSArray arrayWithObjects:@"All", @"Cities", @"Zips", nil];
 	self.searchBar.delegate = self; // Become delegate to detect changes in scope.
     
-    
     // Setup the location button
     UIBarButtonItem *locationBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"locate.png"]
                                                                     style:UIBarButtonItemStyleBordered 
@@ -217,7 +216,6 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
 {	
-    NSLog(@"Search text: %@", searchText);
     NSManagedObjectContext *geographyObjectContext = [[self state] managedObjectContext];
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
@@ -225,7 +223,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
                                               inManagedObjectContext:geographyObjectContext];
     [fetchRequest setEntity:entity];
     
-    NSPredicate *predicate;// = [NSPredicate predicateWithFormat:@"state == %@ and value beginswith[cd] %@", [self state], searchText];
+    NSPredicate *predicate;
     if([scope isEqualToString:@"All"])
         predicate = [NSPredicate predicateWithFormat:@"state == %@ and value beginswith[cd] %@", [self state], searchText];
     else if([scope isEqualToString:@"Cities"])
@@ -244,7 +242,8 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     
     NSError *error = nil;
     NSArray *res = [geographyObjectContext executeFetchRequest:fetchRequest error:&error];
-    self.filteredContent = res;
+    [self setFilteredContent:res];
+    
     if(error)
     {
         NSLog(@"Error filtering content: %@", error);

@@ -17,6 +17,9 @@
 @synthesize mainObjectContext = mainObjectContext_;
 @synthesize geographyObjectContext = geographyObjectContext_;
 @synthesize locationManager = locationManager_;
+@synthesize searchBar = searchBar_;
+@synthesize searchDisplayController = searchDisplayController_;
+@synthesize filteredContent = filteredContent_;
 
 
 #pragma mark -
@@ -37,6 +40,9 @@
     [fetchedResultsController_ release];
     [mainObjectContext_ release];
     [geographyObjectContext_ release];
+    [searchBar_ release];
+    [searchDisplayController_ release];
+    [filteredContent_ release];    
     
     [super dealloc];
 }
@@ -76,6 +82,18 @@
 {
     [super viewDidLoad];
     
+    // Search setup
+    self.filteredContent = [[NSArray alloc] init];
+    self.searchDisplayController = [[[UISearchDisplayController alloc]
+									 initWithSearchBar:self.searchBar contentsController:self] autorelease];
+    self.searchDisplayController.searchResultsDataSource = self;
+	self.searchDisplayController.searchResultsDelegate = self;
+    self.searchDisplayController.delegate = self;
+	
+	self.searchBar.autocorrectionType = UITextAutocorrectionTypeNo; // Don't get in the way of user typing.
+	self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone; // Don't capitalize each word.
+	self.searchBar.delegate = self; // Become delegate to detect changes in scope.
+    
     // Setup the location button
     UIBarButtonItem *locationBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"locate.png"]
                                                                     style:UIBarButtonItemStyleBordered 
@@ -111,17 +129,23 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    if(tableView == [[self searchDisplayController] searchResultsTableView])
+        return 1;
     return [[[self fetchedResultsController] sections] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {    
+    if(tableView == [[self searchDisplayController] searchResultsTableView])
+        return [self.filteredContent count];
     id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
 {
+    if(tableView == [[self searchDisplayController] searchResultsTableView])
+        return @"";
     id<NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
     return [[sectionInfo name] substringToIndex:(NSUInteger)1];
 }
@@ -135,7 +159,11 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     }
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     
-    State *state = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    State *state;
+    if(tableView == [[self searchDisplayController] searchResultsTableView])
+        state = [self.filteredContent objectAtIndex:indexPath.row];
+    else
+        state = [[self fetchedResultsController] objectAtIndexPath:indexPath];
     [[cell textLabel] setText:[[state name] description]];
     
     return cell;
@@ -167,6 +195,60 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     [criteriaViewController setCriteria:criteria];
     [[self navigationController] pushViewController:criteriaViewController animated:YES];
     [criteriaViewController release];
+}
+
+
+#pragma mark -
+#pragma mark Content Filtering
+
+- (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
+{	
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"State" 
+                                              inManagedObjectContext:[self geographyObjectContext]];
+    [fetchRequest setEntity:entity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name beginswith[cd] %@", searchText];
+    [fetchRequest setPredicate:predicate];
+    
+    NSSortDescriptor *nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:nameDescriptor];
+    [nameDescriptor release];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    [sortDescriptors release];
+    
+    NSError *error = nil;
+    NSArray *res = [[self geographyObjectContext] executeFetchRequest:fetchRequest error:&error];
+    [self setFilteredContent:res];
+    
+    if(error)
+    {
+        NSLog(@"Error filtering content: %@", error);
+        // TODO: Handle search error
+    }
+}
+
+
+#pragma mark -
+#pragma mark UISearchDisplayController Delegate Methods
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+{
+    [self filterContentForSearchText:searchString scope:
+     [[self.searchBar scopeButtonTitles] objectAtIndex:[self.searchBar selectedScopeButtonIndex]]];
+    
+    // Return YES to cause the search result table view to be reloaded.
+    return YES;
+}
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption
+{
+    [self filterContentForSearchText:[self.searchBar text] scope:
+     [[self.searchBar scopeButtonTitles] objectAtIndex:searchOption]];
+    
+    // Return YES to cause the search result table view to be reloaded.
+    return YES;
 }
 
 @end
