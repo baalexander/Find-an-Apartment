@@ -11,6 +11,7 @@
         NSManagedObjectContext *mainObjectContext_;
         State *state_;
         LocationManager *locationManager_;
+        
         UISearchBar *searchBar_;
         UISearchDisplayController *searchDisplayController_;
         NSArray *filteredContent_;
