@@ -11,6 +11,7 @@ static NSInteger kMapItem = 1;
 @implementation PropertyMapViewController
 
 @synthesize history = history_;
+@synthesize mapView = mapView_;
 
 
 #pragma mark -
@@ -29,6 +30,7 @@ static NSInteger kMapItem = 1;
 - (void)dealloc
 {
     [history_ release];
+    [mapView_ release];
     
     [super dealloc];
 }
@@ -76,6 +78,10 @@ static NSInteger kMapItem = 1;
     [segmentedControl release];
     [[self navigationItem] setRightBarButtonItem:segmentBarItem];
     [segmentBarItem release];
+    
+    // Center the map based on the user's input
+    [self centerMap];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -112,6 +118,49 @@ static NSInteger kMapItem = 1;
 - (PropertyDetails *)detailsNext:(PropertyDetailsViewController *)details
 {
     return nil;
+}
+
+
+#pragma mark -
+#pragma mark Map Setup
+
+- (void)centerMap
+{
+    CLLocationCoordinate2D center;
+    MKCoordinateRegion region;
+    MKCoordinateSpan span;
+    
+    if([[[self history] criteria] coordinates] != nil)
+    {
+        NSArray *coords = [[[[self history] criteria] coordinates] componentsSeparatedByString:@","];
+        center.latitude = [[coords objectAtIndex:0] doubleValue];
+        center.longitude = [[coords objectAtIndex:1] doubleValue];
+        
+    }
+    else if([[[self history] criteria] street] != nil)
+    {
+        if([[[self history] criteria] postalCode] != nil)
+        {
+            
+        }
+        else
+        {
+            
+        }
+    }
+    else if([[[self history] criteria] city] != nil)
+    {
+        
+    }
+    else
+    {
+        
+    }
+    
+    region.center = center;
+    region.span = span;
+    [[self mapView] setRegion:region];
+    [[self mapView] setCenterCoordinate:center animated:YES];
 }
 
 @end
