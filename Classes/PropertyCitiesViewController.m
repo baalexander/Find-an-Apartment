@@ -241,14 +241,15 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     [sortDescriptors release];
     
     NSError *error = nil;
-    NSArray *res = [geographyObjectContext executeFetchRequest:fetchRequest error:&error];
-    [self setFilteredContent:res];
+    self.filteredContent = [geographyObjectContext executeFetchRequest:fetchRequest error:&error];
+    [fetchRequest release];
     
     if(error)
     {
         NSLog(@"Error filtering content: %@", error);
         // TODO: Handle search error
     }
+    [error release];
 }
 
 

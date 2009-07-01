@@ -216,17 +216,17 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     NSArray *sortDescriptors = [NSArray arrayWithObject:nameDescriptor];
     [nameDescriptor release];
     [fetchRequest setSortDescriptors:sortDescriptors];
-    [sortDescriptors release];
     
     NSError *error = nil;
-    NSArray *res = [[self geographyObjectContext] executeFetchRequest:fetchRequest error:&error];
-    [self setFilteredContent:res];
+    self.filteredContent = [[self geographyObjectContext] executeFetchRequest:fetchRequest error:&error];
+    [fetchRequest release];
     
     if(error)
     {
         NSLog(@"Error filtering content: %@", error);
         // TODO: Handle search error
     }
+    [error release];
 }
 
 
