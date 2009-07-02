@@ -59,6 +59,13 @@
 		45D9422A0FF0696C00AD4A5B /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = 45D942280FF0696C00AD4A5B /* down.png */; };
 		45D9422B0FF0696C00AD4A5B /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = 45D942290FF0696C00AD4A5B /* up.png */; };
 		45FF76C80FE9FF810053B4D8 /* PropertyFavoritesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */; };
+		DD10BA640FFC1E9000588928 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA590FFC1E9000588928 /* NSObject+SBJSON.m */; };
+		DD10BA650FFC1E9000588928 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA5B0FFC1E9000588928 /* NSString+SBJSON.m */; };
+		DD10BA660FFC1E9000588928 /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA5D0FFC1E9000588928 /* SBJSON.m */; };
+		DD10BA670FFC1E9000588928 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA5F0FFC1E9000588928 /* SBJsonBase.m */; };
+		DD10BA680FFC1E9000588928 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA610FFC1E9000588928 /* SBJsonParser.m */; };
+		DD10BA690FFC1E9000588928 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA630FFC1E9000588928 /* SBJsonWriter.m */; };
+		DD10BC3A0FFC592300588928 /* PropertyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BC390FFC592300588928 /* PropertyAnnotation.m */; };
 		DD4581260FEEC7B500783A46 /* Geography.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = DD4581250FEEC7B500783A46 /* Geography.xcdatamodel */; };
 		DD45814C0FEEC86300783A46 /* CityOrPostalCode.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4581490FEEC86300783A46 /* CityOrPostalCode.m */; };
 		DD45814D0FEEC86300783A46 /* State.m in Sources */ = {isa = PBXBuildFile; fileRef = DD45814B0FEEC86300783A46 /* State.m */; };
@@ -151,6 +158,21 @@
 		45D942290FF0696C00AD4A5B /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = up.png; path = Images/up.png; sourceTree = "<group>"; };
 		45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyFavoritesView.xib; path = Classes/PropertyFavoritesView.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Find_an_Apartment-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Find_an_Apartment-Info.plist"; sourceTree = "<group>"; };
+		DD10BA570FFC1E9000588928 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
+		DD10BA580FFC1E9000588928 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
+		DD10BA590FFC1E9000588928 /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
+		DD10BA5A0FFC1E9000588928 /* NSString+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SBJSON.h"; sourceTree = "<group>"; };
+		DD10BA5B0FFC1E9000588928 /* NSString+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SBJSON.m"; sourceTree = "<group>"; };
+		DD10BA5C0FFC1E9000588928 /* SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJSON.h; sourceTree = "<group>"; };
+		DD10BA5D0FFC1E9000588928 /* SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJSON.m; sourceTree = "<group>"; };
+		DD10BA5E0FFC1E9000588928 /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
+		DD10BA5F0FFC1E9000588928 /* SBJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonBase.m; sourceTree = "<group>"; };
+		DD10BA600FFC1E9000588928 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
+		DD10BA610FFC1E9000588928 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
+		DD10BA620FFC1E9000588928 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
+		DD10BA630FFC1E9000588928 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		DD10BC380FFC592300588928 /* PropertyAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyAnnotation.h; sourceTree = "<group>"; };
+		DD10BC390FFC592300588928 /* PropertyAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertyAnnotation.m; sourceTree = "<group>"; };
 		DD4581250FEEC7B500783A46 /* Geography.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Geography.xcdatamodel; sourceTree = "<group>"; };
 		DD4581480FEEC86300783A46 /* CityOrPostalCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CityOrPostalCode.h; path = Classes/CityOrPostalCode.h; sourceTree = "<group>"; };
 		DD4581490FEEC86300783A46 /* CityOrPostalCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CityOrPostalCode.m; path = Classes/CityOrPostalCode.m; sourceTree = "<group>"; };
@@ -275,6 +297,7 @@
 		455BFE530FDC9EDF000BCD39 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				DD10BA560FFC1E8F00588928 /* JSON */,
 				45D93FA70FEEE5E800AD4A5B /* StringFormatter.h */,
 				45D93FA80FEEE5E800AD4A5B /* StringFormatter.m */,
 				457AA3370FDAC26100F0D16C /* UrlUtil.h */,
@@ -381,6 +404,8 @@
 				45D941980FF02BF000AD4A5B /* PropertyImage.m */,
 				457930A10FE3601C008E2ACD /* PropertySummary.h */,
 				457930A20FE3601C008E2ACD /* PropertySummary.m */,
+				DD10BC380FFC592300588928 /* PropertyAnnotation.h */,
+				DD10BC390FFC592300588928 /* PropertyAnnotation.m */,
 			);
 			name = Property;
 			sourceTree = "<group>";
@@ -431,6 +456,26 @@
 				45D93C6D0FECAC1C00AD4A5B /* locate.png */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		DD10BA560FFC1E8F00588928 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				DD10BA570FFC1E9000588928 /* JSON.h */,
+				DD10BA580FFC1E9000588928 /* NSObject+SBJSON.h */,
+				DD10BA590FFC1E9000588928 /* NSObject+SBJSON.m */,
+				DD10BA5A0FFC1E9000588928 /* NSString+SBJSON.h */,
+				DD10BA5B0FFC1E9000588928 /* NSString+SBJSON.m */,
+				DD10BA5C0FFC1E9000588928 /* SBJSON.h */,
+				DD10BA5D0FFC1E9000588928 /* SBJSON.m */,
+				DD10BA5E0FFC1E9000588928 /* SBJsonBase.h */,
+				DD10BA5F0FFC1E9000588928 /* SBJsonBase.m */,
+				DD10BA600FFC1E9000588928 /* SBJsonParser.h */,
+				DD10BA610FFC1E9000588928 /* SBJsonParser.m */,
+				DD10BA620FFC1E9000588928 /* SBJsonWriter.h */,
+				DD10BA630FFC1E9000588928 /* SBJsonWriter.m */,
+			);
+			path = JSON;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -536,6 +581,13 @@
 				45D941DE0FF051B600AD4A5B /* PropertyDetails.m in Sources */,
 				453EE3710FF084EC0044390F /* DescriptionCell.m in Sources */,
 				DD9B613E0FF45FED00348478 /* LocationManager.m in Sources */,
+				DD10BA640FFC1E9000588928 /* NSObject+SBJSON.m in Sources */,
+				DD10BA650FFC1E9000588928 /* NSString+SBJSON.m in Sources */,
+				DD10BA660FFC1E9000588928 /* SBJSON.m in Sources */,
+				DD10BA670FFC1E9000588928 /* SBJsonBase.m in Sources */,
+				DD10BA680FFC1E9000588928 /* SBJsonParser.m in Sources */,
+				DD10BA690FFC1E9000588928 /* SBJsonWriter.m in Sources */,
+				DD10BC3A0FFC592300588928 /* PropertyAnnotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
