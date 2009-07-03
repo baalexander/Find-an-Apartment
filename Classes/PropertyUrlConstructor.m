@@ -180,7 +180,7 @@
     [self setCriteria:criteria];
     
     //Creates base URL
-    NSString *baseUrl = @"http://www.alexandermobile.com/real_estate/properties/view.xml?";
+    NSString *baseUrl = @"http://www.alexandermobile.com/real_estate_dev/properties/view.xml?";
     NSMutableString *mutableUrl = [[NSMutableString alloc] initWithString:baseUrl];
     
     //Appends device params
