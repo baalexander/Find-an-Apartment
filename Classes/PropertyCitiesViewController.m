@@ -89,23 +89,23 @@
     [super viewDidLoad];
     
     // Search setup
-    self.filteredContent = [[NSArray alloc] init];
-    self.searchDisplayController = [[[UISearchDisplayController alloc]
-									 initWithSearchBar:self.searchBar contentsController:self] autorelease];
-    self.searchDisplayController.searchResultsDataSource = self;
-	self.searchDisplayController.searchResultsDelegate = self;
-    self.searchDisplayController.delegate = self;
+    [self setFilteredContent:[[NSArray alloc] init]];
+    [self setSearchDisplayController:[[[UISearchDisplayController alloc]
+									 initWithSearchBar:[self searchBar] contentsController:self] autorelease]];
+    [[self searchDisplayController] setSearchResultsDataSource:self];
+    [[self searchDisplayController] setSearchResultsDelegate:self];
+    [[self searchDisplayController] setDelegate:self];
 	
-	self.searchBar.autocorrectionType = UITextAutocorrectionTypeNo; // Don't get in the way of user typing.
-	self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone; // Don't capitalize each word.
-	self.searchBar.scopeButtonTitles = [NSArray arrayWithObjects:@"All", @"Cities", @"Zips", nil];
-	self.searchBar.delegate = self; // Become delegate to detect changes in scope.
+	[[self searchBar] setAutocorrectionType:UITextAutocorrectionTypeNo]; // Don't get in the way of user typing.
+	[[self searchBar] setAutocapitalizationType:UITextAutocapitalizationTypeNone]; // Don't capitalize each word.
+	[[self searchBar] setDelegate:self]; // Become delegate to detect changes in scope.
     
     // Setup the location button
     UIBarButtonItem *locationBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"locate.png"]
                                                                     style:UIBarButtonItemStyleBordered 
                                                                    target:[self locationManager] action:@selector(locateUser)];
-    self.navigationItem.rightBarButtonItem = locationBtn;
+    [[self navigationItem] setRightBarButtonItem:locationBtn];
+    [locationBtn release];
     [[self locationManager] setLocationCaller:self];
     
     [self setTitle:@"City"];
@@ -146,7 +146,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if(tableView == [[self searchDisplayController] searchResultsTableView])
-        return [self.filteredContent count];
+        return [[self filteredContent] count];
     id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
@@ -170,7 +170,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     
     CityOrPostalCode *city;
     if(tableView == [[self searchDisplayController] searchResultsTableView])
-        city = [self.filteredContent objectAtIndex:indexPath.row];
+        city = [[self filteredContent] objectAtIndex:indexPath.row];
     else
         city = [[self fetchedResultsController] objectAtIndexPath:indexPath];
     [[cell textLabel] setText:[[city value] description]];
@@ -186,7 +186,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 {
     CityOrPostalCode *city;
     if(tableView == [[self searchDisplayController] searchResultsTableView])
-        city = [self.filteredContent objectAtIndex:indexPath.row];
+        city = [[self filteredContent] objectAtIndex:indexPath.row];
     else
         city = [[self fetchedResultsController] objectAtIndexPath:indexPath];
     
@@ -223,13 +223,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
                                               inManagedObjectContext:geographyObjectContext];
     [fetchRequest setEntity:entity];
     
-    NSPredicate *predicate;
-    if([scope isEqualToString:@"All"])
-        predicate = [NSPredicate predicateWithFormat:@"state == %@ and value beginswith[cd] %@", [self state], searchText];
-    else if([scope isEqualToString:@"Cities"])
-        predicate = [NSPredicate predicateWithFormat:@"state == %@ and isCity == 1 and value beginsWith[cd] %@", [self state], searchText];
-    else
-        predicate = [NSPredicate predicateWithFormat:@"state == %@ and isCity == 0 and value beginsWith[cd] %@", [self state], searchText];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"state == %@ and value beginswith[cd] %@", [self state], searchText];
     [fetchRequest setPredicate:predicate];
     
     NSSortDescriptor *cityDescriptor = [[NSSortDescriptor alloc] initWithKey:@"isCity" ascending:NO];
@@ -241,7 +235,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     [sortDescriptors release];
     
     NSError *error = nil;
-    self.filteredContent = [geographyObjectContext executeFetchRequest:fetchRequest error:&error];
+    [self setFilteredContent:[geographyObjectContext executeFetchRequest:fetchRequest error:&error]];
     [fetchRequest release];
     
     if(error)
@@ -259,7 +253,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
     [self filterContentForSearchText:searchString scope:
-     [[self.searchBar scopeButtonTitles] objectAtIndex:[self.searchBar selectedScopeButtonIndex]]];
+     [[[self searchBar] scopeButtonTitles] objectAtIndex:[[self searchBar] selectedScopeButtonIndex]]];
     
     // Return YES to cause the search result table view to be reloaded.
     return YES;
@@ -267,8 +261,8 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption
 {
-    [self filterContentForSearchText:[self.searchBar text] scope:
-     [[self.searchBar scopeButtonTitles] objectAtIndex:searchOption]];
+    [self filterContentForSearchText:[[self searchBar] text] scope:
+     [[[self searchBar] scopeButtonTitles] objectAtIndex:searchOption]];
     
     // Return YES to cause the search result table view to be reloaded.
     return YES;

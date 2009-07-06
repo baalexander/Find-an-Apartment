@@ -83,22 +83,23 @@
     [super viewDidLoad];
     
     // Search setup
-    self.filteredContent = [[NSArray alloc] init];
-    self.searchDisplayController = [[[UISearchDisplayController alloc]
-									 initWithSearchBar:self.searchBar contentsController:self] autorelease];
-    self.searchDisplayController.searchResultsDataSource = self;
-	self.searchDisplayController.searchResultsDelegate = self;
-    self.searchDisplayController.delegate = self;
+    [self setFilteredContent:[[NSArray alloc] init]];
+    [self setSearchDisplayController:[[[UISearchDisplayController alloc]
+									 initWithSearchBar:[self searchBar] contentsController:self] autorelease]];
+    [[self searchDisplayController] setSearchResultsDataSource:self];
+    [[self searchDisplayController] setSearchResultsDelegate:self];
+    [[self searchDisplayController] setDelegate:self];
 	
-	self.searchBar.autocorrectionType = UITextAutocorrectionTypeNo; // Don't get in the way of user typing.
-	self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone; // Don't capitalize each word.
-	self.searchBar.delegate = self; // Become delegate to detect changes in scope.
+	[[self searchBar] setAutocorrectionType:UITextAutocorrectionTypeNo]; // Don't get in the way of user typing.
+	[[self searchBar] setAutocapitalizationType:UITextAutocapitalizationTypeNone]; // Don't capitalize each word.
+	[[self searchBar] setDelegate:self]; // Become delegate to detect changes in scope.
     
     // Setup the location button
     UIBarButtonItem *locationBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"locate.png"]
                                                                     style:UIBarButtonItemStyleBordered 
                                                                    target:[self locationManager] action:@selector(locateUser)];
-    self.navigationItem.rightBarButtonItem = locationBtn;
+    [[self navigationItem] setRightBarButtonItem:locationBtn];
+    [locationBtn release];
     [[self locationManager] setLocationCaller:self];
     
     NSError *error = nil;
@@ -137,7 +138,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {    
     if(tableView == [[self searchDisplayController] searchResultsTableView])
-        return [self.filteredContent count];
+        return [[self filteredContent] count];
     id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
@@ -161,7 +162,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     
     State *state;
     if(tableView == [[self searchDisplayController] searchResultsTableView])
-        state = [self.filteredContent objectAtIndex:indexPath.row];
+        state = [[self filteredContent] objectAtIndex:indexPath.row];
     else
         state = [[self fetchedResultsController] objectAtIndexPath:indexPath];
     [[cell textLabel] setText:[[state name] description]];
@@ -177,7 +178,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 {
     State *state;
     if(tableView == [[self searchDisplayController] searchResultsTableView])
-        state = [self.filteredContent objectAtIndex:indexPath.row];
+        state = [[self filteredContent] objectAtIndex:indexPath.row];
     else
         state = [[self fetchedResultsController] objectAtIndexPath:indexPath];
     
@@ -222,7 +223,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     [fetchRequest setSortDescriptors:sortDescriptors];
     
     NSError *error = nil;
-    self.filteredContent = [[self geographyObjectContext] executeFetchRequest:fetchRequest error:&error];
+    [self setFilteredContent:[[self geographyObjectContext] executeFetchRequest:fetchRequest error:&error]];
     [fetchRequest release];
     
     if(error)
@@ -240,7 +241,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
     [self filterContentForSearchText:searchString scope:
-     [[self.searchBar scopeButtonTitles] objectAtIndex:[self.searchBar selectedScopeButtonIndex]]];
+     [[[self searchBar] scopeButtonTitles] objectAtIndex:[[self searchBar] selectedScopeButtonIndex]]];
     
     // Return YES to cause the search result table view to be reloaded.
     return YES;
@@ -248,8 +249,8 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption
 {
-    [self filterContentForSearchText:[self.searchBar text] scope:
-     [[self.searchBar scopeButtonTitles] objectAtIndex:searchOption]];
+    [self filterContentForSearchText:[[self searchBar] text] scope:
+     [[[self searchBar] scopeButtonTitles] objectAtIndex:searchOption]];
     
     // Return YES to cause the search result table view to be reloaded.
     return YES;
