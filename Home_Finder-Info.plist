@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
-	<string>FindAnApartmentIcon.png</string>
+	<string>HomeFinderIcon.png</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.mushibo.battlecry</string>
 	<key>CFBundleInfoDictionaryVersion</key>
