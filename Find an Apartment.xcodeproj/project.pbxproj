@@ -11,7 +11,7 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
-		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
+		28AD733F0D9D9553002E5188 /* FindAnApartmentMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* FindAnApartmentMainWindow.xib */; };
 		28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D801B30F44B63D00FB423F /* CoreData.framework */; };
 		453EE36E0FF084DB0044390F /* DescriptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453EE36D0FF084DB0044390F /* DescriptionCell.xib */; };
 		453EE3710FF084EC0044390F /* DescriptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 453EE3700FF084EC0044390F /* DescriptionCell.m */; };
@@ -47,7 +47,6 @@
 		45C7682C0FEC804100C75D90 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45C7682B0FEC804100C75D90 /* MessageUI.framework */; };
 		45C974180FDCCA150021EE6D /* PropertyHistoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C974150FDCCA150021EE6D /* PropertyHistoryView.xib */; };
 		45C974190FDCCA150021EE6D /* PropertyHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C974170FDCCA150021EE6D /* PropertyHistoryViewController.m */; };
-		45D4550A1001970000944852 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		45D4550B1001970000944852 /* InputRangeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457AA37B0FDAC45900F0D16C /* InputRangeCell.xib */; };
 		45D4550C1001970000944852 /* InputSimpleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457AA37E0FDAC45900F0D16C /* InputSimpleCell.xib */; };
 		45D4550D1001970000944852 /* PropertyCitiesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457AA3810FDAC45900F0D16C /* PropertyCitiesView.xib */; };
@@ -114,8 +113,7 @@
 		45D4554D1001970000944852 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD9B5F2A0FF4432E00348478 /* MapKit.framework */; };
 		45D4559310019BDE00944852 /* HomeFinderIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 45D4559210019BDE00944852 /* HomeFinderIcon.png */; };
 		45D4559510019BED00944852 /* FindAnApartmentIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 45D4559410019BED00944852 /* FindAnApartmentIcon.png */; };
-		45D4559E10019EC000944852 /* Home_Finder-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 45D455531001970000944852 /* Home_Finder-Info.plist */; };
-		45D4559F10019ECB00944852 /* Find_an_Apartment-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107310486CEB800E47090 /* Find_an_Apartment-Info.plist */; };
+		45D455C61001A32100944852 /* HomeFinderMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D455C51001A32100944852 /* HomeFinderMainWindow.xib */; };
 		45D93C6E0FECAC1C00AD4A5B /* locate.png in Resources */ = {isa = PBXBuildFile; fileRef = 45D93C6D0FECAC1C00AD4A5B /* locate.png */; };
 		45D93EDE0FEEDB0B00AD4A5B /* PropertyCriteria.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D93EDB0FEEDB0B00AD4A5B /* PropertyCriteria.m */; };
 		45D93EDF0FEEDB0B00AD4A5B /* PropertyHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D93EDD0FEEDB0B00AD4A5B /* PropertyHistory.m */; };
@@ -148,7 +146,7 @@
 		1D6058910D05DD3D006BFB54 /* Find an Apartment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Find an Apartment.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		28AD733E0D9D9553002E5188 /* FindAnApartmentMainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FindAnApartmentMainWindow.xib; sourceTree = "<group>"; };
 		28D801B30F44B63D00FB423F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Find_an_Apartment_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Find_an_Apartment_Prefix.pch; sourceTree = "<group>"; };
@@ -211,6 +209,7 @@
 		45D455531001970000944852 /* Home_Finder-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Home_Finder-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		45D4559210019BDE00944852 /* HomeFinderIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HomeFinderIcon.png; sourceTree = "<group>"; };
 		45D4559410019BED00944852 /* FindAnApartmentIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FindAnApartmentIcon.png; sourceTree = "<group>"; };
+		45D455C51001A32100944852 /* HomeFinderMainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeFinderMainWindow.xib; sourceTree = "<group>"; };
 		45D93C6D0FECAC1C00AD4A5B /* locate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = locate.png; path = Images/locate.png; sourceTree = "<group>"; };
 		45D93EDA0FEEDB0B00AD4A5B /* PropertyCriteria.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyCriteria.h; path = Classes/PropertyCriteria.h; sourceTree = "<group>"; };
 		45D93EDB0FEEDB0B00AD4A5B /* PropertyCriteria.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyCriteria.m; path = Classes/PropertyCriteria.m; sourceTree = "<group>"; };
@@ -343,7 +342,8 @@
 				DD4581250FEEC7B500783A46 /* Geography.xcdatamodel */,
 				DD8C53470FE9F8AE0056F3B7 /* Geography.sqlite */,
 				45858DE30FDEF476003F8831 /* Find_an_Apartment.xcdatamodel */,
-				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
+				28AD733E0D9D9553002E5188 /* FindAnApartmentMainWindow.xib */,
+				45D455C51001A32100944852 /* HomeFinderMainWindow.xib */,
 				8D1107310486CEB800E47090 /* Find_an_Apartment-Info.plist */,
 				45D455531001970000944852 /* Home_Finder-Info.plist */,
 			);
@@ -627,7 +627,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
+				28AD733F0D9D9553002E5188 /* FindAnApartmentMainWindow.xib in Resources */,
 				457AA38F0FDAC45900F0D16C /* InputRangeCell.xib in Resources */,
 				457AA3910FDAC45900F0D16C /* InputSimpleCell.xib in Resources */,
 				457AA3930FDAC45900F0D16C /* PropertyCitiesView.xib in Resources */,
@@ -647,7 +647,6 @@
 				45D9422B0FF0696C00AD4A5B /* up.png in Resources */,
 				453EE36E0FF084DB0044390F /* DescriptionCell.xib in Resources */,
 				45D4559510019BED00944852 /* FindAnApartmentIcon.png in Resources */,
-				45D4559F10019ECB00944852 /* Find_an_Apartment-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,7 +654,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45D4550A1001970000944852 /* MainWindow.xib in Resources */,
 				45D4550B1001970000944852 /* InputRangeCell.xib in Resources */,
 				45D4550C1001970000944852 /* InputSimpleCell.xib in Resources */,
 				45D4550D1001970000944852 /* PropertyCitiesView.xib in Resources */,
@@ -675,7 +673,7 @@
 				45D4551C1001970000944852 /* up.png in Resources */,
 				45D4551D1001970000944852 /* DescriptionCell.xib in Resources */,
 				45D4559310019BDE00944852 /* HomeFinderIcon.png in Resources */,
-				45D4559E10019EC000944852 /* Home_Finder-Info.plist in Resources */,
+				45D455C61001A32100944852 /* HomeFinderMainWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -788,6 +786,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Find_an_Apartment_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = FIND_AN_APARTMENT;
 				INFOPLIST_FILE = "Find_an_Apartment-Info.plist";
 				PRODUCT_NAME = "Find an Apartment";
 			};
@@ -804,6 +803,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Find_an_Apartment_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = FIND_AN_APARTMENT;
 				INFOPLIST_FILE = "Find_an_Apartment-Info.plist";
 				PRODUCT_NAME = "Find an Apartment";
 			};
@@ -822,6 +822,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Find_an_Apartment_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = HOME_FINDER;
 				INFOPLIST_FILE = "Home_Finder-Info.plist";
 				PRODUCT_NAME = "Home Finder";
 			};
@@ -838,6 +839,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Find_an_Apartment_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = HOME_FINDER;
 				INFOPLIST_FILE = "Home_Finder-Info.plist";
 				PRODUCT_NAME = "Home Finder";
 			};
