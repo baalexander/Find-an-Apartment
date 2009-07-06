@@ -135,6 +135,7 @@
 		DD4581260FEEC7B500783A46 /* Geography.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = DD4581250FEEC7B500783A46 /* Geography.xcdatamodel */; };
 		DD45814C0FEEC86300783A46 /* CityOrPostalCode.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4581490FEEC86300783A46 /* CityOrPostalCode.m */; };
 		DD45814D0FEEC86300783A46 /* State.m in Sources */ = {isa = PBXBuildFile; fileRef = DD45814B0FEEC86300783A46 /* State.m */; };
+		DD4A5DAA1002BFB9004599FB /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DD4A5DA91002BFB9004599FB /* Default.png */; };
 		DD8C53480FE9F8AE0056F3B7 /* Geography.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = DD8C53470FE9F8AE0056F3B7 /* Geography.sqlite */; };
 		DD9B5E1C0FF42D0600348478 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD9B5E1B0FF42D0600348478 /* CoreLocation.framework */; };
 		DD9B5F2B0FF4432E00348478 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD9B5F2A0FF4432E00348478 /* MapKit.framework */; };
@@ -248,6 +249,7 @@
 		DD4581490FEEC86300783A46 /* CityOrPostalCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CityOrPostalCode.m; path = Classes/CityOrPostalCode.m; sourceTree = "<group>"; };
 		DD45814A0FEEC86300783A46 /* State.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = State.h; path = Classes/State.h; sourceTree = "<group>"; };
 		DD45814B0FEEC86300783A46 /* State.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = State.m; path = Classes/State.m; sourceTree = "<group>"; };
+		DD4A5DA91002BFB9004599FB /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		DD8C53470FE9F8AE0056F3B7 /* Geography.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Geography.sqlite; sourceTree = "<group>"; };
 		DD9B5E1B0FF42D0600348478 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		DD9B5F2A0FF4432E00348478 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -337,6 +339,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DD4A5DA91002BFB9004599FB /* Default.png */,
 				45D4559410019BED00944852 /* FindAnApartmentIcon.png */,
 				45D4559210019BDE00944852 /* HomeFinderIcon.png */,
 				DD4581250FEEC7B500783A46 /* Geography.xcdatamodel */,
@@ -647,6 +650,7 @@
 				45D9422B0FF0696C00AD4A5B /* up.png in Resources */,
 				453EE36E0FF084DB0044390F /* DescriptionCell.xib in Resources */,
 				45D4559510019BED00944852 /* FindAnApartmentIcon.png in Resources */,
+				DD4A5DAA1002BFB9004599FB /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
