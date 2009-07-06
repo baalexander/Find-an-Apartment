@@ -33,7 +33,7 @@
     if(locationManager_ == nil)
     {
         CLLocationManager *locationManager = [[CLLocationManager alloc] init];
-        locationManager.delegate = self;
+        [locationManager setDelegate:self];
         [locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
         [self setLocationManager:locationManager];
         [locationManager release];
@@ -51,7 +51,7 @@
 	// We only want a single location, so stop updating
 	[[self locationManager] stopUpdatingLocation];
     
-	if (signbit(newLocation.horizontalAccuracy))
+	if (signbit([newLocation horizontalAccuracy]))
     {
 		// Negative accuracy means an invalid or unavailable measurement
 		NSLog(@"Invalid or unavailable measurement");
@@ -59,8 +59,8 @@
 	}
     [self setUserLocation:newLocation];
     
-    MKReverseGeocoder *reverseGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:newLocation.coordinate];
-    reverseGeocoder.delegate = self;
+    MKReverseGeocoder *reverseGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:[newLocation coordinate]];
+    [reverseGeocoder setDelegate:self];
     [self setReverseGeocoder:reverseGeocoder];
     [[self reverseGeocoder] start];    	
 }
