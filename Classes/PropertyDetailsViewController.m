@@ -20,6 +20,7 @@
 @synthesize sectionDetails = sectionDetails_;
 @synthesize locationCell = locationCell_;
 @synthesize descriptionCell = descriptionCell_;
+@synthesize addToFavoritesBtn = addToFavoritesBtn_;
 
 
 #pragma mark -
@@ -92,6 +93,7 @@
     }
     else
     {
+        [[self addToFavoritesBtn] setEnabled:NO];
         NSLog(@"Added to favorites.");
     }
 }
