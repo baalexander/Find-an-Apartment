@@ -1,6 +1,5 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
-#import "FindAnApartmentAppDelegate.h"
 
 
 @interface LocationManager : NSObject <CLLocationManagerDelegate, MKReverseGeocoderDelegate, UIAlertViewDelegate>
