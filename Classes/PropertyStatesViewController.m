@@ -14,7 +14,7 @@
 @implementation PropertyStatesViewController
 
 @synthesize fetchedResultsController = fetchedResultsController_;
-@synthesize mainObjectContext = mainObjectContext_;
+@synthesize propertyObjectContext = propertyObjectContext_;
 @synthesize geographyObjectContext = geographyObjectContext_;
 @synthesize locationManager = locationManager_;
 @synthesize searchBar = searchBar_;
@@ -38,7 +38,7 @@
 {
     [locationManager_ release];
     [fetchedResultsController_ release];
-    [mainObjectContext_ release];
+    [propertyObjectContext_ release];
     [geographyObjectContext_ release];
     [searchBar_ release];
     [searchDisplayController_ release];
@@ -184,7 +184,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     
     PropertyCitiesViewController *citiesViewController = [[PropertyCitiesViewController alloc] initWithNibName:@"PropertyCitiesView" bundle:nil];
     [citiesViewController setState:state];
-    [citiesViewController setMainObjectContext:[self mainObjectContext]];
+    [citiesViewController setPropertyObjectContext:[self propertyObjectContext]];
     [citiesViewController setLocationManager:[self locationManager]];
     [[self navigationController] pushViewController:citiesViewController animated:YES];
     [citiesViewController release];

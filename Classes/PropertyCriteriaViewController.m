@@ -28,7 +28,7 @@
 
 @implementation PropertyCriteriaViewController
 
-@synthesize mainObjectContext = mainObjectContext_;
+@synthesize propertyObjectContext = propertyObjectContext_;
 @synthesize state = state_;
 @synthesize city = city_;
 @synthesize postalCode = postalCode_;
@@ -57,7 +57,7 @@
 
 - (void)dealloc
 {
-    [mainObjectContext_ release];
+    [propertyObjectContext_ release];
     
     [state_ release];
     [city_ release];
@@ -160,8 +160,8 @@
     if([self criteria] == nil)
     {
         //Creates Criteria object to hold all the user input
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyCriteria" inManagedObjectContext:[self mainObjectContext]];
-        PropertyCriteria *criteria = [[PropertyCriteria alloc] initWithEntity:entity insertIntoManagedObjectContext:[self mainObjectContext]];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyCriteria" inManagedObjectContext:[self propertyObjectContext]];
+        PropertyCriteria *criteria = [[PropertyCriteria alloc] initWithEntity:entity insertIntoManagedObjectContext:[self propertyObjectContext]];
         [self setCriteria:criteria];
         [criteria release];
         //Fills criteria in with passed in information

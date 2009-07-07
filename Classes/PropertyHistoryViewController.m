@@ -13,7 +13,7 @@
 @implementation PropertyHistoryViewController
 
 @synthesize fetchedResultsController = fetchedResultsController_;
-@synthesize mainObjectContext = mainObjectContext_;
+@synthesize propertyObjectContext = propertyObjectContext_;
 
 
 #pragma mark -
@@ -32,7 +32,7 @@
 - (void)dealloc
 {
     [fetchedResultsController_ release];
-    [mainObjectContext_ release];
+    [propertyObjectContext_ release];
     
     [super dealloc];
 }
@@ -112,7 +112,7 @@
     if (fetchedResultsController_ == nil)
     {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:[self mainObjectContext]];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:[self propertyObjectContext]];
         [fetchRequest setEntity:entity];
         
         //Sorts so most recent is first
@@ -128,7 +128,7 @@
         
         // Create and initialize the fetch results controller.
         NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
-                                                                                                   managedObjectContext:[self mainObjectContext] 
+                                                                                                   managedObjectContext:[self propertyObjectContext] 
                                                                                                      sectionNameKeyPath:nil 
                                                                                                               cacheName:@"History"];
         [fetchRequest release];

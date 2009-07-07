@@ -11,7 +11,7 @@
     
         MKReverseGeocoder *reverseGeocoder_;
     
-        NSManagedObjectContext *mainObjectContext_;
+        NSManagedObjectContext *propertyObjectContext_;
         UIAlertView *alert_;
 }
 
@@ -25,6 +25,6 @@
 
 @property (nonatomic, retain, readonly) MKReverseGeocoder *reverseGeocoder;
 
-@property (nonatomic, retain) NSManagedObjectContext *mainObjectContext;
+@property (nonatomic, retain) NSManagedObjectContext *propertyObjectContext;
 
 @end

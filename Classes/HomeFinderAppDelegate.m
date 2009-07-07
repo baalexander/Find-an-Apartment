@@ -1,15 +1,15 @@
-#import "FindAnApartmentAppDelegate.h"
+#import "HomeFinderAppDelegate.h"
 
 #import "PropertyStatesViewController.h"
 #import "PropertyHistoryViewController.h"
 #import "PropertyFavoritesViewController.h"
 
 
-@implementation FindAnApartmentAppDelegate
+@implementation HomeFinderAppDelegate
 
 
 #pragma mark -
-#pragma mark FindAnApartmentAppDelegate
+#pragma mark HomeFinderAppDelegate
 
 - (void)dealloc
 {

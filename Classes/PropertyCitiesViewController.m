@@ -13,7 +13,7 @@
 @implementation PropertyCitiesViewController
 
 @synthesize fetchedResultsController = fetchedResultsController_;
-@synthesize mainObjectContext = mainObjectContext_;
+@synthesize propertyObjectContext = propertyObjectContext_;
 @synthesize state = state_;
 @synthesize locationManager = locationManager_;
 @synthesize searchBar = searchBar_;
@@ -37,7 +37,7 @@
 {
     [locationManager_ release];
     [fetchedResultsController_ release];
-    [mainObjectContext_ release];
+    [propertyObjectContext_ release];
     [state_ release];
     [searchBar_ release];
     [searchDisplayController_ release];
@@ -193,7 +193,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaView" bundle:nil];
     [criteriaViewController setState:[self state]];
     [criteriaViewController setCity:city];
-    [criteriaViewController setMainObjectContext:[self mainObjectContext]];
+    [criteriaViewController setPropertyObjectContext:[self propertyObjectContext]];
     [[self navigationController] pushViewController:criteriaViewController animated:YES];
     [criteriaViewController release];
 }

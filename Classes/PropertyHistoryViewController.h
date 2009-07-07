@@ -8,10 +8,10 @@
     @private
         //Core Data objects
         NSFetchedResultsController *fetchedResultsController_;
-        NSManagedObjectContext *mainObjectContext_;
+        NSManagedObjectContext *propertyObjectContext_;
 }
 
-@property (nonatomic, retain) NSManagedObjectContext *mainObjectContext;
+@property (nonatomic, retain) NSManagedObjectContext *propertyObjectContext;
 
 + (PropertyHistory *)historyWithCopyOfCriteria:(PropertyCriteria *)criteria;
 + (void)deleteOldHistoryObjects:(NSManagedObjectContext *)managedObjectContext;

@@ -11,7 +11,7 @@
 @interface PropertyCriteriaViewController : UITableViewController <UITextFieldDelegate>
 {
     @private
-        NSManagedObjectContext *mainObjectContext_;
+        NSManagedObjectContext *propertyObjectContext_;
         
         State *state_;
         CityOrPostalCode *city_;
@@ -28,7 +28,7 @@
         IBOutlet InputSimpleCell *inputSimpleCell_;
 }
 
-@property (nonatomic, retain) NSManagedObjectContext *mainObjectContext;
+@property (nonatomic, retain) NSManagedObjectContext *propertyObjectContext;
 
 @property (nonatomic, retain) State *state;
 @property (nonatomic, retain) CityOrPostalCode *city;

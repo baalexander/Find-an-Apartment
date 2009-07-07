@@ -20,7 +20,7 @@
 @synthesize locationManager = locationManager_;
 @synthesize userLocation = userLocation_;
 @synthesize locationCaller = locationCaller_;
-@synthesize mainObjectContext = mainObjectContext_;
+@synthesize propertyObjectContext = propertyObjectContext_;
 @synthesize alert = alert_;
 @synthesize reverseGeocoder = reverseGeocoder_;
 
@@ -127,7 +127,7 @@
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFindPlacemark:(MKPlacemark *)placemark
 {
     PropertyCriteria *criteria = [NSEntityDescription insertNewObjectForEntityForName:@"PropertyCriteria" 
-                                                               inManagedObjectContext:[self mainObjectContext]];
+                                                               inManagedObjectContext:[self propertyObjectContext]];
     CLLocationCoordinate2D coords = [[self userLocation] coordinate];
     NSString *coordinates = [[NSString alloc] initWithFormat:@"%f,%f", coords.latitude, coords.longitude]; 
     [criteria setCoordinates:coordinates];
@@ -171,7 +171,7 @@
     [userLocation_ release];
     [locationCaller_ release];
     [reverseGeocoder_ release];
-    [mainObjectContext_ release];
+    [propertyObjectContext_ release];
     [alert_ release];
     
     [super dealloc];
