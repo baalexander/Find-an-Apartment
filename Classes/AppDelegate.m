@@ -182,9 +182,6 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application
 {
-    //Change status bar
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
-    
     LocationManager *locationManager = [[LocationManager alloc] init];
     [locationManager setPropertyObjectContext:[self propertyObjectContext]];
     [self setLocationManager:locationManager];
