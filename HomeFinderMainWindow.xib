@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="17"/>
+			<integer value="41"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -51,14 +51,18 @@
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics">
 					<int key="IBUIStatusBarStyle">1</int>
 				</object>
-				<object class="IBUINavigationController" key="IBUISelectedViewController" id="628923912">
-					<object class="IBUITabBarItem" key="IBUITabBarItem" id="708138413">
+				<object class="IBUINavigationController" key="IBUISelectedViewController" id="338586814">
+					<object class="IBUITabBarItem" key="IBUITabBarItem" id="804902962">
+						<string key="IBUITitle">Mortgage</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">mortgageTabBar.png</string>
+						</object>
 						<reference key="IBUITabBar"/>
-						<int key="IBUISystemItemIdentifier">1</int>
 					</object>
 					<reference key="IBUIParentViewController" ref="218574855"/>
 					<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
-					<object class="IBUINavigationBar" key="IBUINavigationBar" id="988658482">
+					<object class="IBUINavigationBar" key="IBUINavigationBar" id="977486132">
 						<nil key="NSNextResponder"/>
 						<int key="NSvFlags">256</int>
 						<string key="NSFrameSize">{0, 0}</string>
@@ -69,13 +73,12 @@
 					</object>
 					<object class="NSMutableArray" key="IBUIViewControllers">
 						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="IBUIViewController" id="209549070">
-							<object class="IBUINavigationItem" key="IBUINavigationItem" id="467789398">
+						<object class="IBUIViewController" id="910419977">
+							<object class="IBUINavigationItem" key="IBUINavigationItem" id="697608604">
 								<reference key="IBUINavigationBar"/>
-								<string key="IBUITitle">Favorites</string>
+								<string key="IBUITitle">Mortgage Calculator</string>
 							</object>
-							<reference key="IBUIParentViewController" ref="628923912"/>
-							<string key="IBUINibName">PropertyFavoritesView</string>
+							<reference key="IBUIParentViewController" ref="338586814"/>
 						</object>
 					</object>
 				</object>
@@ -135,7 +138,34 @@
 							</object>
 						</object>
 					</object>
-					<reference ref="628923912"/>
+					<object class="IBUINavigationController" id="628923912">
+						<object class="IBUITabBarItem" key="IBUITabBarItem" id="708138413">
+							<reference key="IBUITabBar"/>
+							<int key="IBUISystemItemIdentifier">1</int>
+						</object>
+						<reference key="IBUIParentViewController" ref="218574855"/>
+						<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
+						<object class="IBUINavigationBar" key="IBUINavigationBar" id="988658482">
+							<nil key="NSNextResponder"/>
+							<int key="NSvFlags">256</int>
+							<string key="NSFrameSize">{0, 0}</string>
+							<bool key="IBUIOpaque">NO</bool>
+							<bool key="IBUIClipsSubviews">YES</bool>
+							<bool key="IBUIMultipleTouchEnabled">YES</bool>
+							<int key="IBUIBarStyle">1</int>
+						</object>
+						<object class="NSMutableArray" key="IBUIViewControllers">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBUIViewController" id="209549070">
+								<object class="IBUINavigationItem" key="IBUINavigationItem" id="467789398">
+									<string key="IBUITitle">Favorites</string>
+								</object>
+								<reference key="IBUIParentViewController" ref="628923912"/>
+								<string key="IBUINibName">PropertyFavoritesView</string>
+							</object>
+						</object>
+					</object>
+					<reference ref="338586814"/>
 				</object>
 				<object class="IBUITabBar" key="IBUITabBar" id="688355244">
 					<nil key="NSNextResponder"/>
@@ -232,6 +262,7 @@
 							<reference ref="947943179"/>
 							<reference ref="91884660"/>
 							<reference ref="628923912"/>
+							<reference ref="338586814"/>
 						</object>
 						<reference key="parent" ref="318805247"/>
 					</object>
@@ -351,6 +382,41 @@
 						<reference key="parent" ref="318805247"/>
 						<string key="objectName">Home Finder App Delegate</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">41</int>
+						<reference key="object" ref="338586814"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="977486132"/>
+							<reference ref="910419977"/>
+							<reference ref="804902962"/>
+						</object>
+						<reference key="parent" ref="218574855"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">43</int>
+						<reference key="object" ref="977486132"/>
+						<reference key="parent" ref="338586814"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">42</int>
+						<reference key="object" ref="910419977"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="697608604"/>
+						</object>
+						<reference key="parent" ref="338586814"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">44</int>
+						<reference key="object" ref="697608604"/>
+						<reference key="parent" ref="910419977"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">45</int>
+						<reference key="object" ref="804902962"/>
+						<reference key="parent" ref="338586814"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -382,6 +448,12 @@
 					<string>37.IBPluginDependency</string>
 					<string>38.IBPluginDependency</string>
 					<string>39.IBPluginDependency</string>
+					<string>41.IBEditorWindowLastContentRect</string>
+					<string>41.IBPluginDependency</string>
+					<string>42.CustomClassName</string>
+					<string>42.IBPluginDependency</string>
+					<string>43.IBPluginDependency</string>
+					<string>44.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -410,6 +482,12 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>{{0, 343}, {320, 480}}</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>MortgageCriteriaViewController</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -432,7 +510,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">40</int>
+			<int key="maxID">45</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -465,7 +543,15 @@
 					<string key="superclassName">AppDelegate</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">HomeFinderAppDelegate.h</string>
+						<string key="minorKey">Classes/HomeFinderAppDelegate.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">MortgageCriteriaViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/MortgageCriteriaViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

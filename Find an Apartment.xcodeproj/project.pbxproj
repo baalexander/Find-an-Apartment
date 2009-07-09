@@ -17,6 +17,8 @@
 		453EE36E0FF084DB0044390F /* DescriptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453EE36D0FF084DB0044390F /* DescriptionCell.xib */; };
 		453EE3710FF084EC0044390F /* DescriptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 453EE3700FF084EC0044390F /* DescriptionCell.m */; };
 		4558D5AE1002FECD0065C4DD /* HomeFinderAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558D5AD1002FECD0065C4DD /* HomeFinderAppDelegate.m */; };
+		4558D65910058CF30065C4DD /* MortgageCriteriaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558D65710058CF30065C4DD /* MortgageCriteriaViewController.m */; };
+		4558D65A10058CF30065C4DD /* MortgageCriteriaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4558D65810058CF30065C4DD /* MortgageCriteriaView.xib */; };
 		455BFE400FDC9BC4000BCD39 /* PropertyDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 455BFE3F0FDC9BC4000BCD39 /* PropertyDetailsView.xib */; };
 		457930A40FE3601C008E2ACD /* PropertySummary.m in Sources */ = {isa = PBXBuildFile; fileRef = 457930A20FE3601C008E2ACD /* PropertySummary.m */; };
 		457931010FE36A08008E2ACD /* SummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 457930FF0FE36A08008E2ACD /* SummaryCell.m */; };
@@ -45,6 +47,7 @@
 		45858DE40FDEF476003F8831 /* Property.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 45858DE30FDEF476003F8831 /* Property.xcdatamodel */; };
 		458783A60FDB45F7000B4F5D /* PropertyMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */; };
 		458783A70FDB45F7000B4F5D /* PropertyMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458783A50FDB45F7000B4F5D /* PropertyMapView.xib */; };
+		45BEE7A910058F7E0031613E /* mortgageTabBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 45BEE7A810058F7E0031613E /* mortgageTabBar.png */; };
 		45C767CA0FEC7A1C00C75D90 /* PropertyListEmailerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C767C80FEC7A1C00C75D90 /* PropertyListEmailerViewController.m */; };
 		45C7682C0FEC804100C75D90 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45C7682B0FEC804100C75D90 /* MessageUI.framework */; };
 		45C974180FDCCA150021EE6D /* PropertyHistoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C974150FDCCA150021EE6D /* PropertyHistoryView.xib */; };
@@ -158,6 +161,9 @@
 		453EE3700FF084EC0044390F /* DescriptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DescriptionCell.m; path = Classes/DescriptionCell.m; sourceTree = "<group>"; };
 		4558D5AC1002FECD0065C4DD /* HomeFinderAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeFinderAppDelegate.h; path = Classes/HomeFinderAppDelegate.h; sourceTree = "<group>"; };
 		4558D5AD1002FECD0065C4DD /* HomeFinderAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeFinderAppDelegate.m; path = Classes/HomeFinderAppDelegate.m; sourceTree = "<group>"; };
+		4558D65610058CF30065C4DD /* MortgageCriteriaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MortgageCriteriaViewController.h; path = Classes/MortgageCriteriaViewController.h; sourceTree = "<group>"; };
+		4558D65710058CF30065C4DD /* MortgageCriteriaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MortgageCriteriaViewController.m; path = Classes/MortgageCriteriaViewController.m; sourceTree = "<group>"; };
+		4558D65810058CF30065C4DD /* MortgageCriteriaView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MortgageCriteriaView.xib; path = Classes/MortgageCriteriaView.xib; sourceTree = "<group>"; };
 		455BFE3F0FDC9BC4000BCD39 /* PropertyDetailsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyDetailsView.xib; path = Classes/PropertyDetailsView.xib; sourceTree = "<group>"; };
 		457930A10FE3601C008E2ACD /* PropertySummary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertySummary.h; path = Classes/PropertySummary.h; sourceTree = "<group>"; };
 		457930A20FE3601C008E2ACD /* PropertySummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertySummary.m; path = Classes/PropertySummary.m; sourceTree = "<group>"; };
@@ -204,6 +210,7 @@
 		458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyMapViewController.m; path = Classes/PropertyMapViewController.m; sourceTree = "<group>"; };
 		458783A50FDB45F7000B4F5D /* PropertyMapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyMapView.xib; path = Classes/PropertyMapView.xib; sourceTree = "<group>"; };
 		45991A220FF0927F00627B7D /* PropertyDetailsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyDetailsConstants.h; path = Classes/PropertyDetailsConstants.h; sourceTree = "<group>"; };
+		45BEE7A810058F7E0031613E /* mortgageTabBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mortgageTabBar.png; path = Images/mortgageTabBar.png; sourceTree = "<group>"; };
 		45C767C70FEC7A1C00C75D90 /* PropertyListEmailerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyListEmailerViewController.h; path = Classes/PropertyListEmailerViewController.h; sourceTree = "<group>"; };
 		45C767C80FEC7A1C00C75D90 /* PropertyListEmailerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyListEmailerViewController.m; path = Classes/PropertyListEmailerViewController.m; sourceTree = "<group>"; };
 		45C7682B0FEC804100C75D90 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -374,11 +381,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4558D64E10058C770065C4DD /* Mortgage */ = {
+			isa = PBXGroup;
+			children = (
+				4558D65610058CF30065C4DD /* MortgageCriteriaViewController.h */,
+				4558D65710058CF30065C4DD /* MortgageCriteriaViewController.m */,
+			);
+			name = Mortgage;
+			sourceTree = "<group>";
+		};
 		455BFE510FDC9E47000BCD39 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				455BFE640FDCA012000BCD39 /* General UI */,
 				455BFE630FDCA004000BCD39 /* Property */,
+				45BEE7CF100595A10031613E /* Mortgage */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -413,6 +430,7 @@
 			children = (
 				455BFE650FDCA022000BCD39 /* General UI */,
 				455BFE610FDC9F84000BCD39 /* Property */,
+				4558D64E10058C770065C4DD /* Mortgage */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -550,9 +568,18 @@
 			name = Geography;
 			sourceTree = "<group>";
 		};
+		45BEE7CF100595A10031613E /* Mortgage */ = {
+			isa = PBXGroup;
+			children = (
+				4558D65810058CF30065C4DD /* MortgageCriteriaView.xib */,
+			);
+			name = Mortgage;
+			sourceTree = "<group>";
+		};
 		45D93C6A0FECABA800AD4A5B /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				45BEE7A810058F7E0031613E /* mortgageTabBar.png */,
 				45D942280FF0696C00AD4A5B /* down.png */,
 				45D942290FF0696C00AD4A5B /* up.png */,
 				45D93C6D0FECAC1C00AD4A5B /* locate.png */,
@@ -688,6 +715,8 @@
 				45D4551D1001970000944852 /* DescriptionCell.xib in Resources */,
 				45D4559310019BDE00944852 /* HomeFinderIcon.png in Resources */,
 				45D455C61001A32100944852 /* HomeFinderMainWindow.xib in Resources */,
+				4558D65A10058CF30065C4DD /* MortgageCriteriaView.xib in Resources */,
+				45BEE7A910058F7E0031613E /* mortgageTabBar.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -783,6 +812,7 @@
 				45D455441001970000944852 /* PropertyAnnotation.m in Sources */,
 				45D456891002E4C000944852 /* AppDelegate.m in Sources */,
 				4558D5AE1002FECD0065C4DD /* HomeFinderAppDelegate.m in Sources */,
+				4558D65910058CF30065C4DD /* MortgageCriteriaViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
