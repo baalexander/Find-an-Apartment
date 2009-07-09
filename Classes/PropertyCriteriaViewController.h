@@ -21,8 +21,7 @@
         
         UITextField *currentTextField_;
         NSInteger selectedRow_;
-        BOOL isEditingRow_;
-        NSMutableArray *rowIds_;
+        NSArray *rowIds_;
         
         IBOutlet InputRangeCell *inputRangeCell_;
         IBOutlet InputSimpleCell *inputSimpleCell_;

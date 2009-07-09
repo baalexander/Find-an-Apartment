@@ -15,8 +15,7 @@
 @property (nonatomic, retain) UITextField *currentTextField;
 //@property (nonatomic, retain) PropertyCriteria *criteria;
 @property (nonatomic, assign) NSInteger selectedRow;
-@property (nonatomic, assign) BOOL isEditingRow;
-@property (nonatomic, retain) NSMutableArray *rowIds;
+@property (nonatomic, retain) NSArray *rowIds;
 
 - (InputRangeCell *)inputRangeCellWithMin:(NSNumber *)min withMax:(NSNumber *)max;
 - (InputSimpleCell *)inputSimpleCellWithText:(NSString *)text;
@@ -37,7 +36,6 @@
 @synthesize currentTextField = currentTextField_;
 @synthesize rowIds = rowIds_;
 @synthesize selectedRow = selectedRow_;
-@synthesize isEditingRow = isEditingRow_;
 @synthesize inputRangeCell = inputRangeCell_;
 @synthesize inputSimpleCell = inputSimpleCell_;
 
@@ -189,8 +187,8 @@
     }
     [self setTitle:title];
     
-    //Row Ids outlines the order of the rows in the table. The integer value of each constant does NOT impact the order.
-    NSMutableArray *rowIds = [[NSMutableArray alloc] initWithObjects:kCriteriaStreet, kCriteriaKeywords, kCriteriaPrice, kCriteriaSquareFeet, kCriteriaBedrooms, kCriteriaBathrooms, kCriteriaSortBy, kCriteriaSearch, nil];
+    //Row Ids outlines the order of the rows in the table
+    NSArray *rowIds = [[NSArray alloc] initWithObjects:kCriteriaStreet, kCriteriaKeywords, kCriteriaPrice, kCriteriaSquareFeet, kCriteriaBedrooms, kCriteriaBathrooms, kCriteriaSortBy, kCriteriaSearch, nil];
     [self setRowIds:rowIds];
     [rowIds release];
     
@@ -211,7 +209,6 @@
 
 #pragma mark -
 #pragma mark UITableViewDataSource
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

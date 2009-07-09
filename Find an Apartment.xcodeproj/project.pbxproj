@@ -211,6 +211,7 @@
 		458783A50FDB45F7000B4F5D /* PropertyMapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyMapView.xib; path = Classes/PropertyMapView.xib; sourceTree = "<group>"; };
 		45991A220FF0927F00627B7D /* PropertyDetailsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyDetailsConstants.h; path = Classes/PropertyDetailsConstants.h; sourceTree = "<group>"; };
 		45BEE7A810058F7E0031613E /* mortgageTabBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mortgageTabBar.png; path = Images/mortgageTabBar.png; sourceTree = "<group>"; };
+		45BEE85310059FEA0031613E /* MortgageCriteriaConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MortgageCriteriaConstants.h; path = Classes/MortgageCriteriaConstants.h; sourceTree = "<group>"; };
 		45C767C70FEC7A1C00C75D90 /* PropertyListEmailerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyListEmailerViewController.h; path = Classes/PropertyListEmailerViewController.h; sourceTree = "<group>"; };
 		45C767C80FEC7A1C00C75D90 /* PropertyListEmailerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyListEmailerViewController.m; path = Classes/PropertyListEmailerViewController.m; sourceTree = "<group>"; };
 		45C7682B0FEC804100C75D90 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -544,6 +545,7 @@
 			children = (
 				457932490FE59771008E2ACD /* PropertyCriteriaConstants.h */,
 				45991A220FF0927F00627B7D /* PropertyDetailsConstants.h */,
+				45BEE85310059FEA0031613E /* MortgageCriteriaConstants.h */,
 			);
 			name = Constants;
 			sourceTree = "<group>";
