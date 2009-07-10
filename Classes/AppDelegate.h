@@ -7,7 +7,7 @@
         UITabBarController *tabBarController_;
         PropertyStatesViewController *statesViewController_;
         
-        //Main Core Data stack
+        //Property Core Data stack
         NSManagedObjectModel *propertyObjectModel_;
         NSManagedObjectContext *propertyObjectContext_;
         NSPersistentStoreCoordinator *propertyStoreCoordinator_;
