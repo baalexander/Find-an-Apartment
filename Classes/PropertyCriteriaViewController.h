@@ -1,14 +1,12 @@
 #import <UIKit/UIKit.h>
 
+#import "CriteriaViewController.h"
 #import "State.h"
 #import "CityOrPostalCode.h"
 #import "PropertyCriteria.h"
 
 
-@class InputRangeCell;
-@class InputSimpleCell;
-
-@interface PropertyCriteriaViewController : UITableViewController <UITextFieldDelegate>
+@interface PropertyCriteriaViewController : CriteriaViewController
 {
     @private
         NSManagedObjectContext *propertyObjectContext_;
@@ -17,14 +15,7 @@
         CityOrPostalCode *city_;
         CityOrPostalCode *postalCode_;
         NSString *coordinates_;
-        PropertyCriteria *criteria_;
-        
-        UITextField *currentTextField_;
-        NSInteger selectedRow_;
-        NSArray *rowIds_;
-        
-        IBOutlet InputRangeCell *inputRangeCell_;
-        IBOutlet InputSimpleCell *inputSimpleCell_;
+        PropertyCriteria *criteria_;        
 }
 
 @property (nonatomic, retain) NSManagedObjectContext *propertyObjectContext;
@@ -34,8 +25,5 @@
 @property (nonatomic, retain) CityOrPostalCode *postalCode;
 @property (nonatomic, copy) NSString *coordinates;
 @property (nonatomic, retain) PropertyCriteria *criteria;
-
-@property (nonatomic, retain) InputRangeCell *inputRangeCell;
-@property (nonatomic, retain) InputSimpleCell *inputSimpleCell;
 
 @end
