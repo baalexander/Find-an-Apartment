@@ -1,5 +1,6 @@
 #import "MortgageCriteriaViewController.h"
 
+#import "HomeFinderAppDelegate.h"
 #import "MortgageCriteriaConstants.h"
 #import "InputRangeCell.h"
 #import "InputSimpleCell.h"
@@ -9,6 +10,9 @@
 @property (nonatomic, retain) UITextField *currentTextField;
 @property (nonatomic, assign) NSInteger selectedRow;
 @property (nonatomic, retain) NSArray *rowIds;
+@property (nonatomic, retain, readwrite) NSManagedObjectModel *mortgageObjectModel;
+@property (nonatomic, retain, readwrite) NSManagedObjectContext *mortgageObjectContext;
+@property (nonatomic, retain, readwrite) NSPersistentStoreCoordinator *mortgageStoreCoordinator;
 @end
 
 
@@ -20,6 +24,9 @@
 @synthesize criteria = criteria_;
 @synthesize inputRangeCell = inputRangeCell_;
 @synthesize inputSimpleCell = inputSimpleCell_;
+@synthesize mortgageObjectModel = mortgageObjectModel_;
+@synthesize mortgageObjectContext = mortgageObjectContext_;
+@synthesize mortgageStoreCoordinator = mortgageStoreCoordinator_;
 
 
 #pragma mark -
@@ -31,6 +38,9 @@
     [rowIds_ release];
     [inputRangeCell_ release];
     [inputSimpleCell_ release];
+    [mortgageObjectModel_ release];
+    [mortgageObjectContext_ release];
+    [mortgageStoreCoordinator_ release];
     
     [super dealloc];
 }
@@ -84,6 +94,52 @@
     [[cell textLabel] setTextAlignment:UITextAlignmentCenter];
     
     return cell;
+}
+
+- (NSManagedObjectModel *)mortgageObjectModel
+{
+    if (mortgageObjectModel_ == nil)
+    {
+        NSString *modelPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"Mortgage" ofType:@"mom"];
+        NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL fileURLWithPath:modelPath]];
+        [self setMortgageObjectModel:managedObjectModel];
+        [managedObjectModel release];
+    }
+    
+    return mortgageObjectModel_;
+}
+
+- (NSManagedObjectContext *)mortgageObjectContext
+{
+    if (mortgageObjectContext_ == nil)
+    {
+        NSManagedObjectContext *managedObjectContext = [[NSManagedObjectContext alloc] init];
+        [self setMortgageObjectContext:managedObjectContext];
+        [managedObjectContext release];
+        
+        [[self mortgageObjectContext] setPersistentStoreCoordinator:[self mortgageStoreCoordinator]];
+    }
+    
+    return mortgageObjectContext_;
+}
+
+- (NSPersistentStoreCoordinator *)mortgageStoreCoordinator
+{
+    if (mortgageStoreCoordinator_ == nil)
+    {    
+        NSPersistentStoreCoordinator *persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self mortgageObjectModel]];
+        [self setMortgageStoreCoordinator:persistentStoreCoordinator];
+        [persistentStoreCoordinator release];
+        NSURL *storeUrl = [NSURL fileURLWithPath:[[HomeFinderAppDelegate applicationDocumentsDirectory] stringByAppendingPathComponent:@"Mortgage.sqlite"]];
+        NSError *error;
+        if (![[self mortgageStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error])
+        {
+            NSLog(@"Error adding persistent store coordinator for Mortgage model");
+            //TODO: Handle error
+        }    
+    }
+    
+    return mortgageStoreCoordinator_;
 }
 
 

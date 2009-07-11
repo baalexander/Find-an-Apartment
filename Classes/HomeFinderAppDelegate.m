@@ -6,75 +6,15 @@
 #import "MortgageCriteriaViewController.h"
 
 
-@interface HomeFinderAppDelegate ()
-@property (nonatomic, retain, readwrite) NSManagedObjectModel *mortgageObjectModel;
-@property (nonatomic, retain, readwrite) NSManagedObjectContext *mortgageObjectContext;
-@property (nonatomic, retain, readwrite) NSPersistentStoreCoordinator *mortgageStoreCoordinator;
-@end
-
-
 @implementation HomeFinderAppDelegate
 
-@synthesize mortgageObjectModel = mortgageObjectModel_;
-@synthesize mortgageObjectContext = mortgageObjectContext_;
-@synthesize mortgageStoreCoordinator = mortgageStoreCoordinator_;
 
 #pragma mark -
 #pragma mark HomeFinderAppDelegate
 
 - (void)dealloc
-{
-    [mortgageObjectModel_ release];
-    [mortgageObjectContext_ release];
-    [mortgageStoreCoordinator_ release];
-    
+{    
     [super dealloc];
-}
-
-- (NSManagedObjectModel *)mortgageObjectModel
-{
-    if (mortgageObjectModel_ == nil)
-    {
-        NSString *modelPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"Mortgage" ofType:@"mom"];
-        NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL fileURLWithPath:modelPath]];
-        [self setMortgageObjectModel:managedObjectModel];
-        [managedObjectModel release];
-    }
-    
-    return mortgageObjectModel_;
-}
-
-- (NSManagedObjectContext *)mortgageObjectContext
-{
-    if (mortgageObjectContext_ == nil)
-    {
-        NSManagedObjectContext *managedObjectContext = [[NSManagedObjectContext alloc] init];
-        [self setMortgageObjectContext:managedObjectContext];
-        [managedObjectContext release];
-        
-        [[self mortgageObjectContext] setPersistentStoreCoordinator:[self mortgageStoreCoordinator]];
-    }
-    
-    return mortgageObjectContext_;
-}
-
-- (NSPersistentStoreCoordinator *)mortgageStoreCoordinator
-{
-    if (mortgageStoreCoordinator_ == nil)
-    {    
-        NSPersistentStoreCoordinator *persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self mortgageObjectModel]];
-        [self setMortgageStoreCoordinator:persistentStoreCoordinator];
-        [persistentStoreCoordinator release];
-        NSURL *storeUrl = [NSURL fileURLWithPath:[[self applicationDocumentsDirectory] stringByAppendingPathComponent:@"Mortgage.sqlite"]];
-        NSError *error;
-        if (![[self mortgageStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error])
-        {
-            NSLog(@"Error adding persistent store coordinator for Mortgage model");
-            //TODO: Handle error
-        }    
-    }
-    
-    return mortgageStoreCoordinator_;
 }
 
 

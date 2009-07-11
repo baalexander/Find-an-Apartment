@@ -34,7 +34,7 @@
 
 @property (nonatomic, retain, readonly) LocationManager *locationManager;
 
-@property (nonatomic, readonly) NSString *applicationDocumentsDirectory;
++ (NSString *)applicationDocumentsDirectory;
 
 @end
 

@@ -52,7 +52,7 @@
 }
 
 //Returns the path to the application's documents directory.
-- (NSString *)applicationDocumentsDirectory
++ (NSString *)applicationDocumentsDirectory
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
@@ -94,7 +94,7 @@
         NSPersistentStoreCoordinator *persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self propertyObjectModel]];
         [self setPropertyStoreCoordinator:persistentStoreCoordinator];
         [persistentStoreCoordinator release];
-        NSURL *storeUrl = [NSURL fileURLWithPath:[[self applicationDocumentsDirectory] stringByAppendingPathComponent:@"Property.sqlite"]];
+        NSURL *storeUrl = [NSURL fileURLWithPath:[[AppDelegate applicationDocumentsDirectory] stringByAppendingPathComponent:@"Property.sqlite"]];
         NSError *error;
         if (![[self propertyStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error])
         {
@@ -138,7 +138,7 @@
 {
     if (geographyStoreCoordinator_ == nil) 
     {    
-        NSString *storePath = [[self applicationDocumentsDirectory] stringByAppendingPathComponent:@"Geography.sqlite"];
+        NSString *storePath = [[AppDelegate applicationDocumentsDirectory] stringByAppendingPathComponent:@"Geography.sqlite"];
         
         // Check to see if the store already exists
         NSFileManager *fileManager = [NSFileManager defaultManager];
