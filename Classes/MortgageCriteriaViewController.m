@@ -11,6 +11,10 @@
 @property (nonatomic, retain, readwrite) NSManagedObjectModel *mortgageObjectModel;
 @property (nonatomic, retain, readwrite) NSManagedObjectContext *mortgageObjectContext;
 @property (nonatomic, retain, readwrite) NSPersistentStoreCoordinator *mortgageStoreCoordinator;
+- (void)calculateCashDown;
+- (void)calculateLoanAmount;
+- (void)calculatePercentDown;
+- (void)calculatePurchasePrice;
 @end
 
 
@@ -35,6 +39,47 @@
     [mortgageStoreCoordinator_ release];
     
     [super dealloc];
+}
+
+- (void)calculateCashDown
+{
+    float purchasePrice = [[[self criteria] purchasePrice] floatValue];
+    float percentDown = [[[self criteria] percentDown] floatValue] * (float).01;
+    
+    NSNumber *cashDown = [[NSNumber alloc] initWithFloat:(purchasePrice * percentDown)];
+    [[self criteria] setCashDown:cashDown];
+    [cashDown release];
+}
+
+- (void)calculateLoanAmount
+{
+    float purchasePrice = [[[self criteria] purchasePrice] floatValue];
+    //Cash down is more accurate than percent down, so use that
+    float cashDown = [[[self criteria] cashDown] floatValue];
+    
+    NSNumber *loanAmount = [[NSNumber alloc] initWithFloat:(purchasePrice - cashDown)];
+    [[self criteria] setLoanAmount:loanAmount];
+    [loanAmount release];    
+}
+
+- (void)calculatePercentDown
+{
+    float purchasePrice = [[[self criteria] purchasePrice] floatValue];
+    float cashDown = [[[self criteria] cashDown] floatValue];
+    
+    NSNumber *percentDown = [[NSNumber alloc] initWithFloat:(((float) cashDown / purchasePrice) * (float)100.0)];
+    [[self criteria] setPercentDown:percentDown];
+    [percentDown release];
+}
+
+- (void)calculatePurchasePrice
+{
+    float cashDown = [[[self criteria] cashDown] floatValue];
+    float loanAmount = [[[self criteria] loanAmount] floatValue];
+
+    NSNumber *purchasePrice = [[NSNumber alloc] initWithFloat:(loanAmount + cashDown)];
+    [[self criteria] setPurchasePrice:purchasePrice];
+    [purchasePrice release];
 }
 
 - (MortgageCriteria *)criteria
@@ -139,7 +184,7 @@
     }
 
     //Row Ids outlines the order of the rows in the table. The integer value of each constant does NOT impact the order.
-    NSMutableArray *rowIds = [[NSMutableArray alloc] initWithObjects:kMortgageCriteriaPostalCode, kMortgageCriteriaPrice, kMortgageCriteriaPercentDown, kMortgageCriteriaCashDown, kMortgageCriteriaLoanAmount, kMortgageCriteriaLoanTerm, kMortgageCriteriaLoanRate, kMortgageCriteriaCalculate, nil];
+    NSMutableArray *rowIds = [[NSMutableArray alloc] initWithObjects:kMortgageCriteriaPostalCode, kMortgageCriteriaPrice, kMortgageCriteriaPercentDown, kMortgageCriteriaCashDown, kMortgageCriteriaLoanAmount, kMortgageCriteriaLoanTerm, kMortgageCriteriaInterestRate, kMortgageCriteriaCalculate, nil];
     [self setRowIds:rowIds];
     [rowIds release];
 }
@@ -252,7 +297,7 @@
             return [self simpleCellWithText:@"loan term" withDetail:loanTerm];
         }
     }
-    else if ([rowId isEqual:kMortgageCriteriaLoanRate])
+    else if ([rowId isEqual:kMortgageCriteriaInterestRate])
     {
         if (isSelectedRow)
         {
@@ -332,14 +377,52 @@
     {
         [[self criteria] setPostalCode:text];
     }
-    //TODO: Change variables that affect other variables
+    else if ([rowId isEqual:kMortgageCriteriaPrice])
+    {
+        NSNumber *number = [[NSNumber alloc] initWithFloat:[text floatValue]];
+        [[self criteria] setPurchasePrice:number];
+        [number release];
+        
+        //Update dependent values
+        [self calculateCashDown];
+        [self calculateLoanAmount];
+    }
+    else if ([rowId isEqual:kMortgageCriteriaPercentDown])
+    {
+        NSNumber *number = [[NSNumber alloc] initWithFloat:[text floatValue]];
+        [[self criteria] setPercentDown:number];
+        [number release];
+        
+        //Update dependent values
+        [self calculateCashDown];
+        [self calculateLoanAmount];
+    }
+    else if ([rowId isEqual:kMortgageCriteriaCashDown])
+    {
+        NSNumber *number = [[NSNumber alloc] initWithFloat:[text floatValue]];
+        [[self criteria] setCashDown:number];
+        [number release];
+        
+        //Update dependent values
+        [self calculatePercentDown];
+        [self calculateLoanAmount];
+    }
+    else if ([rowId isEqual:kMortgageCriteriaLoanAmount])
+    {
+        NSNumber *number = [[NSNumber alloc] initWithFloat:[text floatValue]];
+        [[self criteria] setLoanAmount:number];
+        [number release];
+        
+        //Update dependent values
+        [self calculatePurchasePrice];
+    }
     else if ([rowId isEqual:kMortgageCriteriaLoanTerm])
     {
         NSNumber *number = [[NSNumber alloc] initWithFloat:[text floatValue]];
         [[self criteria] setLoanTerm:number];
         [number release];
     }
-    else if ([rowId isEqual:kMortgageCriteriaLoanRate])
+    else if ([rowId isEqual:kMortgageCriteriaInterestRate])
     {
         NSNumber *number = [[NSNumber alloc] initWithFloat:[text floatValue]];
         [[self criteria] setInterestRate:number];

@@ -5,5 +5,5 @@
 #define kMortgageCriteriaCashDown @"CASH_DOWN"
 #define kMortgageCriteriaLoanAmount @"LOAN_AMOUNT"
 #define kMortgageCriteriaLoanTerm @"LOAN_TERM"
-#define kMortgageCriteriaLoanRate @"LOAN_RATE"
+#define kMortgageCriteriaInterestRate @"INTEREST_RATE"
 #define kMortgageCriteriaCalculate @"CALCULATE"
