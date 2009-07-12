@@ -2,6 +2,7 @@
 
 #import "HomeFinderAppDelegate.h"
 #import "MortgageCriteriaConstants.h"
+#import "StringFormatter.h"
 #import "InputRangeCell.h";
 #import "InputSimpleCell.h";
 
@@ -15,6 +16,7 @@
 
 @implementation MortgageCriteriaViewController
 
+@synthesize propertySummary = propertySummary_;
 @synthesize criteria = criteria_;
 @synthesize mortgageObjectModel = mortgageObjectModel_;
 @synthesize mortgageObjectContext = mortgageObjectContext_;
@@ -26,11 +28,54 @@
 
 - (void)dealloc
 {
+    [propertySummary_ release];
+    [criteria_ release];
     [mortgageObjectModel_ release];
     [mortgageObjectContext_ release];
     [mortgageStoreCoordinator_ release];
     
     [super dealloc];
+}
+
+- (MortgageCriteria *)criteria
+{
+    if(criteria_ == nil)
+    {
+        //Fetches existing Mortgage Criteria if it exists
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *criteriaEntity = [NSEntityDescription entityForName:@"MortgageCriteria" inManagedObjectContext:[self mortgageObjectContext]];
+        [fetchRequest setEntity:criteriaEntity];
+        
+        [fetchRequest setFetchLimit:1];
+        
+        NSError *error = nil;
+        NSArray *fetchResults = [[self mortgageObjectContext] executeFetchRequest:fetchRequest error:&error];
+        [fetchRequest release];
+        if (fetchResults == nil)
+        {
+            // Handle the error.
+            NSLog(@"Error fetching Mortgage Criteria object.");
+            
+            return nil;
+        }
+        
+        //No Criteria, creates a new one
+        if ([fetchResults count] == 0)
+        {
+            //Creates Criteria object to hold all the user input
+            NSEntityDescription *entity = [NSEntityDescription entityForName:@"MortgageCriteria" inManagedObjectContext:[self mortgageObjectContext]];
+            MortgageCriteria *criteria = [[MortgageCriteria alloc] initWithEntity:entity insertIntoManagedObjectContext:[self mortgageObjectContext]];
+            [self setCriteria:criteria];
+            [criteria release];
+        }
+        //Gets existing Criteria
+        else
+        {
+            [self setCriteria:[fetchResults objectAtIndex:0]];
+        }
+    }
+    
+    return criteria_;
 }
 
 - (NSManagedObjectModel *)mortgageObjectModel
@@ -87,6 +132,12 @@
 {
     [super viewDidLoad];
 
+    //If the Property Summary given, fills in Criteria with Property details
+    if ([self propertySummary] == nil)
+    {
+
+    }
+
     //Row Ids outlines the order of the rows in the table. The integer value of each constant does NOT impact the order.
     NSMutableArray *rowIds = [[NSMutableArray alloc] initWithObjects:kMortgageCriteriaPostalCode, kMortgageCriteriaPrice, kMortgageCriteriaPercentDown, kMortgageCriteriaCashDown, kMortgageCriteriaLoanAmount, kMortgageCriteriaLoanTerm, kMortgageCriteriaLoanRate, kMortgageCriteriaCalculate, nil];
     [self setRowIds:rowIds];
@@ -109,77 +160,115 @@
     {
         if (isSelectedRow)
         {
-            return [self inputSimpleCellWithText:@""];
+            return [self inputSimpleCellWithText:[[self criteria] postalCode]];
         }
         else
         {
-            return [self simpleCellWithText:@"zip code" withDetail:@""];
+            NSString *postalCode = @"(optional)";
+            if ([[self criteria] postalCode] != nil && [[[self criteria] postalCode] length] > 0)
+            {
+                postalCode = [[self criteria] postalCode];
+            }
+            
+            return [self simpleCellWithText:@"zip code" withDetail:postalCode];
         }
     }
     else if ([rowId isEqual:kMortgageCriteriaPrice])
     {
         if (isSelectedRow)
         {
-            return [self inputSimpleCellWithText:@""];
+            NSString *price = [[[self criteria] purchasePrice] stringValue];
+            
+            return [self inputSimpleCellWithText:price];
         }
         else
         {
-            return [self simpleCellWithText:@"price" withDetail:@""];
+            NSString *price = [StringFormatter formatCurrency:[[self criteria] purchasePrice]];
+            
+            return [self simpleCellWithText:@"price" withDetail:price];
         }
     }
     else if ([rowId isEqual:kMortgageCriteriaPercentDown])
     {
         if (isSelectedRow)
         {
-            return [self inputSimpleCellWithText:@""];
+            NSString *percentDown = [[[self criteria] percentDown] stringValue];
+            
+            return [self inputSimpleCellWithText:percentDown];
         }
         else
         {
-            return [self simpleCellWithText:@"% down" withDetail:@""];
+            NSString *percentDown = [NSString stringWithFormat:@"%@%%", [StringFormatter formatNumber:[[self criteria] percentDown]]];
+            
+            return [self simpleCellWithText:@"% down" withDetail:percentDown];
         }
     }
     else if ([rowId isEqual:kMortgageCriteriaCashDown])
     {
         if (isSelectedRow)
         {
-            return [self inputSimpleCellWithText:@""];
+            NSString *cashDown = [[[self criteria] cashDown] stringValue];
+            
+            return [self inputSimpleCellWithText:cashDown];
         }
         else
         {
-            return [self simpleCellWithText:@"cash down" withDetail:@""];
+            NSString *cashDown = [StringFormatter formatCurrency:[[self criteria] cashDown]];
+            
+            return [self simpleCellWithText:@"cash down" withDetail:cashDown];
         }
     }
     else if ([rowId isEqual:kMortgageCriteriaLoanAmount])
     {
         if (isSelectedRow)
         {
-            return [self inputSimpleCellWithText:@""];
+            NSString *loanAmount = [[[self criteria] loanAmount] stringValue];
+            
+            return [self inputSimpleCellWithText:loanAmount];
         }
         else
         {
-            return [self simpleCellWithText:@"loan amt" withDetail:@""];
+            NSString *loanAmount = [StringFormatter formatCurrency:[[self criteria] loanAmount]];
+            
+            return [self simpleCellWithText:@"loan amt" withDetail:loanAmount];
         }
     }
     else if ([rowId isEqual:kMortgageCriteriaLoanTerm])
     {
         if (isSelectedRow)
         {
-            return [self inputSimpleCellWithText:@""];
+            NSString *loanTerm = [[[self criteria] loanTerm] stringValue];
+            
+            return [self inputSimpleCellWithText:loanTerm];
         }
         else
         {
-            return [self simpleCellWithText:@"loan term" withDetail:@""];
+            NSString *loanTerm = @"(optional)";
+            if ([[self criteria] loanTerm] != nil && [[[self criteria] loanTerm] floatValue] > 0)
+            {
+                loanTerm = [NSString stringWithFormat:@"%@ years", [StringFormatter formatNumber:[[self criteria] loanTerm]]];
+            }
+            
+            return [self simpleCellWithText:@"loan term" withDetail:loanTerm];
         }
     }
     else if ([rowId isEqual:kMortgageCriteriaLoanRate])
     {
         if (isSelectedRow)
         {
-            return [self inputSimpleCellWithText:@""];
+            NSString *interestRate = [[[self criteria] interestRate] stringValue];
+            
+            return [self inputSimpleCellWithText:interestRate];
         }
         else
         {
-            return [self simpleCellWithText:@"loan rate" withDetail:@""];
+            NSString *interestRate = @"(optional)";
+            if ([[self criteria] interestRate] != nil && [[[self criteria] interestRate] floatValue] > 0)
+            {
+                interestRate = [NSString stringWithFormat:@"%@%%", [StringFormatter formatNumber:[[self criteria] interestRate]]];
+            }
+            
+            return [self simpleCellWithText:@"rate" withDetail:interestRate];
         }
     }
     //Button cell
@@ -235,6 +324,28 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+    NSString *rowId = [[self rowIds] objectAtIndex:[self selectedRow]];
+    NSString *text = [textField text];
+    
+    //Sets the correct Criteria attribute to the inputted valu
+    if ([rowId isEqual:kMortgageCriteriaPostalCode])
+    {
+        [[self criteria] setPostalCode:text];
+    }
+    //TODO: Change variables that affect other variables
+    else if ([rowId isEqual:kMortgageCriteriaLoanTerm])
+    {
+        NSNumber *number = [[NSNumber alloc] initWithFloat:[text floatValue]];
+        [[self criteria] setLoanTerm:number];
+        [number release];
+    }
+    else if ([rowId isEqual:kMortgageCriteriaLoanRate])
+    {
+        NSNumber *number = [[NSNumber alloc] initWithFloat:[text floatValue]];
+        [[self criteria] setInterestRate:number];
+        [number release];
+    }    
+    
     [self setCurrentTextField:nil];
 }
 

@@ -7,8 +7,8 @@
 @dynamic loanTerm;
 @dynamic postalCode;
 @dynamic percentDown;
-@dynamic loanRate;
 @dynamic loanAmount;
 @dynamic purchasePrice;
+@dynamic interestRate;
 
 @end

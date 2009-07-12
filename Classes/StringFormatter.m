@@ -7,20 +7,46 @@
 {
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-    NSString *formattedNumber = [formatter stringFromNumber:number];
+    
+    //Formats number or 0 if number is nil
+    NSString *formattedNumber;
+    if (number == nil)
+    {
+        NSNumber *zeroNumber = [[NSNumber alloc] initWithFloat:0];
+        formattedNumber = [formatter stringFromNumber:zeroNumber];
+        [zeroNumber release];
+    }
+    else
+    {
+        formattedNumber = [formatter stringFromNumber:number];
+    }
+
     [formatter release];
     
     return formattedNumber;
 }
 
 + (NSString *)formatCurrency:(NSNumber *)currency
-{
+{    
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     [formatter setMinimumFractionDigits:0];
-    NSString *formattedCurrency = [formatter stringFromNumber:currency];
+
+    //Formats currency or 0 if currency is nil
+    NSString *formattedCurrency;
+    if (currency == nil)
+    {
+        NSNumber *zeroNumber = [[NSNumber alloc] initWithFloat:0];
+        formattedCurrency = [formatter stringFromNumber:zeroNumber];
+        [zeroNumber release];
+    }
+    else
+    {
+        formattedCurrency = [formatter stringFromNumber:currency];
+    }
+
     [formatter release];
-    
+
     return formattedCurrency;
 }
 

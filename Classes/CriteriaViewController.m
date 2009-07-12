@@ -123,8 +123,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self setTitle:@"Criteria"];
 
     //Deselect all rows
     [self setSelectedRow:-1];
