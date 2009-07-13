@@ -2,6 +2,8 @@
 
 #import "HomeFinderAppDelegate.h"
 #import "MortgageCriteriaConstants.h"
+#import "MortgageUrlConstructor.h"
+#import "MortgageResultsViewController.h"
 #import "StringFormatter.h"
 #import "InputRangeCell.h";
 #import "InputSimpleCell.h";
@@ -343,7 +345,16 @@
     //Selected the search button, begins searching
     if ([rowId isEqual:kMortgageCriteriaCalculate])
     {
+        MortgageResultsViewController *resultsViewController = [[MortgageResultsViewController alloc] initWithNibName:@"MortgageResultsView" bundle:nil];
         
+        //Turns Criteria into URL then parses
+        MortgageUrlConstructor *urlConstructor = [[MortgageUrlConstructor alloc] init];
+        NSURL *url = [urlConstructor urlFromCriteria:[self criteria]];
+        [urlConstructor release];
+        [resultsViewController parse:url];
+        
+        [[self navigationController] pushViewController:resultsViewController animated:YES];
+        [resultsViewController release];        
     }
     //Puts the cell in edit mode or view mode if already in edit mode
     else

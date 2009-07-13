@@ -1,9 +1,10 @@
 #import <Foundation/Foundation.h>
 
+#import "UrlConstructor.h"
 #import "PropertyCriteria.h"
 
 
-@interface PropertyUrlConstructor : NSObject
+@interface PropertyUrlConstructor : UrlConstructor
 {
     @private
         PropertyCriteria *criteria_;

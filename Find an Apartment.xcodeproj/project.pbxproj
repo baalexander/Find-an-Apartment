@@ -47,6 +47,10 @@
 		45858DE40FDEF476003F8831 /* Property.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 45858DE30FDEF476003F8831 /* Property.xcdatamodel */; };
 		458783A60FDB45F7000B4F5D /* PropertyMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */; };
 		458783A70FDB45F7000B4F5D /* PropertyMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458783A50FDB45F7000B4F5D /* PropertyMapView.xib */; };
+		459CA0D1100AA98700108747 /* MortgageUrlConstructor.m in Sources */ = {isa = PBXBuildFile; fileRef = 459CA0D0100AA98700108747 /* MortgageUrlConstructor.m */; };
+		459CA0D4100AAA0000108747 /* UrlConstructor.m in Sources */ = {isa = PBXBuildFile; fileRef = 459CA0D3100AAA0000108747 /* UrlConstructor.m */; };
+		459CA108100ABEF900108747 /* MortgageResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459CA106100ABEF900108747 /* MortgageResultsViewController.m */; };
+		459CA109100ABEF900108747 /* MortgageResultsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459CA107100ABEF900108747 /* MortgageResultsView.xib */; };
 		45BEE7A910058F7E0031613E /* mortgageTabBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 45BEE7A810058F7E0031613E /* mortgageTabBar.png */; };
 		45BEE9001006D7D00031613E /* Mortgage.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 45BEE8FF1006D7D00031613E /* Mortgage.xcdatamodel */; };
 		45BEE9871008FACC0031613E /* CriteriaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BEE9861008FACC0031613E /* CriteriaViewController.m */; };
@@ -214,6 +218,13 @@
 		458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyMapViewController.m; path = Classes/PropertyMapViewController.m; sourceTree = "<group>"; };
 		458783A50FDB45F7000B4F5D /* PropertyMapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyMapView.xib; path = Classes/PropertyMapView.xib; sourceTree = "<group>"; };
 		45991A220FF0927F00627B7D /* PropertyDetailsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyDetailsConstants.h; path = Classes/PropertyDetailsConstants.h; sourceTree = "<group>"; };
+		459CA0CF100AA98700108747 /* MortgageUrlConstructor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MortgageUrlConstructor.h; sourceTree = "<group>"; };
+		459CA0D0100AA98700108747 /* MortgageUrlConstructor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MortgageUrlConstructor.m; sourceTree = "<group>"; };
+		459CA0D2100AAA0000108747 /* UrlConstructor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlConstructor.h; sourceTree = "<group>"; };
+		459CA0D3100AAA0000108747 /* UrlConstructor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlConstructor.m; sourceTree = "<group>"; };
+		459CA105100ABEF900108747 /* MortgageResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MortgageResultsViewController.h; path = Classes/MortgageResultsViewController.h; sourceTree = "<group>"; };
+		459CA106100ABEF900108747 /* MortgageResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MortgageResultsViewController.m; path = Classes/MortgageResultsViewController.m; sourceTree = "<group>"; };
+		459CA107100ABEF900108747 /* MortgageResultsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MortgageResultsView.xib; path = Classes/MortgageResultsView.xib; sourceTree = "<group>"; };
 		45BEE7A810058F7E0031613E /* mortgageTabBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mortgageTabBar.png; path = Images/mortgageTabBar.png; sourceTree = "<group>"; };
 		45BEE85310059FEA0031613E /* MortgageCriteriaConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MortgageCriteriaConstants.h; path = Classes/MortgageCriteriaConstants.h; sourceTree = "<group>"; };
 		45BEE8FF1006D7D00031613E /* Mortgage.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Mortgage.xcdatamodel; sourceTree = "<group>"; };
@@ -318,6 +329,7 @@
 			isa = PBXGroup;
 			children = (
 				455BFE520FDC9E99000BCD39 /* Property */,
+				459CA0CE100AA97000108747 /* Mortgage */,
 				455BFE530FDC9EDF000BCD39 /* Utility */,
 			);
 			path = Classes;
@@ -397,6 +409,8 @@
 			children = (
 				4558D65610058CF30065C4DD /* MortgageCriteriaViewController.h */,
 				4558D65710058CF30065C4DD /* MortgageCriteriaViewController.m */,
+				459CA105100ABEF900108747 /* MortgageResultsViewController.h */,
+				459CA106100ABEF900108747 /* MortgageResultsViewController.m */,
 			);
 			name = Mortgage;
 			sourceTree = "<group>";
@@ -432,6 +446,8 @@
 				457AA33A0FDAC26100F0D16C /* XmlParser.m */,
 				DD9B613C0FF45FED00348478 /* LocationManager.h */,
 				DD9B613D0FF45FED00348478 /* LocationManager.m */,
+				459CA0D2100AAA0000108747 /* UrlConstructor.h */,
+				459CA0D3100AAA0000108747 /* UrlConstructor.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -583,10 +599,20 @@
 			name = Geography;
 			sourceTree = "<group>";
 		};
+		459CA0CE100AA97000108747 /* Mortgage */ = {
+			isa = PBXGroup;
+			children = (
+				459CA0CF100AA98700108747 /* MortgageUrlConstructor.h */,
+				459CA0D0100AA98700108747 /* MortgageUrlConstructor.m */,
+			);
+			name = Mortgage;
+			sourceTree = "<group>";
+		};
 		45BEE7CF100595A10031613E /* Mortgage */ = {
 			isa = PBXGroup;
 			children = (
 				4558D65810058CF30065C4DD /* MortgageCriteriaView.xib */,
+				459CA107100ABEF900108747 /* MortgageResultsView.xib */,
 			);
 			name = Mortgage;
 			sourceTree = "<group>";
@@ -741,6 +767,7 @@
 				45D455C61001A32100944852 /* HomeFinderMainWindow.xib in Resources */,
 				4558D65A10058CF30065C4DD /* MortgageCriteriaView.xib in Resources */,
 				45BEE7A910058F7E0031613E /* mortgageTabBar.png in Resources */,
+				459CA109100ABEF900108747 /* MortgageResultsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -841,6 +868,9 @@
 				45BEE9001006D7D00031613E /* Mortgage.xcdatamodel in Sources */,
 				45BEE9871008FACC0031613E /* CriteriaViewController.m in Sources */,
 				45BEEA75100962FF0031613E /* MortgageCriteria.m in Sources */,
+				459CA0D1100AA98700108747 /* MortgageUrlConstructor.m in Sources */,
+				459CA0D4100AAA0000108747 /* UrlConstructor.m in Sources */,
+				459CA108100ABEF900108747 /* MortgageResultsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
