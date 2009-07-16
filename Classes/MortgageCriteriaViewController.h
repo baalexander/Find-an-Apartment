@@ -16,6 +16,8 @@
         MortgageCriteria *criteria_;
 }
 
+- (InputSimpleCell *)cellWithNumericInputAndValue:(NSString *)value;
+
 @property (nonatomic, retain, readonly) NSManagedObjectModel *mortgageObjectModel;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *mortgageObjectContext;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *mortgageStoreCoordinator;

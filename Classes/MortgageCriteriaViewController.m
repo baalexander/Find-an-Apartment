@@ -68,6 +68,11 @@
     float cashDown = [[[self criteria] cashDown] floatValue];
     
     NSNumber *percentDown = [[NSNumber alloc] initWithFloat:(((float) cashDown / purchasePrice) * (float)100.0)];
+    // percentDown can become NaN if the user sets percent down to 0 and cash down to 0
+    if(isnan([percentDown doubleValue]))
+    {
+        percentDown = [NSNumber numberWithInt:0];
+    }
     [[self criteria] setPercentDown:percentDown];
     [percentDown release];
 }
@@ -205,7 +210,7 @@
     {
         if (isSelectedRow)
         {
-            return [self inputSimpleCellWithText:[[self criteria] postalCode]];
+            return [self cellWithNumericInputAndValue:[[self criteria] postalCode]];
         }
         else
         {
@@ -224,7 +229,7 @@
         {
             NSString *price = [[[self criteria] purchasePrice] stringValue];
             
-            return [self inputSimpleCellWithText:price];
+            return [self cellWithNumericInputAndValue:price];
         }
         else
         {
@@ -238,13 +243,13 @@
         if (isSelectedRow)
         {
             NSString *percentDown = [[[self criteria] percentDown] stringValue];
-            
-            return [self inputSimpleCellWithText:percentDown];
+
+            return [self cellWithNumericInputAndValue:percentDown];
         }
         else
         {
             NSString *percentDown = [NSString stringWithFormat:@"%@%%", [StringFormatter formatNumber:[[self criteria] percentDown]]];
-            
+                        
             return [self simpleCellWithText:@"% down" withDetail:percentDown];
         }
     }
@@ -253,8 +258,8 @@
         if (isSelectedRow)
         {
             NSString *cashDown = [[[self criteria] cashDown] stringValue];
-            
-            return [self inputSimpleCellWithText:cashDown];
+
+            return [self cellWithNumericInputAndValue:cashDown];
         }
         else
         {
@@ -269,7 +274,7 @@
         {
             NSString *loanAmount = [[[self criteria] loanAmount] stringValue];
             
-            return [self inputSimpleCellWithText:loanAmount];
+            return [self cellWithNumericInputAndValue:loanAmount];
         }
         else
         {
@@ -284,7 +289,7 @@
         {
             NSString *loanTerm = [[[self criteria] loanTerm] stringValue];
             
-            return [self inputSimpleCellWithText:loanTerm];
+            return [self cellWithNumericInputAndValue:loanTerm];
         }
         else
         {
@@ -303,7 +308,7 @@
         {
             NSString *interestRate = [[[self criteria] interestRate] stringValue];
             
-            return [self inputSimpleCellWithText:interestRate];
+            return [self cellWithNumericInputAndValue:interestRate];
         }
         else
         {
@@ -323,6 +328,14 @@
     }
     
     return nil;
+}
+
+- (InputSimpleCell *)cellWithNumericInputAndValue:(NSString *)value
+{
+    InputSimpleCell *cell = [self inputSimpleCellWithText:value];
+    [[cell input] setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
+    
+    return cell;
 }
 
 
