@@ -83,7 +83,7 @@
     else if ([locationArray count] == 1)
     {
         [[self addressLine1] setText:@"No street provided"];
-        [[self addressLine2] setText:[locationArray objectAtIndex:1]];
+        [[self addressLine2] setText:[locationArray objectAtIndex:0]];
     }
     else
     {
