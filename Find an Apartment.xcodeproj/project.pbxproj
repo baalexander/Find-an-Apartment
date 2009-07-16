@@ -134,6 +134,7 @@
 		45D9422A0FF0696C00AD4A5B /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = 45D942280FF0696C00AD4A5B /* down.png */; };
 		45D9422B0FF0696C00AD4A5B /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = 45D942290FF0696C00AD4A5B /* up.png */; };
 		45FF76C80FE9FF810053B4D8 /* PropertyFavoritesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */; };
+		DD02AD59100FD399003FD680 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DD4A5DA91002BFB9004599FB /* Default.png */; };
 		DD10BA640FFC1E9000588928 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA590FFC1E9000588928 /* NSObject+SBJSON.m */; };
 		DD10BA650FFC1E9000588928 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA5B0FFC1E9000588928 /* NSString+SBJSON.m */; };
 		DD10BA660FFC1E9000588928 /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA5D0FFC1E9000588928 /* SBJSON.m */; };
@@ -740,6 +741,7 @@
 				45D4559310019BDE00944852 /* HomeFinderIcon.png in Resources */,
 				45D455C61001A32100944852 /* HomeFinderMainWindow.xib in Resources */,
 				4558D65A10058CF30065C4DD /* MortgageCriteriaView.xib in Resources */,
+				DD02AD59100FD399003FD680 /* Default.png in Resources */,
 				45BEE7A910058F7E0031613E /* mortgageTabBar.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
