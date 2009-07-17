@@ -296,7 +296,7 @@ static NSInteger kMapItem = 1;
             NSArray *geoData = [self geocodeFromString:location];
             longitude = [[geoData objectAtIndex:0] doubleValue];
             latitude = [[geoData objectAtIndex:1] doubleValue];
-            NSString *coordinateString = [NSString stringWithFormat:@"%f,%f", longitude, latitude];
+            NSString *coordinateString = [NSString stringWithFormat:@"%f,%f", latitude, longitude];
             summary.location = coordinateString;
             summary.details.location = coordinateString;
         }
