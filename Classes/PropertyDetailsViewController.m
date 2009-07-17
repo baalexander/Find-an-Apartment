@@ -264,6 +264,12 @@
     
 	[[self navigationItem] setRightBarButtonItem:segmentBarItem];
     [segmentBarItem release];
+    
+    // Disable "Add to Favorites" if the property is already saved
+    if([PropertyFavoritesViewController isPropertyAFavorite:[[self details] summary]])
+    {
+        [[self addToFavoritesBtn] setEnabled:NO];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -407,12 +413,17 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     NSString *key = [keys objectAtIndex:[indexPath row]];
     NSString *detail = [details objectForKey:key];
     
-    if([key isEqual:kDetailsLocation])
+    if ([key isEqual:kDetailsLocation])
     {
         PropertyMapViewController *mapController = [[PropertyMapViewController alloc] init];
         [mapController setAddress:detail];
         [[self navigationController] pushViewController:mapController animated:YES];
         [mapController release];
+    }
+    
+    if ([key isEqual:kDetailsImages])
+    {
+
     }
     
     if ([key isEqual:kDetailsEmail])
