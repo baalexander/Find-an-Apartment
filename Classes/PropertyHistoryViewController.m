@@ -163,6 +163,7 @@
     {
         [[self tableView] deselectRowAtIndexPath:selectedRowIndexPath animated:NO];
     }
+    [[self tableView] reloadData];
 }
 
 
