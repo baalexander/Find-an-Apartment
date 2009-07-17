@@ -152,7 +152,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{    
+{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSimpleCellId];
     if (cell == nil)
     {
