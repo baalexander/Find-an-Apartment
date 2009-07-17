@@ -4,6 +4,7 @@
 #import "PropertyFavoritesViewController.h"
 #import "PropertyListEmailerViewController.h"
 #import "StringFormatter.h"
+#import "PropertyMapViewController.h"
 
 
 @interface PropertyDetailsViewController ()
@@ -405,6 +406,14 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     NSArray *keys = [details allKeys];
     NSString *key = [keys objectAtIndex:[indexPath row]];
     NSString *detail = [details objectForKey:key];
+    
+    if([key isEqual:kDetailsLocation])
+    {
+        PropertyMapViewController *mapController = [[PropertyMapViewController alloc] init];
+        [mapController setAddress:detail];
+        [[self navigationController] pushViewController:mapController animated:YES];
+        [mapController release];
+    }
     
     if ([key isEqual:kDetailsEmail])
     {

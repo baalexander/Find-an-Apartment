@@ -15,6 +15,7 @@ static NSInteger kMapItem = 1;
 @implementation PropertyMapViewController
 
 @synthesize history = history_;
+@synthesize address = address_;
 @synthesize mapView = mapView_;
 
 
@@ -67,32 +68,37 @@ static NSInteger kMapItem = 1;
 {
     [super viewDidLoad];
     
-    //Segmented control
-    NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", nil];
-    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
-    [segmentOptions release];
-    
-    //Set selected segment index must come before addTarget, otherwise the action will be called as if the segment was pressed
-    [segmentedControl setSelectedSegmentIndex:kMapItem];
-    [segmentedControl addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventValueChanged];
-    [segmentedControl setFrame:CGRectMake(0, 0, 90, 30)];
-    [segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
-    
-    UIBarButtonItem *segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
-    [segmentedControl release];
-    [[self navigationItem] setRightBarButtonItem:segmentBarItem];
-    [segmentBarItem release];
-    
     // Center the map based on the user's input
     MKMapView *mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
     [self setMapView:mapView];
     [mapView release];
     [self.view addSubview:[self mapView]];
-    [self centerMap];
     
-    // Add the pins for the properties
-    [self geocodeProperties];
-    
+    if([self history])
+    {
+        //Segmented control
+        NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", nil];
+        UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
+        [segmentOptions release];
+        
+        //Set selected segment index must come before addTarget, otherwise the action will be called as if the segment was pressed
+        [segmentedControl setSelectedSegmentIndex:kMapItem];
+        [segmentedControl addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventValueChanged];
+        [segmentedControl setFrame:CGRectMake(0, 0, 90, 30)];
+        [segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
+        
+        UIBarButtonItem *segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
+        [segmentedControl release];
+        [[self navigationItem] setRightBarButtonItem:segmentBarItem];
+        [segmentBarItem release];
+        
+        [self centerMap];
+    }
+    else
+    {
+        [[self navigationItem] setTitle:[self address]];
+        [self geocodePropertyFromAddress:[self address]];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -146,10 +152,10 @@ static NSInteger kMapItem = 1;
     if([criteria coordinates] != nil)
     {
         NSArray *coords = [[criteria coordinates] componentsSeparatedByString:@","];
-        center.latitude = [[coords objectAtIndex:0] doubleValue];
-        center.longitude = [[coords objectAtIndex:1] doubleValue];
-        span.latitudeDelta = .30;
-        span.longitudeDelta = .30;
+        center.longitude = [[coords objectAtIndex:0] doubleValue];
+        center.latitude = [[coords objectAtIndex:1] doubleValue];
+        span.latitudeDelta = .05;
+        span.longitudeDelta = .05;
     }
     else
     {
@@ -197,7 +203,6 @@ static NSInteger kMapItem = 1;
 {
     SBJsonParser *parser = [[SBJsonParser alloc] init];
     NSMutableArray *ret = [NSMutableArray arrayWithCapacity:4];
-    
     NSString *urlString = [NSString stringWithFormat:@"http://maps.google.com/maps/geo?q=%@&output=json&oe=utf8", locationString];
     
     NSURL *url = [NSURL URLWithString:urlString];
@@ -235,6 +240,30 @@ static NSInteger kMapItem = 1;
     }
     [error release];
     return ret;
+}
+
+// Used to geocode and display a single property after tapping the location cell
+- (void)geocodePropertyFromAddress:(NSString *)address
+{
+    CLLocationCoordinate2D center;
+    MKCoordinateRegion region;
+    MKCoordinateSpan span;
+    
+    NSArray *geoData = [self geocodeFromString:[address stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
+    center.longitude = [[geoData objectAtIndex:0] doubleValue];
+    center.latitude = [[geoData objectAtIndex:1] doubleValue];
+    span.longitudeDelta = [[geoData objectAtIndex:2] doubleValue];
+    span.latitudeDelta = [[geoData objectAtIndex:3] doubleValue];
+      
+    // Add a pin to the map at the address
+    MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:center addressDictionary:nil];
+    [[self mapView] addAnnotation:placemark];
+    [placemark release];
+    
+    region.center = center;
+    region.span = span;
+    [[self mapView] setRegion:region];
+    [[self mapView] setCenterCoordinate:center animated:YES];
 }
 
 - (void)geocodeProperties

@@ -76,6 +76,7 @@ static NSInteger kMapItem = 1;
     {
         PropertyMapViewController *mapViewController = [[PropertyMapViewController alloc] initWithNibName:@"PropertyMapView" bundle:nil];
         [mapViewController setHistory:[self history]];
+        [mapViewController geocodeProperties];
         
         NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithArray:[[self navigationController] viewControllers]];
         [viewControllers replaceObjectAtIndex:[viewControllers count] - 1 withObject:mapViewController];
