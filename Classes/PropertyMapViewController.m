@@ -68,33 +68,35 @@ static NSInteger kMapItem = 1;
 {
     [super viewDidLoad];
     
-    //Segmented control
-    NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", nil];
-    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
-    [segmentOptions release];
-    
-    //Set selected segment index must come before addTarget, otherwise the action will be called as if the segment was pressed
-    [segmentedControl setSelectedSegmentIndex:kMapItem];
-    [segmentedControl addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventValueChanged];
-    [segmentedControl setFrame:CGRectMake(0, 0, 90, 30)];
-    [segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
-    
-    UIBarButtonItem *segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
-    [segmentedControl release];
-    [[self navigationItem] setRightBarButtonItem:segmentBarItem];
-    [segmentBarItem release];
-    
     // Center the map based on the user's input
     MKMapView *mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
     [self setMapView:mapView];
     [mapView release];
     [self.view addSubview:[self mapView]];
+    
     if([self history])
     {
+        //Segmented control
+        NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", nil];
+        UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
+        [segmentOptions release];
+        
+        //Set selected segment index must come before addTarget, otherwise the action will be called as if the segment was pressed
+        [segmentedControl setSelectedSegmentIndex:kMapItem];
+        [segmentedControl addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventValueChanged];
+        [segmentedControl setFrame:CGRectMake(0, 0, 90, 30)];
+        [segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
+        
+        UIBarButtonItem *segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
+        [segmentedControl release];
+        [[self navigationItem] setRightBarButtonItem:segmentBarItem];
+        [segmentBarItem release];
+        
         [self centerMap];
     }
     else
     {
+        [[self navigationItem] setTitle:[self address]];
         [self geocodePropertyFromAddress:[self address]];
     }
 }
