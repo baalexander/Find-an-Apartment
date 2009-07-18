@@ -154,6 +154,7 @@
 		DD9B5E1C0FF42D0600348478 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD9B5E1B0FF42D0600348478 /* CoreLocation.framework */; };
 		DD9B5F2B0FF4432E00348478 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD9B5F2A0FF4432E00348478 /* MapKit.framework */; };
 		DD9B613E0FF45FED00348478 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD9B613D0FF45FED00348478 /* LocationManager.m */; };
+		DDEC73BF1011825000EB56EC /* UrlConstructor.m in Sources */ = {isa = PBXBuildFile; fileRef = 459CA0D3100AAA0000108747 /* UrlConstructor.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -820,6 +821,7 @@
 				DD10BC3A0FFC592300588928 /* PropertyAnnotation.m in Sources */,
 				453DBF881002ED760090982C /* AppDelegate.m in Sources */,
 				45BEE9881008FACC0031613E /* CriteriaViewController.m in Sources */,
+				DDEC73BF1011825000EB56EC /* UrlConstructor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
