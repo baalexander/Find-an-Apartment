@@ -9,6 +9,7 @@
     @private
         UITextField *currentTextField_;
         NSInteger selectedRow_;
+        NSIndexPath *selectedIndexPath_;
         NSArray *rowIds_;
         
         IBOutlet InputRangeCell *inputRangeCell_;
@@ -20,6 +21,7 @@
 
 @property (nonatomic, retain) UITextField *currentTextField;
 @property (nonatomic, assign) NSInteger selectedRow;
+@property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 @property (nonatomic, retain) NSArray *rowIds;
 
 - (InputRangeCell *)inputRangeCellWithMin:(NSNumber *)min withMax:(NSNumber *)max;

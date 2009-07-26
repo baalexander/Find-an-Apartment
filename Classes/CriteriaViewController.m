@@ -14,6 +14,7 @@
 @synthesize currentTextField = currentTextField_;
 @synthesize rowIds = rowIds_;
 @synthesize selectedRow = selectedRow_;
+@synthesize selectedIndexPath = selectedIndexPath_;
 @synthesize inputRangeCell = inputRangeCell_;
 @synthesize inputSimpleCell = inputSimpleCell_;
 
@@ -37,6 +38,7 @@
     [rowIds_ release];
     [inputRangeCell_ release];
     [inputSimpleCell_ release];
+    [selectedIndexPath_ release];
     
     [super dealloc];
 }
@@ -117,7 +119,16 @@
     [super viewWillAppear:animated];
     
     //If selecting a choices view controller like Sort By choices, then need to reload any changes it may have made on the Criteria
-    [[self tableView] reloadData]; 
+    [[self tableView] reloadData];
+    
+    // Reloading the tableView's data causes the row to be deselected; re-select a previously selected cell so it can be deselected
+    [[self tableView] selectRowAtIndexPath:[self selectedIndexPath] animated:NO scrollPosition:UITableViewScrollPositionNone];
+}
+
+// Deselect the previously selected row
+- (void)viewDidAppear:(BOOL)animated
+{
+    [[self tableView] deselectRowAtIndexPath:[self selectedIndexPath] animated:YES];
 }
 
 - (void)viewDidLoad

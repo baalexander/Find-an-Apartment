@@ -197,6 +197,7 @@
     {
         UITableViewCell *cell = [self simpleCellWithText:@"sort by" withDetail:[[self criteria] sortBy]];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
         
         return cell;
     }
@@ -242,6 +243,9 @@
 
         [[self navigationController] pushViewController:listViewController animated:YES];
         [listViewController release];
+        
+        // Remember which row was selected
+        [self setSelectedIndexPath:indexPath];
     }
     //Selected sort by, brings up list of sort choices
     else if ([rowId isEqual:kPropertyCriteriaSortBy]) 
@@ -250,6 +254,8 @@
         [choicesViewController setCriteria:[self criteria]];
         [[self navigationController] pushViewController:choicesViewController animated:YES];
         [choicesViewController release];
+        
+        [self setSelectedIndexPath:indexPath];
     }
     //Puts the cell in edit mode or view mode if already in edit mode
     else

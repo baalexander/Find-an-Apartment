@@ -426,6 +426,21 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
     }
     
+    if ([key isEqual:kDetailsLink])
+    {
+        CGRect frame = CGRectMake(0, 50, 320, 430);
+        UIWebView *webView = [[UIWebView alloc] initWithFrame:frame];
+        [webView setDataDetectorTypes:UIDataDetectorTypeAll];
+        [webView setScalesPageToFit:YES];
+        NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:detail]];
+        [webView loadRequest:urlRequest];
+        [urlRequest release];
+        [[self view] addSubview:webView];
+        [webView release];
+//        [self presentModalViewController:webView animated:YES];
+        
+    }
+    
     if ([key isEqual:kDetailsEmail])
     {
         MFMailComposeViewController *emailer = [[MFMailComposeViewController alloc] init];

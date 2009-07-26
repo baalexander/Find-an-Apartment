@@ -15,7 +15,7 @@
         CityOrPostalCode *city_;
         CityOrPostalCode *postalCode_;
         NSString *coordinates_;
-        PropertyCriteria *criteria_;        
+        PropertyCriteria *criteria_;
 }
 
 @property (nonatomic, retain) NSManagedObjectContext *propertyObjectContext;

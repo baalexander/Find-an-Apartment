@@ -37,6 +37,7 @@ static NSInteger kMapItem = 1;
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize summaryCell = summaryCell_;
 @synthesize selectedIndex = selectedIndex_;
+@synthesize selectedIndexPath = selectedIndexPath_;
 
 
 #pragma mark -
@@ -61,6 +62,7 @@ static NSInteger kMapItem = 1;
     [details_ release];
     [summary_ release];
     [parser_ release];
+    [selectedIndexPath_ release];
     [fetchedResultsController_ release];
     
     [super dealloc];
@@ -199,6 +201,15 @@ static NSInteger kMapItem = 1;
     {
         [[self tableView] deselectRowAtIndexPath:selectedRowIndexPath animated:NO];
     }
+    
+    // Reselect the previously selected cell
+    [[self tableView] selectRowAtIndexPath:[self selectedIndexPath] animated:NO scrollPosition:UITableViewScrollPositionNone];
+}
+
+// Deselect the previously selected cell
+- (void)viewDidAppear:(BOOL)animated
+{
+    [[self tableView] deselectRowAtIndexPath:[self selectedIndexPath] animated:YES];
 }
 
 
@@ -271,6 +282,8 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     [detailsViewController setDetails:details];
     [[self navigationController] pushViewController:detailsViewController animated:YES];
     [detailsViewController release];
+    
+    [self setSelectedIndexPath:indexPath];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
