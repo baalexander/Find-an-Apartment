@@ -35,7 +35,6 @@
 
 - (void)dealloc
 {
-    [locationManager_ release];
     [fetchedResultsController_ release];
     [propertyObjectContext_ release];
     [state_ release];
