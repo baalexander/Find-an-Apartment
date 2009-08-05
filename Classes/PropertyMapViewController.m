@@ -6,6 +6,10 @@
 #import "JSON.h"
 
 
+// Maximum number of pins to load
+#define kMaxMapItems 25
+
+
 //Segmented Control items. Eventually put in a constants file so List view controller does not have to have a duplicate.
 static NSInteger kListItem = 0;
 static NSInteger kMapItem = 1;
@@ -16,9 +20,9 @@ static NSInteger kMapItem = 1;
 @synthesize history = history_;
 @synthesize address = address_;
 @synthesize mapView = mapView_;
-@synthesize data = data_;
 @synthesize singleAddress = singleAddress_;
 @synthesize summaries = summaries_;
+@synthesize geocodedResponses = geocodedResponses_;
 @synthesize minLat = minLat_;
 @synthesize maxLat = maxLat_;
 @synthesize minLon = minLon_;
@@ -32,7 +36,9 @@ static NSInteger kMapItem = 1;
 {
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
     {
-
+        NSMutableDictionary *geocodedResponses = [[NSMutableDictionary alloc] initWithCapacity:kMaxMapItems];
+        [self setGeocodedResponses:geocodedResponses];
+        [geocodedResponses release];
     }
     
     return self;
@@ -43,7 +49,7 @@ static NSInteger kMapItem = 1;
     [history_ release];
     [mapView_ release];
     [summaries_ release];
-    [data_ release];
+    [geocodedResponses_ release];
     
     [super dealloc];
 }
@@ -224,7 +230,7 @@ static NSInteger kMapItem = 1;
     if(urlConnection)
     {
         NSMutableData *data = [[NSMutableData data] retain];
-        [self setData:data];
+        [[self geocodedResponses] setObject:data forKey:[urlConnection description]];
         [data release];
     }
     else
@@ -264,6 +270,8 @@ static NSInteger kMapItem = 1;
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"history == %@", [self history]];
     [fetchRequest setPredicate:predicate];
+    
+    [fetchRequest setFetchLimit:kMaxMapItems];
     
     NSArray *summaries = [[[self history] managedObjectContext] executeFetchRequest:fetchRequest error:&error];
     [self setSummaries:summaries];
@@ -320,8 +328,9 @@ static NSInteger kMapItem = 1;
 }
 
 // Parses the response and adds a pin to the map
-- (void)parseGeocodingResponseWithAddress:(NSString *)address
+- (void)parseGeocodingResponseForConnection:(NSURLConnection *)connection WithAddress:(NSString *)address
 {
+    NSData *data = [[self geocodedResponses] objectForKey:[connection description]];
     SBJsonParser *parser = [[SBJsonParser alloc] init];
     NSError *error = nil;
     
@@ -331,7 +340,7 @@ static NSInteger kMapItem = 1;
     
     // The response consists of nested arrays and dictionaries (WTF?)
     // Extract the lat and long
-    NSString *jsonString = [[NSString alloc] initWithData:[self data] encoding:NSUTF8StringEncoding];
+    NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     NSDictionary *geoData = [parser objectWithString:jsonString];
     [parser release];
     [jsonString release];
@@ -438,18 +447,15 @@ static NSInteger kMapItem = 1;
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-    // this method is called when the server has determined that it
-    // has enough information to create the NSURLResponse
-    
-    // it can be called multiple times, for example in the case of a
-    // redirect, so each time we reset the data.
-    [[self data] setLength:0];
+    // Reset the length of the data for the given connection to 0
+    [[[self geocodedResponses] objectForKey:[connection description]] setLength:0];
+
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    // append the new data to the received data
-    [[self data] appendData:data];
+    // Append the received data to the data for the given connection
+    [[[self geocodedResponses] objectForKey:[connection description]] appendData:data];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -459,17 +465,18 @@ static NSInteger kMapItem = 1;
     NSString *address = [[[parameters objectAtIndex:1] componentsSeparatedByString:@","] objectAtIndex:0];
     address = [address stringByReplacingOccurrencesOfString:@"+" withString:@" "];
 
-    [self parseGeocodingResponseWithAddress:address];
+    [self parseGeocodingResponseForConnection:connection WithAddress:address];
  
     // release the connection, and the data object
+    [[[self geocodedResponses] objectForKey:connection] release];
     [connection release];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     // release the connection, and the data object
+    [[[self geocodedResponses] objectForKey:[connection description]] release];
     [connection release];
-    [data_ release];
 }
 
 

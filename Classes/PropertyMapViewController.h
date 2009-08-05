@@ -12,9 +12,9 @@
         PropertyHistory *history_;
         NSString *address_;
         MKMapView *mapView_;
-        NSMutableData *data_;
-        BOOL singleAddress_;
         NSArray *summaries_;
+        NSMutableDictionary *geocodedResponses_;
+        BOOL singleAddress_;
         double minLat_;
         double maxLat_;
         double minLon_;
@@ -27,14 +27,14 @@
 - (void)geocodeFromLocation:(NSString *)locationString;
 - (void)geocodePropertyFromAddress:(NSString *)address;
 - (void)geocodeProperties;
-- (void)parseGeocodingResponseWithAddress:(NSString *)address;
+- (void)parseGeocodingResponseForConnection:(NSURLConnection *)connection WithAddress:(NSString *)address;
 - (void)updateMinMaxWithCoordinates:(CLLocationCoordinate2D)coordinates;
 
 @property (nonatomic, retain) PropertyHistory *history;
 @property (nonatomic, retain) NSString *address;
 @property (nonatomic, retain) MKMapView *mapView;
-@property (nonatomic, retain) NSMutableData *data;
 @property (nonatomic, retain) NSArray *summaries;
+@property (nonatomic, retain) NSMutableDictionary *geocodedResponses;
 @property BOOL singleAddress;
 @property double minLat;
 @property double maxLat;
