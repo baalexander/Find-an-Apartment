@@ -2,12 +2,12 @@
 #import <MessageUI/MessageUI.h>
 #import <MessageUI/MFMailComposeViewController.h>
 
-#import "Three20/Three20.h"
 #import "PropertyDetails.h"
 #import "LocationCell.h"
 #import "DescriptionCell.h"
 
 @class PropertyDetailsViewController;
+@class WebViewController;
 
 // Protocol for the PropertyDetails view controller to talk back to its delegate
 @protocol PropertyDetailsDelegate <NSObject>
@@ -32,7 +32,6 @@
         PropertyDetails *details_;
         NSMutableArray *sectionTitles_;
         NSMutableArray *sectionDetails_;
-        NSMutableArray *images_;
     
         IBOutlet LocationCell *locationCell_;
         IBOutlet DescriptionCell *descriptionCell_;
@@ -48,7 +47,6 @@
 @property (nonatomic, retain) LocationCell *locationCell;
 @property (nonatomic, retain) DescriptionCell *descriptionCell;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *addToFavoritesBtn;
-@property (nonatomic, retain) NSMutableArray *images;
 @property (nonatomic, retain) NSIndexPath *selectedIndex;
 
 - (IBAction)share:(id)sender;

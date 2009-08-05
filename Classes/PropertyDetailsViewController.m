@@ -7,6 +7,7 @@
 #import "PropertyMapViewController.h"
 #import "PropertyImage.h"
 #import "WebViewController.h"
+#import "PropertyImageViewController.h"
 
 
 @interface PropertyDetailsViewController ()
@@ -24,7 +25,6 @@
 @synthesize locationCell = locationCell_;
 @synthesize descriptionCell = descriptionCell_;
 @synthesize addToFavoritesBtn = addToFavoritesBtn_;
-@synthesize images = images_;
 @synthesize selectedIndex = selectedIndex_;
 
 
@@ -48,7 +48,6 @@
     [sectionTitles_ release];
     [sectionDetails_ release];
     [locationCell_ release];
-    [images_ release];
     [selectedIndex_ release];
     
     [super dealloc];
@@ -245,9 +244,16 @@
 #pragma mark -
 #pragma mark UIViewController
 
-- (void)viewWillLoad:(BOOL)animated
+// The TTPhotoViewer changes the nav bar and status bar style to translucent back, so it needs to be changed back
+- (void)viewWillAppear:(BOOL)animated
 {
-    // Deselect the link cell after dismissing the web view
+    [[[self navigationController] navigationBar] setTintColor:[UIColor blackColor]];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
+}
+
+// Used solely to animate the deselection of the link cell
+- (void)viewDidAppear:(BOOL)animated
+{
     [[self tableView] deselectRowAtIndexPath:[self selectedIndex] animated:YES];
 }
 
@@ -431,6 +437,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
         [mapController setAddress:detail];
         [[self navigationController] pushViewController:mapController animated:YES];
         [mapController release];
+        [self setSelectedIndex:indexPath];
     }
     
     if ([key isEqual:kDetailsImages])
@@ -441,25 +448,28 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
         {
             [images addObject:[image url]];
         }
-        [self setImages:images];
+        
+        PropertyImageViewController *imageViewController = [[PropertyImageViewController alloc] initWithImages:images];
         [images release];
         
-        TTPhotoViewController *photoViewController = [[TTPhotoViewController alloc] init];
-//        [photoViewController setPhotoSource:self];
-        [[self navigationController] pushViewController:photoViewController animated:YES];
+        [[self navigationController] pushViewController:imageViewController animated:YES];
+        [imageViewController release];
+        
+        [self setSelectedIndex:indexPath];
     }
     
     if ([key isEqual:kDetailsLink])
     {
-        WebViewController *webViewController = [[WebViewController alloc] init];
+        WebViewController *webViewController = [[WebViewController alloc] initWithAddress:detail];       
         
-        NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:detail]];
-        [[webViewController webView] loadRequest:urlRequest];
-        [urlRequest release];
-        
-        [self presentModalViewController:webViewController animated:YES];
+        // The WebViewController needs to be wrapped in a UINavigationController to get the navigation bar
+        // Should probably be its own class, but this way seems more straightforward than keeping track of a 
+        // UIWebView inside WebViewController inside another custom class
+        UINavigationController *webViewWrapper = [[UINavigationController alloc] initWithRootViewController:webViewController];
+        [[webViewWrapper navigationBar] setTintColor:[UIColor blackColor]];
         [webViewController release];
         
+        [self presentModalViewController:webViewWrapper animated:YES];
         [self setSelectedIndex:indexPath];
     }
     
