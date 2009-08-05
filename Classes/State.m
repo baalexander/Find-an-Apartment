@@ -1,11 +1,3 @@
-// 
-//  State.m
-//  Find an Apartment
-//
-//  Created by Tyler Pearson on 6/21/09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
-//
-
 #import "State.h"
 
 #import "CityOrPostalCode.h"
