@@ -5,6 +5,8 @@
 #import "PropertyListEmailerViewController.h"
 #import "StringFormatter.h"
 #import "PropertyMapViewController.h"
+#import "PropertyImage.h"
+#import "WebViewController.h"
 
 
 @interface PropertyDetailsViewController ()
@@ -22,6 +24,8 @@
 @synthesize locationCell = locationCell_;
 @synthesize descriptionCell = descriptionCell_;
 @synthesize addToFavoritesBtn = addToFavoritesBtn_;
+@synthesize images = images_;
+@synthesize selectedIndex = selectedIndex_;
 
 
 #pragma mark -
@@ -44,6 +48,8 @@
     [sectionTitles_ release];
     [sectionDetails_ release];
     [locationCell_ release];
+    [images_ release];
+    [selectedIndex_ release];
     
     [super dealloc];
 }
@@ -239,6 +245,12 @@
 #pragma mark -
 #pragma mark UIViewController
 
+- (void)viewWillLoad:(BOOL)animated
+{
+    // Deselect the link cell after dismissing the web view
+    [[self tableView] deselectRowAtIndexPath:[self selectedIndex] animated:YES];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -423,22 +435,32 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     
     if ([key isEqual:kDetailsImages])
     {
-
+        // The property photos need to have an order so they are converted to an array from a set
+        NSMutableArray *images = [[NSMutableArray alloc] initWithCapacity:[detail intValue]];
+        for(PropertyImage *image in [[self details] images])
+        {
+            [images addObject:[image url]];
+        }
+        [self setImages:images];
+        [images release];
+        
+        TTPhotoViewController *photoViewController = [[TTPhotoViewController alloc] init];
+//        [photoViewController setPhotoSource:self];
+        [[self navigationController] pushViewController:photoViewController animated:YES];
     }
     
     if ([key isEqual:kDetailsLink])
     {
-        CGRect frame = CGRectMake(0, 50, 320, 430);
-        UIWebView *webView = [[UIWebView alloc] initWithFrame:frame];
-        [webView setDataDetectorTypes:UIDataDetectorTypeAll];
-        [webView setScalesPageToFit:YES];
-        NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:detail]];
-        [webView loadRequest:urlRequest];
-        [urlRequest release];
-        [[self view] addSubview:webView];
-        [webView release];
-//        [self presentModalViewController:webView animated:YES];
+        WebViewController *webViewController = [[WebViewController alloc] init];
         
+        NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:detail]];
+        [[webViewController webView] loadRequest:urlRequest];
+        [urlRequest release];
+        
+        [self presentModalViewController:webViewController animated:YES];
+        [webViewController release];
+        
+        [self setSelectedIndex:indexPath];
     }
     
     if ([key isEqual:kDetailsEmail])
@@ -453,7 +475,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
         [self presentModalViewController:emailer animated:YES];
         [emailer release];
     }
-}    
+}
 
 
 #pragma mark -
