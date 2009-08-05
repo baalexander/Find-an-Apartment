@@ -19,6 +19,10 @@ static NSInteger kMapItem = 1;
 @synthesize data = data_;
 @synthesize singleAddress = singleAddress_;
 @synthesize summaries = summaries_;
+@synthesize minLat = minLat_;
+@synthesize maxLat = maxLat_;
+@synthesize minLon = minLon_;
+@synthesize maxLon = maxLon_;
 
 
 #pragma mark -
@@ -241,6 +245,11 @@ static NSInteger kMapItem = 1;
 
 - (void)geocodeProperties
 {
+    [self setMaxLat:DBL_MIN];
+    [self setMaxLon:DBL_MIN];
+    [self setMinLat:DBL_MAX];
+    [self setMinLon:DBL_MAX];
+    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSError *error = nil;
     
@@ -280,6 +289,9 @@ static NSInteger kMapItem = 1;
             PropertyAnnotation *annotation = [[PropertyAnnotation alloc] initWithCoordinate:center];
             [[self mapView] addAnnotation:annotation];
             [annotation release];
+            
+            // Update the min & max lat & lon based on the current coordinates
+            [self updateMinMaxWithCoordinates:center];
         }
     }
     
@@ -287,12 +299,17 @@ static NSInteger kMapItem = 1;
     MKCoordinateRegion region;
     MKCoordinateSpan span;
     
-    NSArray *coords = [(NSString *)[[summaries objectAtIndex:0] location] componentsSeparatedByString:@","];
-    center.longitude = [[coords objectAtIndex:0] doubleValue];
-    center.latitude = [[coords objectAtIndex:1] doubleValue];
+    // Center the map based on the min & max lat & lon encountered
+    double lonDelta = [self maxLon] - [self minLon];
+    double latDelta = [self maxLat] - [self minLat];
+    NSLog(@"lonDelta: %f\nlatDelta: %f", lonDelta, latDelta);
     
-    span.longitudeDelta = 0.25f;
-    span.latitudeDelta = 0.25f;
+    span.longitudeDelta = lonDelta + 0.05;
+    span.latitudeDelta = latDelta + 0.05;
+    
+    center.longitude = [self minLon] + (lonDelta / 2);
+    center.latitude = [self minLat] + (latDelta / 2);
+    
     
     region.center = center;
     region.span = span;
@@ -325,6 +342,9 @@ static NSInteger kMapItem = 1;
     
     center.longitude = [[coords objectAtIndex:0] doubleValue];
     center.latitude = [[coords objectAtIndex:1] doubleValue];
+    
+    // Determine if the lat/lon are either of the max or min seen
+    [self updateMinMaxWithCoordinates:center];
     
     // Setup the pin to be placed on the map
     PropertyAnnotation *annotation = [[PropertyAnnotation alloc] initWithCoordinate:center];
@@ -389,6 +409,27 @@ static NSInteger kMapItem = 1;
     // Add the pin to the map
     [[self mapView] addAnnotation:annotation];
     [annotation release];
+}
+
+- (void)updateMinMaxWithCoordinates:(CLLocationCoordinate2D)coordinates
+{
+    if(coordinates.longitude > [self maxLon])
+    {
+        [self setMaxLon:coordinates.longitude];
+    }
+    else if(coordinates.longitude < [self minLon])
+    {
+        [self setMinLon:coordinates.longitude];
+    }
+    
+    if(coordinates.latitude > [self maxLat])
+    {
+        [self setMaxLat:coordinates.latitude];
+    }
+    else if(coordinates.latitude < [self minLon])
+    {
+        [self setMinLat:coordinates.latitude];
+    }
 }
 
 
