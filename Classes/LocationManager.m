@@ -68,6 +68,9 @@
 // Called when there is an error getting the location
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
+    // Dismiss the "Please Wait" alert
+    [[self alert] dismissWithClickedButtonIndex:0 animated:YES];
+    
 	NSMutableString *errorString = [[NSMutableString alloc] init];
     
 	if ([error domain] == kCLErrorDomain) {
