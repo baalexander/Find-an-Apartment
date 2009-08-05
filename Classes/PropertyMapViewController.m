@@ -6,7 +6,6 @@
 #import "JSON.h"
 
 
-#define kMaxMapItems 25
 //Segmented Control items. Eventually put in a constants file so List view controller does not have to have a duplicate.
 static NSInteger kListItem = 0;
 static NSInteger kMapItem = 1;
@@ -17,6 +16,9 @@ static NSInteger kMapItem = 1;
 @synthesize history = history_;
 @synthesize address = address_;
 @synthesize mapView = mapView_;
+@synthesize data = data_;
+@synthesize singleAddress = singleAddress_;
+@synthesize summaries = summaries_;
 
 
 #pragma mark -
@@ -36,6 +38,8 @@ static NSInteger kMapItem = 1;
 {
     [history_ release];
     [mapView_ release];
+    [summaries_ release];
+    [data_ release];
     
     [super dealloc];
 }
@@ -69,10 +73,10 @@ static NSInteger kMapItem = 1;
     [super viewDidLoad];
     
     // Center the map based on the user's input
-    MKMapView *mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
+    MKMapView *mapView = [[MKMapView alloc] initWithFrame:[[self view] bounds]];
     [self setMapView:mapView];
     [mapView release];
-    [self.view addSubview:[self mapView]];
+    [[self view] addSubview:[self mapView]];
     
     if([self history])
     {
@@ -148,6 +152,9 @@ static NSInteger kMapItem = 1;
     CLLocationCoordinate2D center;
     MKCoordinateRegion region;
     MKCoordinateSpan span;
+ 
+    // Center the map and set the zoom level
+    [self setSingleAddress:YES];
     
     if([criteria coordinates] != nil)
     {
@@ -156,24 +163,24 @@ static NSInteger kMapItem = 1;
         center.latitude = [[coords objectAtIndex:1] doubleValue];
         span.latitudeDelta = .05;
         span.longitudeDelta = .05;
+        
+        // Display the map using the cached data
+        region.center = center;
+        region.span = span;
+        [[self mapView] setRegion:region];
+        [[self mapView] setCenterCoordinate:center animated:YES];
+        
     }
     else
     {
-        NSArray *geoData = [self geocodeFromCriteria:criteria];
-        center.longitude = [[geoData objectAtIndex:0] doubleValue];
-        center.latitude = [[geoData objectAtIndex:1] doubleValue];
-        span.longitudeDelta = [[geoData objectAtIndex:2] doubleValue];
-        span.latitudeDelta = [[geoData objectAtIndex:3] doubleValue];
+        // Geocode the address
+        [self geocodeFromCriteria:criteria];
     }
     
-    region.center = center;
-    region.span = span;
-    [[self mapView] setRegion:region];
-    [[self mapView] setCenterCoordinate:center animated:YES];
+
 }
 
-// Returns {longitude, latitude, lonDelta, latDelta}
-- (NSArray *)geocodeFromCriteria:(PropertyCriteria *)criteria
+- (void)geocodeFromCriteria:(PropertyCriteria *)criteria
 {
     // Format the criteria the query google for the geographic info
     NSString *street, *postalCode, *city, *state;
@@ -196,74 +203,40 @@ static NSInteger kMapItem = 1;
     
     // Get the data from Google
     NSString *parameterString = [NSString stringWithFormat:@"%@+%@+%@+%@", street, city, state, postalCode];
-    return [self geocodeFromString:parameterString];
+    [self geocodeFromLocation:parameterString];
 }
 
-- (NSArray *)geocodeFromString:(NSString *)locationString
+// Geocodes from any form of an address
+- (void)geocodeFromLocation:(NSString *)locationString
 {
-    SBJsonParser *parser = [[SBJsonParser alloc] init];
-    NSMutableArray *ret = [NSMutableArray arrayWithCapacity:4];
     NSString *urlString = [NSString stringWithFormat:@"http://maps.google.com/maps/geo?q=%@&output=json&oe=utf8", locationString];
     
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSError *error = nil;
     
-    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    NSURLConnection *urlConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     
-    // The response consists of nested arrays and dictionaries (WTF?)
-    // Extract the lat and long
-    NSString *jsonString = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
-    NSDictionary *geoData = [parser objectWithString:jsonString];
-    [parser release];
-    [jsonString release];
-    NSArray *placemarks = [geoData valueForKey:@"Placemark"];
-    NSDictionary *point = [placemarks objectAtIndex:0];
-    NSArray *coords = [[point valueForKey:@"Point"] valueForKey:@"coordinates"];
-    [ret addObject:[NSNumber numberWithDouble:[[coords objectAtIndex:0] doubleValue]]];
-    [ret addObject:[NSNumber numberWithDouble:[[coords objectAtIndex:1] doubleValue]]];
-    
-    // Determine the lat/long delta to set the zoom
-    NSDictionary *extendedData = [point valueForKey:@"ExtendedData"];
-    NSDictionary *deltas = [extendedData valueForKey:@"LatLonBox"];
-    double north = [[deltas valueForKey:@"north"] doubleValue];
-    double east = [[deltas valueForKey:@"east"] doubleValue];
-    double south = [[deltas valueForKey:@"south"] doubleValue];
-    double west = [[deltas valueForKey:@"west"] doubleValue];
-    [ret addObject:[NSNumber numberWithDouble:(east - west)]];
-    [ret addObject:[NSNumber numberWithDouble:(north - south)]];
-    
-    if(error)
+    if(urlConnection)
     {
-        NSLog(@"Error geocoding: %@", error);
-        // TODO: handle error
+        NSMutableData *data = [[NSMutableData data] retain];
+        [self setData:data];
+        [data release];
+    }
+    else
+    {
+        NSLog(@"Error loading data for location: %@", locationString);
+        // TODO: Handle error
     }
     [error release];
-    return ret;
 }
 
 // Used to geocode and display a single property after tapping the location cell
 - (void)geocodePropertyFromAddress:(NSString *)address
 {
-    CLLocationCoordinate2D center;
-    MKCoordinateRegion region;
-    MKCoordinateSpan span;
+    [self setSingleAddress:YES];
     
-    NSArray *geoData = [self geocodeFromString:[address stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
-    center.longitude = [[geoData objectAtIndex:0] doubleValue];
-    center.latitude = [[geoData objectAtIndex:1] doubleValue];
-    span.longitudeDelta = [[geoData objectAtIndex:2] doubleValue];
-    span.latitudeDelta = [[geoData objectAtIndex:3] doubleValue];
-      
-    // Add a pin to the map at the address
-    MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:center addressDictionary:nil];
-    [[self mapView] addAnnotation:placemark];
-    [placemark release];
-    
-    region.center = center;
-    region.span = span;
-    [[self mapView] setRegion:region];
-    [[self mapView] setCenterCoordinate:center animated:YES];
+    [self geocodeFromLocation:[address stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
 }
 
 - (void)geocodeProperties
@@ -283,47 +256,179 @@ static NSInteger kMapItem = 1;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"history == %@", [self history]];
     [fetchRequest setPredicate:predicate];
     
-    [fetchRequest setFetchLimit:kMaxMapItems];
-    NSArray *summaries = [[self.history managedObjectContext] executeFetchRequest:fetchRequest error:&error];
+    NSArray *summaries = [[[self history] managedObjectContext] executeFetchRequest:fetchRequest error:&error];
+    [self setSummaries:summaries];
     [fetchRequest release];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     for(PropertySummary *summary in summaries)
     {
-        double longitude, latitude;
-        if(summary.location == nil)
+        if([summary location] == nil)
         {
-            NSString *location = [summary.details.location stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-            NSArray *geoData = [self geocodeFromString:location];
-            longitude = [[geoData objectAtIndex:0] doubleValue];
-            latitude = [[geoData objectAtIndex:1] doubleValue];
-            NSString *coordinateString = [NSString stringWithFormat:@"%f,%f", latitude, longitude];
-            summary.location = coordinateString;
+            NSString *location = [[[summary details] location] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+            [self geocodeFromLocation:location];
         }
         else
         {
-            NSArray *coords = [summary.location componentsSeparatedByString:@","];
-            longitude = [[coords objectAtIndex:0] doubleValue];
-            latitude = [[coords objectAtIndex:1] doubleValue];
+            CLLocationCoordinate2D center;
+            NSArray *coords = [[summary location] componentsSeparatedByString:@","];
+            center.longitude = [[coords objectAtIndex:0] doubleValue];
+            center.latitude = [[coords objectAtIndex:1] doubleValue];
+            
+            // Add a pin to the map at the address
+            PropertyAnnotation *annotation = [[PropertyAnnotation alloc] initWithCoordinate:center];
+            [[self mapView] addAnnotation:annotation];
+            [annotation release];
         }
-        CLLocationCoordinate2D coordinates;
-        coordinates.longitude = longitude;
-        coordinates.latitude = latitude;
-        
-        PropertyAnnotation *annotation = [[PropertyAnnotation alloc] initWithCoordinate:coordinates];
-        annotation.title = summary.title;
-        annotation.subtitle = summary.summary;
-        MKAnnotationView *annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"annotation"];
-        [annotation release];
-        [self.view addSubview:annotationView];
-        [annotationView release];
     }
     
-    [[[self history] managedObjectContext] save:&error];
+    CLLocationCoordinate2D center;
+    MKCoordinateRegion region;
+    MKCoordinateSpan span;
+    
+    NSArray *coords = [(NSString *)[[summaries objectAtIndex:0] location] componentsSeparatedByString:@","];
+    center.longitude = [[coords objectAtIndex:0] doubleValue];
+    center.latitude = [[coords objectAtIndex:1] doubleValue];
+    
+    span.longitudeDelta = 0.25f;
+    span.latitudeDelta = 0.25f;
+    
+    region.center = center;
+    region.span = span;
+    
+    [[self mapView] setRegion:region animated:YES];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+}
+
+// Parses the response and adds a pin to the map
+- (void)parseGeocodingResponseWithAddress:(NSString *)address
+{
+    SBJsonParser *parser = [[SBJsonParser alloc] init];
+    NSError *error = nil;
+    
+    CLLocationCoordinate2D center;
+    MKCoordinateRegion region;
+    MKCoordinateSpan span;
+    
+    // The response consists of nested arrays and dictionaries (WTF?)
+    // Extract the lat and long
+    NSString *jsonString = [[NSString alloc] initWithData:[self data] encoding:NSUTF8StringEncoding];
+    NSDictionary *geoData = [parser objectWithString:jsonString];
+    [parser release];
+    [jsonString release];
+    
+    NSArray *placemarks = [geoData valueForKey:@"Placemark"];
+    NSDictionary *point = [placemarks objectAtIndex:0];
+    NSArray *coords = [[point valueForKey:@"Point"] valueForKey:@"coordinates"];
+    
+    center.longitude = [[coords objectAtIndex:0] doubleValue];
+    center.latitude = [[coords objectAtIndex:1] doubleValue];
+    
+    // Setup the pin to be placed on the map
+    PropertyAnnotation *annotation = [[PropertyAnnotation alloc] initWithCoordinate:center];
+    
+    // Set the lat/long delta and center only if geocoding a single address
+    if([self singleAddress])
+    {
+        // Determine the lat/long delta to set the zoom
+        NSDictionary *extendedData = [point valueForKey:@"ExtendedData"];
+        NSDictionary *deltas = [extendedData valueForKey:@"LatLonBox"];
+        double north = [[deltas valueForKey:@"north"] doubleValue];
+        double east = [[deltas valueForKey:@"east"] doubleValue];
+        double south = [[deltas valueForKey:@"south"] doubleValue];
+        double west = [[deltas valueForKey:@"west"] doubleValue];
+        
+        span.longitudeDelta = east - west;
+        span.latitudeDelta = north - south;
+        
+        region.center = center;
+        region.span = span;
+        [[self mapView] setRegion:region];
+        [[self mapView] setCenterCoordinate:center animated:YES];
+        
+        // The address iVar should be in a much nicer form, so use it instead of the method's parameter
+        [annotation setAddress:[self address]];
+        
+        [self setSingleAddress:NO];
+    }
+    else
+    {
+        [annotation setAddress:address];
+        
+        // Save the lat/lon to the property (expensive but it only happens once for each address and there's no simple way around it)
+        for(PropertySummary *summary in [self summaries])
+        {
+            NSString *resultAddress = [[[[summary details] location] componentsSeparatedByString:@","] objectAtIndex:0];
+            if([resultAddress isEqual:address])
+            {
+                NSString *locationString = [NSString stringWithFormat:@"%f,%f", center.longitude, center.latitude];
+                [summary setLocation:locationString];
+                break;
+            }
+        }
+        
+        NSError *error = nil;
+        [[[self history] managedObjectContext] save:&error];
+        if(error)
+        {
+            NSLog(@"Error saving location: %@", error);
+            // TODO: handle saving error
+        }
+        [error release];
+    }
+    
     if(error)
     {
-        NSLog(@"Error updating locations: %@", error);
-        // TODO: handle saving error
+        NSLog(@"Error geocoding: %@", error);
+        // TODO: handle error
     }
+    [error release];
+    
+    // Add the pin to the map
+    [[self mapView] addAnnotation:annotation];
+    [annotation release];
+}
+
+
+#pragma mark -
+#pragma mark NSURLConnection delegate methods
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    // this method is called when the server has determined that it
+    // has enough information to create the NSURLResponse
+    
+    // it can be called multiple times, for example in the case of a
+    // redirect, so each time we reset the data.
+    [[self data] setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    // append the new data to the received data
+    [[self data] appendData:data];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    // Get the address from the request and pass that into the parser to save the lat/lon
+    NSArray *parameters = [[connection description] componentsSeparatedByString:@"="];
+    NSString *address = [[[parameters objectAtIndex:1] componentsSeparatedByString:@","] objectAtIndex:0];
+    address = [address stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+
+    [self parseGeocodingResponseWithAddress:address];
+ 
+    // release the connection, and the data object
+    [connection release];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    // release the connection, and the data object
+    [connection release];
+    [data_ release];
 }
 
 

@@ -12,16 +12,23 @@
         PropertyHistory *history_;
         NSString *address_;
         MKMapView *mapView_;
+        NSMutableData *data_;
+        BOOL singleAddress_;
+        NSArray *summaries_;
 }
 
 - (void)centerMap;
-- (NSArray *)geocodeFromCriteria:(PropertyCriteria *)criteria;
-- (NSArray *)geocodeFromString:(NSString *)locationString;
+- (void)geocodeFromCriteria:(PropertyCriteria *)criteria;
+- (void)geocodeFromLocation:(NSString *)locationString;
 - (void)geocodePropertyFromAddress:(NSString *)address;
 - (void)geocodeProperties;
+- (void)parseGeocodingResponseWithAddress:(NSString *)address;
 
 @property (nonatomic, retain) PropertyHistory *history;
 @property (nonatomic, retain) NSString *address;
 @property (nonatomic, retain) MKMapView *mapView;
+@property (nonatomic, retain) NSMutableData *data;
+@property BOOL singleAddress;
+@property (nonatomic, retain) NSArray *summaries;
 
 @end
