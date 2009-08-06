@@ -435,6 +435,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     {
         PropertyMapViewController *mapController = [[PropertyMapViewController alloc] init];
         [mapController setAddress:detail];
+        [mapController setSingleAddress:YES];
         [[self navigationController] pushViewController:mapController animated:YES];
         [mapController release];
         [self setSelectedIndex:indexPath];

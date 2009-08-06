@@ -162,10 +162,7 @@ static NSInteger kMapItem = 1;
     CLLocationCoordinate2D center;
     MKCoordinateRegion region;
     MKCoordinateSpan span;
- 
-    // Center the map and set the zoom level
-    [self setSingleAddress:YES];
-    
+     
     if([criteria coordinates] != nil)
     {
         NSArray *coords = [[criteria coordinates] componentsSeparatedByString:@","];
