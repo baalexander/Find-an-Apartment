@@ -11,7 +11,6 @@
 @property (nonatomic, retain) UILabel *addressLine2;
 
 + (CGFloat)height;
-+ (NSArray *)parseLocation:(NSString *)unparsedLocation;
 - (void)setLocation:(NSString *)location;
 
 @end

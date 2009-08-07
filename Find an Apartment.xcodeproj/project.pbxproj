@@ -140,6 +140,8 @@
 		45E9CD6E102BD39F003D157D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45E9CD6C102BD39F003D157D /* QuartzCore.framework */; };
 		45E9CD8F102BD87B003D157D /* libThree20.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDDF6A99101E2C18001621C7 /* libThree20.a */; };
 		45E9CD91102BD897003D157D /* libThree20.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDDF6A99101E2C18001621C7 /* libThree20.a */; };
+		45E9CE0B102BE338003D157D /* LocationParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E9CE0A102BE338003D157D /* LocationParser.m */; };
+		45E9CE0C102BE338003D157D /* LocationParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E9CE0A102BE338003D157D /* LocationParser.m */; };
 		45FF76C80FE9FF810053B4D8 /* PropertyFavoritesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */; };
 		DD02AD59100FD399003FD680 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DD4A5DA91002BFB9004599FB /* Default.png */; };
 		DD10BA640FFC1E9000588928 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA590FFC1E9000588928 /* NSObject+SBJSON.m */; };
@@ -302,6 +304,8 @@
 		45D942280FF0696C00AD4A5B /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = down.png; path = Images/down.png; sourceTree = "<group>"; };
 		45D942290FF0696C00AD4A5B /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = up.png; path = Images/up.png; sourceTree = "<group>"; };
 		45E9CD6C102BD39F003D157D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		45E9CE09102BE338003D157D /* LocationParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationParser.h; sourceTree = "<group>"; };
+		45E9CE0A102BE338003D157D /* LocationParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationParser.m; sourceTree = "<group>"; };
 		45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyFavoritesView.xib; path = Classes/PropertyFavoritesView.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Find_an_Apartment-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Find_an_Apartment-Info.plist"; sourceTree = "<group>"; };
 		DD10BA570FFC1E9000588928 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
@@ -502,6 +506,8 @@
 				457AA33A0FDAC26100F0D16C /* XmlParser.m */,
 				DD9B613C0FF45FED00348478 /* LocationManager.h */,
 				DD9B613D0FF45FED00348478 /* LocationManager.m */,
+				45E9CE09102BE338003D157D /* LocationParser.h */,
+				45E9CE0A102BE338003D157D /* LocationParser.m */,
 				459CA0D2100AAA0000108747 /* UrlConstructor.h */,
 				459CA0D3100AAA0000108747 /* UrlConstructor.m */,
 			);
@@ -916,6 +922,7 @@
 				DD6F22571027E1AD000C8207 /* WebViewController.m in Sources */,
 				DD6F225B1027E1C6000C8207 /* PropertyImageViewController.m in Sources */,
 				DD7DAAD910293FBA00EE70AB /* PropertyAnnotation.m in Sources */,
+				45E9CE0C102BE338003D157D /* LocationParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -971,6 +978,7 @@
 				DD6F22581027E1AD000C8207 /* WebViewController.m in Sources */,
 				DD6F225C1027E1C6000C8207 /* PropertyImageViewController.m in Sources */,
 				DD7DAADA10293FBA00EE70AB /* PropertyAnnotation.m in Sources */,
+				45E9CE0B102BE338003D157D /* LocationParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

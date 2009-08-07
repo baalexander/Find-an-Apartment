@@ -9,6 +9,10 @@
 #import "WebViewController.h"
 #import "PropertyImageViewController.h"
 
+#ifdef HOME_FINDER
+    #import "MortgageCriteriaViewController.h"
+#endif
+
 
 @interface PropertyDetailsViewController ()
 @property (nonatomic, retain) NSMutableArray *sectionTitles;
@@ -94,7 +98,6 @@
     PropertySummary *summary = [[self details] summary];
     if (![PropertyFavoritesViewController addCopyOfProperty:summary])
     {
-        //TODO: Show alert
         NSLog(@"Already in favorites.");
     }
     else
@@ -106,7 +109,11 @@
 
 - (BOOL)hasDisclosureIndicator:(NSString *)key
 {
-    return [key isEqual:kDetailsImages] || [key isEqual:kDetailsLink] || [key isEqual:kDetailsEmail] || [key isEqual:kDetailsLocation];
+    #ifdef HOME_FINDER
+        return [key isEqual:kDetailsImages] || [key isEqual:kDetailsLink] || [key isEqual:kDetailsEmail] || [key isEqual:kDetailsLocation] || [key isEqual:kDetailsPrice];
+    #else
+        return [key isEqual:kDetailsImages] || [key isEqual:kDetailsLink] || [key isEqual:kDetailsEmail] || [key isEqual:kDetailsLocation];
+    #endif
 }
 
 - (void)setDetails:(PropertyDetails *)details
@@ -486,6 +493,18 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
         [self presentModalViewController:emailer animated:YES];
         [emailer release];
     }
+
+#ifdef HOME_FINDER    
+    //Home Finder populates Mortgage Criteria page with property data
+    if ([key isEqual:kDetailsPrice])
+    {
+        MortgageCriteriaViewController *criteriaViewController = [[MortgageCriteriaViewController alloc] initWithNibName:@"MortgageCriteriaView" bundle:nil];
+        [criteriaViewController setPropertySummary:[[self details] summary]];
+        [[self navigationController] pushViewController:criteriaViewController animated:YES];
+        [criteriaViewController release];                            
+    }
+#endif
+
 }
 
 

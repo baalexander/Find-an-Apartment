@@ -67,6 +67,13 @@ static NSString *kDetailCellId = @"DETAIL_CELL_ID";
     return [[loan allKeys] count];
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSDictionary *loan = [[self loans] objectAtIndex:section];
+    
+    return [loan objectForKey:@"type"];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDetailCellId];
