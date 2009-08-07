@@ -15,11 +15,8 @@
         NSArray *summaries_;
         NSMutableDictionary *geocodedResponses_;
         BOOL singleAddress_;
-        double minLat_;
-        double maxLat_;
-        double minLon_;
-        double maxLon_;
-    
+        CLLocationCoordinate2D maxPoint_;
+        CLLocationCoordinate2D minPoint_;    
 }
 
 - (void)centerMap;
@@ -35,10 +32,8 @@
 @property (nonatomic, retain) MKMapView *mapView;
 @property (nonatomic, retain) NSArray *summaries;
 @property (nonatomic, retain) NSMutableDictionary *geocodedResponses;
+@property CLLocationCoordinate2D maxPoint;
+@property CLLocationCoordinate2D minPoint;
 @property BOOL singleAddress;
-@property double minLat;
-@property double maxLat;
-@property double minLon;
-@property double maxLon;
 
 @end
