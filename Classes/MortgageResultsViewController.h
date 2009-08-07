@@ -1,9 +1,15 @@
 #import <UIKit/UIKit.h>
 
+#import "XmlParser.h"
 
-@interface MortgageResultsViewController : UITableViewController
+
+@interface MortgageResultsViewController : UITableViewController <ParserDelegate>
 {
-
+    @private
+        XmlParser *parser_;
+        BOOL isParsing_;
+        NSMutableArray *loans_;
+        NSMutableDictionary *loan_;
 }
 
 - (void)parse:(NSURL *)url;
