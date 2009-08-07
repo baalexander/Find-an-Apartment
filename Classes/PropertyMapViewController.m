@@ -252,7 +252,7 @@ static NSInteger kMapItem = 1;
     [self setMaxLon:DBL_MIN];
     [self setMinLat:DBL_MAX];
     [self setMinLon:DBL_MAX];
-    
+ 
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSError *error = nil;
     
@@ -307,6 +307,7 @@ static NSInteger kMapItem = 1;
     // Center the map based on the min & max lat & lon encountered
     double lonDelta = [self maxLon] - [self minLon];
     double latDelta = [self maxLat] - [self minLat];
+    NSLog(@"\nmax lat: %f \nmin lat: %f \nmax lon: %f \nmin lon: %f", [self maxLat], [self minLat], [self maxLon], [self minLon]);
     NSLog(@"lonDelta: %f\nlatDelta: %f", lonDelta, latDelta);
     
     span.longitudeDelta = lonDelta + 0.05;
@@ -348,6 +349,13 @@ static NSInteger kMapItem = 1;
     
     center.longitude = [[coords objectAtIndex:0] doubleValue];
     center.latitude = [[coords objectAtIndex:1] doubleValue];
+    
+    // A coordinate of (0,0) means that the address couldn't be geocoded, so we shouldn't add a pin to the map
+    // Fixes having a pin off the west coast of Africa
+    if(center.longitude == 0 && center.latitude == 0)
+    {
+        return;
+    }
     
     // Determine if the lat/lon are either of the max or min seen
     [self updateMinMaxWithCoordinates:center];
