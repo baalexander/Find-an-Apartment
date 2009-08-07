@@ -136,6 +136,10 @@
 		45D941DE0FF051B600AD4A5B /* PropertyDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D941DD0FF051B600AD4A5B /* PropertyDetails.m */; };
 		45D9422A0FF0696C00AD4A5B /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = 45D942280FF0696C00AD4A5B /* down.png */; };
 		45D9422B0FF0696C00AD4A5B /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = 45D942290FF0696C00AD4A5B /* up.png */; };
+		45E9CD6D102BD39F003D157D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45E9CD6C102BD39F003D157D /* QuartzCore.framework */; };
+		45E9CD6E102BD39F003D157D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45E9CD6C102BD39F003D157D /* QuartzCore.framework */; };
+		45E9CD8F102BD87B003D157D /* libThree20.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDDF6A99101E2C18001621C7 /* libThree20.a */; };
+		45E9CD91102BD897003D157D /* libThree20.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDDF6A99101E2C18001621C7 /* libThree20.a */; };
 		45FF76C80FE9FF810053B4D8 /* PropertyFavoritesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */; };
 		DD02AD59100FD399003FD680 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DD4A5DA91002BFB9004599FB /* Default.png */; };
 		DD10BA640FFC1E9000588928 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA590FFC1E9000588928 /* NSObject+SBJSON.m */; };
@@ -162,11 +166,8 @@
 		DD9B5E1C0FF42D0600348478 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD9B5E1B0FF42D0600348478 /* CoreLocation.framework */; };
 		DD9B5F2B0FF4432E00348478 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD9B5F2A0FF4432E00348478 /* MapKit.framework */; };
 		DD9B613E0FF45FED00348478 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD9B613D0FF45FED00348478 /* LocationManager.m */; };
-		DDDF6A9B101E2C39001621C7 /* libThree20.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDDF6A99101E2C18001621C7 /* libThree20.a */; };
 		DDDF6ABB101E2CA5001621C7 /* Three20.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DDDF6ABA101E2CA5001621C7 /* Three20.bundle */; };
 		DDDF6ABC101E2CA5001621C7 /* Three20.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DDDF6ABA101E2CA5001621C7 /* Three20.bundle */; };
-		DDDF6AD1101E2CD2001621C7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDDF6AD0101E2CD2001621C7 /* QuartzCore.framework */; };
-		DDDF6AD2101E2CD2001621C7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDDF6AD0101E2CD2001621C7 /* QuartzCore.framework */; };
 		DDEC73BF1011825000EB56EC /* UrlConstructor.m in Sources */ = {isa = PBXBuildFile; fileRef = 459CA0D3100AAA0000108747 /* UrlConstructor.m */; };
 /* End PBXBuildFile section */
 
@@ -300,6 +301,7 @@
 		45D941DD0FF051B600AD4A5B /* PropertyDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyDetails.m; path = Classes/PropertyDetails.m; sourceTree = "<group>"; };
 		45D942280FF0696C00AD4A5B /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = down.png; path = Images/down.png; sourceTree = "<group>"; };
 		45D942290FF0696C00AD4A5B /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = up.png; path = Images/up.png; sourceTree = "<group>"; };
+		45E9CD6C102BD39F003D157D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyFavoritesView.xib; path = Classes/PropertyFavoritesView.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Find_an_Apartment-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Find_an_Apartment-Info.plist"; sourceTree = "<group>"; };
 		DD10BA570FFC1E9000588928 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
@@ -336,7 +338,6 @@
 		DD9B613D0FF45FED00348478 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
 		DDDF6A91101E2C18001621C7 /* Three20.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Three20.xcodeproj; path = three20/src/Three20.xcodeproj; sourceTree = SOURCE_ROOT; };
 		DDDF6ABA101E2CA5001621C7 /* Three20.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Three20.bundle; path = three20/src/Three20.bundle; sourceTree = SOURCE_ROOT; };
-		DDDF6AD0101E2CD2001621C7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = ../../../../Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.0.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -352,8 +353,8 @@
 				45C7682C0FEC804100C75D90 /* MessageUI.framework in Frameworks */,
 				DD9B5E1C0FF42D0600348478 /* CoreLocation.framework in Frameworks */,
 				DD9B5F2B0FF4432E00348478 /* MapKit.framework in Frameworks */,
-				DDDF6A9B101E2C39001621C7 /* libThree20.a in Frameworks */,
-				DDDF6AD1101E2CD2001621C7 /* QuartzCore.framework in Frameworks */,
+				45E9CD6E102BD39F003D157D /* QuartzCore.framework in Frameworks */,
+				45E9CD91102BD897003D157D /* libThree20.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,7 +370,8 @@
 				45D4554B1001970000944852 /* MessageUI.framework in Frameworks */,
 				45D4554C1001970000944852 /* CoreLocation.framework in Frameworks */,
 				45D4554D1001970000944852 /* MapKit.framework in Frameworks */,
-				DDDF6AD2101E2CD2001621C7 /* QuartzCore.framework in Frameworks */,
+				45E9CD6D102BD39F003D157D /* QuartzCore.framework in Frameworks */,
+				45E9CD8F102BD87B003D157D /* libThree20.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -444,7 +446,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DDDF6AD0101E2CD2001621C7 /* QuartzCore.framework */,
+				45E9CD6C102BD39F003D157D /* QuartzCore.framework */,
 				DD9B5F2A0FF4432E00348478 /* MapKit.framework */,
 				DD9B5E1B0FF42D0600348478 /* CoreLocation.framework */,
 				45C7682B0FEC804100C75D90 /* MessageUI.framework */,
@@ -1122,6 +1124,10 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					three20/src,
+					/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.0.sdk/usr/include/libxml2,
+				);
 				PREBINDING = NO;
 				SDKROOT = iphoneos3.0;
 			};
