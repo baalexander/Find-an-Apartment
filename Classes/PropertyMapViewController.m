@@ -223,7 +223,7 @@ static NSInteger kMapItem = 1;
     
     if(urlConnection)
     {
-        NSMutableData *data = [[NSMutableData data] retain];
+        NSMutableData *data = [[NSMutableData alloc] init];
         [[self geocodedResponses] setObject:data forKey:[urlConnection description]];
         [data release];
     }
