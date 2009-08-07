@@ -23,11 +23,8 @@ static NSInteger kMapItem = 1;
 @synthesize singleAddress = singleAddress_;
 @synthesize summaries = summaries_;
 @synthesize geocodedResponses = geocodedResponses_;
-@synthesize minLat = minLat_;
-@synthesize maxLat = maxLat_;
-@synthesize minLon = minLon_;
-@synthesize maxLon = maxLon_;
-
+@synthesize maxPoint = maxPoint_;
+@synthesize minPoint = minPoint_;
 
 #pragma mark -
 #pragma mark PropertyMapViewController
@@ -248,11 +245,16 @@ static NSInteger kMapItem = 1;
 
 - (void)geocodeProperties
 {
-    [self setMaxLat:DBL_MIN];
-    [self setMaxLon:DBL_MIN];
-    [self setMinLat:DBL_MAX];
-    [self setMinLon:DBL_MAX];
- 
+    CLLocationCoordinate2D max;
+    CLLocationCoordinate2D min;
+    
+    max.latitude = DBL_MIN;
+    max.longitude = DBL_MIN;
+    min.latitude = DBL_MAX;
+    min.longitude = DBL_MAX;
+    [self setMaxPoint:max];
+    [self setMinPoint:min];
+    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSError *error = nil;
     
@@ -305,16 +307,16 @@ static NSInteger kMapItem = 1;
     MKCoordinateSpan span;
     
     // Center the map based on the min & max lat & lon encountered
-    double lonDelta = [self maxLon] - [self minLon];
-    double latDelta = [self maxLat] - [self minLat];
-    NSLog(@"\nmax lat: %f \nmin lat: %f \nmax lon: %f \nmin lon: %f", [self maxLat], [self minLat], [self maxLon], [self minLon]);
+    double lonDelta = [self maxPoint].longitude - [self minPoint].longitude;
+    double latDelta = [self maxPoint].latitude - [self minPoint].latitude;
+    NSLog(@"\nmax lat: %f \nmin lat: %f \nmax lon: %f \nmin lon: %f", [self maxPoint].latitude, [self minPoint].latitude, [self maxPoint].longitude, [self minPoint].longitude);
     NSLog(@"lonDelta: %f\nlatDelta: %f", lonDelta, latDelta);
     
     span.longitudeDelta = lonDelta + 0.05;
     span.latitudeDelta = latDelta + 0.05;
     
-    center.longitude = [self minLon] + (lonDelta / 2);
-    center.latitude = [self minLat] + (latDelta / 2);
+    center.longitude = [self minPoint].longitude + (lonDelta / 2);
+    center.latitude = [self minPoint].latitude + (latDelta / 2);
     
     
     region.center = center;
@@ -427,23 +429,17 @@ static NSInteger kMapItem = 1;
 
 - (void)updateMinMaxWithCoordinates:(CLLocationCoordinate2D)coordinates
 {
-    if(coordinates.longitude > [self maxLon])
-    {
-        [self setMaxLon:coordinates.longitude];
-    }
-    else if(coordinates.longitude < [self minLon])
-    {
-        [self setMinLon:coordinates.longitude];
-    }
+    CLLocationCoordinate2D max;
+    CLLocationCoordinate2D min;
     
-    if(coordinates.latitude > [self maxLat])
-    {
-        [self setMaxLat:coordinates.latitude];
-    }
-    else if(coordinates.latitude < [self minLon])
-    {
-        [self setMinLat:coordinates.latitude];
-    }
+    max.latitude =  (coordinates.latitude > [self maxPoint].latitude ? coordinates.latitude : [self maxPoint].latitude);
+    max.longitude = (coordinates.longitude > [self maxPoint].longitude ? coordinates.latitude : [self maxPoint].longitude);
+    
+    min.latitude = (coordinates.latitude < [self minPoint].latitude ? coordinates.latitude : [self minPoint].latitude);
+    min.longitude = (coordinates.longitude < [self minPoint].longitude ? coordinates.longitude : [self minPoint].longitude);
+    
+    [self setMaxPoint:max];
+    [self setMinPoint:min];
 }
 
 
