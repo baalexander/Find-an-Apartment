@@ -24,6 +24,22 @@
 @synthesize alert = alert_;
 @synthesize reverseGeocoder = reverseGeocoder_;
 
+
+#pragma mark -
+#pragma mark Location Manager
+
+- (void)dealloc
+{
+    [locationManager_ release];
+    [userLocation_ release];
+    [locationCaller_ release];
+    [reverseGeocoder_ release];
+    [propertyObjectContext_ release];
+    [alert_ release];
+    
+    [super dealloc];
+}
+
 - (void)locateUser
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Please Wait" message:@"Finding your location" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
@@ -44,7 +60,7 @@
 
 
 #pragma mark -
-#pragma mark Location Manager
+#pragma mark CLLocationManagerDelegate
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
 {	
@@ -73,8 +89,8 @@
     
 	NSMutableString *errorString = [[NSMutableString alloc] init];
     
-	if ([error domain] == kCLErrorDomain) {
-        
+	if ([error domain] == kCLErrorDomain)
+    {    
 		// We handle CoreLocation-related errors here
         
 		switch ([error code]) 
@@ -120,7 +136,7 @@
 
 
 #pragma mark -
-#pragma mark Reverse Geocoder
+#pragma mark MKReverseGeocoderDelegate
 
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFailWithError:(NSError *)error
 {
@@ -156,28 +172,12 @@
 
 
 #pragma mark -
-#pragma mark UIAlertView Delegate
+#pragma mark UIAlertViewDelegate
 
 - (void)alertViewCancel:(UIAlertView *)alertView
 {
     [[self locationManager] stopUpdatingLocation];
     [[self reverseGeocoder] cancel];
-}
-
-
-#pragma mark -
-#pragma mark Memory Management
-
-- (void)dealloc
-{
-    [locationManager_ release];
-    [userLocation_ release];
-    [locationCaller_ release];
-    [reverseGeocoder_ release];
-    [propertyObjectContext_ release];
-    [alert_ release];
-    
-    [super dealloc];
 }
 
 @end

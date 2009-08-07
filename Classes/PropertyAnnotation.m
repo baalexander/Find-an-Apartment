@@ -13,6 +13,7 @@
     {
         coordinate_ = coord;
     }
+
     return self;
 }
 

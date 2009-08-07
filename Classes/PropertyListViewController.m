@@ -312,6 +312,7 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 - (NSInteger)detailsCount:(PropertyDetailsViewController *)details
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:0];
+
     return [sectionInfo numberOfObjects];
 }
 

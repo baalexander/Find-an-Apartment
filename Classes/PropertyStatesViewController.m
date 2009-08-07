@@ -130,23 +130,33 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if(tableView == [[self searchDisplayController] searchResultsTableView])
-        return 1;
+    {
+        return 1;        
+    }
+
     return [[[self fetchedResultsController] sections] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {    
     if(tableView == [[self searchDisplayController] searchResultsTableView])
+    {
         return [[self filteredContent] count];
+    }
     id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
+
     return [sectionInfo numberOfObjects];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
 {
     if(tableView == [[self searchDisplayController] searchResultsTableView])
-        return @"";
+    {
+        return @"";        
+    }
+
     id<NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
+
     return [[sectionInfo name] substringToIndex:(NSUInteger)1];
 }
 
@@ -161,9 +171,13 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     
     State *state;
     if(tableView == [[self searchDisplayController] searchResultsTableView])
+    {
         state = [[self filteredContent] objectAtIndex:indexPath.row];
+    }
     else
+    {
         state = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    }
     [[cell textLabel] setText:[[state name] description]];
     
     return cell;
@@ -177,9 +191,13 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 {
     State *state;
     if(tableView == [[self searchDisplayController] searchResultsTableView])
+    {
         state = [[self filteredContent] objectAtIndex:indexPath.row];
+    }
     else
+    {
         state = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    }
     
     PropertyCitiesViewController *citiesViewController = [[PropertyCitiesViewController alloc] initWithNibName:@"PropertyCitiesView" bundle:nil];
     [citiesViewController setState:state];
