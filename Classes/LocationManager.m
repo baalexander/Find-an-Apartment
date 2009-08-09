@@ -147,22 +147,28 @@
 {
     PropertyCriteria *criteria = [NSEntityDescription insertNewObjectForEntityForName:@"PropertyCriteria" 
                                                                inManagedObjectContext:[self propertyObjectContext]];
-    CLLocationCoordinate2D coords = [[self userLocation] coordinate];
-    NSString *coordinates = [[NSString alloc] initWithFormat:@"%f,%f", coords.latitude, coords.longitude]; 
-    [criteria setCoordinates:coordinates];
-    [coordinates release];
     
+    //Sets coordinate details
+    CLLocationCoordinate2D coordinates = [[self userLocation] coordinate];
+    NSNumber *latitude = [[NSNumber alloc] initWithDouble:coordinates.latitude];
+    [criteria setLatitude:latitude];
+    [latitude release];
+    NSNumber *longitude = [[NSNumber alloc] initWithDouble:coordinates.longitude];
+    [criteria setLongitude:longitude];
+    [longitude release];
+
+    //Sets state, city, and zip
     [criteria setState:[placemark administrativeArea]];
     [criteria setPostalCode:[placemark postalCode]];
     [criteria setCity:[placemark locality]];
+
     [[self alert] dismissWithClickedButtonIndex:0 animated:YES];
     
-    if([[self locationCaller] isKindOfClass:[PropertyStatesViewController class]])
+    if ([[self locationCaller] isKindOfClass:[PropertyStatesViewController class]])
     {
         PropertyStatesViewController *caller = (PropertyStatesViewController *)[self locationCaller];
         [caller useCriteria:criteria];
     }
-    
     else
     {
         PropertyCitiesViewController *caller = (PropertyCitiesViewController *)[self locationCaller];

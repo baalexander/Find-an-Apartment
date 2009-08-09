@@ -5,7 +5,6 @@
 @implementation PropertyCriteria 
 
 @dynamic sortBy;
-@dynamic coordinates;
 @dynamic maxBedrooms;
 @dynamic maxSquareFeet;
 @dynamic state;
@@ -13,10 +12,12 @@
 @dynamic minPrice;
 @dynamic postalCode;
 @dynamic maxBathrooms;
+@dynamic latitude;
 @dynamic city;
 @dynamic street;
 @dynamic minBedrooms;
 @dynamic maxPrice;
+@dynamic longitude;
 @dynamic minBathrooms;
 @dynamic keywords;
 @dynamic history;

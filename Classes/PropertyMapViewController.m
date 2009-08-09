@@ -160,11 +160,11 @@ static NSInteger kMapItem = 1;
     MKCoordinateRegion region;
     MKCoordinateSpan span;
      
-    if([criteria coordinates] != nil)
+    if([criteria latitude] != nil && [[criteria latitude] doubleValue] != 0 
+       && [criteria longitude] != nil && [[criteria longitude] doubleValue] != 0)
     {
-        NSArray *coords = [[criteria coordinates] componentsSeparatedByString:@","];
-        center.longitude = [[coords objectAtIndex:0] doubleValue];
-        center.latitude = [[coords objectAtIndex:1] doubleValue];
+        center.longitude = [[criteria longitude] doubleValue];
+        center.latitude = [[criteria latitude] doubleValue];
         span.latitudeDelta = .05;
         span.longitudeDelta = .05;
         
@@ -173,7 +173,6 @@ static NSInteger kMapItem = 1;
         region.span = span;
         [[self mapView] setRegion:region];
         [[self mapView] setCenterCoordinate:center animated:YES];
-        
     }
     else
     {

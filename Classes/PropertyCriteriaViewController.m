@@ -39,7 +39,6 @@
     [state_ release];
     [city_ release];
     [postalCode_ release];
-    [coordinates_ release];
     [criteria_ release];
     
     [super dealloc];
@@ -92,7 +91,13 @@
         [[self criteria] setState:[[self state] name]];    
         [[self criteria] setCity:[[self city] value]];
         [[self criteria] setPostalCode:[[self postalCode] value]];
-        [[self criteria] setCoordinates:[self coordinates]];
+        //Sets coordinate details
+        NSNumber *latitude = [[NSNumber alloc] initWithDouble:[self coordinates].latitude];
+        [[self criteria] setLatitude:latitude];
+        [latitude release];
+        NSNumber *longitude = [[NSNumber alloc] initWithDouble:[self coordinates].longitude];
+        [[self criteria] setLongitude:longitude];
+        [longitude release];        
     }
     //Sets title to location
     NSString *title;
