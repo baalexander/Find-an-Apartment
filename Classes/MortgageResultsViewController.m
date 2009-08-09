@@ -50,6 +50,17 @@ static const char *kItemName = "loan";
 
 
 #pragma mark -
+#pragma mark UIViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self setTitle:@"Loan Results"];
+}
+
+
+#pragma mark -
 #pragma mark UITableViewDataSource
 
 static NSString *kDetailCellId = @"DETAIL_CELL_ID";

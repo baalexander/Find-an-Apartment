@@ -87,6 +87,8 @@
 {
     [super viewDidLoad];
     
+    [self setTitle:@"City or Zip"];
+    
     // Search setup
     [self setFilteredContent:[[NSArray alloc] init]];
     [self setSearchDisplayController:[[[UISearchDisplayController alloc]
@@ -106,8 +108,6 @@
     [[self navigationItem] setRightBarButtonItem:locationBtn];
     [locationBtn release];
     [[self locationManager] setLocationCaller:self];
-    
-    [self setTitle:@"City"];
     
     NSError *error = nil;
     [[self fetchedResultsController] performFetch:&error];

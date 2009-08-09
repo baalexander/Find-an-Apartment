@@ -249,6 +249,8 @@
 {
     [super viewDidLoad];
     
+    [self setTitle:@"Favorites"];
+    
     //Add the Edit button to the left in the navigation bar
     UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(edit:)];
     [[self navigationItem] setLeftBarButtonItem:editButton];

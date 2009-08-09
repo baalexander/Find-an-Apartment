@@ -150,6 +150,8 @@
 {
     [super viewDidLoad];
     
+    [self setTitle:@"Recent Searches"];
+    
     if (![[self fetchedResultsController] performFetch:nil])
     {
         NSLog(@"Error performing fetch in History viewDidLoad.");

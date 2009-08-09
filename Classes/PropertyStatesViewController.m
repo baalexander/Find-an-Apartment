@@ -81,6 +81,8 @@
 {
     [super viewDidLoad];
     
+    [self setTitle:@"State"];
+    
     // Search setup
     [self setFilteredContent:[[NSArray alloc] init]];
     [self setSearchDisplayController:[[[UISearchDisplayController alloc]
