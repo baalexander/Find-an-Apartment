@@ -312,14 +312,18 @@
     NSString *rowId = [[self rowIds] objectAtIndex:[self selectedRow]];
     NSString *text = [textField text];
     
+    BOOL isSimpleInputCell = NO;
+    
     //Sets the correct Criteria attribute to the inputted valu
     if ([rowId isEqual:kPropertyCriteriaStreet])
     {
         [[self criteria] setStreet:text];
+        isSimpleInputCell = YES;
     }
     else if ([rowId isEqual:kPropertyCriteriaKeywords])
     {
         [[self criteria] setKeywords:text];
+        isSimpleInputCell = YES;
     }
     else if ([rowId isEqual:kPropertyCriteriaPrice])
     {
@@ -377,6 +381,13 @@
     }
     
     [self setCurrentTextField:nil];
+    
+    //Exits edit mode and displays updated field ONLY IF NOT A RANGE INPUT. Range input would cause changing from min to max inputs to go out of edit mode.
+    if (isSimpleInputCell)
+    {
+        [self setSelectedRow:-1];
+        [[self tableView] reloadData];        
+    }
 }
 
 @end

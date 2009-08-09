@@ -477,6 +477,10 @@
     }    
     
     [self setCurrentTextField:nil];
+    
+    //Exits edit mode and displays updated field
+    [self setSelectedRow:-1];
+    [[self tableView] reloadData];
 }
 
 @end
