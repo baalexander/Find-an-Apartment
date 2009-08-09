@@ -55,11 +55,39 @@
 
     if([self criteria] == nil)
     {
-        //Creates Criteria object to hold all the user input
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyCriteria" inManagedObjectContext:[self propertyObjectContext]];
-        PropertyCriteria *criteria = [[PropertyCriteria alloc] initWithEntity:entity insertIntoManagedObjectContext:[self propertyObjectContext]];
-        [self setCriteria:criteria];
-        [criteria release];
+        //Gets most recent Property Criteria from most recent History to pre-populate non-geographic criteria
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:[self propertyObjectContext]];
+        [fetchRequest setEntity:entity];
+        
+        //Sorts so most recent is first
+        NSSortDescriptor *createdDescriptor = [[NSSortDescriptor alloc] initWithKey:@"created" ascending:NO];
+        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:createdDescriptor, nil];
+        [createdDescriptor release];
+        [fetchRequest setSortDescriptors:sortDescriptors];
+        [sortDescriptors release];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(isFavorite == NO)"];
+        [fetchRequest setPredicate:predicate];
+    
+        NSError *error = nil;
+        NSArray *fetchResults = [[self propertyObjectContext] executeFetchRequest:fetchRequest error:&error];
+        [fetchRequest release];
+        
+        //No recent History object to get Criteria from, creates Criteria
+        if (fetchResults == nil || [fetchResults count] == 0)
+        {
+            NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyCriteria" inManagedObjectContext:[self propertyObjectContext]];
+            PropertyCriteria *criteria = [[PropertyCriteria alloc] initWithEntity:entity insertIntoManagedObjectContext:[self propertyObjectContext]];
+            [self setCriteria:criteria];
+            [criteria release];            
+        }
+        //Gets most recent Criteria object from History
+        else
+        {
+            PropertyHistory *history = [fetchResults objectAtIndex:0];
+            [self setCriteria:[history criteria]];
+        }
+
         //Fills criteria in with passed in information
         [[self criteria] setState:[[self state] name]];    
         [[self criteria] setCity:[[self city] value]];
