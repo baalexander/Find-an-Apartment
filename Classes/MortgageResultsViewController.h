@@ -9,6 +9,7 @@
         XmlParser *parser_;
         BOOL isParsing_;
         NSMutableArray *loans_;
+        NSMutableArray *sectionTitles_;
         NSMutableDictionary *loan_;
 }
 

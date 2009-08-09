@@ -1,5 +1,8 @@
 #import "MortgageResultsViewController.h"
 
+#import "MortgageResultsConstants.h"
+#import "StringFormatter.h"
+
 
 //Element name that separates each item in the XML results
 static const char *kItemName = "loan";
@@ -9,6 +12,7 @@ static const char *kItemName = "loan";
 @property (nonatomic, retain) XmlParser *parser;
 @property (nonatomic, assign) BOOL isParsing;
 @property (nonatomic, retain) NSMutableArray *loans;
+@property (nonatomic, retain) NSMutableArray *sectionTitles;
 @property (nonatomic, retain) NSMutableDictionary *loan;
 @end
 
@@ -18,6 +22,7 @@ static const char *kItemName = "loan";
 @synthesize parser = parser_;
 @synthesize isParsing = isParsing_;
 @synthesize loans = loans_;
+@synthesize sectionTitles = sectionTitles_;
 @synthesize loan = loan_;
 
 
@@ -27,6 +32,7 @@ static const char *kItemName = "loan";
 - (void)dealloc
 {
     [parser_ release];
+    [sectionTitles_ release];
     [loan_ release];
     
     [super dealloc];
@@ -39,6 +45,10 @@ static const char *kItemName = "loan";
     NSMutableArray *loans = [[NSMutableArray alloc] init];
     [self setLoans:loans];
     [loans release];
+    
+    NSMutableArray *sectionTitles = [[NSMutableArray alloc] init];
+    [self setSectionTitles:sectionTitles];
+    [sectionTitles release];
     
     // Create the parser, set its delegate, and start it.
     XmlParser *parser = [[XmlParser alloc] init];
@@ -74,15 +84,13 @@ static NSString *kDetailCellId = @"DETAIL_CELL_ID";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSDictionary *loan = [[self loans] objectAtIndex:section];
-
+    
     return [[loan allKeys] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSDictionary *loan = [[self loans] objectAtIndex:section];
-    
-    return [loan objectForKey:@"type"];
+    return [[self sectionTitles] objectAtIndex:section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -90,15 +98,48 @@ static NSString *kDetailCellId = @"DETAIL_CELL_ID";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDetailCellId];
     if (cell == nil)
     {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kDetailCellId] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:kDetailCellId] autorelease];
     }
-    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
 
     NSDictionary *loan = [[self loans] objectAtIndex:[indexPath section]];
     NSString *key = [[loan allKeys] objectAtIndex:[indexPath row]];
     NSString *detail = [loan objectForKey:key];
     
     [[cell textLabel] setText:key];
+    
+    if ([key isEqual:kMortgageResultsTerm])
+    {
+        detail = [NSString stringWithFormat:@"%@ years", detail];
+    }
+    else if ([key isEqual:kMortgageResultsRate])
+    {
+        detail = [NSString stringWithFormat:@"%@%%", detail];
+    }
+    else if ([key isEqual:kMortgageResultsPayment])
+    {
+        NSNumber *number = [[NSNumber alloc] initWithFloat:[detail floatValue]];
+        detail = [StringFormatter formatCurrency:number];
+        [number release];
+    }
+    else if ([key isEqual:kMortgageResultsPropertyTaxes])
+    {
+        NSNumber *number = [[NSNumber alloc] initWithFloat:[detail floatValue]];
+        detail = [StringFormatter formatCurrency:number];
+        [number release];
+    }
+    else if ([key isEqual:kMortgageResultsHazardInsurance])
+    {
+        NSNumber *number = [[NSNumber alloc] initWithFloat:[detail floatValue]];
+        detail = [StringFormatter formatCurrency:number];
+        [number release];
+    }
+    else if ([key isEqual:kMortgageResultsMortgageInsurance])
+    {
+        NSNumber *number = [[NSNumber alloc] initWithFloat:[detail floatValue]];
+        detail = [StringFormatter formatCurrency:number];
+        [number release];
+    }
+    
     [[cell detailTextLabel] setText:detail];
     
     return cell;
@@ -124,31 +165,32 @@ static NSString *kDetailCellId = @"DETAIL_CELL_ID";
 
     if ([element isEqual:@"type"])
     {
-        [[self loan] setObject:value forKey:@"type"];
+        //Sets placeholder section title to type
+        [[self sectionTitles] replaceObjectAtIndex:([[self sectionTitles] count] - 1) withObject:value];
     }
     else if ([element isEqual:@"rate"])
     {
-        [[self loan] setObject:value forKey:@"rate"];
+        [[self loan] setObject:value forKey:kMortgageResultsRate];
     }
     else if ([element isEqual:@"term"])
     {
-        [[self loan] setObject:value forKey:@"term"];
+        [[self loan] setObject:value forKey:kMortgageResultsTerm];
     }
     else if ([element isEqual:@"monthly_principal_and_interest"])
     {
-        [[self loan] setObject:value forKey:@"payment"];
+        [[self loan] setObject:value forKey:kMortgageResultsPayment];
     }
     else if ([element isEqual:@"monthly_property_taxes"])
     {
-        [[self loan] setObject:value forKey:@"prop taxes"];
+        [[self loan] setObject:value forKey:kMortgageResultsPropertyTaxes];
     }
     else if ([element isEqual:@"monthly_hazard_insurance"])
     {
-        [[self loan] setObject:value forKey:@"hazard ins"];
+        [[self loan] setObject:value forKey:kMortgageResultsHazardInsurance];
     }    
     else if ([element isEqual:@"monthly_mortgage_insurance"])
     {
-        [[self loan] setObject:value forKey:@"PMI"];
+        [[self loan] setObject:value forKey:kMortgageResultsMortgageInsurance];
     }
 }
 
@@ -159,6 +201,9 @@ static NSString *kDetailCellId = @"DETAIL_CELL_ID";
     [loan release];
     
     [[self loans] addObject:[self loan]];
+    
+    //Adds empty section title as a placeholder to be set later
+    [[self sectionTitles] addObject:@""];
 }
 
 - (void)parserDidEndItem:(XmlParser *)parser
