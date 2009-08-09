@@ -28,7 +28,7 @@
 @synthesize sectionDetails = sectionDetails_;
 @synthesize locationCell = locationCell_;
 @synthesize descriptionCell = descriptionCell_;
-@synthesize addToFavoritesBtn = addToFavoritesBtn_;
+@synthesize addToFavoritesButton = addToFavoritesButton_;
 @synthesize selectedIndex = selectedIndex_;
 
 
@@ -76,6 +76,17 @@
     [self setTitle:title];
     [title release];
     
+    // Disable "Add to Favorites" if the property is already saved
+    if([PropertyFavoritesViewController isPropertyAFavorite:[[self details] summary]])
+    {
+        [[self addToFavoritesButton] setEnabled:NO];
+    }
+    //Renables button if not already saved
+    else
+    {
+        [[self addToFavoritesButton] setEnabled:YES];
+    }
+    
     [[self tableView] reloadData];
 }
 
@@ -102,7 +113,7 @@
     }
     else
     {
-        [[self addToFavoritesBtn] setEnabled:NO];
+        [[self addToFavoritesButton] setEnabled:NO];
         NSLog(@"Added to favorites.");
     }
 }
@@ -293,7 +304,7 @@
     // Disable "Add to Favorites" if the property is already saved
     if([PropertyFavoritesViewController isPropertyAFavorite:[[self details] summary]])
     {
-        [[self addToFavoritesBtn] setEnabled:NO];
+        [[self addToFavoritesButton] setEnabled:NO];
     }
 }
 
