@@ -47,7 +47,7 @@ static NSInteger kMapItem = 1;
     [mapView_ release];
     [summaries_ release];
     [geocodedResponses_ release];
-    
+ 
     [super dealloc];
 }
 
@@ -81,6 +81,7 @@ static NSInteger kMapItem = 1;
     
     // Center the map based on the user's input
     MKMapView *mapView = [[MKMapView alloc] initWithFrame:[[self view] bounds]];
+    [mapView setDelegate:self];
     [self setMapView:mapView];
     [mapView release];
     [[self view] addSubview:[self mapView]];
@@ -183,6 +184,10 @@ static NSInteger kMapItem = 1;
     
 
 }
+
+
+#pragma mark -
+#pragma mark Geocoding
 
 - (void)geocodeFromCriteria:(PropertyCriteria *)criteria
 {
@@ -294,6 +299,8 @@ static NSInteger kMapItem = 1;
             
             // Add a pin to the map at the address
             PropertyAnnotation *annotation = [[PropertyAnnotation alloc] initWithCoordinate:center];
+            [annotation setSummary:summary];
+            
             [[self mapView] addAnnotation:annotation];
             [annotation release];
             
@@ -352,14 +359,13 @@ static NSInteger kMapItem = 1;
     center.longitude = [[coords objectAtIndex:0] doubleValue];
     center.latitude = [[coords objectAtIndex:1] doubleValue];
     
-    // A coordinate of (0,0) means that the address couldn't be geocoded, so we shouldn't add a pin to the map
-    // Fixes having a pin off the west coast of Africa
+    // A coordinate of (0,0) means that the address couldn't be geocoded, so we shouldn't add a pin to the map. Fixes having a pin off the west coast of Africa
     if(center.longitude == 0 && center.latitude == 0)
     {
         return;
     }
     
-    // Determine if the lat/lon are either of the max or min seen
+    // Determine if the lat/lon are either the max or min seen
     [self updateMinMaxWithCoordinates:center];
     
     // Setup the pin to be placed on the map
@@ -401,18 +407,18 @@ static NSInteger kMapItem = 1;
             {
                 NSString *locationString = [NSString stringWithFormat:@"%f,%f", center.longitude, center.latitude];
                 [summary setLocation:locationString];
+                
+                [annotation setSummary:summary];
                 break;
             }
         }
         
-        NSError *error = nil;
         [[[self history] managedObjectContext] save:&error];
         if(error)
         {
             NSLog(@"Error saving location: %@", error);
             // TODO: handle saving error
         }
-        [error release];
     }
     
     if(error)
@@ -479,10 +485,5 @@ static NSInteger kMapItem = 1;
     [[[self geocodedResponses] objectForKey:[connection description]] release];
     [connection release];
 }
-
-
-#pragma mark -
-#pragma mark MKMapViewDelegate
-
 
 @end
