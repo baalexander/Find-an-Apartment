@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 
+#import "MortgageCriteria.h"
 #import "XmlParser.h"
 
 
@@ -11,7 +12,10 @@
         NSMutableArray *loans_;
         NSMutableArray *sectionTitles_;
         NSMutableDictionary *loan_;
+        MortgageCriteria *criteria_;
 }
+
+@property (nonatomic, retain) MortgageCriteria *criteria;
 
 - (void)parse:(NSURL *)url;
 

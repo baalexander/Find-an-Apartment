@@ -383,6 +383,8 @@
     {
         MortgageResultsViewController *resultsViewController = [[MortgageResultsViewController alloc] initWithNibName:@"MortgageResultsView" bundle:nil];
         
+        [resultsViewController setCriteria:[self criteria]];
+        
         //Turns Criteria into URL then parses
         MortgageUrlConstructor *urlConstructor = [[MortgageUrlConstructor alloc] init];
         NSURL *url = [urlConstructor urlFromCriteria:[self criteria]];

@@ -14,6 +14,7 @@ static const char *kItemName = "loan";
 @property (nonatomic, retain) NSMutableArray *loans;
 @property (nonatomic, retain) NSMutableArray *sectionTitles;
 @property (nonatomic, retain) NSMutableDictionary *loan;
+- (void)calculateCustomLoan;
 @end
 
 
@@ -24,6 +25,7 @@ static const char *kItemName = "loan";
 @synthesize loans = loans_;
 @synthesize sectionTitles = sectionTitles_;
 @synthesize loan = loan_;
+@synthesize criteria = criteria_;
 
 
 #pragma mark -
@@ -34,8 +36,40 @@ static const char *kItemName = "loan";
     [operationQueue_ release];
     [sectionTitles_ release];
     [loan_ release];
+    [criteria_ release];
     
     [super dealloc];
+}
+
+- (void)calculateCustomLoan
+{
+    if ([[self criteria] loanAmount] == nil || [[self criteria] loanTerm] == nil || [[self criteria] interestRate] == nil)
+    {
+        return;
+    }
+    
+    //Principal
+    float loanAmount = [[[self criteria] loanAmount] floatValue];
+    //Term = years
+	float loanTerm = [[[self criteria] loanTerm] floatValue];
+    //Interest rate
+	float interestRate = [[[self criteria] interestRate] floatValue];
+	//12 = monthly
+	NSInteger paymentFrequency = 12;
+	//Monthly interest rate = rate divided by 100 to turn into percentage then divided by payments per year
+	float monthlyInterestRate = interestRate / 100 / paymentFrequency;
+	//Payment formula: c = (r / (1 − (1 + r)^−N) ) * P 
+	float payment = (float)(monthlyInterestRate / (1 - pow(1 + monthlyInterestRate, -loanTerm * paymentFrequency)) * loanAmount);
+    
+    //Adds values as Loan to results
+    NSMutableDictionary *loan = [[NSMutableDictionary alloc] init];
+    [loan setObject:[NSString stringWithFormat:@"%.2f", interestRate] forKey:kMortgageResultsRate];
+    [loan setObject:[NSString stringWithFormat:@"%.1f", loanTerm] forKey:kMortgageResultsTerm];
+    [loan setObject:[NSString stringWithFormat:@"%f", payment] forKey:kMortgageResultsPayment];
+    [[self loans] insertObject:loan atIndex:0];
+    [loan release];
+    
+    [[self sectionTitles] insertObject:@"Custom loan" atIndex:0];
 }
 
 - (void)parse:(NSURL *)url
@@ -59,6 +93,9 @@ static const char *kItemName = "loan";
     //Add the Parser to an operation queue for background processing (works on a separate thread)
     [[self operationQueue] addOperation:parser];
     [parser release];
+    
+    //Calculates custom loan from user input
+    [self calculateCustomLoan];
 }
 
 - (NSOperationQueue *)operationQueue
