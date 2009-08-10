@@ -5,8 +5,8 @@
 // Function prototypes for SAX callbacks. This sample implements a minimal subset of SAX callbacks.
 // Depending on your application's needs, you might want to implement more callbacks.
 static void startElementSAX(void *ctx, const xmlChar *localname, const xmlChar *prefix, const xmlChar *URI, int nb_namespaces, const xmlChar **namespaces, int nb_attributes, int nb_defaulted, const xmlChar **attributes);
-static void    endElementSAX(void *ctx, const xmlChar *localname, const xmlChar *prefix, const xmlChar *URI);
-static void    charactersFoundSAX(void * ctx, const xmlChar * ch, int len);
+static void endElementSAX(void *ctx, const xmlChar *localname, const xmlChar *prefix, const xmlChar *URI);
+static void charactersFoundSAX(void * ctx, const xmlChar * ch, int len);
 static void errorEncounteredSAX(void * ctx, const char * msg, ...);
 
 // Forward reference. The structure is defined in full at the end of the file.
@@ -19,15 +19,11 @@ static xmlSAXHandler simpleSAXHandlerStruct;
 @property (nonatomic, assign) BOOL parsingAnItem;
 @property (nonatomic, assign) BOOL storingCharacters;
 @property (nonatomic, retain) NSMutableData *characterBuffer;
-// Main thread functions
-- (void)parseStarted;
 - (void)parseEnded;
 - (void)parseError:(NSError *)error;
 - (void)itemBegan;
 - (void)itemEnded;
 - (void)addElementAndValue:(NSDictionary *)elementAndValueMap;
-// Detached thread functions
-- (void)downloadAndParse:(NSURL *)url;
 - (void)appendCharacters:(const char *)charactersFound length:(NSInteger)length;
 @end
 
@@ -37,6 +33,7 @@ static xmlSAXHandler simpleSAXHandlerStruct;
 @synthesize delegate = delegate_;
 @synthesize connection = connection_;
 @synthesize done = done_;
+@synthesize url = url_;
 @synthesize parsingAnItem = parsingAnItem_;
 @synthesize storingCharacters = storingCharacters_;
 @synthesize characterBuffer = characterBuffer_;
@@ -59,23 +56,12 @@ static xmlSAXHandler simpleSAXHandlerStruct;
 
 - (void)dealloc
 {
-    //TODO: Dealloc everything you can!
     [super dealloc];
 }
 
 
 #pragma mark -
-#pragma mark XmlParser (Main thread functions)
-
-- (void)startWithUrl:(NSURL *)url withItemDelimeter:(const char *)itemDelimiter
-{
-    [self setItemDelimiter:itemDelimiter];
-    //Adds 1 to itemDelimeter length to handle the null character ending
-    [self setItemDelimiterLength:strlen(itemDelimiter) + 1];
-    
-    [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    [NSThread detachNewThreadSelector:@selector(downloadAndParse:) toTarget:self withObject:url];
-}
+#pragma mark XmlParser
 
 - (void)addElementAndValue:(NSDictionary *)elementAndValueMap
 {
@@ -92,31 +78,35 @@ static xmlSAXHandler simpleSAXHandlerStruct;
     [[self delegate] parserDidEndItem:self];
 }
 
-- (void)parseStarted
-{
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-}
-
 - (void)parseEnded
 {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     [[self delegate] parserDidEndParsingData:self];
 }
 
 - (void)parseError:(NSError *)error
 {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     [[self delegate] parser:self didFailWithError:error];
+}
+
+- (void)setItemDelimiter:(const char*)itemDelimiter
+{
+    itemDelimiter_ = itemDelimiter;
+    [self setItemDelimiterLength:strlen([self itemDelimiter]) + 1];
+}
+
+/*
+ Character data is appended to a buffer until the current element ends.
+ */
+- (void)appendCharacters:(const char *)charactersFound length:(NSInteger)length
+{
+    [[self characterBuffer] appendBytes:charactersFound length:length];
 }
 
 
 #pragma mark -
-#pragma mark XmlParser (Detached thread functions)
+#pragma mark NSOperation
 
-/*
- This method is called on a secondary thread by the superclass. We have asynchronous work to do here with downloading and parsing data, so we will need a run loop to prevent the thread from exiting before we are finished.
- */
-- (void)downloadAndParse:(NSURL *)url
+- (void)main
 {
     NSAutoreleasePool *downloadAndParsePool = [[NSAutoreleasePool alloc] init];
     
@@ -124,10 +114,12 @@ static xmlSAXHandler simpleSAXHandlerStruct;
     [self setCharacterBuffer:[NSMutableData data]];
     
     //Begins downloading URL
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [self setConnection:[[NSURLConnection alloc] initWithRequest:request delegate:self]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[self url]];
+    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [self setConnection:connection];
+    [connection release];
     
-    [self performSelectorOnMainThread:@selector(parseStarted) withObject:nil waitUntilDone:NO];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     // This creates a context for "push" parsing in which chunks of data that are not "well balanced" can be passed
     // to the context for streaming parsing. The handler structure defined above will be used for all the parsing. 
@@ -143,22 +135,24 @@ static xmlSAXHandler simpleSAXHandlerStruct;
             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
         }
         while (![self done]);
+        
+        //Cancels connection in case DONE was set to true before finished downloading. For example, when navigating back during downloading.
+        [[self connection] cancel];
+        [self setConnection:nil];
     }
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
     // Release resources used only in this thread.
     xmlFreeParserCtxt(context_);
     [self setCharacterBuffer:nil];
-    [self setConnection:nil];
     [downloadAndParsePool release];
     downloadAndParsePool = nil;
 }
 
-/*
- Character data is appended to a buffer until the current element ends.
- */
-- (void)appendCharacters:(const char *)charactersFound length:(NSInteger)length
+- (void)cancel
 {
-    [[self characterBuffer] appendBytes:charactersFound length:length];
+    [self setDone:YES];
 }
 
 
@@ -181,11 +175,11 @@ static xmlSAXHandler simpleSAXHandlerStruct;
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    //[self performSelectorOnMainThread:@selector(downloadEnded) withObject:nil waitUntilDone:NO];
     // Signal the context that parsing is complete by passing "1" as the last parameter.
     xmlParseChunk(context_, NULL, 0, 1);
     context_ = NULL;
     [self performSelectorOnMainThread:@selector(parseEnded) withObject:nil waitUntilDone:NO];
+
     // Set the condition which ends the run loop.
     [self setDone:YES];
 }
@@ -231,7 +225,7 @@ static void startElementSAX(void *ctx, const xmlChar *localname, const xmlChar *
  care about, this means we have all the character data. The next step is to create an NSString using the buffer
  contents and store that with the current Song object.
  */
-static void    endElementSAX(void *ctx, const xmlChar *localname, const xmlChar *prefix, const xmlChar *URI)
+static void endElementSAX(void *ctx, const xmlChar *localname, const xmlChar *prefix, const xmlChar *URI)
 {
     XmlParser *parser = (XmlParser *)ctx;
     if ([parser parsingAnItem] == NO)
@@ -264,7 +258,7 @@ static void    endElementSAX(void *ctx, const xmlChar *localname, const xmlChar 
 /*
  This callback is invoked when the parser encounters character data inside a node. The parser class determines how to use the character data.
  */
-static void    charactersFoundSAX(void *ctx, const xmlChar *ch, int len)
+static void charactersFoundSAX(void *ctx, const xmlChar *ch, int len)
 {
     XmlParser *parser = (XmlParser *)ctx;
     // A state variable, "storingCharacters", is set when nodes of interest begin and end. 

@@ -9,7 +9,7 @@ static const char *kItemName = "loan";
 
 
 @interface MortgageResultsViewController ()
-@property (nonatomic, retain) XmlParser *parser;
+@property (nonatomic, retain) NSOperationQueue *operationQueue;
 @property (nonatomic, assign) BOOL isParsing;
 @property (nonatomic, retain) NSMutableArray *loans;
 @property (nonatomic, retain) NSMutableArray *sectionTitles;
@@ -19,7 +19,7 @@ static const char *kItemName = "loan";
 
 @implementation MortgageResultsViewController
 
-@synthesize parser = parser_;
+@synthesize operationQueue = operationQueue_;
 @synthesize isParsing = isParsing_;
 @synthesize loans = loans_;
 @synthesize sectionTitles = sectionTitles_;
@@ -31,7 +31,7 @@ static const char *kItemName = "loan";
 
 - (void)dealloc
 {
-    [parser_ release];
+    [operationQueue_ release];
     [sectionTitles_ release];
     [loan_ release];
     
@@ -52,10 +52,23 @@ static const char *kItemName = "loan";
     
     // Create the parser, set its delegate, and start it.
     XmlParser *parser = [[XmlParser alloc] init];
-    [self setParser:parser];
+    [parser setDelegate:self];
+    [parser setUrl:url];
+    [parser setItemDelimiter:kItemName];
+    
+    //Add the Parser to an operation queue for background processing (works on a separate thread)
+    [[self operationQueue] addOperation:parser];
     [parser release];
-    [[self parser] setDelegate:self];
-    [[self parser] startWithUrl:url withItemDelimeter:kItemName];
+}
+
+- (NSOperationQueue *)operationQueue
+{
+    if (operationQueue_ == nil)
+    {
+        operationQueue_ = [[NSOperationQueue alloc] init];
+    }
+    
+    return operationQueue_;
 }
 
 
@@ -67,6 +80,12 @@ static const char *kItemName = "loan";
     [super viewDidLoad];
     
     [self setTitle:@"Loan Results"];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    //Cancels any operations in the queue. This is for when pressing the back button and dismissing the view controller. This prevents the parser from still running and failing when calling its delegate.
+    [[self operationQueue] cancelAllOperations];
 }
 
 

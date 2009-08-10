@@ -16,7 +16,7 @@ static NSInteger kMapItem = 1;
 
 // Class extension for private properties and methods.
 @interface PropertyListViewController ()
-@property (nonatomic, retain) XmlParser *parser;
+@property (nonatomic, retain) NSOperationQueue *operationQueue;
 @property (nonatomic, assign) NSInteger distance;
 @property (nonatomic, assign) BOOL isParsing;
 @property (nonatomic, retain) PropertyDetails *details;
@@ -28,7 +28,7 @@ static NSInteger kMapItem = 1;
 @implementation PropertyListViewController
 
 @synthesize tableView = tableView_;
-@synthesize parser = parser_;
+@synthesize operationQueue = operationQueue_;
 @synthesize distance = distance_;
 @synthesize isParsing = isParsing_;
 @synthesize history = history_;
@@ -58,10 +58,10 @@ static NSInteger kMapItem = 1;
 - (void)dealloc
 {
     [tableView_ release];
+    [operationQueue_ release];
     [history_ release];
     [details_ release];
     [summary_ release];
-    [parser_ release];
     [selectedIndexPath_ release];
     [fetchedResultsController_ release];
     
@@ -97,10 +97,23 @@ static NSInteger kMapItem = 1;
     
     // Create the parser, set its delegate, and start it.
     XmlParser *parser = [[XmlParser alloc] init];
-    [self setParser:parser];
+    [parser setDelegate:self];
+    [parser setUrl:url];
+    [parser setItemDelimiter:kItemName];
+    
+    //Add the Parser to an operation queue for background processing (works on a separate thread)
+    [[self operationQueue] addOperation:parser];
     [parser release];
-    [[self parser] setDelegate:self];
-    [[self parser] startWithUrl:url withItemDelimeter:kItemName];
+}
+
+- (NSOperationQueue *)operationQueue
+{
+    if (operationQueue_ == nil)
+    {
+        operationQueue_ = [[NSOperationQueue alloc] init];
+    }
+
+    return operationQueue_;
 }
 
 - (NSFetchedResultsController *)fetchedResultsController
@@ -210,6 +223,12 @@ static NSInteger kMapItem = 1;
 - (void)viewDidAppear:(BOOL)animated
 {
     [[self tableView] deselectRowAtIndexPath:[self selectedIndexPath] animated:YES];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    //Cancels any operations in the queue. This is for when pressing the back button and dismissing the view controller. This prevents the parser from still running and failing when calling its delegate.
+    [[self operationQueue] cancelAllOperations];
 }
 
 

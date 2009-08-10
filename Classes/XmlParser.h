@@ -23,7 +23,7 @@
 
 
 // This approach to parsing uses NSURLConnection to asychronously retrieve the XML data. libxml's SAX parsing supports chunked parsing, with no requirement for the chunks to be discrete blocks of well formed XML. The primary purpose of this class is to start the download, configure the parser with a set of C callback functions, and pass downloaded data to it. In addition, the class maintains a number of state variables for the parsing.
-@interface XmlParser : NSObject
+@interface XmlParser : NSOperation
 {
     @private
         //Delegate to call back parsed information
@@ -36,6 +36,8 @@
         BOOL done_;
         // State variable used to determine whether or not to ignore a given XML element
         BOOL parsingAnItem_;
+        //URL to download and parse
+        NSURL *url_;
         // The following state variables deal with getting character data from XML elements. This is a potentially expensive 
         // operation. The character data in a given element may be delivered over the course of multiple callbacks, so that
         // data must be appended to a buffer. The optimal way of doing this is to use a C string buffer that grows exponentially.
@@ -50,7 +52,6 @@
 @property (nonatomic, assign) id <ParserDelegate> delegate;
 @property (nonatomic, assign) const char* itemDelimiter;
 @property (nonatomic, assign) NSUInteger itemDelimiterLength;
-
-- (void)startWithUrl:(NSURL *)url withItemDelimeter:(const char *)itemDelimiter;
+@property (nonatomic, retain) NSURL *url;
 
 @end

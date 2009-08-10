@@ -6,7 +6,7 @@
 @interface MortgageResultsViewController : UITableViewController <ParserDelegate>
 {
     @private
-        XmlParser *parser_;
+        NSOperationQueue *operationQueue_;
         BOOL isParsing_;
         NSMutableArray *loans_;
         NSMutableArray *sectionTitles_;

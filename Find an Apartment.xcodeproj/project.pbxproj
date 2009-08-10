@@ -503,14 +503,14 @@
 				45D93FA80FEEE5E800AD4A5B /* StringFormatter.m */,
 				457AA3370FDAC26100F0D16C /* UrlUtil.h */,
 				457AA3380FDAC26100F0D16C /* UrlUtil.m */,
-				457AA3390FDAC26100F0D16C /* XmlParser.h */,
-				457AA33A0FDAC26100F0D16C /* XmlParser.m */,
 				DD9B613C0FF45FED00348478 /* LocationManager.h */,
 				DD9B613D0FF45FED00348478 /* LocationManager.m */,
 				45E9CE09102BE338003D157D /* LocationParser.h */,
 				45E9CE0A102BE338003D157D /* LocationParser.m */,
 				459CA0D2100AAA0000108747 /* UrlConstructor.h */,
 				459CA0D3100AAA0000108747 /* UrlConstructor.m */,
+				457AA3390FDAC26100F0D16C /* XmlParser.h */,
+				457AA33A0FDAC26100F0D16C /* XmlParser.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
