@@ -19,7 +19,6 @@
     return self;
 }
 
-
 - (void)dealloc
 {
     [super dealloc];
@@ -53,6 +52,30 @@
     }
     
     return range;   
+}
+
+- (NSString *)parameter:(NSString *)param withValue:(NSString *)value
+{
+    if (value != nil && [value length] > 0)
+    {
+        return [NSString stringWithFormat:@"&%@=%@", param, [UrlUtil encodeUrl:value]];
+    }
+    else
+    {
+        return @"";
+    }
+}
+
+- (NSString *)parameter:(NSString *)param withNumericValue:(NSNumber *)value
+{
+    if (value != nil)
+    {        
+        return [NSString stringWithFormat:@"&%@=%@", param, [value stringValue]];
+    }
+    else
+    {
+        return @"";
+    }
 }
 
 @end

@@ -39,7 +39,6 @@
     [state_ release];
     [city_ release];
     [postalCode_ release];
-    [coordinates_ release];
     [criteria_ release];
     
     [super dealloc];
@@ -55,16 +54,50 @@
 
     if([self criteria] == nil)
     {
-        //Creates Criteria object to hold all the user input
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyCriteria" inManagedObjectContext:[self propertyObjectContext]];
-        PropertyCriteria *criteria = [[PropertyCriteria alloc] initWithEntity:entity insertIntoManagedObjectContext:[self propertyObjectContext]];
-        [self setCriteria:criteria];
-        [criteria release];
+        //Gets most recent Property Criteria from most recent History to pre-populate non-geographic criteria
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:[self propertyObjectContext]];
+        [fetchRequest setEntity:entity];
+        
+        //Sorts so most recent is first
+        NSSortDescriptor *createdDescriptor = [[NSSortDescriptor alloc] initWithKey:@"created" ascending:NO];
+        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:createdDescriptor, nil];
+        [createdDescriptor release];
+        [fetchRequest setSortDescriptors:sortDescriptors];
+        [sortDescriptors release];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(isFavorite == NO)"];
+        [fetchRequest setPredicate:predicate];
+    
+        NSError *error = nil;
+        NSArray *fetchResults = [[self propertyObjectContext] executeFetchRequest:fetchRequest error:&error];
+        [fetchRequest release];
+        
+        //No recent History object to get Criteria from, creates Criteria
+        if (fetchResults == nil || [fetchResults count] == 0)
+        {
+            NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyCriteria" inManagedObjectContext:[self propertyObjectContext]];
+            PropertyCriteria *criteria = [[PropertyCriteria alloc] initWithEntity:entity insertIntoManagedObjectContext:[self propertyObjectContext]];
+            [self setCriteria:criteria];
+            [criteria release];            
+        }
+        //Gets most recent Criteria object from History
+        else
+        {
+            PropertyHistory *history = [fetchResults objectAtIndex:0];
+            [self setCriteria:[history criteria]];
+        }
+
         //Fills criteria in with passed in information
         [[self criteria] setState:[[self state] name]];    
         [[self criteria] setCity:[[self city] value]];
         [[self criteria] setPostalCode:[[self postalCode] value]];
-        [[self criteria] setCoordinates:[self coordinates]];
+        //Sets coordinate details
+        NSNumber *latitude = [[NSNumber alloc] initWithDouble:[self coordinates].latitude];
+        [[self criteria] setLatitude:latitude];
+        [latitude release];
+        NSNumber *longitude = [[NSNumber alloc] initWithDouble:[self coordinates].longitude];
+        [[self criteria] setLongitude:longitude];
+        [longitude release];        
     }
     //Sets title to location
     NSString *title;
@@ -284,14 +317,18 @@
     NSString *rowId = [[self rowIds] objectAtIndex:[self selectedRow]];
     NSString *text = [textField text];
     
+    BOOL isSimpleInputCell = NO;
+    
     //Sets the correct Criteria attribute to the inputted valu
     if ([rowId isEqual:kPropertyCriteriaStreet])
     {
         [[self criteria] setStreet:text];
+        isSimpleInputCell = YES;
     }
     else if ([rowId isEqual:kPropertyCriteriaKeywords])
     {
         [[self criteria] setKeywords:text];
+        isSimpleInputCell = YES;
     }
     else if ([rowId isEqual:kPropertyCriteriaPrice])
     {
@@ -349,6 +386,13 @@
     }
     
     [self setCurrentTextField:nil];
+    
+    //Exits edit mode and displays updated field ONLY IF NOT A RANGE INPUT. Range input would cause changing from min to max inputs to go out of edit mode.
+    if (isSimpleInputCell)
+    {
+        [self setSelectedRow:-1];
+        [[self tableView] reloadData];        
+    }
 }
 
 @end

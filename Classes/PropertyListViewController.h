@@ -13,9 +13,9 @@
 {
     @private
         UITableView *tableView_;
-    
-        //Parsing objects
-        XmlParser *parser_;
+
+        //Queues parsing thread
+        NSOperationQueue *operationQueue_;
         //Counter for keeping track of distance. Assumes results always sorted by distance, so assigns an incrementing value to each item it parses
         //Example: first property (assumed closest) has distance = 0, second property (assumed second closest) has distance = 1, and so on
         NSInteger distance_;

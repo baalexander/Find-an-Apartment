@@ -1,6 +1,8 @@
 #import <UIKit/UIKit.h>
 
 #import "State.h"
+
+
 @class LocationManager, PropertyCriteria;
 
 

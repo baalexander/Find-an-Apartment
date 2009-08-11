@@ -2,6 +2,7 @@
 
 #import "PropertyCriteriaConstants.h"
 
+
 @interface PropertySortChoicesViewController ()
 @property (nonatomic, retain) NSArray *choices;
 @end

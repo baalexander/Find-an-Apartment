@@ -1,4 +1,6 @@
 #import <UIKit/UIKit.h>
+
+
 @class LocationManager, PropertyCriteria;
 
 @interface PropertyStatesViewController : UITableViewController <UISearchDisplayDelegate, UISearchBarDelegate>

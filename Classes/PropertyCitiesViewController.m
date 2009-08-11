@@ -87,6 +87,8 @@
 {
     [super viewDidLoad];
     
+    [self setTitle:@"City or Zip"];
+    
     // Search setup
     [self setFilteredContent:[[NSArray alloc] init]];
     [self setSearchDisplayController:[[[UISearchDisplayController alloc]
@@ -107,8 +109,6 @@
     [locationBtn release];
     [[self locationManager] setLocationCaller:self];
     
-    [self setTitle:@"City"];
-    
     NSError *error = nil;
     [[self fetchedResultsController] performFetch:&error];
     if (error != nil)
@@ -124,10 +124,6 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)viewDidUnload
-{
-}
-
 
 #pragma mark -
 #pragma mark UITableViewDataSource
@@ -138,23 +134,34 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if(tableView == [[self searchDisplayController] searchResultsTableView])
-        return 1;
+    {
+        return 1;        
+    }
+
     return [[[self fetchedResultsController] sections] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if(tableView == [[self searchDisplayController] searchResultsTableView])
-        return [[self filteredContent] count];
+    {
+        return [[self filteredContent] count];        
+    }
+
     id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
+    
     return [sectionInfo numberOfObjects];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
 {
     if(tableView == [[self searchDisplayController] searchResultsTableView])
-        return @"";
+    {
+        return @"";        
+    }
+
     id<NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
+
     return [[sectionInfo name] substringToIndex:(NSUInteger)1];
 }
 
@@ -169,9 +176,13 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     
     CityOrPostalCode *city;
     if(tableView == [[self searchDisplayController] searchResultsTableView])
-        city = [[self filteredContent] objectAtIndex:indexPath.row];
+    {
+        city = [[self filteredContent] objectAtIndex:[indexPath row]];        
+    }
     else
-        city = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    {
+        city = [[self fetchedResultsController] objectAtIndexPath:indexPath];        
+    }
     [[cell textLabel] setText:[[city value] description]];
     
     return cell;
@@ -185,9 +196,13 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 {
     CityOrPostalCode *city;
     if(tableView == [[self searchDisplayController] searchResultsTableView])
-        city = [[self filteredContent] objectAtIndex:indexPath.row];
+    {
+        city = [[self filteredContent] objectAtIndex:[indexPath row]];
+    }
     else
+    {
         city = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    }
     
     PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaView" bundle:nil];
     [criteriaViewController setState:[self state]];

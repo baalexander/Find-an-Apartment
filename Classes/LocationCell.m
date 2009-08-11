@@ -1,5 +1,7 @@
 #import "LocationCell.h"
 
+#import "LocationParser.h"
+
 
 @implementation LocationCell
 
@@ -18,77 +20,32 @@
     [super dealloc];
 }
 
-+ (NSArray *)parseLocation:(NSString *)unparsedLocation
-{
-	//Holds address as two parts: street and city,state,zip
-	NSMutableArray *locationArray = [NSMutableArray array];
-	NSArray *locationComponents = [unparsedLocation componentsSeparatedByString:@","];
-	//If at least two parts of the location, breaks up into street and city,state,zip
-	if ([locationComponents count] > 1)
-	{
-		NSMutableString *mutableLocation = [[NSMutableString alloc] init];
-		BOOL firstTime = YES;
-		for (NSString *locationComponent in locationComponents)
-		{
-			//Ignores first result (could be street)
-			if (firstTime)
-			{
-				firstTime = NO;
-				//Determines if street specified by checking if first component begins with a number
-				NSRange numberRange = [locationComponent rangeOfString:@" "];
-				if (numberRange.location != NSNotFound)
-				{
-					NSString *strNumber = [locationComponent substringToIndex:numberRange.location];
-					NSInteger number = [strNumber integerValue];
-					if (number > 0)
-					{
-						[locationArray addObject:locationComponent];
-						continue;
-					}
-				}
-			}
-			
-			//Ignores USA
-			if ([locationComponent rangeOfString:@"USA"].location != NSNotFound)
-			{
-				continue;
-			}
-			
-			[mutableLocation appendString:[locationComponent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
-			[mutableLocation appendString:@", "];
-		}
-		
-		NSString *cityStateZip = [mutableLocation substringToIndex:[mutableLocation length]-2];
-		[mutableLocation release];
-		[locationArray addObject:cityStateZip];
-	}
-	//Only one part in location, sets as-is
-	else
-	{
-		[locationArray addObject:unparsedLocation];
-	}
-	
-	return locationArray;
-}
-
 - (void)setLocation:(NSString *)location
 {
-    NSArray *locationArray = [LocationCell parseLocation:location];
+    LocationParser *parser = [[LocationParser alloc] initWithLocation:location];
+    NSString *street = [parser street];
+    NSString *cityStateZip = [parser cityStateZip];
+    [parser release];
     
-    if ([locationArray count] >= 2)
-    {
-        [[self addressLine1] setText:[locationArray objectAtIndex:0]];
-        [[self addressLine2] setText:[locationArray objectAtIndex:1]];
-    }
-    else if ([locationArray count] == 1)
+    if ([street isEqual:@""])
     {
         [[self addressLine1] setText:@"No street provided"];
-        [[self addressLine2] setText:[locationArray objectAtIndex:0]];
     }
     else
     {
-        [[self addressLine1] setText:@"No address provided"];
+        [[self addressLine1] setText:street];
     }
+    
+    if ([cityStateZip isEqual:@""])
+    {
+        [[self addressLine2] setText:@"No city or state provided"];
+    }
+    else
+    {
+        [[self addressLine2] setText:cityStateZip];
+    }
+    
+    
 }
 
 + (CGFloat)height

@@ -9,6 +9,10 @@
 #import "WebViewController.h"
 #import "PropertyImageViewController.h"
 
+#ifdef HOME_FINDER
+    #import "MortgageCriteriaViewController.h"
+#endif
+
 
 @interface PropertyDetailsViewController ()
 @property (nonatomic, retain) NSMutableArray *sectionTitles;
@@ -24,7 +28,7 @@
 @synthesize sectionDetails = sectionDetails_;
 @synthesize locationCell = locationCell_;
 @synthesize descriptionCell = descriptionCell_;
-@synthesize addToFavoritesBtn = addToFavoritesBtn_;
+@synthesize addToFavoritesButton = addToFavoritesButton_;
 @synthesize selectedIndex = selectedIndex_;
 
 
@@ -72,6 +76,17 @@
     [self setTitle:title];
     [title release];
     
+    // Disable "Add to Favorites" if the property is already saved
+    if([PropertyFavoritesViewController isPropertyAFavorite:[[self details] summary]])
+    {
+        [[self addToFavoritesButton] setEnabled:NO];
+    }
+    //Renables button if not already saved
+    else
+    {
+        [[self addToFavoritesButton] setEnabled:YES];
+    }
+    
     [[self tableView] reloadData];
 }
 
@@ -94,19 +109,22 @@
     PropertySummary *summary = [[self details] summary];
     if (![PropertyFavoritesViewController addCopyOfProperty:summary])
     {
-        //TODO: Show alert
         NSLog(@"Already in favorites.");
     }
     else
     {
-        [[self addToFavoritesBtn] setEnabled:NO];
+        [[self addToFavoritesButton] setEnabled:NO];
         NSLog(@"Added to favorites.");
     }
 }
 
 - (BOOL)hasDisclosureIndicator:(NSString *)key
 {
-    return [key isEqual:kDetailsImages] || [key isEqual:kDetailsLink] || [key isEqual:kDetailsEmail] || [key isEqual:kDetailsLocation];
+    #ifdef HOME_FINDER
+        return [key isEqual:kDetailsImages] || [key isEqual:kDetailsLink] || [key isEqual:kDetailsEmail] || [key isEqual:kDetailsLocation] || [key isEqual:kDetailsPrice];
+    #else
+        return [key isEqual:kDetailsImages] || [key isEqual:kDetailsLink] || [key isEqual:kDetailsEmail] || [key isEqual:kDetailsLocation];
+    #endif
 }
 
 - (void)setDetails:(PropertyDetails *)details
@@ -286,7 +304,7 @@
     // Disable "Add to Favorites" if the property is already saved
     if([PropertyFavoritesViewController isPropertyAFavorite:[[self details] summary]])
     {
-        [[self addToFavoritesBtn] setEnabled:NO];
+        [[self addToFavoritesButton] setEnabled:NO];
     }
 }
 
@@ -486,6 +504,18 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
         [self presentModalViewController:emailer animated:YES];
         [emailer release];
     }
+
+#ifdef HOME_FINDER    
+    //Home Finder populates Mortgage Criteria page with property data
+    if ([key isEqual:kDetailsPrice])
+    {
+        MortgageCriteriaViewController *criteriaViewController = [[MortgageCriteriaViewController alloc] initWithNibName:@"MortgageCriteriaView" bundle:nil];
+        [criteriaViewController setPropertySummary:[[self details] summary]];
+        [[self navigationController] pushViewController:criteriaViewController animated:YES];
+        [criteriaViewController release];                            
+    }
+#endif
+
 }
 
 

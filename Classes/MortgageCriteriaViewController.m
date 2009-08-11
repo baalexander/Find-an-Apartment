@@ -7,6 +7,7 @@
 #import "StringFormatter.h"
 #import "InputRangeCell.h";
 #import "InputSimpleCell.h";
+#import "LocationParser.h";
 
 
 @interface MortgageCriteriaViewController ()
@@ -130,6 +131,34 @@
     return criteria_;
 }
 
+- (void)setPropertySummary:(PropertySummary *)propertySummary
+{
+    [propertySummary retain];
+    [propertySummary_ release];
+    propertySummary_ = propertySummary;
+    
+    //Sets postal code
+    NSString *location = [propertySummary location];
+    LocationParser *parser = [[LocationParser alloc] initWithLocation:location];
+    NSString *postalCode = [parser postalCode];
+    [parser release];
+    if (![postalCode isEqual:@""])
+    {
+        [[self criteria] setPostalCode:postalCode];
+    }
+    
+    //Sets price
+    NSNumber *price = [propertySummary price];
+    if (price != nil)
+    {
+        [[self criteria] setPurchasePrice:price];
+        
+        //Update dependent values
+        [self calculateCashDown];
+        [self calculateLoanAmount];        
+    }
+}
+
 - (NSManagedObjectModel *)mortgageObjectModel
 {
     if (mortgageObjectModel_ == nil)
@@ -183,12 +212,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    //If the Property Summary given, fills in Criteria with Property details
-    if ([self propertySummary] == nil)
-    {
-
-    }
 
     //Row Ids outlines the order of the rows in the table. The integer value of each constant does NOT impact the order.
     NSMutableArray *rowIds = [[NSMutableArray alloc] initWithObjects:kMortgageCriteriaPostalCode, kMortgageCriteriaPrice, kMortgageCriteriaPercentDown, kMortgageCriteriaCashDown, kMortgageCriteriaLoanAmount, kMortgageCriteriaLoanTerm, kMortgageCriteriaInterestRate, kMortgageCriteriaCalculate, nil];
@@ -360,6 +383,8 @@
     {
         MortgageResultsViewController *resultsViewController = [[MortgageResultsViewController alloc] initWithNibName:@"MortgageResultsView" bundle:nil];
         
+        [resultsViewController setCriteria:[self criteria]];
+        
         //Turns Criteria into URL then parses
         MortgageUrlConstructor *urlConstructor = [[MortgageUrlConstructor alloc] init];
         NSURL *url = [urlConstructor urlFromCriteria:[self criteria]];
@@ -454,6 +479,10 @@
     }    
     
     [self setCurrentTextField:nil];
+    
+    //Exits edit mode and displays updated field
+    [self setSelectedRow:-1];
+    [[self tableView] reloadData];
 }
 
 @end

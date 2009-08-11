@@ -12,6 +12,7 @@
 - (NSString *)location;
 - (NSString *)price;
 - (NSString *)saleType;
+- (NSString *)searchSource;
 - (NSString *)sortBy;
 - (NSString *)squareFeet;
 @end
@@ -96,11 +97,14 @@
         [location appendFormat:@"&street=%@", [UrlUtil encodeUrl:street]];
     }
     
-    NSString *coordinates = [[self criteria] coordinates];
-    if (coordinates != nil && [coordinates length] > 0)
+    NSNumber *latitude = [[self criteria] latitude];
+    NSNumber *longitude = [[self criteria] longitude];
+    if (latitude != nil && [latitude doubleValue] != 0
+        && longitude != nil && [longitude doubleValue] != 0)
     {
-        [location appendFormat:@"&coordinates=%@", [UrlUtil encodeUrl:coordinates]];
-    }
+        [location appendFormat:@"&latitude=%@", [UrlUtil encodeUrl:[latitude stringValue]]];
+        [location appendFormat:@"&longitude=%@", [UrlUtil encodeUrl:[longitude stringValue]]];
+    }    
     
     return location;
 }
@@ -117,17 +121,22 @@
     return @"&sale_type=for_rent";
 }
 
+- (NSString *)searchSource
+{
+    return @"&search_source=google_base";
+}
+
 - (NSString *)sortBy
 {
     NSString *choice = [[self criteria] sortBy];
     
     if ([choice isEqual:kPropertyCriteriaSortByPriceAscending])
     {
-        return @"&sort_by=age&sort_order=ascending";
+        return @"&sort_by=price&sort_order=ascending";
     }
     else if ([choice isEqual:kPropertyCriteriaSortByPriceDescending])
     {
-        return @"&sort_by=age&sort_order=descending";
+        return @"&sort_by=price&sort_order=descending";
     }
     //Default sort is distance
     else
@@ -163,6 +172,7 @@
     [mutableUrl appendString:[self bathrooms]];
     [mutableUrl appendString:[self sortBy]];
     [mutableUrl appendString:[self saleType]];
+    [mutableUrl appendString:[self searchSource]];
     
     NSURL *url = [[[NSURL alloc] initWithString:mutableUrl] autorelease];
     NSLog(@"URL:%@", url);

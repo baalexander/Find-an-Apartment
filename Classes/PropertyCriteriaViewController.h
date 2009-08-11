@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 #import "CriteriaViewController.h"
 #import "State.h"
@@ -14,7 +15,7 @@
         State *state_;
         CityOrPostalCode *city_;
         CityOrPostalCode *postalCode_;
-        NSString *coordinates_;
+        CLLocationCoordinate2D coordinates_;
         PropertyCriteria *criteria_;
 }
 
@@ -23,7 +24,7 @@
 @property (nonatomic, retain) State *state;
 @property (nonatomic, retain) CityOrPostalCode *city;
 @property (nonatomic, retain) CityOrPostalCode *postalCode;
-@property (nonatomic, copy) NSString *coordinates;
+@property (nonatomic, assign) CLLocationCoordinate2D coordinates;
 @property (nonatomic, retain) PropertyCriteria *criteria;
 
 @end
