@@ -37,7 +37,6 @@ static NSInteger kMapItem = 1;
         [self setGeocodedResponses:geocodedResponses];
         [geocodedResponses release];
     }
-    
     return self;
 }
 
@@ -120,10 +119,6 @@ static NSInteger kMapItem = 1;
     // Release any cached data, images, etc that aren't in use.
 }
 
-- (void)viewDidUnload
-{
-}
-
 
 //PropertyDetailsDelegate is used by Property Details view controller's segment control for previous/next
 #pragma mark -
@@ -180,29 +175,7 @@ static NSInteger kMapItem = 1;
         // Geocode the address
         [self geocodeFromCriteria:criteria];
     }
-    
-
 }
-
-/*static NSString *kAnnotationView = @"PropertyAnnotationView";
-
-- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
-{
-    MKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:kAnnotationView];
-    if(annotationView == nil)
-    {
-        annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:kAnnotationView] autorelease];
-        
-        UIImageView *test = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"up.png"]];
-        [annotationView setRightCalloutAccessoryView:test];
-        [test release];
-    }
-    else
-    {
-        [annotationView setAnnotation:annotation];
-    }
-    return annotationView;
-}*/
 
 
 #pragma mark -
@@ -338,12 +311,12 @@ static NSInteger kMapItem = 1;
     NSLog(@"\nmax lat: %f \nmin lat: %f \nmax lon: %f \nmin lon: %f", [self maxPoint].latitude, [self minPoint].latitude, [self maxPoint].longitude, [self minPoint].longitude);
     NSLog(@"lonDelta: %f\nlatDelta: %f", lonDelta, latDelta);
     
+    // Add padding so the pins aren't on the very edge of the map
     span.longitudeDelta = lonDelta + 0.05;
     span.latitudeDelta = latDelta + 0.05;
     
     center.longitude = [self minPoint].longitude + (lonDelta / 2);
     center.latitude = [self minPoint].latitude + (latDelta / 2);
-    
     
     region.center = center;
     region.span = span;
