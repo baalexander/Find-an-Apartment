@@ -185,6 +185,26 @@ static NSInteger kMapItem = 1;
 
 }
 
+/*static NSString *kAnnotationView = @"PropertyAnnotationView";
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
+{
+    MKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:kAnnotationView];
+    if(annotationView == nil)
+    {
+        annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:kAnnotationView] autorelease];
+        
+        UIImageView *test = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"up.png"]];
+        [annotationView setRightCalloutAccessoryView:test];
+        [test release];
+    }
+    else
+    {
+        [annotationView setAnnotation:annotation];
+    }
+    return annotationView;
+}*/
+
 
 #pragma mark -
 #pragma mark Geocoding
