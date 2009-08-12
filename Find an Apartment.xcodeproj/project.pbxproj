@@ -111,12 +111,6 @@
 		45D4553B1001970000944852 /* PropertyDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D941DD0FF051B600AD4A5B /* PropertyDetails.m */; };
 		45D4553C1001970000944852 /* DescriptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 453EE3700FF084EC0044390F /* DescriptionCell.m */; };
 		45D4553D1001970000944852 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD9B613D0FF45FED00348478 /* LocationManager.m */; };
-		45D4553E1001970000944852 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA590FFC1E9000588928 /* NSObject+SBJSON.m */; };
-		45D4553F1001970000944852 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA5B0FFC1E9000588928 /* NSString+SBJSON.m */; };
-		45D455401001970000944852 /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA5D0FFC1E9000588928 /* SBJSON.m */; };
-		45D455411001970000944852 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA5F0FFC1E9000588928 /* SBJsonBase.m */; };
-		45D455421001970000944852 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA610FFC1E9000588928 /* SBJsonParser.m */; };
-		45D455431001970000944852 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA630FFC1E9000588928 /* SBJsonWriter.m */; };
 		45D455461001970000944852 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		45D455471001970000944852 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		45D455481001970000944852 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
@@ -146,12 +140,6 @@
 		45E9CE0C102BE338003D157D /* LocationParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E9CE0A102BE338003D157D /* LocationParser.m */; };
 		45FF76C80FE9FF810053B4D8 /* PropertyFavoritesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */; };
 		DD02AD59100FD399003FD680 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DD4A5DA91002BFB9004599FB /* Default.png */; };
-		DD10BA640FFC1E9000588928 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA590FFC1E9000588928 /* NSObject+SBJSON.m */; };
-		DD10BA650FFC1E9000588928 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA5B0FFC1E9000588928 /* NSString+SBJSON.m */; };
-		DD10BA660FFC1E9000588928 /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA5D0FFC1E9000588928 /* SBJSON.m */; };
-		DD10BA670FFC1E9000588928 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA5F0FFC1E9000588928 /* SBJsonBase.m */; };
-		DD10BA680FFC1E9000588928 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA610FFC1E9000588928 /* SBJsonParser.m */; };
-		DD10BA690FFC1E9000588928 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = DD10BA630FFC1E9000588928 /* SBJsonWriter.m */; };
 		DD4581260FEEC7B500783A46 /* Geography.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = DD4581250FEEC7B500783A46 /* Geography.xcdatamodel */; };
 		DD45814C0FEEC86300783A46 /* CityOrPostalCode.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4581490FEEC86300783A46 /* CityOrPostalCode.m */; };
 		DD45814D0FEEC86300783A46 /* State.m in Sources */ = {isa = PBXBuildFile; fileRef = DD45814B0FEEC86300783A46 /* State.m */; };
@@ -313,19 +301,6 @@
 		45E9CE0A102BE338003D157D /* LocationParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationParser.m; sourceTree = "<group>"; };
 		45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyFavoritesView.xib; path = Classes/PropertyFavoritesView.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Find_an_Apartment-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Find_an_Apartment-Info.plist"; sourceTree = "<group>"; };
-		DD10BA570FFC1E9000588928 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
-		DD10BA580FFC1E9000588928 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
-		DD10BA590FFC1E9000588928 /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
-		DD10BA5A0FFC1E9000588928 /* NSString+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SBJSON.h"; sourceTree = "<group>"; };
-		DD10BA5B0FFC1E9000588928 /* NSString+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SBJSON.m"; sourceTree = "<group>"; };
-		DD10BA5C0FFC1E9000588928 /* SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJSON.h; sourceTree = "<group>"; };
-		DD10BA5D0FFC1E9000588928 /* SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJSON.m; sourceTree = "<group>"; };
-		DD10BA5E0FFC1E9000588928 /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
-		DD10BA5F0FFC1E9000588928 /* SBJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonBase.m; sourceTree = "<group>"; };
-		DD10BA600FFC1E9000588928 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
-		DD10BA610FFC1E9000588928 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
-		DD10BA620FFC1E9000588928 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
-		DD10BA630FFC1E9000588928 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		DD4581250FEEC7B500783A46 /* Geography.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Geography.xcdatamodel; sourceTree = "<group>"; };
 		DD4581480FEEC86300783A46 /* CityOrPostalCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CityOrPostalCode.h; path = Classes/CityOrPostalCode.h; sourceTree = "<group>"; };
 		DD4581490FEEC86300783A46 /* CityOrPostalCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CityOrPostalCode.m; path = Classes/CityOrPostalCode.m; sourceTree = "<group>"; };
@@ -504,7 +479,6 @@
 			isa = PBXGroup;
 			children = (
 				DDDF6A91101E2C18001621C7 /* Three20.xcodeproj */,
-				DD10BA560FFC1E8F00588928 /* JSON */,
 				45D93FA70FEEE5E800AD4A5B /* StringFormatter.h */,
 				45D93FA80FEEE5E800AD4A5B /* StringFormatter.m */,
 				457AA3370FDAC26100F0D16C /* UrlUtil.h */,
@@ -713,26 +687,6 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
-		DD10BA560FFC1E8F00588928 /* JSON */ = {
-			isa = PBXGroup;
-			children = (
-				DD10BA570FFC1E9000588928 /* JSON.h */,
-				DD10BA580FFC1E9000588928 /* NSObject+SBJSON.h */,
-				DD10BA590FFC1E9000588928 /* NSObject+SBJSON.m */,
-				DD10BA5A0FFC1E9000588928 /* NSString+SBJSON.h */,
-				DD10BA5B0FFC1E9000588928 /* NSString+SBJSON.m */,
-				DD10BA5C0FFC1E9000588928 /* SBJSON.h */,
-				DD10BA5D0FFC1E9000588928 /* SBJSON.m */,
-				DD10BA5E0FFC1E9000588928 /* SBJsonBase.h */,
-				DD10BA5F0FFC1E9000588928 /* SBJsonBase.m */,
-				DD10BA600FFC1E9000588928 /* SBJsonParser.h */,
-				DD10BA610FFC1E9000588928 /* SBJsonParser.m */,
-				DD10BA620FFC1E9000588928 /* SBJsonWriter.h */,
-				DD10BA630FFC1E9000588928 /* SBJsonWriter.m */,
-			);
-			path = JSON;
-			sourceTree = "<group>";
-		};
 		DDDF6A92101E2C18001621C7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -916,12 +870,6 @@
 				45D941DE0FF051B600AD4A5B /* PropertyDetails.m in Sources */,
 				453EE3710FF084EC0044390F /* DescriptionCell.m in Sources */,
 				DD9B613E0FF45FED00348478 /* LocationManager.m in Sources */,
-				DD10BA640FFC1E9000588928 /* NSObject+SBJSON.m in Sources */,
-				DD10BA650FFC1E9000588928 /* NSString+SBJSON.m in Sources */,
-				DD10BA660FFC1E9000588928 /* SBJSON.m in Sources */,
-				DD10BA670FFC1E9000588928 /* SBJsonBase.m in Sources */,
-				DD10BA680FFC1E9000588928 /* SBJsonParser.m in Sources */,
-				DD10BA690FFC1E9000588928 /* SBJsonWriter.m in Sources */,
 				453DBF881002ED760090982C /* AppDelegate.m in Sources */,
 				45BEE9881008FACC0031613E /* CriteriaViewController.m in Sources */,
 				DDEC73BF1011825000EB56EC /* UrlConstructor.m in Sources */,
@@ -967,12 +915,6 @@
 				45D4553B1001970000944852 /* PropertyDetails.m in Sources */,
 				45D4553C1001970000944852 /* DescriptionCell.m in Sources */,
 				45D4553D1001970000944852 /* LocationManager.m in Sources */,
-				45D4553E1001970000944852 /* NSObject+SBJSON.m in Sources */,
-				45D4553F1001970000944852 /* NSString+SBJSON.m in Sources */,
-				45D455401001970000944852 /* SBJSON.m in Sources */,
-				45D455411001970000944852 /* SBJsonBase.m in Sources */,
-				45D455421001970000944852 /* SBJsonParser.m in Sources */,
-				45D455431001970000944852 /* SBJsonWriter.m in Sources */,
 				45D456891002E4C000944852 /* AppDelegate.m in Sources */,
 				4558D5AE1002FECD0065C4DD /* HomeFinderAppDelegate.m in Sources */,
 				4558D65910058CF30065C4DD /* MortgageCriteriaViewController.m in Sources */,
