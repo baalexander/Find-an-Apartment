@@ -21,8 +21,9 @@
 		4558D5AE1002FECD0065C4DD /* HomeFinderAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558D5AD1002FECD0065C4DD /* HomeFinderAppDelegate.m */; };
 		4558D65910058CF30065C4DD /* MortgageCriteriaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558D65710058CF30065C4DD /* MortgageCriteriaViewController.m */; };
 		4558D65A10058CF30065C4DD /* MortgageCriteriaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4558D65810058CF30065C4DD /* MortgageCriteriaView.xib */; };
+		455A29A91031B006004E15BC /* PropertyGeocodeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 455A29A81031B006004E15BC /* PropertyGeocodeParser.m */; };
+		455A29AA1031B006004E15BC /* PropertyGeocodeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 455A29A81031B006004E15BC /* PropertyGeocodeParser.m */; };
 		455BFE400FDC9BC4000BCD39 /* PropertyDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 455BFE3F0FDC9BC4000BCD39 /* PropertyDetailsView.xib */; };
-		457930A40FE3601C008E2ACD /* PropertySummary.m in Sources */ = {isa = PBXBuildFile; fileRef = 457930A20FE3601C008E2ACD /* PropertySummary.m */; };
 		457931010FE36A08008E2ACD /* SummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 457930FF0FE36A08008E2ACD /* SummaryCell.m */; };
 		457931020FE36A08008E2ACD /* SummaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457931000FE36A08008E2ACD /* SummaryCell.xib */; };
 		4579324C0FE59783008E2ACD /* PropertySortChoicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4579324B0FE59783008E2ACD /* PropertySortChoicesViewController.m */; };
@@ -49,6 +50,8 @@
 		45858DE40FDEF476003F8831 /* Property.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 45858DE30FDEF476003F8831 /* Property.xcdatamodel */; };
 		458783A60FDB45F7000B4F5D /* PropertyMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */; };
 		458783A70FDB45F7000B4F5D /* PropertyMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458783A50FDB45F7000B4F5D /* PropertyMapView.xib */; };
+		458A49AA1031373000375D4C /* PropertySummary.m in Sources */ = {isa = PBXBuildFile; fileRef = 458A49A91031373000375D4C /* PropertySummary.m */; };
+		458A49AB1031373000375D4C /* PropertySummary.m in Sources */ = {isa = PBXBuildFile; fileRef = 458A49A91031373000375D4C /* PropertySummary.m */; };
 		459CA0D1100AA98700108747 /* MortgageUrlConstructor.m in Sources */ = {isa = PBXBuildFile; fileRef = 459CA0D0100AA98700108747 /* MortgageUrlConstructor.m */; };
 		459CA0D4100AAA0000108747 /* UrlConstructor.m in Sources */ = {isa = PBXBuildFile; fileRef = 459CA0D3100AAA0000108747 /* UrlConstructor.m */; };
 		459CA108100ABEF900108747 /* MortgageResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459CA106100ABEF900108747 /* MortgageResultsViewController.m */; };
@@ -94,7 +97,6 @@
 		45D4552B1001970000944852 /* PropertyMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */; };
 		45D4552C1001970000944852 /* PropertyHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C974170FDCCA150021EE6D /* PropertyHistoryViewController.m */; };
 		45D4552D1001970000944852 /* Property.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 45858DE30FDEF476003F8831 /* Property.xcdatamodel */; };
-		45D4552E1001970000944852 /* PropertySummary.m in Sources */ = {isa = PBXBuildFile; fileRef = 457930A20FE3601C008E2ACD /* PropertySummary.m */; };
 		45D4552F1001970000944852 /* SummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 457930FF0FE36A08008E2ACD /* SummaryCell.m */; };
 		45D455301001970000944852 /* PropertySortChoicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4579324B0FE59783008E2ACD /* PropertySortChoicesViewController.m */; };
 		45D455311001970000944852 /* PropertyFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4579337F0FE5ED93008E2ACD /* PropertyFavoritesViewController.m */; };
@@ -217,9 +219,9 @@
 		4558D65610058CF30065C4DD /* MortgageCriteriaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MortgageCriteriaViewController.h; path = Classes/MortgageCriteriaViewController.h; sourceTree = "<group>"; };
 		4558D65710058CF30065C4DD /* MortgageCriteriaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MortgageCriteriaViewController.m; path = Classes/MortgageCriteriaViewController.m; sourceTree = "<group>"; };
 		4558D65810058CF30065C4DD /* MortgageCriteriaView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MortgageCriteriaView.xib; path = Classes/MortgageCriteriaView.xib; sourceTree = "<group>"; };
+		455A29A71031B006004E15BC /* PropertyGeocodeParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyGeocodeParser.h; sourceTree = "<group>"; };
+		455A29A81031B006004E15BC /* PropertyGeocodeParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertyGeocodeParser.m; sourceTree = "<group>"; };
 		455BFE3F0FDC9BC4000BCD39 /* PropertyDetailsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyDetailsView.xib; path = Classes/PropertyDetailsView.xib; sourceTree = "<group>"; };
-		457930A10FE3601C008E2ACD /* PropertySummary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertySummary.h; path = Classes/PropertySummary.h; sourceTree = "<group>"; };
-		457930A20FE3601C008E2ACD /* PropertySummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertySummary.m; path = Classes/PropertySummary.m; sourceTree = "<group>"; };
 		457930FE0FE36A08008E2ACD /* SummaryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SummaryCell.h; path = Classes/SummaryCell.h; sourceTree = "<group>"; };
 		457930FF0FE36A08008E2ACD /* SummaryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SummaryCell.m; path = Classes/SummaryCell.m; sourceTree = "<group>"; };
 		457931000FE36A08008E2ACD /* SummaryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SummaryCell.xib; path = Classes/SummaryCell.xib; sourceTree = "<group>"; };
@@ -262,6 +264,8 @@
 		458783A30FDB45F7000B4F5D /* PropertyMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyMapViewController.h; path = Classes/PropertyMapViewController.h; sourceTree = "<group>"; };
 		458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyMapViewController.m; path = Classes/PropertyMapViewController.m; sourceTree = "<group>"; };
 		458783A50FDB45F7000B4F5D /* PropertyMapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyMapView.xib; path = Classes/PropertyMapView.xib; sourceTree = "<group>"; };
+		458A49A81031373000375D4C /* PropertySummary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertySummary.h; path = Classes/PropertySummary.h; sourceTree = "<group>"; };
+		458A49A91031373000375D4C /* PropertySummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertySummary.m; path = Classes/PropertySummary.m; sourceTree = "<group>"; };
 		45991A220FF0927F00627B7D /* PropertyDetailsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyDetailsConstants.h; path = Classes/PropertyDetailsConstants.h; sourceTree = "<group>"; };
 		459CA0CF100AA98700108747 /* MortgageUrlConstructor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MortgageUrlConstructor.h; sourceTree = "<group>"; };
 		459CA0D0100AA98700108747 /* MortgageUrlConstructor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MortgageUrlConstructor.m; sourceTree = "<group>"; };
@@ -488,6 +492,8 @@
 		455BFE520FDC9E99000BCD39 /* Property */ = {
 			isa = PBXGroup;
 			children = (
+				455A29A71031B006004E15BC /* PropertyGeocodeParser.h */,
+				455A29A81031B006004E15BC /* PropertyGeocodeParser.m */,
 				457AA38B0FDAC45900F0D16C /* PropertyUrlConstructor.h */,
 				457AA38C0FDAC45900F0D16C /* PropertyUrlConstructor.m */,
 			);
@@ -616,8 +622,8 @@
 				45D93EDD0FEEDB0B00AD4A5B /* PropertyHistory.m */,
 				45D941970FF02BF000AD4A5B /* PropertyImage.h */,
 				45D941980FF02BF000AD4A5B /* PropertyImage.m */,
-				457930A10FE3601C008E2ACD /* PropertySummary.h */,
-				457930A20FE3601C008E2ACD /* PropertySummary.m */,
+				458A49A81031373000375D4C /* PropertySummary.h */,
+				458A49A91031373000375D4C /* PropertySummary.m */,
 			);
 			name = Property;
 			sourceTree = "<group>";
@@ -896,7 +902,6 @@
 				458783A60FDB45F7000B4F5D /* PropertyMapViewController.m in Sources */,
 				45C974190FDCCA150021EE6D /* PropertyHistoryViewController.m in Sources */,
 				45858DE40FDEF476003F8831 /* Property.xcdatamodel in Sources */,
-				457930A40FE3601C008E2ACD /* PropertySummary.m in Sources */,
 				457931010FE36A08008E2ACD /* SummaryCell.m in Sources */,
 				4579324C0FE59783008E2ACD /* PropertySortChoicesViewController.m in Sources */,
 				457933800FE5ED93008E2ACD /* PropertyFavoritesViewController.m in Sources */,
@@ -925,6 +930,8 @@
 				DD7DAAD910293FBA00EE70AB /* PropertyAnnotation.m in Sources */,
 				45E9CE0C102BE338003D157D /* LocationParser.m in Sources */,
 				45267DA3102F3EC4007BED9D /* PropertyCriteria.m in Sources */,
+				458A49AB1031373000375D4C /* PropertySummary.m in Sources */,
+				455A29AA1031B006004E15BC /* PropertyGeocodeParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -946,7 +953,6 @@
 				45D4552B1001970000944852 /* PropertyMapViewController.m in Sources */,
 				45D4552C1001970000944852 /* PropertyHistoryViewController.m in Sources */,
 				45D4552D1001970000944852 /* Property.xcdatamodel in Sources */,
-				45D4552E1001970000944852 /* PropertySummary.m in Sources */,
 				45D4552F1001970000944852 /* SummaryCell.m in Sources */,
 				45D455301001970000944852 /* PropertySortChoicesViewController.m in Sources */,
 				45D455311001970000944852 /* PropertyFavoritesViewController.m in Sources */,
@@ -981,6 +987,8 @@
 				DD7DAADA10293FBA00EE70AB /* PropertyAnnotation.m in Sources */,
 				45E9CE0B102BE338003D157D /* LocationParser.m in Sources */,
 				45267DA2102F3EC4007BED9D /* PropertyCriteria.m in Sources */,
+				458A49AA1031373000375D4C /* PropertySummary.m in Sources */,
+				455A29A91031B006004E15BC /* PropertyGeocodeParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

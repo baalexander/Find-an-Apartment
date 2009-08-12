@@ -11,7 +11,9 @@
 @dynamic price;
 @dynamic title;
 @dynamic distance;
+@dynamic longitude;
 @dynamic link;
+@dynamic latitude;
 @dynamic history;
 @dynamic details;
 

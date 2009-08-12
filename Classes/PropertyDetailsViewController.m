@@ -451,13 +451,13 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     
     if ([key isEqual:kDetailsLocation])
     {
-        PropertyMapViewController *mapController = [[PropertyMapViewController alloc] init];
-        [mapController setAddress:detail];
-        [mapController setSingleAddress:YES];
-        
-        [[self navigationController] pushViewController:mapController animated:YES];
-        [mapController release];
-        [self setSelectedIndex:indexPath];
+//        PropertyMapViewController *mapController = [[PropertyMapViewController alloc] init];
+//        [mapController setAddress:detail];
+//        [mapController setSingleAddress:YES];
+//        
+//        [[self navigationController] pushViewController:mapController animated:YES];
+//        [mapController release];
+//        [self setSelectedIndex:indexPath];
     }
     
     if ([key isEqual:kDetailsImages])

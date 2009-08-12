@@ -33,6 +33,30 @@
     [super dealloc];
 }
 
++ (NSString *)locationWithStreet:(NSString *)street withCity:(NSString *)city withState:(NSString *)state withPostalCode:(NSString *)postalCode
+{
+    NSMutableString *location = [[[NSMutableString alloc] init] autorelease];
+    
+    if (street != nil)
+    {
+        [location appendFormat:@"%@, ", street];
+    }
+    if (city != nil)
+    {
+        [location appendFormat:@"%@, ", city];
+    }
+    if (state != nil)
+    {
+        [location appendFormat:@"%@, ", state];
+    }
+    if (postalCode != nil)
+    {
+        [location appendFormat:@"%@, ", postalCode];
+    }
+    
+    return location;
+}
+
 - (void)setLocation:(NSString *)location
 {
     [location_ release];

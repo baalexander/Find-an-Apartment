@@ -95,6 +95,10 @@ static NSInteger kMapItem = 1;
 {
     [self setIsParsing:YES];
     
+    NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
+    [self setOperationQueue:operationQueue];
+    [operationQueue release];
+    
     // Create the parser, set its delegate, and start it.
     XmlParser *parser = [[XmlParser alloc] init];
     [parser setDelegate:self];
@@ -104,16 +108,6 @@ static NSInteger kMapItem = 1;
     //Add the Parser to an operation queue for background processing (works on a separate thread)
     [[self operationQueue] addOperation:parser];
     [parser release];
-}
-
-- (NSOperationQueue *)operationQueue
-{
-    if (operationQueue_ == nil)
-    {
-        operationQueue_ = [[NSOperationQueue alloc] init];
-    }
-
-    return operationQueue_;
 }
 
 - (NSFetchedResultsController *)fetchedResultsController
@@ -424,6 +418,11 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
         [[self summary] setLink:value];
         [[self details] setLink:value];
     }
+    else if ([element isEqual:@"location"])
+    {
+        [[self summary] setLocation:value];
+        [[self details] setLocation:value];
+    }
     else if ([element isEqual:@"price"])
     {
         NSNumber *number = [[NSNumber alloc] initWithInteger:[value integerValue]];
@@ -495,10 +494,6 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     else if ([element isEqual:@"link"])
     {
         [[self details] setLink:value];
-    }
-    else if ([element isEqual:@"location"])
-    {
-        [[self details] setLocation:value];
     }
     else if ([element isEqual:@"school"])
     {
