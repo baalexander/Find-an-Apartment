@@ -182,7 +182,7 @@ static NSInteger kMapItem = 1;
             // TODO: Handle the error.
         }        
     }
-    
+
     //Segmented control
     NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", nil];
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
@@ -400,7 +400,7 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
         NSLog(@"Error performing fetch.");
         // TODO: Handle the error.
     }
-    
+
     [[self tableView] reloadData];
 }
 

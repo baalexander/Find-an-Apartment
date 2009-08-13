@@ -30,6 +30,7 @@ static NSInteger kMapItem = 1;
 @implementation PropertyMapViewController
 
 @synthesize history = history_;
+@synthesize summary = summary_;
 @synthesize mapView = mapView_;
 @synthesize operationQueue = operationQueue_;
 @synthesize placemark = placemark_;
@@ -99,6 +100,7 @@ static NSInteger kMapItem = 1;
     for (PropertySummary *summary in summaries)
     {
         i++;
+        //Only parse a set max number of items to save time and space
         if (i >= kMaxMapItems)
         {
             break;
@@ -110,6 +112,8 @@ static NSInteger kMapItem = 1;
 
 - (void)geocodePropertyFromSummary:(PropertySummary *)summary
 {
+    [self setSummary:summary];
+    
     [self setFirstTime:YES];
     
     NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
@@ -178,11 +182,9 @@ static NSInteger kMapItem = 1;
         [[self navigationItem] setRightBarButtonItem:segmentBarItem];
         [segmentBarItem release];
     }
-    else
-    {   
-//        [[self navigationItem] setTitle:[self address]];
-//        [self setSingleAddress:YES];
-//        [self geocodeFromLocation:[self address]];
+    else if ([self summary])
+    {
+        [self setTitle:[[self summary] location]];        
     }
 }
 
@@ -261,6 +263,7 @@ static NSInteger kMapItem = 1;
         region.span = span;
         [[self mapView] setRegion:region animated:YES]; 
     }
+    //Sets region to min/max of all coordinates thus far
     else
     {
         //Sets max and min coordinates to this property's coordinates
@@ -306,7 +309,26 @@ static NSInteger kMapItem = 1;
     //If no more queued operations, saves context to save the new summary coordinate data.
     if ([[[self operationQueue] operations] count] == 0)
     {
-        //TODO: Save context
+        if ([self history] != nil)
+        {
+            NSError *error;
+            NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
+            if (![managedObjectContext save:&error])
+            {
+                NSLog(@"Error saving history context in Maps.");
+                // TODO: Handle the error.
+            }
+        }
+        else if ([self summary] != nil)
+        {
+            NSError *error;
+            NSManagedObjectContext *managedObjectContext = [[self summary] managedObjectContext];
+            if (![managedObjectContext save:&error])
+            {
+                NSLog(@"Error saving summary context in Maps.");
+                // TODO: Handle the error.
+            }            
+        }
     }
 }
 
