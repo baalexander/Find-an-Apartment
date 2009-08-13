@@ -77,8 +77,7 @@ static NSInteger kMapItem = 1;
     if ([segmentedControl selectedSegmentIndex] == kMapItem)
     {
         PropertyMapViewController *mapViewController = [[PropertyMapViewController alloc] initWithNibName:@"PropertyMapView" bundle:nil];
-        [mapViewController setHistory:[self history]];
-        [mapViewController geocodeProperties];
+        [mapViewController geocodePropertiesFromHistory:[self history]];
         
         NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithArray:[[self navigationController] viewControllers]];
         [viewControllers replaceObjectAtIndex:[viewControllers count] - 1 withObject:mapViewController];
@@ -405,113 +404,116 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     [[self tableView] reloadData];
 }
 
-- (void)parser:(XmlParser *)parser addElement:(NSString *)element withValue:(NSString *)value
+- (void)parser:(XmlParser *)parser addXmlElement:(XmlElement *)xmlElement
 {
-    if (value == nil || [value length] == 0)
+    NSString *elementName = [xmlElement name];
+    NSString *elementValue = [xmlElement value];
+    
+    if (elementValue == nil || [elementValue length] == 0)
     {
         return;
     }
     
     //Shared attributes
-    if ([element isEqual:@"link"])
+    if ([elementName isEqual:@"link"])
     {
-        [[self summary] setLink:value];
-        [[self details] setLink:value];
+        [[self summary] setLink:elementValue];
+        [[self details] setLink:elementValue];
     }
-    else if ([element isEqual:@"location"])
+    else if ([elementName isEqual:@"location"])
     {
-        [[self summary] setLocation:value];
-        [[self details] setLocation:value];
+        [[self summary] setLocation:elementValue];
+        [[self details] setLocation:elementValue];
     }
-    else if ([element isEqual:@"price"])
+    else if ([elementName isEqual:@"price"])
     {
-        NSNumber *number = [[NSNumber alloc] initWithInteger:[value integerValue]];
+        NSNumber *number = [[NSNumber alloc] initWithInteger:[elementValue integerValue]];
         [[self summary] setPrice:number];
         [[self details] setPrice:number];
         [number release];
     }
     //Summary attributes
-    else if ([element isEqual:@"title"])
+    else if ([elementName isEqual:@"title"])
     {
-        [[self summary] setTitle:value];
+        [[self summary] setTitle:elementValue];
     }
-    else if ([element isEqual:@"subtitle"])
+    else if ([elementName isEqual:@"subtitle"])
     {
-        [[self summary] setSubtitle:value];
+        [[self summary] setSubtitle:elementValue];
     }
-    else if ([element isEqual:@"summary"])
+    else if ([elementName isEqual:@"summary"])
     {
-        [[self summary] setSummary:value];
+        [[self summary] setSummary:elementValue];
     }
     //Details attributes
-    else if ([element isEqual:@"agent"])
+    else if ([elementName isEqual:@"agent"])
     {
-        [[self details] setAgent:value];
+        [[self details] setAgent:elementValue];
     }        
-    else if ([element isEqual:@"bathrooms"])
+    else if ([elementName isEqual:@"bathrooms"])
     {
-        NSNumber *number = [[NSNumber alloc] initWithFloat:[value floatValue]];
+        NSNumber *number = [[NSNumber alloc] initWithFloat:[elementValue floatValue]];
         [[self details] setBathrooms:number];
         [number release];
     }
-    else if ([element isEqual:@"bedrooms"])
+    else if ([elementName isEqual:@"bedrooms"])
     {
-        NSNumber *number = [[NSNumber alloc] initWithInteger:[value integerValue]];
+        NSNumber *number = [[NSNumber alloc] initWithInteger:[elementValue integerValue]];
         [[self details] setBedrooms:number];
         [number release];
     }
-    else if ([element isEqual:@"broker"])
+    else if ([elementName isEqual:@"broker"])
     {
-        [[self details] setBroker:value];
+        [[self details] setBroker:elementValue];
     }
-    else if ([element isEqual:@"copright"])
+    else if ([elementName isEqual:@"copright"])
     {
-        [[self details] setCopyright:value];
+        [[self details] setCopyright:elementValue];
     }
-    else if ([element isEqual:@"copyright_link"])
+    else if ([elementName isEqual:@"copyright_link"])
     {
-        [[self details] setCopyrightLink:value];
+        [[self details] setCopyrightLink:elementValue];
     }
-    else if ([element isEqual:@"description"])
+    else if ([elementName isEqual:@"description"])
     {
-        [[self details] setDetails:value];
+        [[self details] setDetails:elementValue];
     }
-    else if ([element isEqual:@"email"])
+    else if ([elementName isEqual:@"email"])
     {
-        [[self details] setEmail:value];
+        [[self details] setEmail:elementValue];
     }
-    else if ([element isEqual:@"image_link"])
+    else if ([elementName isEqual:@"image_link"])
     {
         NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
         
         NSEntityDescription *imageEntity = [NSEntityDescription entityForName:@"PropertyImage" inManagedObjectContext:managedObjectContext];
         PropertyImage *image = [[PropertyImage alloc] initWithEntity:imageEntity insertIntoManagedObjectContext:managedObjectContext];
-        [image setUrl:value];
+        [image setUrl:elementValue];
         
         [[self details] addImagesObject:image];
         [image release];
     }
-    else if ([element isEqual:@"link"])
+    else if ([elementName isEqual:@"link"])
     {
-        [[self details] setLink:value];
+        [[self details] setLink:elementValue];
     }
-    else if ([element isEqual:@"school"])
+    else if ([elementName isEqual:@"school"])
     {
-        [[self details] setSchool:value];
+        [[self details] setSchool:elementValue];
     }
-    else if ([element isEqual:@"source"])
+    else if ([elementName isEqual:@"source"])
     {
-        [[self details] setSource:value];
+        [[self details] setSource:elementValue];
     }
-    else if ([element isEqual:@"square_feet"])
+    else if ([elementName isEqual:@"square_feet"])
     {
-        NSNumber *number = [[NSNumber alloc] initWithInteger:[value integerValue]];
+        NSNumber *number = [[NSNumber alloc] initWithInteger:[elementValue integerValue]];
         [[self details] setSquareFeet:number];
         [number release];
     }
-    else if ([element isEqual:@"year"])
+    else if ([elementName isEqual:@"year"])
     {
-        NSNumber *number = [[NSNumber alloc] initWithInteger:[value integerValue]];
+        NSNumber *number = [[NSNumber alloc] initWithInteger:[elementValue integerValue]];
         [[self details] setYear:number];
         [number release];
     }

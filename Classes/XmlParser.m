@@ -19,11 +19,12 @@ static xmlSAXHandler simpleSAXHandlerStruct;
 @property (nonatomic, assign) BOOL parsingAnItem;
 @property (nonatomic, assign) BOOL storingCharacters;
 @property (nonatomic, retain) NSMutableData *characterBuffer;
+@property (nonatomic, retain) XmlElement *xmlElement;
 - (void)parseEnded;
 - (void)parseError:(NSError *)error;
 - (void)itemBegan;
 - (void)itemEnded;
-- (void)addElementAndValue:(NSDictionary *)elementAndValueMap;
+- (void)addXmlElement:(XmlElement *)xmlElement;
 - (void)appendCharacters:(const char *)charactersFound length:(NSInteger)length;
 @end
 
@@ -39,6 +40,7 @@ static xmlSAXHandler simpleSAXHandlerStruct;
 @synthesize characterBuffer = characterBuffer_;
 @synthesize itemDelimiter = itemDelimiter_;
 @synthesize itemDelimiterLength = itemDelimiterLength_;
+@synthesize xmlElement = xmlElement_;
 
 
 #pragma mark -
@@ -63,9 +65,9 @@ static xmlSAXHandler simpleSAXHandlerStruct;
 #pragma mark -
 #pragma mark XmlParser
 
-- (void)addElementAndValue:(NSDictionary *)elementAndValueMap
+- (void)addXmlElement:(XmlElement *)xmlElement
 {
-    [[self delegate] parser:self addElement:[elementAndValueMap objectForKey:@"element"] withValue:[elementAndValueMap objectForKey:@"value"]];
+    [[self delegate] parser:self addXmlElement:xmlElement];
 }
 
 - (void)itemBegan
@@ -201,21 +203,60 @@ static void startElementSAX(void *ctx, const xmlChar *localname, const xmlChar *
                             int nb_namespaces, const xmlChar **namespaces, int nb_attributes, int nb_defaulted, const xmlChar **attributes)
 {
     XmlParser *parser = (XmlParser *)ctx;
-    
+
     // The second parameter to strncmp is the name of the element, which we known from the XML schema of the feed.
     // The third parameter to strncmp is the number of characters in the element name, plus 1 for the null terminator.
     if (prefix == NULL
         && strncmp((const char *)localname, [parser itemDelimiter], [parser itemDelimiterLength]) == 0)
         //&& strncmp((const char *)localname, "property", 9) == 0)
-    {
+    {   
         [parser performSelectorOnMainThread:@selector(itemBegan) withObject:nil waitUntilDone:NO];
         [parser setParsingAnItem:YES];
     }
     else if (prefix == NULL
              && [parser parsingAnItem] == YES)
     {
+        XmlElement *xmlElement = [[XmlElement alloc] init];
+        [parser setXmlElement:xmlElement];
+        [xmlElement release];
+        
+        NSString *localnameString = [[NSString alloc] initWithUTF8String:(const char *)localname];
+        [[parser xmlElement] setName:localnameString];
+        [localnameString release];
+        
         [parser setStoringCharacters:YES];
     }
+    
+    //Gets attributes
+    NSMutableDictionary *attributeDictionary = [[[NSMutableDictionary alloc] init] autorelease];
+    for (NSInteger attributeCounter = 0; attributeCounter < nb_attributes; attributeCounter++)
+    {
+        //The start of the attribute in the attributes array. There are 5 attribute elements in the array PER attribute.
+        NSInteger attributeStartIndex = attributeCounter * 5;
+        
+        //Index of name
+        static NSInteger nameIndex = 0;
+        //Beginning index of value
+        static NSInteger valueIndex = 3;
+        
+        // The beginning of the attribute value starts at index 3 in the array.
+        // The end of the attribute value starts at index 4 in the array.
+        const char *valueBegin = (const char *)attributes[attributeStartIndex + valueIndex];
+        const char *valueEnd = (const char *)attributes[attributeStartIndex + valueIndex + 1];
+        
+        if (valueBegin && valueEnd)
+        {
+            const char *localAttributeName = (const char *)attributes[attributeStartIndex + nameIndex];
+            NSString *localAttributeNameString = [[NSString alloc] initWithUTF8String:(const char *)localAttributeName];
+            
+            // Not sure why getting the attribute value is so convoluted.
+            NSString *value = [[NSString alloc] initWithBytes:attributes[attributeStartIndex + valueIndex] length:(strlen(valueBegin) - strlen(valueEnd)) encoding:NSUTF8StringEncoding];
+            [attributeDictionary setObject:value forKey:localAttributeNameString];
+            [localAttributeNameString release];
+            [value release];
+        }
+    }
+    [[parser xmlElement] setAttributes:attributeDictionary];
 }
 
 /*
@@ -241,16 +282,14 @@ static void endElementSAX(void *ctx, const xmlChar *localname, const xmlChar *pr
         }
         else
         {
-            NSString *element = [[NSString alloc] initWithUTF8String:(const char *)localname];
             NSString *value = [[NSString alloc] initWithData:[parser characterBuffer] encoding:NSUTF8StringEncoding];
-            NSDictionary *elementAndValueMap = [[NSDictionary alloc] initWithObjectsAndKeys:element, @"element", value, @"value", nil];
-            [element release];
+            [[parser xmlElement] setValue:value];
             [value release];
-            [parser performSelectorOnMainThread:@selector(addElementAndValue:) withObject:elementAndValueMap waitUntilDone:NO];
-            [elementAndValueMap release];
+            [parser performSelectorOnMainThread:@selector(addXmlElement:) withObject:[parser xmlElement] waitUntilDone:NO];
         }
     }
     
+    [parser setXmlElement:nil];
     [[parser characterBuffer] setLength:0];
     [parser setStoringCharacters:NO];
 }

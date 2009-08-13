@@ -4,6 +4,8 @@
 // -set the path Header Search Paths under Build: /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.0.sdk/usr/include/libxml2
 #import <libxml/tree.h>
 
+#import "XmlElement.h"
+
 
 @class XmlParser;
 
@@ -14,7 +16,7 @@
 // Called by the parser in the case of an error.
 - (void)parser:(XmlParser *)parser didFailWithError:(NSError *)error;
 // Called by the parser when a new element is to be added to the item
-- (void)parser:(XmlParser *)parser addElement:(NSString *)element withValue:(NSString *)value;
+- (void)parser:(XmlParser *)parser addXmlElement:(XmlElement *)xmlElement;
 // Called by the parser when a new item has began being parsed
 - (void)parserDidBeginItem:(XmlParser *)parser;
 // Called by the parser when the current item has finished being parsed
@@ -47,6 +49,8 @@
         //Element name and length to signify new item to parse
         const char *itemDelimiter_;
         NSUInteger itemDelimiterLength_;
+        //Holds XML results for each element
+        XmlElement *xmlElement_;
 }
 
 @property (nonatomic, assign) id <ParserDelegate> delegate;

@@ -15,6 +15,10 @@
 		28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D801B30F44B63D00FB423F /* CoreData.framework */; };
 		45267DA2102F3EC4007BED9D /* PropertyCriteria.m in Sources */ = {isa = PBXBuildFile; fileRef = 45267DA1102F3EC4007BED9D /* PropertyCriteria.m */; };
 		45267DA3102F3EC4007BED9D /* PropertyCriteria.m in Sources */ = {isa = PBXBuildFile; fileRef = 45267DA1102F3EC4007BED9D /* PropertyCriteria.m */; };
+		452A89F61033A07F00AD21AB /* XmlElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 452A89F51033A07F00AD21AB /* XmlElement.m */; };
+		452A89F71033A07F00AD21AB /* XmlElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 452A89F51033A07F00AD21AB /* XmlElement.m */; };
+		452A8AD51033AED400AD21AB /* Placemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 452A8AD41033AED400AD21AB /* Placemark.m */; };
+		452A8AD61033AED400AD21AB /* Placemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 452A8AD41033AED400AD21AB /* Placemark.m */; };
 		453DBF881002ED760090982C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D456881002E4C000944852 /* AppDelegate.m */; };
 		453EE36E0FF084DB0044390F /* DescriptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453EE36D0FF084DB0044390F /* DescriptionCell.xib */; };
 		453EE3710FF084EC0044390F /* DescriptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 453EE3700FF084EC0044390F /* DescriptionCell.m */; };
@@ -199,6 +203,10 @@
 		45267CF6102EA866007BED9D /* MortgageResultsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MortgageResultsConstants.h; path = Classes/MortgageResultsConstants.h; sourceTree = "<group>"; };
 		45267DA0102F3EC4007BED9D /* PropertyCriteria.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyCriteria.h; path = Classes/PropertyCriteria.h; sourceTree = "<group>"; };
 		45267DA1102F3EC4007BED9D /* PropertyCriteria.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyCriteria.m; path = Classes/PropertyCriteria.m; sourceTree = "<group>"; };
+		452A89F41033A07F00AD21AB /* XmlElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XmlElement.h; path = Classes/XmlElement.h; sourceTree = "<group>"; };
+		452A89F51033A07F00AD21AB /* XmlElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XmlElement.m; path = Classes/XmlElement.m; sourceTree = "<group>"; };
+		452A8AD31033AED400AD21AB /* Placemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Placemark.h; path = Classes/Placemark.h; sourceTree = "<group>"; };
+		452A8AD41033AED400AD21AB /* Placemark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Placemark.m; path = Classes/Placemark.m; sourceTree = "<group>"; };
 		453EE36D0FF084DB0044390F /* DescriptionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DescriptionCell.xib; path = Classes/DescriptionCell.xib; sourceTree = "<group>"; };
 		453EE36F0FF084EC0044390F /* DescriptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DescriptionCell.h; path = Classes/DescriptionCell.h; sourceTree = "<group>"; };
 		453EE3700FF084EC0044390F /* DescriptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DescriptionCell.m; path = Classes/DescriptionCell.m; sourceTree = "<group>"; };
@@ -443,6 +451,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		452A89F310339FDC00AD21AB /* General */ = {
+			isa = PBXGroup;
+			children = (
+				452A89F41033A07F00AD21AB /* XmlElement.h */,
+				452A89F51033A07F00AD21AB /* XmlElement.m */,
+				452A8AD31033AED400AD21AB /* Placemark.h */,
+				452A8AD41033AED400AD21AB /* Placemark.m */,
+			);
+			name = General;
+			sourceTree = "<group>";
+		};
 		4558D64E10058C770065C4DD /* Mortgage */ = {
 			isa = PBXGroup;
 			children = (
@@ -629,6 +648,7 @@
 		457AA34B0FDAC27000F0D16C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				452A89F310339FDC00AD21AB /* General */,
 				45858DF00FDEF4C2003F8831 /* Geography */,
 				455BFE660FDCA036000BCD39 /* Property */,
 				45BEE9261006DE4D0031613E /* Mortgage */,
@@ -880,6 +900,8 @@
 				45267DA3102F3EC4007BED9D /* PropertyCriteria.m in Sources */,
 				458A49AB1031373000375D4C /* PropertySummary.m in Sources */,
 				455A29AA1031B006004E15BC /* PropertyGeocodeParser.m in Sources */,
+				452A89F71033A07F00AD21AB /* XmlElement.m in Sources */,
+				452A8AD61033AED400AD21AB /* Placemark.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -931,6 +953,8 @@
 				45267DA2102F3EC4007BED9D /* PropertyCriteria.m in Sources */,
 				458A49AA1031373000375D4C /* PropertySummary.m in Sources */,
 				455A29A91031B006004E15BC /* PropertyGeocodeParser.m in Sources */,
+				452A89F61033A07F00AD21AB /* XmlElement.m in Sources */,
+				452A8AD51033AED400AD21AB /* Placemark.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

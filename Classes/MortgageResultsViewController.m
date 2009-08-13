@@ -212,41 +212,44 @@ static NSString *kDetailCellId = @"DETAIL_CELL_ID";
     [[self tableView] reloadData];
 }
 
-- (void)parser:(XmlParser *)parser addElement:(NSString *)element withValue:(NSString *)value
+- (void)parser:(XmlParser *)parser addXmlElement:(XmlElement *)xmlElement
 {
-    if (value == nil || [value length] == 0)
+    NSString *elementName = [xmlElement name];
+    NSString *elementValue = [xmlElement value];
+    
+    if (elementValue == nil || [elementValue length] == 0)
     {
         return;
     }
 
-    if ([element isEqual:@"type"])
+    if ([elementName isEqual:@"type"])
     {
         //Sets placeholder section title to type
-        [[self sectionTitles] replaceObjectAtIndex:([[self sectionTitles] count] - 1) withObject:value];
+        [[self sectionTitles] replaceObjectAtIndex:([[self sectionTitles] count] - 1) withObject:elementValue];
     }
-    else if ([element isEqual:@"rate"])
+    else if ([elementName isEqual:@"rate"])
     {
-        [[self loan] setObject:value forKey:kMortgageResultsRate];
+        [[self loan] setObject:elementValue forKey:kMortgageResultsRate];
     }
-    else if ([element isEqual:@"term"])
+    else if ([elementName isEqual:@"term"])
     {
-        [[self loan] setObject:value forKey:kMortgageResultsTerm];
+        [[self loan] setObject:elementValue forKey:kMortgageResultsTerm];
     }
-    else if ([element isEqual:@"monthly_principal_and_interest"])
+    else if ([elementName isEqual:@"monthly_principal_and_interest"])
     {
-        [[self loan] setObject:value forKey:kMortgageResultsPayment];
+        [[self loan] setObject:elementValue forKey:kMortgageResultsPayment];
     }
-    else if ([element isEqual:@"monthly_property_taxes"])
+    else if ([elementName isEqual:@"monthly_property_taxes"])
     {
-        [[self loan] setObject:value forKey:kMortgageResultsPropertyTaxes];
+        [[self loan] setObject:elementValue forKey:kMortgageResultsPropertyTaxes];
     }
-    else if ([element isEqual:@"monthly_hazard_insurance"])
+    else if ([elementName isEqual:@"monthly_hazard_insurance"])
     {
-        [[self loan] setObject:value forKey:kMortgageResultsHazardInsurance];
+        [[self loan] setObject:elementValue forKey:kMortgageResultsHazardInsurance];
     }    
-    else if ([element isEqual:@"monthly_mortgage_insurance"])
+    else if ([elementName isEqual:@"monthly_mortgage_insurance"])
     {
-        [[self loan] setObject:value forKey:kMortgageResultsMortgageInsurance];
+        [[self loan] setObject:elementValue forKey:kMortgageResultsMortgageInsurance];
     }
 }
 
