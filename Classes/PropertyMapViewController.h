@@ -22,9 +22,6 @@
         BOOL firstTime_;
 }
 
-- (void)geocodePropertiesFromHistory:(PropertyHistory *)history;
-- (void)geocodePropertyFromSummary:(PropertySummary *)summary;
-
 @property (nonatomic, retain) PropertyHistory *history;
 @property (nonatomic, retain) PropertySummary *summary;
 

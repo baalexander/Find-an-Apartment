@@ -22,8 +22,11 @@ static NSInteger kMapItem = 1;
 @property (nonatomic, assign) CLLocationCoordinate2D maxPoint;
 @property (nonatomic, assign) CLLocationCoordinate2D minPoint;
 @property (nonatomic, assign) BOOL firstTime;
+- (void)geocodeProperties;
+- (void)geocodeProperty;
 - (void)enqueueSummary:(PropertySummary *)summary;
-- (void)updateMinMaxWithCoordinates:(CLLocationCoordinate2D)coordinates;
+- (void)centerMapWithCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)updateMinMaxWithCoordinate:(CLLocationCoordinate2D)coordinate;
 @end
 
 
@@ -47,7 +50,7 @@ static NSInteger kMapItem = 1;
 {
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
     {
-        
+
     }
     
     return self;
@@ -56,6 +59,7 @@ static NSInteger kMapItem = 1;
 - (void)dealloc
 {
     [history_ release];
+    [summary_ release];
     [mapView_ release];
     [operationQueue_ release];
     [placemark_ release];
@@ -83,10 +87,8 @@ static NSInteger kMapItem = 1;
     }
 }
 
-- (void)geocodePropertiesFromHistory:(PropertyHistory *)history
+- (void)geocodeProperties
 {
-    [self setHistory:history];
-    
     [self setFirstTime:YES];
     
     NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
@@ -104,16 +106,39 @@ static NSInteger kMapItem = 1;
         if (i >= kMaxMapItems)
         {
             break;
-        }        
+        }
         
-        [self enqueueSummary:summary];
+        //If longitude and latitude already cache, add directly to map
+        if ([summary longitude] != nil && [summary latitude] != nil)
+        {
+            //Creates Placemark
+            Placemark *placemark = [[Placemark alloc] init];
+            [placemark setAddress:[summary location]];
+            
+            CLLocationCoordinate2D coordinate;
+            coordinate.longitude = [[summary longitude] doubleValue];
+            coordinate.latitude = [[summary latitude] doubleValue];
+            [placemark setCoordinate:coordinate];
+            
+            // Setup the pin to be placed on the map
+            PropertyAnnotation *annotation = [[PropertyAnnotation alloc] initWithPlacemark:placemark andSummary:summary];
+            [placemark release];
+            [[self mapView] addAnnotation:annotation];
+            [annotation release];
+            
+            //Centers map with coordinate information
+            [self centerMapWithCoordinate:coordinate];
+        }
+        //Enqueue summary for parsing
+        else
+        {
+            [self enqueueSummary:summary];
+        }
     }
 }
 
-- (void)geocodePropertyFromSummary:(PropertySummary *)summary
-{
-    [self setSummary:summary];
-    
+- (void)geocodeProperty
+{  
     [self setFirstTime:YES];
     
     NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
@@ -122,7 +147,7 @@ static NSInteger kMapItem = 1;
     
     [self setSummaryCount:1];
     
-    [self enqueueSummary:summary];
+    [self enqueueSummary:[self summary]];
 }
 
 - (void)enqueueSummary:(PropertySummary *)summary
@@ -134,16 +159,16 @@ static NSInteger kMapItem = 1;
     [parser release];
 }
 
-- (void)updateMinMaxWithCoordinates:(CLLocationCoordinate2D)coordinates
+- (void)updateMinMaxWithCoordinate:(CLLocationCoordinate2D)coordinate
 {
     CLLocationCoordinate2D max;
     CLLocationCoordinate2D min;
     
-    max.latitude =  (coordinates.latitude > [self maxPoint].latitude ? coordinates.latitude : [self maxPoint].latitude);
-    max.longitude = (coordinates.longitude > [self maxPoint].longitude ? coordinates.longitude : [self maxPoint].longitude);
+    max.latitude =  (coordinate.latitude > [self maxPoint].latitude ? coordinate.latitude : [self maxPoint].latitude);
+    max.longitude = (coordinate.longitude > [self maxPoint].longitude ? coordinate.longitude : [self maxPoint].longitude);
     
-    min.latitude = (coordinates.latitude < [self minPoint].latitude ? coordinates.latitude : [self minPoint].latitude);
-    min.longitude = (coordinates.longitude < [self minPoint].longitude ? coordinates.longitude : [self minPoint].longitude);
+    min.latitude = (coordinate.latitude < [self minPoint].latitude ? coordinate.latitude : [self minPoint].latitude);
+    min.longitude = (coordinate.longitude < [self minPoint].longitude ? coordinate.longitude : [self minPoint].longitude);
     
     [self setMaxPoint:max];
     [self setMinPoint:min];
@@ -163,9 +188,11 @@ static NSInteger kMapItem = 1;
     [self setMapView:mapView];
     [mapView release];
     [[self view] addSubview:[self mapView]];
-    
+
     if ([self history])
     {
+        [self geocodeProperties];              
+        
         //Segmented control
         NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", nil];
         UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
@@ -184,7 +211,9 @@ static NSInteger kMapItem = 1;
     }
     else if ([self summary])
     {
-        [self setTitle:[[self summary] location]];        
+        [self setTitle:[[self summary] location]];
+        
+        [self geocodeProperty];
     }
 }
 
@@ -227,9 +256,9 @@ static NSInteger kMapItem = 1;
 - (void)parserDidEndParsingData:(XmlParser *)parser
 {
     //Placemark's coordinate
-    CLLocationCoordinate2D coordinate = [[self placemark] coordinates];
+    CLLocationCoordinate2D coordinate = [[self placemark] coordinate];
     
-    //Sets coordinates in Summary
+    //Sets Coordinates and updates Location in Summary
     PropertySummary *summary = [(PropertyGeocodeParser *)parser summary];
     NSNumber *longitude = [[NSNumber alloc] initWithDouble:coordinate.longitude];
     [summary setLongitude:longitude];
@@ -237,13 +266,10 @@ static NSInteger kMapItem = 1;
     NSNumber *latitude = [[NSNumber alloc] initWithDouble:coordinate.latitude];
     [summary setLatitude:latitude];
     [latitude release];
+    [summary setLocation:[[self placemark] address]];
     
     // Setup the pin to be placed on the map
-    PropertyAnnotation *annotation = [[PropertyAnnotation alloc] initWithCoordinate:coordinate];
-    [annotation setSummary:summary];
-    [annotation setAddress:[[self placemark] address]];
-    
-    // Add the pin to the map
+    PropertyAnnotation *annotation = [[PropertyAnnotation alloc] initWithPlacemark:[self placemark] andSummary:summary];
     [[self mapView] addAnnotation:annotation];
     [annotation release];
     
@@ -266,44 +292,7 @@ static NSInteger kMapItem = 1;
     //Sets region to min/max of all coordinates thus far
     else
     {
-        //Sets max and min coordinates to this property's coordinates
-        if ([self firstTime])
-        {
-            [self setFirstTime:NO];
-            
-            CLLocationCoordinate2D max;
-            max.latitude = coordinate.latitude;
-            max.longitude = coordinate.longitude;
-            [self setMaxPoint:max];
-            
-            CLLocationCoordinate2D min;
-            min.latitude = coordinate.latitude;
-            min.longitude = coordinate.longitude;
-            [self setMinPoint:min];
-        }
-        //Determine if the lat/lon are either the max or min
-        else
-        {
-            [self updateMinMaxWithCoordinates:coordinate];                
-        }
-        
-        //Center the map based on the min & max lat & lon encountered
-        double longitudeDelta = [self maxPoint].longitude - [self minPoint].longitude;
-        double latitudeDelta = [self maxPoint].latitude - [self minPoint].latitude;
-        
-        CLLocationCoordinate2D center;
-        center.longitude = [self minPoint].longitude + (longitudeDelta / 2);
-        center.latitude = [self minPoint].latitude + (latitudeDelta / 2);  
-        
-        // Add padding so the pins aren't on the very edge of the map
-        MKCoordinateSpan span;
-        span.longitudeDelta = longitudeDelta + 0.04;
-        span.latitudeDelta = latitudeDelta + 0.04;
-        
-        MKCoordinateRegion region;
-        region.center = center;
-        region.span = span;
-        [[self mapView] setRegion:region animated:YES]; 
+        [self centerMapWithCoordinate:coordinate];
     }
     
     //If no more queued operations, saves context to save the new summary coordinate data.
@@ -332,6 +321,48 @@ static NSInteger kMapItem = 1;
     }
 }
 
+- (void)centerMapWithCoordinate:(CLLocationCoordinate2D)coordinate
+{
+    //Sets max and min coordinates to this property's coordinates
+    if ([self firstTime])
+    {
+        [self setFirstTime:NO];
+        
+        CLLocationCoordinate2D max;
+        max.latitude = coordinate.latitude;
+        max.longitude = coordinate.longitude;
+        [self setMaxPoint:max];
+        
+        CLLocationCoordinate2D min;
+        min.latitude = coordinate.latitude;
+        min.longitude = coordinate.longitude;
+        [self setMinPoint:min];
+    }
+    //Determine if the lat/lon are either the max or min
+    else
+    {
+        [self updateMinMaxWithCoordinate:coordinate];                
+    }
+    
+    //Center the map based on the min & max lat & lon encountered
+    double longitudeDelta = [self maxPoint].longitude - [self minPoint].longitude;
+    double latitudeDelta = [self maxPoint].latitude - [self minPoint].latitude;
+    
+    CLLocationCoordinate2D center;
+    center.longitude = [self minPoint].longitude + (longitudeDelta / 2);
+    center.latitude = [self minPoint].latitude + (latitudeDelta / 2);  
+    
+    // Add padding so the pins aren't on the very edge of the map
+    MKCoordinateSpan span;
+    span.longitudeDelta = longitudeDelta + 0.04;
+    span.latitudeDelta = latitudeDelta + 0.04;
+    
+    MKCoordinateRegion region;
+    region.center = center;
+    region.span = span;
+    [[self mapView] setRegion:region animated:YES]; 
+}
+
 - (void)parser:(XmlParser *)parser addXmlElement:(XmlElement *)xmlElement
 {
     NSString *elementName = [xmlElement name];
@@ -343,16 +374,11 @@ static NSInteger kMapItem = 1;
     {
         if (elementValue != nil)
         {
-            //Gets everything preceeding the first comma. Hopefully the street or maybe the city.
-            NSArray *addressComponents = [elementValue componentsSeparatedByString:@","];
-            if ([addressComponents count] > 0)
-            {
-                [[self placemark] setAddress:[addressComponents objectAtIndex:0]];
-            }
+            [[self placemark] setAddress:elementValue];
         }
     }
     //Coordinate format is: <coordinates>-97.7743400,30.2797450,0</coordinates>
-    //First param is longitude, second param is latitude, can ignroe third param
+    //First param is longitude, second param is latitude, can ignore third param
     if ([elementName isEqual:@"coordinates"])
     {
         if (elementValue != nil)
@@ -360,11 +386,11 @@ static NSInteger kMapItem = 1;
             NSArray *coordinateComponents = [elementValue componentsSeparatedByString:@","];
             if ([coordinateComponents count] >= 2)
             {
-                CLLocationCoordinate2D coordinates;
-                coordinates.longitude = [[coordinateComponents objectAtIndex:0] doubleValue];
-                coordinates.latitude = [[coordinateComponents objectAtIndex:1] doubleValue];
+                CLLocationCoordinate2D coordinate;
+                coordinate.longitude = [[coordinateComponents objectAtIndex:0] doubleValue];
+                coordinate.latitude = [[coordinateComponents objectAtIndex:1] doubleValue];
                 
-                [[self placemark] setCoordinates:coordinates];
+                [[self placemark] setCoordinate:coordinate];
             }
         }
     }

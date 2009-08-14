@@ -4,7 +4,7 @@
 @implementation Placemark
 
 @synthesize address = address_;
-@synthesize coordinates = coordinates_;
+@synthesize coordinate = coordinate_;
 @synthesize north = north_;
 @synthesize east = east_;
 @synthesize south = south_;

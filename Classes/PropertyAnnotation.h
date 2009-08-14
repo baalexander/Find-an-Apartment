@@ -1,21 +1,21 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
-@class PropertySummary;
+
+#import "Placemark.h"
+#import "PropertySummary.h"
 
 
 @interface PropertyAnnotation : NSObject <MKAnnotation>
 {
     @private
-        CLLocationCoordinate2D coordinate_;
-        NSString *address_;
+        Placemark *placemark_;
         PropertySummary *summary_;
-        
 }
 
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
-@property (nonatomic, retain) NSString *address;
+@property (nonatomic, retain) Placemark *placemark;
 @property (nonatomic, retain) PropertySummary *summary;
 
-- (id)initWithCoordinate:(CLLocationCoordinate2D)coord;
+- (id)initWithPlacemark:(Placemark *)placemark andSummary:(PropertySummary *)summary;
 
 @end

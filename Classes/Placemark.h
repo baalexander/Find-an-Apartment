@@ -6,7 +6,7 @@
 {
     @private
         NSString *address_;
-        CLLocationCoordinate2D coordinates_;
+        CLLocationCoordinate2D coordinate_;
         double north_;
         double east_;
         double south_;
@@ -14,7 +14,7 @@
 }
 
 @property (nonatomic, copy) NSString *address;
-@property (nonatomic, assign) CLLocationCoordinate2D coordinates;
+@property (nonatomic, assign) CLLocationCoordinate2D coordinate;
 @property (nonatomic, assign) double north;
 @property (nonatomic, assign) double east;
 @property (nonatomic, assign) double south;

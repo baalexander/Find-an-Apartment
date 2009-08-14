@@ -77,7 +77,7 @@ static NSInteger kMapItem = 1;
     if ([segmentedControl selectedSegmentIndex] == kMapItem)
     {
         PropertyMapViewController *mapViewController = [[PropertyMapViewController alloc] initWithNibName:@"PropertyMapView" bundle:nil];
-        [mapViewController geocodePropertiesFromHistory:[self history]];
+        [mapViewController setHistory:[self history]];
         
         NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithArray:[[self navigationController] viewControllers]];
         [viewControllers replaceObjectAtIndex:[viewControllers count] - 1 withObject:mapViewController];

@@ -452,7 +452,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     if ([key isEqual:kDetailsLocation])
     {
         PropertyMapViewController *mapController = [[PropertyMapViewController alloc] init];
-        [mapController geocodePropertyFromSummary:[[self details] summary]];
+        [mapController setSummary:[[self details] summary]];
         
         [[self navigationController] pushViewController:mapController animated:YES];
         [mapController release];
