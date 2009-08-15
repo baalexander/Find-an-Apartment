@@ -20,10 +20,12 @@
         CLLocationCoordinate2D maxPoint_;
         CLLocationCoordinate2D minPoint_;
         BOOL firstTime_;
+        BOOL isFromFavorites_;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
 @property (nonatomic, retain) PropertyHistory *history;
 @property (nonatomic, retain) PropertySummary *summary;
+@property (nonatomic, assign) BOOL isFromFavorites;
 
 @end

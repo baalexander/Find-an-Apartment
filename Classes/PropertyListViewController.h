@@ -10,7 +10,7 @@
 
 
 @interface PropertyListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, ParserDelegate, PropertyDetailsDelegate>
-{
+{    
     @private
         UITableView *tableView_;
 

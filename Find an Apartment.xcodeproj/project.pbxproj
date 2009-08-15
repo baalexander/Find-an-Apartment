@@ -213,6 +213,7 @@
 		453EE36F0FF084EC0044390F /* DescriptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DescriptionCell.h; path = Classes/DescriptionCell.h; sourceTree = "<group>"; };
 		453EE3700FF084EC0044390F /* DescriptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DescriptionCell.m; path = Classes/DescriptionCell.m; sourceTree = "<group>"; };
 		4557336B10374A800013278E /* WebView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = WebView.xib; path = Classes/WebView.xib; sourceTree = "<group>"; };
+		455733CD103779940013278E /* PropertyMapConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyMapConstants.h; path = Classes/PropertyMapConstants.h; sourceTree = "<group>"; };
 		4558D5AC1002FECD0065C4DD /* HomeFinderAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeFinderAppDelegate.h; path = Classes/HomeFinderAppDelegate.h; sourceTree = "<group>"; };
 		4558D5AD1002FECD0065C4DD /* HomeFinderAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeFinderAppDelegate.m; path = Classes/HomeFinderAppDelegate.m; sourceTree = "<group>"; };
 		4558D65610058CF30065C4DD /* MortgageCriteriaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MortgageCriteriaViewController.h; path = Classes/MortgageCriteriaViewController.h; sourceTree = "<group>"; };
@@ -643,6 +644,7 @@
 			children = (
 				457932490FE59771008E2ACD /* PropertyCriteriaConstants.h */,
 				45991A220FF0927F00627B7D /* PropertyDetailsConstants.h */,
+				455733CD103779940013278E /* PropertyMapConstants.h */,
 				45BEE85310059FEA0031613E /* MortgageCriteriaConstants.h */,
 				45267CF6102EA866007BED9D /* MortgageResultsConstants.h */,
 			);

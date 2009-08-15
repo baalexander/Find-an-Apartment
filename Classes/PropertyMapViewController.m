@@ -1,17 +1,11 @@
 #import "PropertyMapViewController.h"
 
 #import "PropertyGeocodeParser.h"
+#import "PropertyFavoritesViewController.h"
 #import "PropertyListViewController.h"
 #import "PropertyCriteria.h"
 #import "PropertyAnnotation.h"
-
-
-// Maximum number of pins to load
-#define kMaxMapItems 25
-
-//Segmented Control items. Eventually put in a constants file so List view controller does not have to have a duplicate.
-static NSInteger kListItem = 0;
-static NSInteger kMapItem = 1;
+#import "PropertyMapConstants.h"
 
 
 @interface PropertyMapViewController ()
@@ -40,6 +34,7 @@ static NSInteger kMapItem = 1;
 @synthesize maxPoint = maxPoint_;
 @synthesize minPoint = minPoint_;
 @synthesize firstTime = firstTime_;
+@synthesize isFromFavorites = isFromFavorites_;
 
 
 #pragma mark -
@@ -49,7 +44,8 @@ static NSInteger kMapItem = 1;
 {
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
     {
-
+        //Default is NOT from Favorites
+        [self setIsFromFavorites:NO];
     }
     
     return self;
@@ -74,15 +70,28 @@ static NSInteger kMapItem = 1;
     //Bring up list view. Releases this view.
     if ([segmentedControl selectedSegmentIndex] == kListItem)
     {
-        //FIXME: What if called from the Favorites view controller? Then needs to load PropertyFavoritesView
-        PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
-        [listViewController setHistory:[self history]];
-        
-        NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithArray:[[self navigationController] viewControllers]];
-        [viewControllers replaceObjectAtIndex:[viewControllers count] - 1 withObject:listViewController];
-        [listViewController release];
-        [[self navigationController] setViewControllers:viewControllers animated:NO];
-        [viewControllers release];
+        if ([self isFromFavorites])
+        {
+            PropertyFavoritesViewController *favoritesViewController = [[PropertyFavoritesViewController alloc] initWithNibName:@"PropertyFavoritesView" bundle:nil];
+            [favoritesViewController setHistory:[self history]];
+            
+            NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithArray:[[self navigationController] viewControllers]];
+            [viewControllers replaceObjectAtIndex:[viewControllers count] - 1 withObject:favoritesViewController];
+            [favoritesViewController release];
+            [[self navigationController] setViewControllers:viewControllers animated:NO];
+            [viewControllers release];            
+        }
+        else
+        {
+            PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
+            [listViewController setHistory:[self history]];
+            
+            NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithArray:[[self navigationController] viewControllers]];
+            [viewControllers replaceObjectAtIndex:[viewControllers count] - 1 withObject:listViewController];
+            [listViewController release];
+            [[self navigationController] setViewControllers:viewControllers animated:NO];
+            [viewControllers release];
+        }
     }
 }
 

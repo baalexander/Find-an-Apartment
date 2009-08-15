@@ -5,13 +5,11 @@
 #import "PropertyDetailsViewController.h"
 #import "PropertyMapViewController.h"
 #import "StringFormatter.h"
+#import "PropertyMapConstants.h"
 
 
 //Element name that separates each item in the XML results
 static const char *kItemName = "property";
-//Segmented Control items
-static NSInteger kListItem = 0;
-static NSInteger kMapItem = 1;
 
 
 // Class extension for private properties and methods.
@@ -84,9 +82,6 @@ static NSInteger kMapItem = 1;
         [mapViewController release];
         [[self navigationController] setViewControllers:viewControllers animated:NO];
         [viewControllers release];
-        
-        //Another option instead of replacing the view controllers is presenting a modal view controller of the map. Not sure about back button though or how to switch back to list. List option could still be a segment controller and just dismiss the modal view controller when pressing "list". Back button could do something similar?
-        //[[self navigationController] presentModalViewController:mapViewController animated:YES];
     }
 }
 
