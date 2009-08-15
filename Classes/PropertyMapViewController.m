@@ -258,43 +258,46 @@
 {
     //Placemark's coordinate
     CLLocationCoordinate2D coordinate = [[self placemark] coordinate];
-    
-    //Sets Coordinates and updates Location in Summary
-    PropertySummary *summary = [(PropertyGeocodeParser *)parser summary];
-    NSNumber *longitude = [[NSNumber alloc] initWithDouble:coordinate.longitude];
-    [summary setLongitude:longitude];
-    [longitude release];
-    NSNumber *latitude = [[NSNumber alloc] initWithDouble:coordinate.latitude];
-    [summary setLatitude:latitude];
-    [latitude release];
-    [summary setLocation:[[self placemark] address]];
-    
-    // Setup the pin to be placed on the map
-    PropertyAnnotation *annotation = [[PropertyAnnotation alloc] initWithPlacemark:[self placemark] andSummary:summary];
-    [[self mapView] addAnnotation:annotation];
-    [annotation release];
-    
-    //Sets map region to latitude/longitude box results from Google if box given and a single result
-    if ([self summaryCount] == 1 
+    //Sorry equator and Prime Meridian, no 0 coordinates allowed because _usually_ a parsing or downloading mishap
+    if (coordinate.longitude != 0 && coordinate.latitude != 0)
+    {
+        //Sets Coordinates and updates Location in Summary
+        PropertySummary *summary = [(PropertyGeocodeParser *)parser summary];
+        NSNumber *longitude = [[NSNumber alloc] initWithDouble:coordinate.longitude];
+        [summary setLongitude:longitude];
+        [longitude release];
+        NSNumber *latitude = [[NSNumber alloc] initWithDouble:coordinate.latitude];
+        [summary setLatitude:latitude];
+        [latitude release];
+        [summary setLocation:[[self placemark] address]];
+        
+        // Setup the pin to be placed on the map
+        PropertyAnnotation *annotation = [[PropertyAnnotation alloc] initWithPlacemark:[self placemark] andSummary:summary];
+        [[self mapView] addAnnotation:annotation];
+        [annotation release];
+        
+        //Sets map region to latitude/longitude box results from Google if box given and a single result
+        if ([self summaryCount] == 1 
             && [[self placemark] north] != 0
             && [[self placemark] east] != 0
             && [[self placemark] south] != 0
             && [[self placemark] west] != 0)
-    {                
-        MKCoordinateSpan span;
-        span.longitudeDelta = [[self placemark] east] - [[self placemark] west];
-        span.latitudeDelta = [[self placemark] north] - [[self placemark] south];
-        
-        MKCoordinateRegion region;
-        region.center = coordinate;
-        region.span = span;
-        [[self mapView] setRegion:region animated:YES]; 
-    }
-    //Sets region to min/max of all coordinates thus far
-    else
-    {
-        [self centerMapWithCoordinate:coordinate];
-    }
+        {                
+            MKCoordinateSpan span;
+            span.longitudeDelta = [[self placemark] east] - [[self placemark] west];
+            span.latitudeDelta = [[self placemark] north] - [[self placemark] south];
+            
+            MKCoordinateRegion region;
+            region.center = coordinate;
+            region.span = span;
+            [[self mapView] setRegion:region animated:YES]; 
+        }
+        //Sets region to min/max of all coordinates thus far
+        else
+        {
+            [self centerMapWithCoordinate:coordinate];
+        }        
+    }    
     
     //If no more queued operations, saves context to save the new summary coordinate data.
     if ([[[self operationQueue] operations] count] == 0)
