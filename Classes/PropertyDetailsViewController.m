@@ -478,7 +478,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     
     if ([key isEqual:kDetailsLink])
     {
-        WebViewController *webViewController = [[WebViewController alloc] init];
+        WebViewController *webViewController = [[WebViewController alloc] initWithNibName:@"WebView" bundle:nil];
         
         NSURL *url = [[NSURL alloc] initWithString:detail];
         [webViewController setUrl:url];

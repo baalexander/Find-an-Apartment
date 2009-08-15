@@ -22,6 +22,8 @@
 		453DBF881002ED760090982C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D456881002E4C000944852 /* AppDelegate.m */; };
 		453EE36E0FF084DB0044390F /* DescriptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453EE36D0FF084DB0044390F /* DescriptionCell.xib */; };
 		453EE3710FF084EC0044390F /* DescriptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 453EE3700FF084EC0044390F /* DescriptionCell.m */; };
+		4557336C10374A800013278E /* WebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4557336B10374A800013278E /* WebView.xib */; };
+		4557336D10374A800013278E /* WebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4557336B10374A800013278E /* WebView.xib */; };
 		4558D5AE1002FECD0065C4DD /* HomeFinderAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558D5AD1002FECD0065C4DD /* HomeFinderAppDelegate.m */; };
 		4558D65910058CF30065C4DD /* MortgageCriteriaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558D65710058CF30065C4DD /* MortgageCriteriaViewController.m */; };
 		4558D65A10058CF30065C4DD /* MortgageCriteriaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4558D65810058CF30065C4DD /* MortgageCriteriaView.xib */; };
@@ -210,6 +212,7 @@
 		453EE36D0FF084DB0044390F /* DescriptionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DescriptionCell.xib; path = Classes/DescriptionCell.xib; sourceTree = "<group>"; };
 		453EE36F0FF084EC0044390F /* DescriptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DescriptionCell.h; path = Classes/DescriptionCell.h; sourceTree = "<group>"; };
 		453EE3700FF084EC0044390F /* DescriptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DescriptionCell.m; path = Classes/DescriptionCell.m; sourceTree = "<group>"; };
+		4557336B10374A800013278E /* WebView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = WebView.xib; path = Classes/WebView.xib; sourceTree = "<group>"; };
 		4558D5AC1002FECD0065C4DD /* HomeFinderAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeFinderAppDelegate.h; path = Classes/HomeFinderAppDelegate.h; sourceTree = "<group>"; };
 		4558D5AD1002FECD0065C4DD /* HomeFinderAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeFinderAppDelegate.m; path = Classes/HomeFinderAppDelegate.m; sourceTree = "<group>"; };
 		4558D65610058CF30065C4DD /* MortgageCriteriaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MortgageCriteriaViewController.h; path = Classes/MortgageCriteriaViewController.h; sourceTree = "<group>"; };
@@ -579,6 +582,7 @@
 				457AA37E0FDAC45900F0D16C /* InputSimpleCell.xib */,
 				45D9401D0FEFDA3600AD4A5B /* LocationCell.xib */,
 				457931000FE36A08008E2ACD /* SummaryCell.xib */,
+				4557336B10374A800013278E /* WebView.xib */,
 			);
 			name = "General UI";
 			sourceTree = "<group>";
@@ -817,6 +821,7 @@
 				DDDF6ABB101E2CA5001621C7 /* Three20.bundle in Resources */,
 				DD6F1F5B1026718C000C8207 /* back.png in Resources */,
 				DD6F1F5C1026718C000C8207 /* forward.png in Resources */,
+				4557336C10374A800013278E /* WebView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -851,6 +856,7 @@
 				DDDF6ABC101E2CA5001621C7 /* Three20.bundle in Resources */,
 				DD6F1F591026718C000C8207 /* back.png in Resources */,
 				DD6F1F5A1026718C000C8207 /* forward.png in Resources */,
+				4557336D10374A800013278E /* WebView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

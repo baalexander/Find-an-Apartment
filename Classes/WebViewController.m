@@ -17,7 +17,6 @@
 
 - (void)dealloc
 {
-    [webView_ setDelegate:nil];
     [webView_ release];
     [url_ release];
 
@@ -68,14 +67,6 @@
     [[self navigationItem] setRightBarButtonItem:segmentBarItem];
     [segmentBarItem release];
     
-    // Setup the UIWebView
-    UIWebView *webView = [[UIWebView alloc] init];
-    [self setWebView:webView];
-    [webView release];
-    [[self webView] setDataDetectorTypes:UIDataDetectorTypeAll];
-    [[self webView] setScalesPageToFit:YES];
-    [[self webView] setDelegate:self];
-    
     // Load the page for the given address
     if ([self url] != nil)
     {
@@ -83,8 +74,6 @@
         [[self webView] loadRequest:request];
         [request release];        
     }
-    
-    [self setView:[self webView]];    
 }
 
 
