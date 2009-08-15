@@ -478,16 +478,14 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     
     if ([key isEqual:kDetailsLink])
     {
-        WebViewController *webViewController = [[WebViewController alloc] initWithAddress:detail];       
+        WebViewController *webViewController = [[WebViewController alloc] init];
         
-        // The WebViewController needs to be wrapped in a UINavigationController to get the navigation bar
-        // Should probably be its own class, but this way seems more straightforward than keeping track of a 
-        // UIWebView inside WebViewController inside another custom class
-        UINavigationController *webViewWrapper = [[UINavigationController alloc] initWithRootViewController:webViewController];
-        [[webViewWrapper navigationBar] setTintColor:[UIColor blackColor]];
+        NSURL *url = [[NSURL alloc] initWithString:detail];
+        [webViewController setUrl:url];
+        [url release];
+
+        [[self navigationController] pushViewController:webViewController animated:YES];
         [webViewController release];
-        
-        [self presentModalViewController:webViewWrapper animated:YES];
         [self setSelectedIndex:indexPath];
     }
     

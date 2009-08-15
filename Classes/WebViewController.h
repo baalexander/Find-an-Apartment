@@ -1,13 +1,14 @@
 #import <UIKit/UIKit.h>
 
 
-@interface WebViewController : UIViewController <UIWebViewDelegate> {
+@interface WebViewController : UIViewController <UIWebViewDelegate>
+{
     @private
         UIWebView *webView_;
+        NSURL *url_;
 }
 
-- (id)initWithAddress:(NSString *)address;
-
 @property (nonatomic, retain) IBOutlet UIWebView *webView;
+@property (nonatomic, retain) NSURL *url;
 
 @end
