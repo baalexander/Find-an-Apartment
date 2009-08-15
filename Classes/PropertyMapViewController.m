@@ -15,7 +15,6 @@ static NSInteger kMapItem = 1;
 
 
 @interface PropertyMapViewController ()
-@property (nonatomic, retain) MKMapView *mapView;
 @property (nonatomic, retain) NSOperationQueue *operationQueue;
 @property (nonatomic, retain) Placemark *placemark;
 @property (nonatomic, assign) NSUInteger summaryCount;
@@ -58,9 +57,9 @@ static NSInteger kMapItem = 1;
 
 - (void)dealloc
 {
+    [mapView_ release];
     [history_ release];
     [summary_ release];
-    [mapView_ release];
     [operationQueue_ release];
     [placemark_ release];
  
@@ -181,13 +180,6 @@ static NSInteger kMapItem = 1;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Center the map based on the user's input
-    MKMapView *mapView = [[MKMapView alloc] initWithFrame:[[self view] bounds]];
-    [mapView setDelegate:self];
-    [self setMapView:mapView];
-    [mapView release];
-    [[self view] addSubview:[self mapView]];
 
     if ([self history])
     {

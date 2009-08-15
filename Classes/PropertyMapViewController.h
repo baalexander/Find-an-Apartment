@@ -22,6 +22,7 @@
         BOOL firstTime_;
 }
 
+@property (nonatomic, retain) IBOutlet MKMapView *mapView;
 @property (nonatomic, retain) PropertyHistory *history;
 @property (nonatomic, retain) PropertySummary *summary;
 
