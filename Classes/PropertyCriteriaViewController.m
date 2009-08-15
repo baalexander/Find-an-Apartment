@@ -105,12 +105,13 @@
     {
         title = [[self criteria] postalCode];
     }
-    else if ([[self criteria] city] != nil 
-             && [[[self criteria] city] length] > 0 
-             && [[self criteria] state] != nil
-             && [[[self criteria] state] length] > 0)
+    else if ([[self criteria] city] != nil && [[[self criteria] city] length] > 0)
     {
-        title = [NSString stringWithFormat:@"%@, %@", [[self criteria] city], [[self criteria] state]];
+        title = [[self criteria] city];
+    }
+    else if ([[self criteria] state] != nil && [[[self criteria] state] length] > 0)
+    {
+        title = [[self criteria] state];
     }
     else
     {
