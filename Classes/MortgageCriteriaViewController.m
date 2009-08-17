@@ -1,6 +1,6 @@
 #import "MortgageCriteriaViewController.h"
 
-#import "HomeFinderAppDelegate.h"
+#import "AppDelegate.h"
 #import "MortgageCriteriaConstants.h"
 #import "MortgageUrlConstructor.h"
 #import "MortgageResultsViewController.h"
@@ -193,7 +193,7 @@
         NSPersistentStoreCoordinator *persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self mortgageObjectModel]];
         [self setMortgageStoreCoordinator:persistentStoreCoordinator];
         [persistentStoreCoordinator release];
-        NSURL *storeUrl = [NSURL fileURLWithPath:[[HomeFinderAppDelegate applicationDocumentsDirectory] stringByAppendingPathComponent:@"Mortgage.sqlite"]];
+        NSURL *storeUrl = [NSURL fileURLWithPath:[[AppDelegate applicationDocumentsDirectory] stringByAppendingPathComponent:@"Mortgage.sqlite"]];
         NSError *error;
         if (![[self mortgageStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error])
         {

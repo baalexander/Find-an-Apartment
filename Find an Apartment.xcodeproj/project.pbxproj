@@ -26,7 +26,6 @@
 		455734361038FC770013278E /* PropertySearchSourcesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 455734341038FC770013278E /* PropertySearchSourcesView.xib */; };
 		4557346D103901C30013278E /* PropertyCriteria.m in Sources */ = {isa = PBXBuildFile; fileRef = 4557346C103901C30013278E /* PropertyCriteria.m */; };
 		4557346E103901C30013278E /* PropertyCriteria.m in Sources */ = {isa = PBXBuildFile; fileRef = 4557346C103901C30013278E /* PropertyCriteria.m */; };
-		4558D5AE1002FECD0065C4DD /* HomeFinderAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558D5AD1002FECD0065C4DD /* HomeFinderAppDelegate.m */; };
 		4558D65910058CF30065C4DD /* MortgageCriteriaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558D65710058CF30065C4DD /* MortgageCriteriaViewController.m */; };
 		4558D65A10058CF30065C4DD /* MortgageCriteriaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4558D65810058CF30065C4DD /* MortgageCriteriaView.xib */; };
 		455A29A91031B006004E15BC /* PropertyGeocodeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 455A29A81031B006004E15BC /* PropertyGeocodeParser.m */; };
@@ -40,7 +39,6 @@
 		457AA2AF0FD8D4FF00F0D16C /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 457AA2AE0FD8D4FF00F0D16C /* libxml2.2.dylib */; };
 		457AA3490FDAC26100F0D16C /* UrlUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA3380FDAC26100F0D16C /* UrlUtil.m */; };
 		457AA34A0FDAC26100F0D16C /* XmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA33A0FDAC26100F0D16C /* XmlParser.m */; };
-		457AA38D0FDAC45900F0D16C /* FindAnApartmentAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA3780FDAC45900F0D16C /* FindAnApartmentAppDelegate.m */; };
 		457AA38E0FDAC45900F0D16C /* InputRangeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA37A0FDAC45900F0D16C /* InputRangeCell.m */; };
 		457AA38F0FDAC45900F0D16C /* InputRangeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457AA37B0FDAC45900F0D16C /* InputRangeCell.xib */; };
 		457AA3900FDAC45900F0D16C /* InputSimpleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA37D0FDAC45900F0D16C /* InputSimpleCell.m */; };
@@ -219,8 +217,6 @@
 		455734341038FC770013278E /* PropertySearchSourcesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertySearchSourcesView.xib; path = Classes/PropertySearchSourcesView.xib; sourceTree = "<group>"; };
 		4557346B103901C30013278E /* PropertyCriteria.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyCriteria.h; path = Classes/PropertyCriteria.h; sourceTree = "<group>"; };
 		4557346C103901C30013278E /* PropertyCriteria.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyCriteria.m; path = Classes/PropertyCriteria.m; sourceTree = "<group>"; };
-		4558D5AC1002FECD0065C4DD /* HomeFinderAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeFinderAppDelegate.h; path = Classes/HomeFinderAppDelegate.h; sourceTree = "<group>"; };
-		4558D5AD1002FECD0065C4DD /* HomeFinderAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeFinderAppDelegate.m; path = Classes/HomeFinderAppDelegate.m; sourceTree = "<group>"; };
 		4558D65610058CF30065C4DD /* MortgageCriteriaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MortgageCriteriaViewController.h; path = Classes/MortgageCriteriaViewController.h; sourceTree = "<group>"; };
 		4558D65710058CF30065C4DD /* MortgageCriteriaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MortgageCriteriaViewController.m; path = Classes/MortgageCriteriaViewController.m; sourceTree = "<group>"; };
 		4558D65810058CF30065C4DD /* MortgageCriteriaView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MortgageCriteriaView.xib; path = Classes/MortgageCriteriaView.xib; sourceTree = "<group>"; };
@@ -241,8 +237,6 @@
 		457AA3380FDAC26100F0D16C /* UrlUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlUtil.m; sourceTree = "<group>"; };
 		457AA3390FDAC26100F0D16C /* XmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XmlParser.h; sourceTree = "<group>"; };
 		457AA33A0FDAC26100F0D16C /* XmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XmlParser.m; sourceTree = "<group>"; };
-		457AA3770FDAC45900F0D16C /* FindAnApartmentAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FindAnApartmentAppDelegate.h; path = Classes/FindAnApartmentAppDelegate.h; sourceTree = "<group>"; };
-		457AA3780FDAC45900F0D16C /* FindAnApartmentAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FindAnApartmentAppDelegate.m; path = Classes/FindAnApartmentAppDelegate.m; sourceTree = "<group>"; };
 		457AA3790FDAC45900F0D16C /* InputRangeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InputRangeCell.h; path = Classes/InputRangeCell.h; sourceTree = "<group>"; };
 		457AA37A0FDAC45900F0D16C /* InputRangeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InputRangeCell.m; path = Classes/InputRangeCell.m; sourceTree = "<group>"; };
 		457AA37B0FDAC45900F0D16C /* InputRangeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = InputRangeCell.xib; path = Classes/InputRangeCell.xib; sourceTree = "<group>"; };
@@ -637,10 +631,6 @@
 		455BFE710FDCA0BF000BCD39 /* App Delegate */ = {
 			isa = PBXGroup;
 			children = (
-				457AA3770FDAC45900F0D16C /* FindAnApartmentAppDelegate.h */,
-				457AA3780FDAC45900F0D16C /* FindAnApartmentAppDelegate.m */,
-				4558D5AC1002FECD0065C4DD /* HomeFinderAppDelegate.h */,
-				4558D5AD1002FECD0065C4DD /* HomeFinderAppDelegate.m */,
 				45D456871002E4C000944852 /* AppDelegate.h */,
 				45D456881002E4C000944852 /* AppDelegate.m */,
 			);
@@ -881,7 +871,6 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				457AA3490FDAC26100F0D16C /* UrlUtil.m in Sources */,
 				457AA34A0FDAC26100F0D16C /* XmlParser.m in Sources */,
-				457AA38D0FDAC45900F0D16C /* FindAnApartmentAppDelegate.m in Sources */,
 				457AA38E0FDAC45900F0D16C /* InputRangeCell.m in Sources */,
 				457AA3900FDAC45900F0D16C /* InputSimpleCell.m in Sources */,
 				457AA3920FDAC45900F0D16C /* PropertyCitiesViewController.m in Sources */,
@@ -955,7 +944,6 @@
 				45D4553C1001970000944852 /* DescriptionCell.m in Sources */,
 				45D4553D1001970000944852 /* LocationManager.m in Sources */,
 				45D456891002E4C000944852 /* AppDelegate.m in Sources */,
-				4558D5AE1002FECD0065C4DD /* HomeFinderAppDelegate.m in Sources */,
 				4558D65910058CF30065C4DD /* MortgageCriteriaViewController.m in Sources */,
 				45BEE9001006D7D00031613E /* Mortgage.xcdatamodel in Sources */,
 				45BEE9871008FACC0031613E /* CriteriaViewController.m in Sources */,
