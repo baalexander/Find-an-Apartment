@@ -16,6 +16,7 @@
 @dynamic city;
 @dynamic street;
 @dynamic minBedrooms;
+@dynamic searchSource;
 @dynamic maxPrice;
 @dynamic longitude;
 @dynamic minBathrooms;

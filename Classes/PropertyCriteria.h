@@ -18,6 +18,7 @@
 @property (nonatomic, retain) NSString * city;
 @property (nonatomic, retain) NSString * street;
 @property (nonatomic, retain) NSNumber * minBedrooms;
+@property (nonatomic, retain) NSString * searchSource;
 @property (nonatomic, retain) NSNumber * maxPrice;
 @property (nonatomic, retain) NSNumber * longitude;
 @property (nonatomic, retain) NSNumber * minBathrooms;

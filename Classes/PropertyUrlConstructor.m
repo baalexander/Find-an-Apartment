@@ -118,12 +118,26 @@
 
 - (NSString *)saleType
 {
+#ifdef HOME_FINDER
+    return @"&sale_type=for_sale";
+#else
     return @"&sale_type=for_rent";
+#endif
 }
 
 - (NSString *)searchSource
 {
-    return @"&search_source=google_base";
+    NSString *choice = [[self criteria] searchSource];
+    
+    if ([choice isEqual:@"Trulia"])
+    {
+        return @"&search_source=trulia";
+    }
+    //Default search source is Google Base
+    else
+    {
+        return @"&search_source=google_base";
+    }
 }
 
 - (NSString *)sortBy

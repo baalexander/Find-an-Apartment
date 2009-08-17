@@ -13,8 +13,6 @@
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* FindAnApartmentMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* FindAnApartmentMainWindow.xib */; };
 		28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D801B30F44B63D00FB423F /* CoreData.framework */; };
-		45267DA2102F3EC4007BED9D /* PropertyCriteria.m in Sources */ = {isa = PBXBuildFile; fileRef = 45267DA1102F3EC4007BED9D /* PropertyCriteria.m */; };
-		45267DA3102F3EC4007BED9D /* PropertyCriteria.m in Sources */ = {isa = PBXBuildFile; fileRef = 45267DA1102F3EC4007BED9D /* PropertyCriteria.m */; };
 		452A89F61033A07F00AD21AB /* XmlElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 452A89F51033A07F00AD21AB /* XmlElement.m */; };
 		452A89F71033A07F00AD21AB /* XmlElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 452A89F51033A07F00AD21AB /* XmlElement.m */; };
 		452A8AD51033AED400AD21AB /* Placemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 452A8AD41033AED400AD21AB /* Placemark.m */; };
@@ -24,6 +22,10 @@
 		453EE3710FF084EC0044390F /* DescriptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 453EE3700FF084EC0044390F /* DescriptionCell.m */; };
 		4557336C10374A800013278E /* WebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4557336B10374A800013278E /* WebView.xib */; };
 		4557336D10374A800013278E /* WebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4557336B10374A800013278E /* WebView.xib */; };
+		455734351038FC770013278E /* PropertySearchSourcesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 455734331038FC770013278E /* PropertySearchSourcesViewController.m */; };
+		455734361038FC770013278E /* PropertySearchSourcesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 455734341038FC770013278E /* PropertySearchSourcesView.xib */; };
+		4557346D103901C30013278E /* PropertyCriteria.m in Sources */ = {isa = PBXBuildFile; fileRef = 4557346C103901C30013278E /* PropertyCriteria.m */; };
+		4557346E103901C30013278E /* PropertyCriteria.m in Sources */ = {isa = PBXBuildFile; fileRef = 4557346C103901C30013278E /* PropertyCriteria.m */; };
 		4558D5AE1002FECD0065C4DD /* HomeFinderAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558D5AD1002FECD0065C4DD /* HomeFinderAppDelegate.m */; };
 		4558D65910058CF30065C4DD /* MortgageCriteriaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558D65710058CF30065C4DD /* MortgageCriteriaViewController.m */; };
 		4558D65A10058CF30065C4DD /* MortgageCriteriaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4558D65810058CF30065C4DD /* MortgageCriteriaView.xib */; };
@@ -203,8 +205,6 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Find_an_Apartment_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Find_an_Apartment_Prefix.pch; sourceTree = "<group>"; };
 		45267CF6102EA866007BED9D /* MortgageResultsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MortgageResultsConstants.h; path = Classes/MortgageResultsConstants.h; sourceTree = "<group>"; };
-		45267DA0102F3EC4007BED9D /* PropertyCriteria.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyCriteria.h; path = Classes/PropertyCriteria.h; sourceTree = "<group>"; };
-		45267DA1102F3EC4007BED9D /* PropertyCriteria.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyCriteria.m; path = Classes/PropertyCriteria.m; sourceTree = "<group>"; };
 		452A89F41033A07F00AD21AB /* XmlElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XmlElement.h; path = Classes/XmlElement.h; sourceTree = "<group>"; };
 		452A89F51033A07F00AD21AB /* XmlElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XmlElement.m; path = Classes/XmlElement.m; sourceTree = "<group>"; };
 		452A8AD31033AED400AD21AB /* Placemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Placemark.h; path = Classes/Placemark.h; sourceTree = "<group>"; };
@@ -214,6 +214,11 @@
 		453EE3700FF084EC0044390F /* DescriptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DescriptionCell.m; path = Classes/DescriptionCell.m; sourceTree = "<group>"; };
 		4557336B10374A800013278E /* WebView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = WebView.xib; path = Classes/WebView.xib; sourceTree = "<group>"; };
 		455733CD103779940013278E /* PropertyMapConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyMapConstants.h; path = Classes/PropertyMapConstants.h; sourceTree = "<group>"; };
+		455734321038FC770013278E /* PropertySearchSourcesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertySearchSourcesViewController.h; path = Classes/PropertySearchSourcesViewController.h; sourceTree = "<group>"; };
+		455734331038FC770013278E /* PropertySearchSourcesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertySearchSourcesViewController.m; path = Classes/PropertySearchSourcesViewController.m; sourceTree = "<group>"; };
+		455734341038FC770013278E /* PropertySearchSourcesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertySearchSourcesView.xib; path = Classes/PropertySearchSourcesView.xib; sourceTree = "<group>"; };
+		4557346B103901C30013278E /* PropertyCriteria.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyCriteria.h; path = Classes/PropertyCriteria.h; sourceTree = "<group>"; };
+		4557346C103901C30013278E /* PropertyCriteria.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyCriteria.m; path = Classes/PropertyCriteria.m; sourceTree = "<group>"; };
 		4558D5AC1002FECD0065C4DD /* HomeFinderAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeFinderAppDelegate.h; path = Classes/HomeFinderAppDelegate.h; sourceTree = "<group>"; };
 		4558D5AD1002FECD0065C4DD /* HomeFinderAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeFinderAppDelegate.m; path = Classes/HomeFinderAppDelegate.m; sourceTree = "<group>"; };
 		4558D65610058CF30065C4DD /* MortgageCriteriaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MortgageCriteriaViewController.h; path = Classes/MortgageCriteriaViewController.h; sourceTree = "<group>"; };
@@ -549,6 +554,8 @@
 				457AA3860FDAC45900F0D16C /* PropertyListViewController.m */,
 				458783A30FDB45F7000B4F5D /* PropertyMapViewController.h */,
 				458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */,
+				455734321038FC770013278E /* PropertySearchSourcesViewController.h */,
+				455734331038FC770013278E /* PropertySearchSourcesViewController.m */,
 				4579324A0FE59783008E2ACD /* PropertySortChoicesViewController.h */,
 				4579324B0FE59783008E2ACD /* PropertySortChoicesViewController.m */,
 				457AA3880FDAC45900F0D16C /* PropertyStatesViewController.h */,
@@ -569,6 +576,7 @@
 				45C974150FDCCA150021EE6D /* PropertyHistoryView.xib */,
 				457AA3870FDAC45900F0D16C /* PropertyListView.xib */,
 				458783A50FDB45F7000B4F5D /* PropertyMapView.xib */,
+				455734341038FC770013278E /* PropertySearchSourcesView.xib */,
 				4579324D0FE59791008E2ACD /* PropertySortChoicesView.xib */,
 				457AA38A0FDAC45900F0D16C /* PropertyStatesView.xib */,
 			);
@@ -612,8 +620,8 @@
 		455BFE660FDCA036000BCD39 /* Property */ = {
 			isa = PBXGroup;
 			children = (
-				45267DA0102F3EC4007BED9D /* PropertyCriteria.h */,
-				45267DA1102F3EC4007BED9D /* PropertyCriteria.m */,
+				4557346B103901C30013278E /* PropertyCriteria.h */,
+				4557346C103901C30013278E /* PropertyCriteria.m */,
 				45D941DC0FF051B600AD4A5B /* PropertyDetails.h */,
 				45D941DD0FF051B600AD4A5B /* PropertyDetails.m */,
 				45D93EDC0FEEDB0B00AD4A5B /* PropertyHistory.h */,
@@ -859,6 +867,7 @@
 				DD6F1F591026718C000C8207 /* back.png in Resources */,
 				DD6F1F5A1026718C000C8207 /* forward.png in Resources */,
 				4557336D10374A800013278E /* WebView.xib in Resources */,
+				455734361038FC770013278E /* PropertySearchSourcesView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -905,11 +914,11 @@
 				DD6F225B1027E1C6000C8207 /* PropertyImageViewController.m in Sources */,
 				DD7DAAD910293FBA00EE70AB /* PropertyAnnotation.m in Sources */,
 				45E9CE0C102BE338003D157D /* LocationParser.m in Sources */,
-				45267DA3102F3EC4007BED9D /* PropertyCriteria.m in Sources */,
 				458A49AB1031373000375D4C /* PropertySummary.m in Sources */,
 				455A29AA1031B006004E15BC /* PropertyGeocodeParser.m in Sources */,
 				452A89F71033A07F00AD21AB /* XmlElement.m in Sources */,
 				452A8AD61033AED400AD21AB /* Placemark.m in Sources */,
+				4557346E103901C30013278E /* PropertyCriteria.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -958,11 +967,12 @@
 				DD6F225C1027E1C6000C8207 /* PropertyImageViewController.m in Sources */,
 				DD7DAADA10293FBA00EE70AB /* PropertyAnnotation.m in Sources */,
 				45E9CE0B102BE338003D157D /* LocationParser.m in Sources */,
-				45267DA2102F3EC4007BED9D /* PropertyCriteria.m in Sources */,
 				458A49AA1031373000375D4C /* PropertySummary.m in Sources */,
 				455A29A91031B006004E15BC /* PropertyGeocodeParser.m in Sources */,
 				452A89F61033A07F00AD21AB /* XmlElement.m in Sources */,
 				452A8AD51033AED400AD21AB /* Placemark.m in Sources */,
+				455734351038FC770013278E /* PropertySearchSourcesViewController.m in Sources */,
+				4557346D103901C30013278E /* PropertyCriteria.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

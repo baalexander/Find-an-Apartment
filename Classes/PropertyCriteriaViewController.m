@@ -9,6 +9,10 @@
 #import "PropertySortChoicesViewController.h"
 #import "StringFormatter.h"
 
+#ifdef HOME_FINDER
+    #import "PropertySearchSourcesViewController.h"
+#endif
+
 
 @implementation PropertyCriteriaViewController
 
@@ -120,7 +124,12 @@
     [self setTitle:title];
     
     //Row Ids outlines the order of the rows in the table
-    NSArray *rowIds = [[NSArray alloc] initWithObjects:kPropertyCriteriaStreet, kPropertyCriteriaKeywords, kPropertyCriteriaPrice, kPropertyCriteriaSquareFeet, kPropertyCriteriaBedrooms, kPropertyCriteriaBathrooms, kPropertyCriteriaSortBy, kPropertyCriteriaSearch, nil];
+    NSArray *rowIds;
+#ifdef HOME_FINDER
+    rowIds = [[NSArray alloc] initWithObjects:kPropertyCriteriaSearchSource, kPropertyCriteriaKeywords, kPropertyCriteriaPrice, kPropertyCriteriaSquareFeet, kPropertyCriteriaBedrooms, kPropertyCriteriaBathrooms, kPropertyCriteriaSortBy, kPropertyCriteriaSearch, nil];
+#else
+    rowIds = [[NSArray alloc] initWithObjects:kPropertyCriteriaStreet, kPropertyCriteriaKeywords, kPropertyCriteriaPrice, kPropertyCriteriaSquareFeet, kPropertyCriteriaBedrooms, kPropertyCriteriaBathrooms, kPropertyCriteriaSortBy, kPropertyCriteriaSearch, nil];
+#endif
     [self setRowIds:rowIds];
     [rowIds release];
 }
@@ -235,6 +244,17 @@
         
         return cell;
     }
+#ifdef HOME_FINDER
+    else if ([rowId isEqual:kPropertyCriteriaSearchSource])
+    {
+        UITableViewCell *cell = [self simpleCellWithText:@"source" withDetail:[[self criteria] searchSource]];
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
+        
+        return cell;
+    }    
+#endif
+    
     else if ([rowId isEqual:kPropertyCriteriaSearch])
     {
         return [self buttonCellWithText:@"Search"];
@@ -291,6 +311,18 @@
         
         [self setSelectedIndexPath:indexPath];
     }
+#ifdef HOME_FINDER
+    //Selected search source, brings up list of search sources
+    else if ([rowId isEqual:kPropertyCriteriaSearchSource]) 
+    {
+        PropertySearchSourcesViewController *choicesViewController = [[PropertySearchSourcesViewController alloc] initWithNibName:@"PropertySearchSourcesView" bundle:nil];
+        [choicesViewController setCriteria:[self criteria]];
+        [[self navigationController] pushViewController:choicesViewController animated:YES];
+        [choicesViewController release];
+        
+        [self setSelectedIndexPath:indexPath];
+    }    
+#endif
     //Puts the cell in edit mode or view mode if already in edit mode
     else
     {
