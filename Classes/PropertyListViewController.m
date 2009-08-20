@@ -184,6 +184,8 @@
     [segmentedControl addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventValueChanged];
     [segmentedControl setFrame:CGRectMake(0, 0, 90, 30)];
     [segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
+    //Disable Map if parsing
+    [segmentedControl setEnabled:![self isParsing] forSegmentAtIndex:kMapItem];
     
     UIBarButtonItem *segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
     [segmentedControl release];
@@ -391,6 +393,10 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
         NSLog(@"Error performing fetch.");
         // TODO: Handle the error.
     }
+    
+    //Enable Map button
+    UISegmentedControl *segmentedControl = (UISegmentedControl *)[[[self navigationItem] rightBarButtonItem] customView];
+    [segmentedControl setEnabled:YES forSegmentAtIndex:kMapItem];
 
     [[self tableView] reloadData];
 }
