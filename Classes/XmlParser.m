@@ -137,7 +137,7 @@ static xmlSAXHandler simpleSAXHandlerStruct;
             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
         }
         while (![self done]);
-        
+
         //Cancels connection in case DONE was set to true before finished downloading. For example, when navigating back during downloading.
         [[self connection] cancel];
         [self setConnection:nil];
@@ -164,26 +164,35 @@ static xmlSAXHandler simpleSAXHandlerStruct;
 // Forward errors to the delegate.
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    [self setDone:YES];
-    [self performSelectorOnMainThread:@selector(parseError:) withObject:error waitUntilDone:NO];
+    if (![self done])
+    {
+        [self setDone:YES];
+        [self performSelectorOnMainThread:@selector(parseError:) withObject:error waitUntilDone:NO];        
+    }
 }
 
 // Called when a chunk of data has been downloaded.
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    // Process the downloaded chunk of data.
-    xmlParseChunk(context_, (const char *)[data bytes], [data length], 0);
+    if (![self done])
+    {
+        // Process the downloaded chunk of data.
+        xmlParseChunk(context_, (const char *)[data bytes], [data length], 0);        
+    }
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    // Signal the context that parsing is complete by passing "1" as the last parameter.
-    xmlParseChunk(context_, NULL, 0, 1);
-    context_ = NULL;
-    [self performSelectorOnMainThread:@selector(parseEnded) withObject:nil waitUntilDone:NO];
+    if (![self done])
+    {        
+        // Signal the context that parsing is complete by passing "1" as the last parameter.
+        xmlParseChunk(context_, NULL, 0, 1);
+        context_ = NULL;
+        [self performSelectorOnMainThread:@selector(parseEnded) withObject:nil waitUntilDone:NO];
 
-    // Set the condition which ends the run loop.
-    [self setDone:YES];
+        // Set the condition which ends the run loop.
+        [self setDone:YES];
+    }
 }
 
 @end
