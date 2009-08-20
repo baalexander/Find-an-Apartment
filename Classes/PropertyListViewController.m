@@ -5,11 +5,7 @@
 #import "PropertyDetailsViewController.h"
 #import "PropertyMapViewController.h"
 #import "StringFormatter.h"
-#import "PropertyMapConstants.h"
-
-
-//Element name that separates each item in the XML results
-static const char *kItemName = "property";
+#import "PropertyListAndMapConstants.h"
 
 
 // Class extension for private properties and methods.
@@ -97,7 +93,7 @@ static const char *kItemName = "property";
     XmlParser *parser = [[XmlParser alloc] init];
     [parser setDelegate:self];
     [parser setUrl:url];
-    [parser setItemDelimiter:kItemName];
+    [parser setItemDelimiter:kPropertyDelimiter];
     
     //Add the Parser to an operation queue for background processing (works on a separate thread)
     [[self operationQueue] addOperation:parser];

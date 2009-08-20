@@ -1,40 +1,40 @@
 #import "PropertyMapViewController.h"
 
-#import "PropertyGeocodeParser.h"
 #import "PropertyFavoritesViewController.h"
 #import "PropertyListViewController.h"
 #import "PropertyCriteria.h"
 #import "PropertyAnnotation.h"
-#import "PropertyMapConstants.h"
+#import "PropertyListAndMapConstants.h"
+#import "UrlUtil.h"
 
 
 @interface PropertyMapViewController ()
+@property (nonatomic, retain) NSArray *summaries;
 @property (nonatomic, retain) NSOperationQueue *operationQueue;
 @property (nonatomic, retain) Placemark *placemark;
-@property (nonatomic, assign) NSUInteger summaryCount;
 @property (nonatomic, assign) CLLocationCoordinate2D maxPoint;
 @property (nonatomic, assign) CLLocationCoordinate2D minPoint;
-@property (nonatomic, assign) BOOL firstTime;
+@property (nonatomic, assign) BOOL isCancelled;
+@property (nonatomic, assign) NSInteger summaryIndex;
 - (void)geocodeProperties;
-- (void)geocodeProperty;
-- (void)enqueueSummary:(PropertySummary *)summary;
-- (void)centerMapWithCoordinate:(CLLocationCoordinate2D)coordinate;
-- (void)updateMinMaxWithCoordinate:(CLLocationCoordinate2D)coordinate;
+- (BOOL)enqueueNextSummary;
+- (void)mapPlacemark:(Placemark *)placemark withSummary:(PropertySummary *)summary;
 @end
 
 
 @implementation PropertyMapViewController
 
 @synthesize history = history_;
+@synthesize summaries = summaries_;
 @synthesize summary = summary_;
 @synthesize mapView = mapView_;
 @synthesize operationQueue = operationQueue_;
 @synthesize placemark = placemark_;
-@synthesize summaryCount = summaryCount_;
 @synthesize maxPoint = maxPoint_;
 @synthesize minPoint = minPoint_;
-@synthesize firstTime = firstTime_;
+@synthesize isCancelled = isCancelled_;
 @synthesize isFromFavorites = isFromFavorites_;
+@synthesize summaryIndex = summaryIndex_;
 
 
 #pragma mark -
@@ -46,6 +46,7 @@
     {
         //Default is NOT from Favorites
         [self setIsFromFavorites:NO];
+        [self setIsCancelled:NO];
     }
     
     return self;
@@ -55,6 +56,7 @@
 {
     [mapView_ release];
     [history_ release];
+    [summaries_ release];
     [summary_ release];
     [operationQueue_ release];
     [placemark_ release];
@@ -97,89 +99,103 @@
 
 - (void)geocodeProperties
 {
-    [self setFirstTime:YES];
-    
     NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
     [self setOperationQueue:operationQueue];
     [operationQueue release];
     
-    NSSet *summaries = [[self history] summaries];
-    [self setSummaryCount:[summaries count]];
-    
-    NSUInteger i = 0;
-    for (PropertySummary *summary in summaries)
+    [self setSummaryIndex:0];
+    [self enqueueNextSummary];
+}
+
+//Returns NO if no properties left to enqueue
+- (BOOL)enqueueNextSummary
+{
+    //Loops through list of summaries.
+    //If a cached result (has longitude and latitude), then maps. If an uncached result, enqueues to parse and returns YES.
+    for (; [self summaryIndex] < (NSInteger)[[self summaries] count] && [self summaryIndex] < kMaxMapItems; [self setSummaryIndex:[self summaryIndex] + 1])
     {
-        i++;
-        //Only parse a set max number of items to save time and space
-        if (i >= kMaxMapItems)
-        {
-            break;
-        }
-        
-        //If longitude and latitude already cache, add directly to map
-        if ([summary longitude] != nil && [summary latitude] != nil)
+        PropertySummary *summary = [[self summaries] objectAtIndex:[self summaryIndex]];
+        //If longitude and latitude already cache and not a single property, add directly to map
+        //Does the check for single property, because need to fetch additional data, like region box
+        if ([[self summaries] count] > 1 && [summary longitude] != nil && [summary latitude] != nil)
         {
             //Creates Placemark
             Placemark *placemark = [[Placemark alloc] init];
-            [placemark setAddress:[summary location]];
-            
+            [placemark setAddress:[summary location]];            
             CLLocationCoordinate2D coordinate;
             coordinate.longitude = [[summary longitude] doubleValue];
             coordinate.latitude = [[summary latitude] doubleValue];
             [placemark setCoordinate:coordinate];
             
-            // Setup the pin to be placed on the map
-            PropertyAnnotation *annotation = [[PropertyAnnotation alloc] initWithPlacemark:placemark andSummary:summary];
-            [placemark release];
-            [[self mapView] addAnnotation:annotation];
-            [annotation release];
-            
-            //Centers map with coordinate information
-            [self centerMapWithCoordinate:coordinate];
+            //Adds to map
+            [self mapPlacemark:placemark withSummary:summary];
         }
-        //Enqueue summary for parsing
         else
         {
-            [self enqueueSummary:summary];
+            //Add the Parser to an operation queue for background processing (works on a separate thread)
+            XmlParser *parser = [[XmlParser alloc] init];
+            [parser setDelegate:self];
+            
+            //Sets item delimiter
+            [parser setItemDelimiter:kGeocodeDelimiter];
+            
+            //Sets URL
+            NSString *encodedLocation = [UrlUtil encodeUrl:[summary location]];
+            NSString *urlString = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps/geo?q=%@&output=xml&oe=utf8", encodedLocation];
+            NSURL *url = [[NSURL alloc] initWithString:urlString];
+            [urlString release];
+            [parser setUrl:url];
+            [url release];    
+            
+            [[self operationQueue] addOperation:parser];
+            [parser release];
+            
+            return YES;
         }
     }
+    
+    return NO;
 }
-
-- (void)geocodeProperty
-{  
-    [self setFirstTime:YES];
-    
-    NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
-    [self setOperationQueue:operationQueue];
-    [operationQueue release];
-    
-    [self setSummaryCount:1];
-    
-    [self enqueueSummary:[self summary]];
-}
-
-- (void)enqueueSummary:(PropertySummary *)summary
+            
+- (void)mapPlacemark:(Placemark *)placemark withSummary:(PropertySummary *)summary
 {
-    //Add the Parser to an operation queue for background processing (works on a separate thread)
-    PropertyGeocodeParser *parser = [[PropertyGeocodeParser alloc] initWithSummary:summary];
-    [parser setDelegate:self];
-    [[self operationQueue] addOperation:parser];
-    [parser release];
-}
-
-- (void)updateMinMaxWithCoordinate:(CLLocationCoordinate2D)coordinate
-{
-    CLLocationCoordinate2D max;
-    CLLocationCoordinate2D min;
+    // Setup the pin to be placed on the map
+    PropertyAnnotation *annotation = [[PropertyAnnotation alloc] initWithPlacemark:placemark andSummary:summary];
+    [[self mapView] addAnnotation:annotation];
+    [annotation release];
     
-    max.latitude =  (coordinate.latitude > [self maxPoint].latitude ? coordinate.latitude : [self maxPoint].latitude);
-    max.longitude = (coordinate.longitude > [self maxPoint].longitude ? coordinate.longitude : [self maxPoint].longitude);
-    
-    min.latitude = (coordinate.latitude < [self minPoint].latitude ? coordinate.latitude : [self minPoint].latitude);
-    min.longitude = (coordinate.longitude < [self minPoint].longitude ? coordinate.longitude : [self minPoint].longitude);
-    
-    [self setMaxPoint:max];
-    [self setMinPoint:min];
+    if ([self summaryIndex] == 0)
+    {
+        //Sets map region to latitude/longitude box results from Google if box given and a single result
+        if ([[self summaries] count] == 1 
+            && [placemark north] != 0
+            && [placemark east] != 0
+            && [placemark south] != 0
+            && [placemark west] != 0)
+        {                
+            MKCoordinateSpan span;
+            span.longitudeDelta = [[self placemark] east] - [[self placemark] west];
+            span.latitudeDelta = [[self placemark] north] - [[self placemark] south];
+            
+            MKCoordinateRegion region;
+            region.center = [placemark coordinate];
+            region.span = span;
+            [[self mapView] setRegion:region animated:YES]; 
+        }
+        //Centers map on pin, with padding
+        else
+        {
+            // Add padding so the pins aren't on the very edge of the map
+            MKCoordinateSpan span;
+            span.longitudeDelta = 0.125;
+            span.latitudeDelta = 0.125;
+            
+            MKCoordinateRegion region;
+            region.center = [placemark coordinate];
+            region.span = span;
+            [[self mapView] setRegion:region animated:YES]; 
+        }
+    }    
 }
 
 
@@ -192,6 +208,8 @@
 
     if ([self history])
     {
+        NSArray *summaries = [[[self history] summaries] allObjects];
+        [self setSummaries:summaries];
         [self geocodeProperties];              
         
         //Segmented control
@@ -214,15 +232,19 @@
     {
         [self setTitle:[[self summary] location]];
         
-        [self geocodeProperty];
+        NSArray *summaries = [[NSArray alloc] initWithObjects:[self summary], nil];
+        [self setSummaries:summaries];
+        [summaries release];
+        [self geocodeProperties];
     }
 }
 
-- (void)didReceiveMemoryWarning
+- (void)viewWillDisappear:(BOOL)animated
 {
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
+
+    [self setIsCancelled:YES];
+    //Cancels any operations in the queue. This is for when pressing the back button and dismissing the view controller. This prevents the parser from still running and failing when calling its delegate.
+    [[self operationQueue] cancelAllOperations];
 }
 
 
@@ -256,13 +278,19 @@
 
 - (void)parserDidEndParsingData:(XmlParser *)parser
 {
+    if ([self isCancelled])
+    {
+        return;
+    }
+
     //Placemark's coordinate
     CLLocationCoordinate2D coordinate = [[self placemark] coordinate];
+
     //Sorry equator and Prime Meridian, no 0 coordinates allowed because _usually_ a parsing or downloading mishap
     if (coordinate.longitude != 0 && coordinate.latitude != 0)
     {
         //Sets Coordinates and updates Location in Summary
-        PropertySummary *summary = [(PropertyGeocodeParser *)parser summary];
+        PropertySummary *summary = [[self summaries] objectAtIndex:[self summaryIndex]];
         NSNumber *longitude = [[NSNumber alloc] initWithDouble:coordinate.longitude];
         [summary setLongitude:longitude];
         [longitude release];
@@ -271,104 +299,45 @@
         [latitude release];
         [summary setLocation:[[self placemark] address]];
         
-        // Setup the pin to be placed on the map
-        PropertyAnnotation *annotation = [[PropertyAnnotation alloc] initWithPlacemark:[self placemark] andSummary:summary];
-        [[self mapView] addAnnotation:annotation];
-        [annotation release];
-        
-        //Sets map region to latitude/longitude box results from Google if box given and a single result
-        if ([self summaryCount] == 1 
-            && [[self placemark] north] != 0
-            && [[self placemark] east] != 0
-            && [[self placemark] south] != 0
-            && [[self placemark] west] != 0)
-        {                
-            MKCoordinateSpan span;
-            span.longitudeDelta = [[self placemark] east] - [[self placemark] west];
-            span.latitudeDelta = [[self placemark] north] - [[self placemark] south];
-            
-            MKCoordinateRegion region;
-            region.center = coordinate;
-            region.span = span;
-            [[self mapView] setRegion:region animated:YES]; 
-        }
-        //Sets region to min/max of all coordinates thus far
-        else
+        //Maps the current summary
+        [self mapPlacemark:[self placemark] withSummary:summary];
+
+        //Enqueues next summary
+        [self setSummaryIndex:[self summaryIndex] + 1];
+        if (![self enqueueNextSummary])
         {
-            [self centerMapWithCoordinate:coordinate];
-        }        
-    }    
-    
-    //If no more queued operations, saves context to save the new summary coordinate data.
-    if ([[[self operationQueue] operations] count] == 0)
-    {
-        if ([self history] != nil)
-        {
-            NSError *error;
-            NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
-            if (![managedObjectContext save:&error])
+            //If no more queued operations, saves context to save the new summary coordinate data.            
+            if ([self history] != nil)
             {
-                NSLog(@"Error saving history context in Maps.");
-                // TODO: Handle the error.
+                NSError *error;
+                NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
+                if (![managedObjectContext save:&error])
+                {
+                    NSLog(@"Error saving history context in Maps.");
+                    // TODO: Handle the error.
+                }
             }
-        }
-        else if ([self summary] != nil)
-        {
-            NSError *error;
-            NSManagedObjectContext *managedObjectContext = [[self summary] managedObjectContext];
-            if (![managedObjectContext save:&error])
+            else if ([self summary] != nil)
             {
-                NSLog(@"Error saving summary context in Maps.");
-                // TODO: Handle the error.
+                NSError *error;
+                NSManagedObjectContext *managedObjectContext = [[self summary] managedObjectContext];
+                if (![managedObjectContext save:&error])
+                {
+                    NSLog(@"Error saving summary context in Maps.");
+                    // TODO: Handle the error.
+                }            
             }            
         }
-    }
-}
-
-- (void)centerMapWithCoordinate:(CLLocationCoordinate2D)coordinate
-{
-    //Sets max and min coordinates to this property's coordinates
-    if ([self firstTime])
-    {
-        [self setFirstTime:NO];
-        
-        CLLocationCoordinate2D max;
-        max.latitude = coordinate.latitude;
-        max.longitude = coordinate.longitude;
-        [self setMaxPoint:max];
-        
-        CLLocationCoordinate2D min;
-        min.latitude = coordinate.latitude;
-        min.longitude = coordinate.longitude;
-        [self setMinPoint:min];
-    }
-    //Determine if the lat/lon are either the max or min
-    else
-    {
-        [self updateMinMaxWithCoordinate:coordinate];                
-    }
-    
-    //Center the map based on the min & max lat & lon encountered
-    double longitudeDelta = [self maxPoint].longitude - [self minPoint].longitude;
-    double latitudeDelta = [self maxPoint].latitude - [self minPoint].latitude;
-    
-    CLLocationCoordinate2D center;
-    center.longitude = [self minPoint].longitude + (longitudeDelta / 2);
-    center.latitude = [self minPoint].latitude + (latitudeDelta / 2);  
-    
-    // Add padding so the pins aren't on the very edge of the map
-    MKCoordinateSpan span;
-    span.longitudeDelta = longitudeDelta + 0.04;
-    span.latitudeDelta = latitudeDelta + 0.04;
-    
-    MKCoordinateRegion region;
-    region.center = center;
-    region.span = span;
-    [[self mapView] setRegion:region animated:YES]; 
+    }    
 }
 
 - (void)parser:(XmlParser *)parser addXmlElement:(XmlElement *)xmlElement
 {
+    if ([self isCancelled])
+    {
+        return;
+    }
+
     NSString *elementName = [xmlElement name];
     NSString *elementValue = [xmlElement value];
     NSDictionary *attributes = [xmlElement attributes];
@@ -413,6 +382,11 @@
 
 - (void)parserDidBeginItem:(XmlParser *)parser
 {
+    if ([self isCancelled])
+    {
+        return;
+    }
+    
     Placemark *placemark = [[Placemark alloc] init];
     [self setPlacemark:placemark];
     [placemark release];    

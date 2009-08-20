@@ -1,10 +1,10 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 
+#import "XmlParser.h"
 #import "Placemark.h"
 #import "PropertyHistory.h"
 #import "PropertySummary.h"
-#import "PropertyGeocodeParser.h"
 #import "PropertyDetailsViewController.h"
 
 
@@ -12,15 +12,16 @@
 {
     @private
         PropertyHistory *history_;
+        NSArray *summaries_;
         PropertySummary *summary_;
         MKMapView *mapView_;
         NSOperationQueue *operationQueue_;
         Placemark *placemark_;
-        NSUInteger summaryCount_;
         CLLocationCoordinate2D maxPoint_;
         CLLocationCoordinate2D minPoint_;
-        BOOL firstTime_;
+        BOOL isCancelled_;
         BOOL isFromFavorites_;
+        NSInteger summaryIndex_;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;

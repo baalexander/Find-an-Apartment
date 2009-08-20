@@ -3,7 +3,7 @@
 #import "PropertyMapViewController.h"
 #import "PropertyListEmailerViewController.h"
 #import "PropertyImage.h"
-#import "PropertyMapConstants.h"
+#import "PropertyListAndMapConstants.h"
 
 
 @implementation PropertyFavoritesViewController
