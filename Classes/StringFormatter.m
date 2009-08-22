@@ -76,15 +76,15 @@
     NSString *formattedMax = [StringFormatter formatNumber:max];
     
     //Returns range based on which values were provided
-    if (min == nil && max == nil)
+    if ((min == nil || [min floatValue] == 0) && (max == nil || [max floatValue] == 0))
     {
         return [NSString stringWithFormat:@"%@+%@", formattedZero, units];
     }
-    else if (min == nil)
+    else if (min == nil || [min floatValue] == 0)
     {
         return [NSString stringWithFormat:@"%@ - %@%@", formattedZero, formattedMax, units];
     }
-    else if (max == nil)
+    else if (max == nil || [max floatValue] == 0)
     {
         return [NSString stringWithFormat:@"%@+%@", formattedMin, units];
     }
@@ -106,15 +106,15 @@
     NSString *formattedMax = [StringFormatter formatCurrency:max];
     
     //Returns range based on which values were provided
-    if (min == nil && max == nil)
+    if ((min == nil || [min floatValue] == 0) && (max == nil || [max floatValue] == 0))
     {
         return [NSString stringWithFormat:@"%@+", formattedZero];
     }
-    else if (min == nil)
+    else if (min == nil || [min floatValue] == 0)
     {
         return [NSString stringWithFormat:@"%@ - %@", formattedZero, formattedMax];
     }
-    else if (max == nil)
+    else if (max == nil || [max floatValue] == 0)
     {
         return [NSString stringWithFormat:@"%@+", formattedMin];
     }
