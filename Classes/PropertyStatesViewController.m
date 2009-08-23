@@ -20,7 +20,6 @@
 @synthesize propertyObjectContext = propertyObjectContext_;
 @synthesize geographyObjectContext = geographyObjectContext_;
 @synthesize locationManager = locationManager_;
-@synthesize state = state_;
 @synthesize searchBar = searchBar_;
 @synthesize searchDisplayController = searchDisplayController_;
 @synthesize filteredContent = filteredContent_;
@@ -44,7 +43,6 @@
     [fetchedResultsController_ release];
     [propertyObjectContext_ release];
     [geographyObjectContext_ release];
-    [state_ release];
     [searchBar_ release];
     [searchDisplayController_ release];
     [filteredContent_ release];    

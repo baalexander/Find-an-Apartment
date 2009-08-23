@@ -12,7 +12,6 @@
         NSManagedObjectContext *propertyObjectContext_;
         NSManagedObjectContext *geographyObjectContext_;
         LocationManager *locationManager_;
-        NSString *state_;
     
         UISearchBar *searchBar_;
         UISearchDisplayController *searchDisplayController_;
@@ -24,7 +23,6 @@
 @property (nonatomic, retain) NSManagedObjectContext *propertyObjectContext;
 @property (nonatomic, retain) NSManagedObjectContext *geographyObjectContext;
 @property (nonatomic, assign) LocationManager *locationManager;
-@property (nonatomic, copy) NSString *state;
 
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, retain) UISearchDisplayController *searchDisplayController;
