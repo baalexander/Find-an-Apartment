@@ -33,7 +33,7 @@
 {
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
     {
-        [self setTitle:@"State"];
+
     }
     
     return self;
