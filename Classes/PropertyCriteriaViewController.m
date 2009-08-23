@@ -92,9 +92,9 @@
         }
 
         //Fills criteria in with passed in information
-        [[self criteria] setState:[[self state] name]];    
-        [[self criteria] setCity:[[self city] value]];
-        [[self criteria] setPostalCode:[[self postalCode] value]];
+        [[self criteria] setState:[self state]];    
+        [[self criteria] setCity:[self city]];
+        [[self criteria] setPostalCode:[self postalCode]];
         //Sets coordinate details
         NSNumber *latitude = [[NSNumber alloc] initWithDouble:[self coordinates].latitude];
         [[self criteria] setLatitude:latitude];

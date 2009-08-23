@@ -1,8 +1,12 @@
 //Last tab user selected
-#define kSelectedTab @"SELECTED_TAB"
+#define kSavedTab @"SAVED_TAB"
 
-//Last state selected
-#define kSelectedState @"SELECTED_STATE"
+//Last saved location details
+#define kSavedState @"SAVED_STATE"
+#define kSavedCity @"SAVED_CITY"
+#define kSavedPostalCode @"SAVED_POSTAL_CODE"
+#define kSavedLongitude @"SAVED_LONGITUDE"
+#define kSavedLatitude @"SAVED_LATITUDE"
 
-//Last selected city
-#define kSelectedCity @"SELECTED_CITY"
+//Did the user use Core Location
+#define kUsedCoreLocation @"USED_CORE_LOCATION"

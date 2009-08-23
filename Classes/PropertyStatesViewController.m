@@ -1,5 +1,7 @@
 #import "PropertyStatesViewController.h"
 
+#import <CoreLocation/CoreLocation.h>
+
 #import "State.h"
 #import "PropertyCitiesViewController.h"
 #import "PropertyCriteriaViewController.h"
@@ -31,6 +33,7 @@
 {
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
     {
+        [self setTitle:@"State"];
     }
     
     return self;
@@ -76,22 +79,36 @@
     return fetchedResultsController_;
 }
 
-- (void)pushCitiesViewControllerWithState:(State *)state
-{
-    PropertyCitiesViewController *citiesViewController = [[PropertyCitiesViewController alloc] initWithNibName:@"PropertyCitiesView" bundle:nil];
-    [citiesViewController setState:state];
-    [citiesViewController setPropertyObjectContext:[self propertyObjectContext]];
-    [citiesViewController setLocationManager:[self locationManager]];
-    [[self navigationController] pushViewController:citiesViewController animated:YES];
-    [citiesViewController restore];
-    [citiesViewController release];
-}
+
+#pragma mark -
+#pragma mark SaveAndRestoreProtocol
 
 - (void)restore
 {
-    NSString *stateName = [[NSUserDefaults standardUserDefaults] stringForKey:kSelectedState];
-    
-    if (stateName != nil && [stateName length] > 0)
+    BOOL usedCoreLocation = [[NSUserDefaults standardUserDefaults] boolForKey:kUsedCoreLocation];
+    NSString *stateName = [[NSUserDefaults standardUserDefaults] stringForKey:kSavedState];
+
+    //If used Core Location last time, the restore directly to the Criteria view controller with he location details
+    if (usedCoreLocation)
+    {
+        PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaView" bundle:nil];
+        [criteriaViewController setPropertyObjectContext:[self propertyObjectContext]];
+
+        //Populates Criteria view with saved location details
+        CLLocationCoordinate2D coordinate;
+        coordinate.longitude = [[NSUserDefaults standardUserDefaults] doubleForKey:kSavedLongitude];
+        coordinate.latitude = [[NSUserDefaults standardUserDefaults] doubleForKey:kSavedLatitude];
+        [criteriaViewController setCoordinates:coordinate];
+        
+        [criteriaViewController setState:[[NSUserDefaults standardUserDefaults] objectForKey:kSavedState]];
+        [criteriaViewController setCity:[[NSUserDefaults standardUserDefaults] objectForKey:kSavedCity]];
+        [criteriaViewController setPostalCode:[[NSUserDefaults standardUserDefaults] objectForKey:kSavedPostalCode]];
+        
+        [[self navigationController] pushViewController:criteriaViewController animated:NO];
+        [criteriaViewController release];
+    }
+    //If selected a State last time, load citites for the State in the City view controller
+    else if (stateName != nil && [stateName length] > 0)
     {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         NSEntityDescription *stateEntity = [NSEntityDescription entityForName:@"State" inManagedObjectContext:[self geographyObjectContext]];
@@ -106,9 +123,15 @@
         if (fetchResults != nil && [fetchResults count] > 0)
         {
             State *state = [fetchResults objectAtIndex:0];
-            [self pushCitiesViewControllerWithState:state];
+            PropertyCitiesViewController *citiesViewController = [[PropertyCitiesViewController alloc] initWithNibName:@"PropertyCitiesView" bundle:nil];
+            [citiesViewController setState:state];
+            [citiesViewController setPropertyObjectContext:[self propertyObjectContext]];
+            [citiesViewController setLocationManager:[self locationManager]];
+            [[self navigationController] pushViewController:citiesViewController animated:NO];
+            [citiesViewController restore];
+            [citiesViewController release];
         }
-    }    
+    }
 }
 
 
@@ -118,8 +141,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self setTitle:@"State"];
     
     // Search setup
     [self setFilteredContent:[[NSArray alloc] init]];
@@ -155,9 +176,13 @@
     [super viewWillAppear:animated];
     
     //If view appears, then user must have navigated backward to the view or the first time on the view
-    //In any case, can set remaining breadcrumb trail to nil
-    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSelectedState];
-    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSelectedCity];
+    //In any case, can reset all restore values as this is the root view controller
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSavedState];
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSavedCity];
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSavedPostalCode];
+    [[NSUserDefaults standardUserDefaults] setDouble:0 forKey:kSavedLongitude];
+    [[NSUserDefaults standardUserDefaults] setDouble:0 forKey:kSavedLatitude];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUsedCoreLocation];
 }
 
 - (void)didReceiveMemoryWarning
@@ -223,7 +248,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     {
         state = [[self fetchedResultsController] objectAtIndexPath:indexPath];
     }
-    [[cell textLabel] setText:[[state name] description]];
+    [[cell textLabel] setText:[state name]];
     
     return cell;
 }
@@ -245,9 +270,14 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     }
     
     //Saves the selected state for restoring later
-    [[NSUserDefaults standardUserDefaults] setObject:[state name] forKey:kSelectedState];
+    [[NSUserDefaults standardUserDefaults] setObject:[state name] forKey:kSavedState];
     
-    [self pushCitiesViewControllerWithState:state];
+    PropertyCitiesViewController *citiesViewController = [[PropertyCitiesViewController alloc] initWithNibName:@"PropertyCitiesView" bundle:nil];
+    [citiesViewController setState:state];
+    [citiesViewController setPropertyObjectContext:[self propertyObjectContext]];
+    [citiesViewController setLocationManager:[self locationManager]];
+    [[self navigationController] pushViewController:citiesViewController animated:YES];
+    [citiesViewController release];
 }
 
 
@@ -256,6 +286,15 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
 - (void)useCriteria:(PropertyCriteria *)criteria
 {
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kUsedCoreLocation];
+    
+    //Archives the location data for restoring later
+    [[NSUserDefaults standardUserDefaults] setDouble:[[criteria longitude] doubleValue] forKey:kSavedLongitude];
+    [[NSUserDefaults standardUserDefaults] setDouble:[[criteria latitude] doubleValue] forKey:kSavedLatitude];
+    [[NSUserDefaults standardUserDefaults] setObject:[criteria state] forKey:kSavedState];
+    [[NSUserDefaults standardUserDefaults] setObject:[criteria city] forKey:kSavedCity];
+    [[NSUserDefaults standardUserDefaults] setObject:[criteria postalCode] forKey:kSavedPostalCode];    
+    
     PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] init];
     [criteriaViewController setCriteria:criteria];
     [[self navigationController] pushViewController:criteriaViewController animated:YES];

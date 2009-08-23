@@ -191,7 +191,7 @@
 - (void)restore
 {
     //Load the previous tab
-    NSInteger tab = [[NSUserDefaults standardUserDefaults] integerForKey:kSelectedTab];
+    NSInteger tab = [[NSUserDefaults standardUserDefaults] integerForKey:kSavedTab];
     
     NSArray *viewControllers = [[self tabBarController] viewControllers];
     //Tab should only be greater than views when testing and switching between a target with more tabs than another
@@ -281,7 +281,7 @@
     }
     
     //Saves the selected tab
-    [[NSUserDefaults standardUserDefaults] setInteger:tab forKey:kSelectedTab];
+    [[NSUserDefaults standardUserDefaults] setInteger:tab forKey:kSavedTab];
 }
 
 - (void)populateViewController:(UIViewController *)viewController

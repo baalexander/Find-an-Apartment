@@ -8,7 +8,7 @@
 
 @interface PropertyCitiesViewController ()
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
-- (void)pushCriteriaViewControllerWithCity:(CityOrPostalCode *)city;
+- (void)pushCriteriaViewControllerWithCity:(CityOrPostalCode *)cityOrZip animated:(BOOL)animated;
 @end
 
 
@@ -30,7 +30,7 @@
 {
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
     {     
-        
+        [self setTitle:@"City or Zip"];        
     }
     
     return self;
@@ -82,13 +82,24 @@
     return fetchedResultsController_;
 }
 
-- (void)pushCriteriaViewControllerWithCity:(CityOrPostalCode *)city
+- (void)pushCriteriaViewControllerWithCity:(CityOrPostalCode *)cityOrZip animated:(BOOL)animated
 {
     PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaView" bundle:nil];
-    [criteriaViewController setState:[self state]];
-    [criteriaViewController setCity:city];
+    [criteriaViewController setState:[[self state] name]];
+    
+    //Is it a city or a zip?
+    NSRange rangeOfDigit = [[cityOrZip value] rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]];
+    if (rangeOfDigit.location == NSNotFound)
+    {
+        [criteriaViewController setCity:[cityOrZip value]];
+    }
+    else
+    {
+        [criteriaViewController setPostalCode:[cityOrZip value]];
+    }
+
     [criteriaViewController setPropertyObjectContext:[self propertyObjectContext]];
-    [[self navigationController] pushViewController:criteriaViewController animated:YES];
+    [[self navigationController] pushViewController:criteriaViewController animated:animated];
     [criteriaViewController release];
 }
 
@@ -98,7 +109,7 @@
 
 - (void)restore
 {
-    NSString *cityName = [[NSUserDefaults standardUserDefaults] stringForKey:kSelectedCity];
+    NSString *cityName = [[NSUserDefaults standardUserDefaults] stringForKey:kSavedCity];
     
     if (cityName != nil && [cityName length] > 0)
     {
@@ -117,8 +128,8 @@
         
         if (fetchResults != nil && [fetchResults count] > 0)
         {
-            CityOrPostalCode *city = [fetchResults objectAtIndex:0];
-            [self pushCriteriaViewControllerWithCity:city];
+            CityOrPostalCode *cityOrZip = [fetchResults objectAtIndex:0];
+            [self pushCriteriaViewControllerWithCity:cityOrZip animated:NO];
         }
     }    
 }
@@ -130,8 +141,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self setTitle:@"City or Zip"];
 
     // Search setup
     [self setFilteredContent:[[NSArray alloc] init]];
@@ -165,9 +174,13 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    //Resets remaining breadcrumbs
-    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSelectedCity];
+
+    //Reset all restore values up to this view controller (does not delete saved State as the State view controller is the parent of this one)
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSavedCity];
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSavedPostalCode];
+    [[NSUserDefaults standardUserDefaults] setDouble:0 forKey:kSavedLongitude];
+    [[NSUserDefaults standardUserDefaults] setDouble:0 forKey:kSavedLatitude];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUsedCoreLocation];
 }
 
 
@@ -226,16 +239,16 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     }
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     
-    CityOrPostalCode *city;
+    CityOrPostalCode *cityOrZip;
     if(tableView == [[self searchDisplayController] searchResultsTableView])
     {
-        city = [[self filteredContent] objectAtIndex:[indexPath row]];        
+        cityOrZip = [[self filteredContent] objectAtIndex:[indexPath row]];        
     }
     else
     {
-        city = [[self fetchedResultsController] objectAtIndexPath:indexPath];        
+        cityOrZip = [[self fetchedResultsController] objectAtIndexPath:indexPath];        
     }
-    [[cell textLabel] setText:[[city value] description]];
+    [[cell textLabel] setText:[cityOrZip value]];
     
     return cell;
 }
@@ -246,20 +259,20 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CityOrPostalCode *city;
+    CityOrPostalCode *cityOrZip;
     if(tableView == [[self searchDisplayController] searchResultsTableView])
     {
-        city = [[self filteredContent] objectAtIndex:[indexPath row]];
+        cityOrZip = [[self filteredContent] objectAtIndex:[indexPath row]];
     }
     else
     {
-        city = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+        cityOrZip = [[self fetchedResultsController] objectAtIndexPath:indexPath];
     }
     
     //Saves the selected city for restoring later
-    [[NSUserDefaults standardUserDefaults] setObject:[city value] forKey:kSelectedCity];
-    
-    [self pushCriteriaViewControllerWithCity:city];
+    [[NSUserDefaults standardUserDefaults] setObject:[cityOrZip value] forKey:kSavedCity];
+
+    [self pushCriteriaViewControllerWithCity:cityOrZip animated:YES];
 }
 
 
@@ -268,6 +281,15 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
 - (void)useCriteria:(PropertyCriteria *)criteria
 {
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kUsedCoreLocation];
+    
+    //Archives the location data for restoring later
+    [[NSUserDefaults standardUserDefaults] setDouble:[[criteria longitude] doubleValue] forKey:kSavedLongitude];
+    [[NSUserDefaults standardUserDefaults] setDouble:[[criteria latitude] doubleValue] forKey:kSavedLatitude];
+    [[NSUserDefaults standardUserDefaults] setObject:[criteria state] forKey:kSavedState];
+    [[NSUserDefaults standardUserDefaults] setObject:[criteria city] forKey:kSavedCity];
+    [[NSUserDefaults standardUserDefaults] setObject:[criteria postalCode] forKey:kSavedPostalCode];
+    
     PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] init];
     [criteriaViewController setCriteria:criteria];
     [[self navigationController] pushViewController:criteriaViewController animated:YES];
