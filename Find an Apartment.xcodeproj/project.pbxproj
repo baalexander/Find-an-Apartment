@@ -261,6 +261,7 @@
 		458783A50FDB45F7000B4F5D /* PropertyMapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyMapView.xib; path = Classes/PropertyMapView.xib; sourceTree = "<group>"; };
 		458A49A81031373000375D4C /* PropertySummary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertySummary.h; path = Classes/PropertySummary.h; sourceTree = "<group>"; };
 		458A49A91031373000375D4C /* PropertySummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertySummary.m; path = Classes/PropertySummary.m; sourceTree = "<group>"; };
+		4596B7FD1040D40100B76AC0 /* SaveAndRestoreConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SaveAndRestoreConstants.h; path = Classes/SaveAndRestoreConstants.h; sourceTree = "<group>"; };
 		45991A220FF0927F00627B7D /* PropertyDetailsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyDetailsConstants.h; path = Classes/PropertyDetailsConstants.h; sourceTree = "<group>"; };
 		459CA0CF100AA98700108747 /* MortgageUrlConstructor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MortgageUrlConstructor.h; sourceTree = "<group>"; };
 		459CA0D0100AA98700108747 /* MortgageUrlConstructor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MortgageUrlConstructor.m; sourceTree = "<group>"; };
@@ -639,6 +640,7 @@
 				455733CD103779940013278E /* PropertyListAndMapConstants.h */,
 				45BEE85310059FEA0031613E /* MortgageCriteriaConstants.h */,
 				45267CF6102EA866007BED9D /* MortgageResultsConstants.h */,
+				4596B7FD1040D40100B76AC0 /* SaveAndRestoreConstants.h */,
 			);
 			name = Constants;
 			sourceTree = "<group>";

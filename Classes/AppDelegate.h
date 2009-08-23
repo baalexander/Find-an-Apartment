@@ -5,7 +5,6 @@
     @protected
         UIWindow *window_;
         UITabBarController *tabBarController_;
-        PropertyStatesViewController *statesViewController_;
         
         //Property Core Data stack
         NSManagedObjectModel *propertyObjectModel_;
@@ -22,7 +21,6 @@
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
-@property (nonatomic, retain) IBOutlet PropertyStatesViewController *statesViewController;
 
 @property (nonatomic, retain, readonly) NSManagedObjectModel *propertyObjectModel;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *propertyObjectContext;

@@ -6,6 +6,7 @@
 #import "LocationManager.h"
 #import "PropertyHistoryViewController.h"
 #import "PropertyFavoritesViewController.h"
+#import "SaveAndRestoreConstants.h"
 
 #ifdef HOME_FINDER
     #import "MortgageCriteriaViewController.h"
@@ -24,6 +25,8 @@
 
 @property (nonatomic, retain, readwrite) LocationManager *locationManager;
 
+- (void)populateViewController:(UIViewController *)viewController;
+
 @end
 
 
@@ -31,7 +34,6 @@
 
 @synthesize window = window_;
 @synthesize tabBarController = tabBarController_;
-@synthesize statesViewController = statesViewController_;
 @synthesize propertyObjectModel = propertyObjectModel_;
 @synthesize propertyObjectContext = propertyObjectContext_;
 @synthesize propertyStoreCoordinator = propertyStoreCoordinator_;
@@ -187,17 +189,30 @@
 #pragma mark UIApplicationDelegate
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application
-{
-    LocationManager *locationManager = [[LocationManager alloc] init];
-    [locationManager setPropertyObjectContext:[self propertyObjectContext]];
-    [self setLocationManager:locationManager];
-    [locationManager release];
-    
-    [[self statesViewController] setPropertyObjectContext:[self propertyObjectContext]];
-    [[self statesViewController] setGeographyObjectContext:[self geographyObjectContext]];
-    [[self statesViewController] setLocationManager:[self locationManager]];
+{    
     [[self window] addSubview:[[self tabBarController] view]];
     [[self window] makeKeyAndVisible];
+    
+    //Load the previous tab
+    NSInteger tab = [[NSUserDefaults standardUserDefaults] integerForKey:kSelectedTab];
+    
+    NSArray *viewControllers = [[self tabBarController] viewControllers];
+    //Tab should only be greater than views when testing and switching between a target with more tabs than another
+    if (tab >= (NSInteger)[viewControllers count])
+    {
+        tab = 0;
+    }
+    
+    UIViewController *viewController = [viewControllers objectAtIndex:tab];
+    if ([viewController isKindOfClass:[UINavigationController class]])
+    {
+        UINavigationController *navigationViewController = (UINavigationController *)viewController;
+        UIViewController *visibleViewController = [navigationViewController visibleViewController];
+        
+        [self populateViewController:visibleViewController];
+    }
+    
+    [[self tabBarController] setSelectedIndex:tab];
 }
 
 //applicationWillTerminate: saves changes in the application's managed object context before the application terminates.
@@ -221,6 +236,7 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
+    NSInteger tab = 0;
     //Figure out the view controller type to pass any values needed before hitting it the first time. Like managed object contexts.
     //Will only be comparing the view controller to the root view controller of each tab. If not the root view controller, then the view controller is a child of the root view controller implying the root view controller has already been initialized with the correct parameters so nothing to do.
     
@@ -232,37 +248,69 @@
         //If the visibile view controller is a Property States view controller...
         if ([visibleViewController isKindOfClass:[PropertyStatesViewController class]])
         {
-            PropertyStatesViewController *statesViewController = (PropertyStatesViewController *)visibleViewController;
-            [statesViewController setPropertyObjectContext:[self propertyObjectContext]];
-            [statesViewController setGeographyObjectContext:[self geographyObjectContext]];
+            tab = 0;
         }
         //If the visibile view controller is a Property History view controller...
         else if ([visibleViewController isKindOfClass:[PropertyHistoryViewController class]])
         {
-            PropertyHistoryViewController *historyViewController = (PropertyHistoryViewController *)visibleViewController;
-            [historyViewController setPropertyObjectContext:[self propertyObjectContext]];
-            
+            tab = 1;
         }
         //If the visibile view controller is a Property Favorites view controller...
         else if ([visibleViewController isKindOfClass:[PropertyFavoritesViewController class]])
         {
-            PropertyFavoritesViewController *favoritesViewController = (PropertyFavoritesViewController *)visibleViewController;
-            //History will be nil the first time initializing the view controller
-            //This check avoids an unnecessary fetch
-            if ([favoritesViewController history] == nil)
-            {
-                PropertyHistory *history = [PropertyFavoritesViewController favoriteHistoryFromContext:[self propertyObjectContext]];
-                [favoritesViewController setHistory:history];
-            }
+            tab = 2;
         }
 #ifdef HOME_FINDER
         //If the visible view controller is a Mortgage Criteria view controller...
         else if ([visibleViewController isKindOfClass:[MortgageCriteriaViewController class]])
         {
-            
+            tab = 3;
         }
 #endif
+        
+        [self populateViewController:visibleViewController];
     }
+    
+    //Saves the selected tab
+    [[NSUserDefaults standardUserDefaults] setInteger:tab forKey:kSelectedTab];
+}
+
+- (void)populateViewController:(UIViewController *)viewController
+{
+    if ([viewController isKindOfClass:[PropertyStatesViewController class]])
+    {
+        LocationManager *locationManager = [[LocationManager alloc] init];
+        [locationManager setPropertyObjectContext:[self propertyObjectContext]];
+        [self setLocationManager:locationManager];
+        [locationManager release];
+        
+        PropertyStatesViewController *statesViewController = (PropertyStatesViewController *)viewController;
+        [statesViewController setPropertyObjectContext:[self propertyObjectContext]];
+        [statesViewController setGeographyObjectContext:[self geographyObjectContext]];
+        [statesViewController setLocationManager:[self locationManager]];            
+    }
+    else if ([viewController isKindOfClass:[PropertyHistoryViewController class]])
+    {
+        PropertyHistoryViewController *historyViewController = (PropertyHistoryViewController *)viewController;
+        [historyViewController setPropertyObjectContext:[self propertyObjectContext]];
+    }
+    else if ([viewController isKindOfClass:[PropertyFavoritesViewController class]])
+    {
+        PropertyFavoritesViewController *favoritesViewController = (PropertyFavoritesViewController *)viewController;
+        //History will be nil the first time initializing the view controller
+        //This check avoids an unnecessary fetch
+        if ([favoritesViewController history] == nil)
+        {
+            PropertyHistory *history = [PropertyFavoritesViewController favoriteHistoryFromContext:[self propertyObjectContext]];
+            [favoritesViewController setHistory:history];
+        }
+    }
+#ifdef HOME_FINDER
+    else if ([viewController isKindOfClass:[MortgageCriteriaViewController class]])
+    {
+        
+    }
+#endif
 }
 
 @end
