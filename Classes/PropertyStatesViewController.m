@@ -4,6 +4,7 @@
 #import "PropertyCitiesViewController.h"
 #import "PropertyCriteriaViewController.h"
 #import "LocationManager.h"
+#import "SaveAndRestoreConstants.h"
 
 
 @interface PropertyStatesViewController ()
@@ -17,6 +18,7 @@
 @synthesize propertyObjectContext = propertyObjectContext_;
 @synthesize geographyObjectContext = geographyObjectContext_;
 @synthesize locationManager = locationManager_;
+@synthesize state = state_;
 @synthesize searchBar = searchBar_;
 @synthesize searchDisplayController = searchDisplayController_;
 @synthesize filteredContent = filteredContent_;
@@ -39,6 +41,7 @@
     [fetchedResultsController_ release];
     [propertyObjectContext_ release];
     [geographyObjectContext_ release];
+    [state_ release];
     [searchBar_ release];
     [searchDisplayController_ release];
     [filteredContent_ release];    
@@ -59,7 +62,7 @@
         [nameDescriptor release];
         [fetchRequest setSortDescriptors:sortDescriptors];
         [sortDescriptors release];
-        
+
         // Create and initialize the fetch results controller.
         NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
                                                                                                    managedObjectContext:[self geographyObjectContext] 
@@ -71,6 +74,41 @@
     }
     
     return fetchedResultsController_;
+}
+
+- (void)pushCitiesViewControllerWithState:(State *)state
+{
+    PropertyCitiesViewController *citiesViewController = [[PropertyCitiesViewController alloc] initWithNibName:@"PropertyCitiesView" bundle:nil];
+    [citiesViewController setState:state];
+    [citiesViewController setPropertyObjectContext:[self propertyObjectContext]];
+    [citiesViewController setLocationManager:[self locationManager]];
+    [[self navigationController] pushViewController:citiesViewController animated:YES];
+    [citiesViewController restore];
+    [citiesViewController release];
+}
+
+- (void)restore
+{
+    NSString *stateName = [[NSUserDefaults standardUserDefaults] stringForKey:kSelectedState];
+    
+    if (stateName != nil && [stateName length] > 0)
+    {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *stateEntity = [NSEntityDescription entityForName:@"State" inManagedObjectContext:[self geographyObjectContext]];
+        [fetchRequest setEntity:stateEntity];
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(name == %@)", stateName];
+        [fetchRequest setPredicate:predicate];
+        
+        NSError *error = nil;
+        NSArray *fetchResults = [[self geographyObjectContext] executeFetchRequest:fetchRequest error:&error];
+        [fetchRequest release];
+        if (fetchResults != nil && [fetchResults count] > 0)
+        {
+            State *state = [fetchResults objectAtIndex:0];
+            [self pushCitiesViewControllerWithState:state];
+        }
+    }    
 }
 
 
@@ -112,14 +150,19 @@
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    //If view appears, then user must have navigated backward to the view or the first time on the view
+    //In any case, can set remaining breadcrumb trail to nil
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSelectedState];
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSelectedCity];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-}
-
-- (void)viewDidUnload
-{
-    
 }
 
 
@@ -201,12 +244,10 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
         state = [[self fetchedResultsController] objectAtIndexPath:indexPath];
     }
     
-    PropertyCitiesViewController *citiesViewController = [[PropertyCitiesViewController alloc] initWithNibName:@"PropertyCitiesView" bundle:nil];
-    [citiesViewController setState:state];
-    [citiesViewController setPropertyObjectContext:[self propertyObjectContext]];
-    [citiesViewController setLocationManager:[self locationManager]];
-    [[self navigationController] pushViewController:citiesViewController animated:YES];
-    [citiesViewController release];
+    //Saves the selected state for restoring later
+    [[NSUserDefaults standardUserDefaults] setObject:[state name] forKey:kSelectedState];
+    
+    [self pushCitiesViewControllerWithState:state];
 }
 
 

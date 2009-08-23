@@ -3,10 +3,12 @@
 #import "LocationManager.h"
 #import "PropertyCriteriaViewController.h"
 #import "CityOrPostalCode.h"
+#import "SaveAndRestoreConstants.h"
 
 
 @interface PropertyCitiesViewController ()
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+- (void)pushCriteriaViewControllerWithCity:(CityOrPostalCode *)city;
 @end
 
 
@@ -27,7 +29,8 @@
 - (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
 {
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
-    {        
+    {     
+        
     }
     
     return self;
@@ -79,6 +82,47 @@
     return fetchedResultsController_;
 }
 
+- (void)pushCriteriaViewControllerWithCity:(CityOrPostalCode *)city
+{
+    PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaView" bundle:nil];
+    [criteriaViewController setState:[self state]];
+    [criteriaViewController setCity:city];
+    [criteriaViewController setPropertyObjectContext:[self propertyObjectContext]];
+    [[self navigationController] pushViewController:criteriaViewController animated:YES];
+    [criteriaViewController release];
+}
+
+
+#pragma mark -
+#pragma mark SaveAndRestoreProtocol
+
+- (void)restore
+{
+    NSString *cityName = [[NSUserDefaults standardUserDefaults] stringForKey:kSelectedCity];
+    
+    if (cityName != nil && [cityName length] > 0)
+    {
+        NSManagedObjectContext *managedObjectContext = [[self state] managedObjectContext];
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *cityEntity = [NSEntityDescription entityForName:@"CityOrPostalCode" inManagedObjectContext:managedObjectContext];
+        [fetchRequest setEntity:cityEntity];
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(value == %@)", cityName];
+        [fetchRequest setPredicate:predicate];
+        
+        NSError *error = nil;
+        NSArray *fetchResults = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        [fetchRequest release];
+        
+        if (fetchResults != nil && [fetchResults count] > 0)
+        {
+            CityOrPostalCode *city = [fetchResults objectAtIndex:0];
+            [self pushCriteriaViewControllerWithCity:city];
+        }
+    }    
+}
+
 
 #pragma mark -
 #pragma mark UIViewController
@@ -88,7 +132,7 @@
     [super viewDidLoad];
     
     [self setTitle:@"City or Zip"];
-    
+
     // Search setup
     [self setFilteredContent:[[NSArray alloc] init]];
     [self setSearchDisplayController:[[[UISearchDisplayController alloc]
@@ -116,8 +160,16 @@
         NSLog(@"Error performing fetch in states view controller.");
         //TODO: Handle error
     }
-    
 }
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    //Resets remaining breadcrumbs
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSelectedCity];
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -204,12 +256,10 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
         city = [[self fetchedResultsController] objectAtIndexPath:indexPath];
     }
     
-    PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaView" bundle:nil];
-    [criteriaViewController setState:[self state]];
-    [criteriaViewController setCity:city];
-    [criteriaViewController setPropertyObjectContext:[self propertyObjectContext]];
-    [[self navigationController] pushViewController:criteriaViewController animated:YES];
-    [criteriaViewController release];
+    //Saves the selected city for restoring later
+    [[NSUserDefaults standardUserDefaults] setObject:[city value] forKey:kSelectedCity];
+    
+    [self pushCriteriaViewControllerWithCity:city];
 }
 
 

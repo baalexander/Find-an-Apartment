@@ -186,13 +186,10 @@
 
 
 #pragma mark -
-#pragma mark UIApplicationDelegate
+#pragma mark SaveAndRestoreProtocol
 
-- (void)applicationDidFinishLaunching:(UIApplication *)application
-{    
-    [[self window] addSubview:[[self tabBarController] view]];
-    [[self window] makeKeyAndVisible];
-    
+- (void)restore
+{
     //Load the previous tab
     NSInteger tab = [[NSUserDefaults standardUserDefaults] integerForKey:kSelectedTab];
     
@@ -213,6 +210,18 @@
     }
     
     [[self tabBarController] setSelectedIndex:tab];
+}
+
+
+#pragma mark -
+#pragma mark UIApplicationDelegate
+
+- (void)applicationDidFinishLaunching:(UIApplication *)application
+{    
+    [[self window] addSubview:[[self tabBarController] view]];
+    [[self window] makeKeyAndVisible];
+    
+    [self restore];
 }
 
 //applicationWillTerminate: saves changes in the application's managed object context before the application terminates.
@@ -311,6 +320,12 @@
         
     }
 #endif
+    
+    //Restores view
+    if([viewController conformsToProtocol:@protocol(SaveAndRestoreProtocol)])
+    {
+        [(id<SaveAndRestoreProtocol>)viewController restore];
+    }
 }
 
 @end

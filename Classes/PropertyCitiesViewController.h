@@ -1,12 +1,12 @@
 #import <UIKit/UIKit.h>
 
+#import "SaveAndRestoreProtocol.h"
 #import "State.h"
+#import "LocationManager.h"
+#import "PropertyCriteria.h"
 
 
-@class LocationManager, PropertyCriteria;
-
-
-@interface PropertyCitiesViewController : UITableViewController <UISearchDisplayDelegate, UISearchBarDelegate>
+@interface PropertyCitiesViewController : UITableViewController <SaveAndRestoreProtocol, UISearchDisplayDelegate, UISearchBarDelegate>
 {
     @private
         NSFetchedResultsController *fetchedResultsController_;

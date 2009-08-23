@@ -304,6 +304,7 @@
 		45D941DD0FF051B600AD4A5B /* PropertyDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyDetails.m; path = Classes/PropertyDetails.m; sourceTree = "<group>"; };
 		45D942280FF0696C00AD4A5B /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = down.png; path = Images/down.png; sourceTree = "<group>"; };
 		45D942290FF0696C00AD4A5B /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = up.png; path = Images/up.png; sourceTree = "<group>"; };
+		45E6EB9C1040F09E001E66F2 /* SaveAndRestoreProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveAndRestoreProtocol.h; sourceTree = "<group>"; };
 		45E9CD6C102BD39F003D157D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		45E9CE09102BE338003D157D /* LocationParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationParser.h; sourceTree = "<group>"; };
 		45E9CE0A102BE338003D157D /* LocationParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationParser.m; sourceTree = "<group>"; };
@@ -508,6 +509,7 @@
 				459CA0D3100AAA0000108747 /* UrlConstructor.m */,
 				457AA3390FDAC26100F0D16C /* XmlParser.h */,
 				457AA33A0FDAC26100F0D16C /* XmlParser.m */,
+				45E6EB9C1040F09E001E66F2 /* SaveAndRestoreProtocol.h */,
 			);
 			name = Utility;
 			sourceTree = "<group>";

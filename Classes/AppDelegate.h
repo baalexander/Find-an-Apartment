@@ -1,6 +1,8 @@
+#import "SaveAndRestoreProtocol.h"
+
 @class PropertyStatesViewController, LocationManager;
 
-@interface AppDelegate : NSObject <UIApplicationDelegate>
+@interface AppDelegate : NSObject <SaveAndRestoreProtocol, UIApplicationDelegate>
 {
     @protected
         UIWindow *window_;
