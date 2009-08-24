@@ -18,7 +18,7 @@
 @property (nonatomic, assign) NSInteger summaryIndex;
 - (void)geocodeProperties;
 - (BOOL)enqueueNextSummary;
-- (void)mapPlacemark:(Placemark *)placemark withSummary:(PropertySummary *)summary;
+- (void)mapPlacemark:(Placemark *)placemark ;
 @end
 
 
@@ -97,6 +97,20 @@
     }
 }
 
+- (IBAction)pinClick:(id)sender
+{
+    UIButton *button = (UIButton *)sender;
+    NSInteger selectedIndex = [button tag];
+    PropertySummary *summary = [[self summaries] objectAtIndex:selectedIndex];
+    
+    //Pushes the Details view controller with the summary
+    PropertyDetailsViewController *detailsViewController = [[PropertyDetailsViewController alloc] initWithNibName:@"PropertyDetailsView" bundle:nil];
+    [detailsViewController setDelegate:self];
+    [detailsViewController setDetails:[summary details]];
+    [[self navigationController] pushViewController:detailsViewController animated:YES];
+    [detailsViewController release];
+}
+
 - (void)geocodeProperties
 {
     NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
@@ -128,7 +142,7 @@
             [placemark setCoordinate:coordinate];
             
             //Adds to map
-            [self mapPlacemark:placemark withSummary:summary];
+            [self mapPlacemark:placemark];
         }
         else
         {
@@ -157,10 +171,11 @@
     return NO;
 }
             
-- (void)mapPlacemark:(Placemark *)placemark withSummary:(PropertySummary *)summary
+- (void)mapPlacemark:(Placemark *)placemark
 {
     // Setup the pin to be placed on the map
-    PropertyAnnotation *annotation = [[PropertyAnnotation alloc] initWithPlacemark:placemark andSummary:summary];
+    PropertyAnnotation *annotation = [[PropertyAnnotation alloc] initWithPlacemark:placemark];
+    [annotation setSummaryIndex:[self summaryIndex]];
     [[self mapView] addAnnotation:annotation];
     [annotation release];
     
@@ -187,8 +202,8 @@
         {
             // Add padding so the pins aren't on the very edge of the map
             MKCoordinateSpan span;
-            span.longitudeDelta = 0.125;
-            span.latitudeDelta = 0.125;
+            span.longitudeDelta = 0.05;
+            span.latitudeDelta = 0.05;
             
             MKCoordinateRegion region;
             region.center = [placemark coordinate];
@@ -198,6 +213,40 @@
     }    
 }
 
+
+#pragma mark -
+#pragma mark MKMapViewDelegate
+
+// Create the annotations view for use when it appears on the screen
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
+{
+    //Create pins with buttons. Make sure a PropertyAnnotation so the current location is still the "blue dot" pin.
+    if ([annotation isMemberOfClass:[PropertyAnnotation class]])
+    {
+        PropertyAnnotation *propertyAnnotation = (PropertyAnnotation *)annotation;
+        
+        MKPinAnnotationView *annotationView = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:kPropertyPinId];
+            
+        // If we have to, create a new view
+        if (annotationView == nil)
+        {
+            annotationView = [[[MKPinAnnotationView alloc] initWithAnnotation:propertyAnnotation reuseIdentifier:kPropertyPinId] autorelease];
+            [annotationView setCanShowCallout:YES];
+                
+            //Adds button the annnotation
+            UIButton *detailsButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+            [detailsButton setTag:[propertyAnnotation summaryIndex]];
+            [detailsButton addTarget:self action:@selector(pinClick:) forControlEvents:UIControlEventTouchUpInside];
+            detailsButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+            detailsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+            [annotationView setRightCalloutAccessoryView:detailsButton];
+        }
+        
+        return annotationView;
+    }
+    
+    return nil;
+}
 
 #pragma mark -
 #pragma mark UIViewController
@@ -300,7 +349,7 @@
         [summary setLocation:[[self placemark] address]];
         
         //Maps the current summary
-        [self mapPlacemark:[self placemark] withSummary:summary];
+        [self mapPlacemark:[self placemark]];
 
         //Enqueues next summary
         [self setSummaryIndex:[self summaryIndex] + 1];

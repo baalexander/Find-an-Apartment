@@ -4,19 +4,29 @@
 @implementation PropertyAnnotation
 
 @synthesize placemark = placemark_;
-@synthesize summary = summary_;
+@synthesize summaryIndex = summaryIndex_;
 
 
-- (id)initWithPlacemark:(Placemark *)placemark andSummary:(PropertySummary *)summary
+- (id)initWithPlacemark:(Placemark *)placemark
 {
     if((self = [super init]))
     {
         [self setPlacemark:placemark];
-        [self setSummary:summary];
     }
 
     return self;
 }
+
+- (void)dealloc
+{
+    [placemark_ release];
+    
+    [super dealloc];
+}
+
+
+#pragma mark -
+#pragma mark MKAnnotation
 
 - (CLLocationCoordinate2D)coordinate
 {
@@ -36,14 +46,6 @@
     {
         return @"No address available";
     }
-}
-
-- (void)dealloc
-{
-    [placemark_ release];
-    [summary_ release];
-    
-    [super dealloc];
 }
 
 @end

@@ -10,3 +10,6 @@
 
 //Element name that separates each item in the geocoding XML results
 #define kGeocodeDelimiter "Placemark"
+
+//Identifier for reusing annotation pins
+#define kPropertyPinId @"PROPERTY_PIN_ID"
