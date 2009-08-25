@@ -13,3 +13,7 @@
 
 //Identifier for reusing annotation pins
 #define kPropertyPinId @"PROPERTY_PIN_ID"
+
+//Padding for a pin
+#define kLongitudeDelta 0.05
+#define kLatitudeDelta 0.05

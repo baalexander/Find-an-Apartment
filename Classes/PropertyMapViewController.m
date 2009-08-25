@@ -16,6 +16,7 @@
 @property (nonatomic, assign) CLLocationCoordinate2D minPoint;
 @property (nonatomic, assign) BOOL isCancelled;
 @property (nonatomic, assign) NSInteger summaryIndex;
+@property (nonatomic, assign) NSInteger selectedIndex;
 - (void)geocodeProperties;
 - (BOOL)enqueueNextSummary;
 - (void)mapPlacemark:(Placemark *)placemark ;
@@ -35,6 +36,7 @@
 @synthesize isCancelled = isCancelled_;
 @synthesize isFromFavorites = isFromFavorites_;
 @synthesize summaryIndex = summaryIndex_;
+@synthesize selectedIndex = selectedIndex_;
 
 
 #pragma mark -
@@ -100,8 +102,8 @@
 - (IBAction)pinClick:(id)sender
 {
     UIButton *button = (UIButton *)sender;
-    NSInteger selectedIndex = [button tag];
-    PropertySummary *summary = [[self summaries] objectAtIndex:selectedIndex];
+    [self setSelectedIndex:[button tag]];
+    PropertySummary *summary = [[self summaries] objectAtIndex:[self selectedIndex]];
     
     //Pushes the Details view controller with the summary
     PropertyDetailsViewController *detailsViewController = [[PropertyDetailsViewController alloc] initWithNibName:@"PropertyDetailsView" bundle:nil];
@@ -202,8 +204,8 @@
         {
             // Add padding so the pins aren't on the very edge of the map
             MKCoordinateSpan span;
-            span.longitudeDelta = 0.05;
-            span.latitudeDelta = 0.05;
+            span.longitudeDelta = kLongitudeDelta;
+            span.latitudeDelta = kLatitudeDelta;
             
             MKCoordinateRegion region;
             region.center = [placemark coordinate];
@@ -303,22 +305,42 @@
 
 - (NSInteger)detailsIndex:(PropertyDetailsViewController *)details
 {
-    return -1;
+    return [self selectedIndex];
 }
 
 - (NSInteger)detailsCount:(PropertyDetailsViewController *)details
 {
-    return -1;
+    return [[self summaries] count];
 }
 
 - (PropertyDetails *)detailsPrevious:(PropertyDetailsViewController *)details
 {
-    return nil;
+    if ([self selectedIndex] > 0)
+    {
+        [self setSelectedIndex:[self selectedIndex] - 1];
+    }
+    else
+    {
+        [self setSelectedIndex:[self detailsCount:details] - 1];
+    }    
+    PropertySummary *summary = [[self summaries] objectAtIndex:[self selectedIndex]];
+
+    return [summary details];
 }
 
 - (PropertyDetails *)detailsNext:(PropertyDetailsViewController *)details
 {
-    return nil;
+    if ([self selectedIndex] < [self detailsCount:details] - 1)
+    {
+        [self setSelectedIndex:[self selectedIndex] + 1];
+    }
+    else
+    {
+        [self setSelectedIndex:0];
+    }
+    PropertySummary *summary = [[self summaries] objectAtIndex:[self selectedIndex]];
+    
+    return [summary details];    
 }
 
 

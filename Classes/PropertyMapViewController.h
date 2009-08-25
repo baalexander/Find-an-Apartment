@@ -22,6 +22,7 @@
         BOOL isCancelled_;
         BOOL isFromFavorites_;
         NSInteger summaryIndex_;
+        NSInteger selectedIndex_;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
