@@ -96,7 +96,7 @@
     if (fetchResults == nil)
     {
         // Handle the error.
-        NSLog(@"Error fetching recent History objects in historyFromCriteria.");
+        DebugLog(@"Error fetching recent History objects in historyFromCriteria.");
         
         return;
     }
@@ -152,8 +152,7 @@
     
     if (![[self fetchedResultsController] performFetch:nil])
     {
-        NSLog(@"Error performing fetch in History viewDidLoad.");
-        // TODO: Handle the error.
+        DebugLog(@"Error performing fetch in History viewDidLoad.");
     }    
 }
 

@@ -70,7 +70,7 @@
 	if (signbit([newLocation horizontalAccuracy]))
     {
 		// Negative accuracy means an invalid or unavailable measurement
-		NSLog(@"Invalid or unavailable measurement");
+		DebugLog(@"Invalid or unavailable measurement");
         return;
 	}
     [self setUserLocation:newLocation];
@@ -130,7 +130,7 @@
 		[errorString appendFormat:@"Description: \"%@\"\n", [error localizedDescription]];
 	}
     
-    NSLog(@"Error getting location: %@", errorString);
+    DebugLog(@"Error getting location: %@", errorString);
     [errorString release];
 }
 
@@ -140,7 +140,7 @@
 
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFailWithError:(NSError *)error
 {
-    NSLog(@"Reverse geocoder error: %@", error);
+    DebugLog(@"Reverse geocoder error: %@", error);
 }
 
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFindPlacemark:(MKPlacemark *)placemark

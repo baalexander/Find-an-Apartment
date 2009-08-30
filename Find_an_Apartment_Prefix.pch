@@ -13,3 +13,19 @@
     #import <UIKit/UIKit.h>
     #import <CoreData/CoreData.h>
 #endif
+
+// DebugLog is almost a drop-in replacement for NSLog
+// Example usage:
+// DebugLog();
+// DebugLog(@"here");
+// DebugLog(@"value: %d", x);
+// Unfortunately this does not work DebugLog(aStringVariable); you have to do this instead DebugLog(@"%@", aStringVariable);
+// DEBUG is defined in the GCC_PREPROCESSOR_DEFINITIONS setting variable
+#ifdef DEBUG
+#	define DebugLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+#	define DebugLog(...)
+#endif
+
+// Log always displays output regardless of the DEBUG setting
+#define Log(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);

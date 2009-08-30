@@ -42,7 +42,7 @@
     PropertyHistory *history = [PropertyFavoritesViewController favoriteHistoryFromContext:managedObjectContext];
     if (history == nil)
     {
-        NSLog(@"Error getting a favorites History.");
+        DebugLog(@"Error getting a favorites History.");
         
         return NO;
     }
@@ -95,7 +95,7 @@
     NSError *error = nil;
     if (![managedObjectContext save:&error])
     {
-        NSLog(@"Error saving favorites History.");
+        DebugLog(@"Error saving favorites History.");
     }
 
     return YES;
@@ -124,7 +124,7 @@
     if (fetchResults == nil)
     {
         // Handle the error.
-        NSLog(@"Error checking if property is a favorite.");
+        DebugLog(@"Error checking if property is a favorite.");
     }
 
     return [fetchResults count] > 0;
@@ -147,7 +147,7 @@
     if (fetchResults == nil)
     {
         // Handle the error.
-        NSLog(@"Error fetching favorites History object.");
+        DebugLog(@"Error fetching favorites History object.");
         
         return nil;
     }
@@ -256,8 +256,7 @@
         NSError *error;
         if (![managedObjectContext save:&error])
         {
-            //TODO: Handle error
-            NSLog(@"Error saving the deletion in Favorites.");
+            DebugLog(@"Error saving the deletion in Favorites.");
         }
         
         //The fetched results controller delegate calls will handle changes to the table

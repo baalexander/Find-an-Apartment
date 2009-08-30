@@ -1011,7 +1011,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Find_an_Apartment_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = FIND_AN_APARTMENT;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					FIND_AN_APARTMENT,
+					DEBUG,
+				);
 				INFOPLIST_FILE = "Find_an_Apartment-Info.plist";
 				PRODUCT_NAME = "Find an Apartment";
 			};
@@ -1047,7 +1050,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Find_an_Apartment_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = HOME_FINDER;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					HOME_FINDER,
+					DEBUG,
+				);
 				INFOPLIST_FILE = "Home_Finder-Info.plist";
 				PRODUCT_NAME = "Home Finder";
 			};

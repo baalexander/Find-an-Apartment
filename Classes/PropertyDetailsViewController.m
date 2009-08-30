@@ -109,12 +109,12 @@
     PropertySummary *summary = [[self details] summary];
     if (![PropertyFavoritesViewController addCopyOfProperty:summary])
     {
-        NSLog(@"Already in favorites.");
+        DebugLog(@"Already in favorites.");
     }
     else
     {
         [[self addToFavoritesButton] setEnabled:NO];
-        NSLog(@"Added to favorites.");
+        DebugLog(@"Added to favorites.");
     }
 }
 

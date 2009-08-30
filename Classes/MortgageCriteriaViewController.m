@@ -117,7 +117,7 @@
         if (fetchResults == nil)
         {
             // Handle the error.
-            NSLog(@"Error fetching Mortgage Criteria object.");
+            DebugLog(@"Error fetching Mortgage Criteria object.");
             
             return nil;
         }
@@ -207,8 +207,7 @@
         NSError *error;
         if (![[self mortgageStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error])
         {
-            NSLog(@"Error adding persistent store coordinator for Mortgage model");
-            //TODO: Handle error
+            DebugLog(@"Error adding persistent store coordinator for Mortgage model");
         }    
     }
     

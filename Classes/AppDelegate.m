@@ -106,8 +106,7 @@
         NSError *error;
         if (![[self propertyStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error])
         {
-            NSLog(@"Error adding persistent store coordinator for Property model");
-            //TODO: Handle error
+            DebugLog(@"Error adding persistent store coordinator for Property model");
         }    
     }
     
@@ -177,7 +176,7 @@
         if (![[self geographyStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:options error:&error])
         {
             // Handle the error.
-            NSLog(@"error: %@", error);
+            DebugLog(@"error: %@", error);
         }
     }
     
@@ -233,8 +232,8 @@
         if ([[self propertyObjectContext] hasChanges] && ![[self propertyObjectContext] save:&error])
         {
             // Handle error
-            NSLog(@"Error when saving context in application will terminate.");
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            DebugLog(@"Error when saving context in application will terminate.");
+            DebugLog(@"Unresolved error %@, %@", error, [error userInfo]);
             exit(-1);  // Fail
         } 
     }

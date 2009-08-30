@@ -384,8 +384,7 @@
                 NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
                 if (![managedObjectContext save:&error])
                 {
-                    NSLog(@"Error saving history context in Maps.");
-                    // TODO: Handle the error.
+                    DebugLog(@"Error saving history context in Maps.");
                 }
             }
             else if ([self summary] != nil)
@@ -394,8 +393,7 @@
                 NSManagedObjectContext *managedObjectContext = [[self summary] managedObjectContext];
                 if (![managedObjectContext save:&error])
                 {
-                    NSLog(@"Error saving summary context in Maps.");
-                    // TODO: Handle the error.
+                    DebugLog(@"Error saving summary context in Maps.");
                 }            
             }            
         }

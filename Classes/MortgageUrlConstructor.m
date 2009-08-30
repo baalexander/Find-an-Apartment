@@ -97,7 +97,7 @@
     [mutableUrl appendString:[self interestRate]];
     
     NSURL *url = [[[NSURL alloc] initWithString:mutableUrl] autorelease];
-    NSLog(@"MORTGAGE URL:%@", url);
+    DebugLog(@"MORTGAGE URL:%@", url);
     [mutableUrl release];
     
     return url;

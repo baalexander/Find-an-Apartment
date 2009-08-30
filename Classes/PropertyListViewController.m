@@ -6,6 +6,7 @@
 #import "PropertyMapViewController.h"
 #import "StringFormatter.h"
 #import "PropertyListAndMapConstants.h"
+#import "PropertyCriteriaConstants.h"
 
 
 // Class extension for private properties and methods.
@@ -107,7 +108,7 @@
         //History should NEVER be nil. Must always set before calling list view.
         if ([self history] == nil)
         {
-            NSLog(@"Error: History is nil in fetched results controller in List view controller.");
+            DebugLog(@"Error: History is nil in fetched results controller in List view controller.");
         }
         
         //Get managed object context from History
@@ -120,12 +121,11 @@
         //Create the sort descriptors array based on the users sort by selection.
         PropertyCriteria *criteria = [[self history] criteria];
         NSSortDescriptor *descriptor;
-        //TODO: Move these strings somewhere so Criteria, Url Constructor, and this don't have duplicated hardcoded strings
-        if ([[criteria sortBy] isEqual:@"price (low to high)"])
+        if ([[criteria sortBy] isEqual:kPropertyCriteriaSortByPriceAscending])
         {
             descriptor = [[NSSortDescriptor alloc] initWithKey:@"price" ascending:YES];
         }
-        else if ([[criteria sortBy] isEqual:@"price (high to low)"])
+        else if ([[criteria sortBy] isEqual:kPropertyCriteriaSortByPriceDescending])
         {
             descriptor = [[NSSortDescriptor alloc] initWithKey:@"price" ascending:NO];
         }
@@ -169,8 +169,7 @@
     {
         if (![[self fetchedResultsController] performFetch:nil])
         {
-            NSLog(@"Error performing fetch in viewDidLoad.");
-            // TODO: Handle the error.
+            DebugLog(@"Error performing fetch in viewDidLoad.");
         }        
     }
 
@@ -385,13 +384,12 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     NSError *error;
     if (![managedObjectContext save:&error])
     {
-        NSLog(@"Error saving context.");
-        // TODO: Handle the error.
+        DebugLog(@"Error saving context.");
     }
 
-    if (![[self fetchedResultsController] performFetch:&error]) {
-        NSLog(@"Error performing fetch.");
-        // TODO: Handle the error.
+    if (![[self fetchedResultsController] performFetch:&error])
+    {
+        DebugLog(@"Error performing fetch.");
     }
     
     //Enable Map button

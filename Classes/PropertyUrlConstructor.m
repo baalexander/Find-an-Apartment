@@ -189,7 +189,7 @@
     [mutableUrl appendString:[self searchSource]];
     
     NSURL *url = [[[NSURL alloc] initWithString:mutableUrl] autorelease];
-    NSLog(@"URL:%@", url);
+    DebugLog(@"URL:%@", url);
     [mutableUrl release];
     
     return url;

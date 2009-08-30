@@ -164,8 +164,7 @@
     [[self fetchedResultsController] performFetch:&error];
     if (error != nil)
     {
-        NSLog(@"Error performing fetch in states view controller.");
-        //TODO: Handle error
+        DebugLog(@"Error performing fetch in states view controller.");
     }
 }
 
@@ -323,12 +322,10 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     [self setFilteredContent:[[self geographyObjectContext] executeFetchRequest:fetchRequest error:&error]];
     [fetchRequest release];
     
-    if(error)
+    if (error)
     {
-        NSLog(@"Error filtering content: %@", error);
-        // TODO: Handle search error
+        DebugLog(@"Error filtering content: %@", error);
     }
-    [error release];
 }
 
 
