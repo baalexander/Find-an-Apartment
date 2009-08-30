@@ -14,6 +14,13 @@
 {
     if ((self = [super init]))
     {
+        //Sets the default image to a placeholder image if it exists
+        UIImage *defaultImage = [UIImage imageNamed:@"imageLoading.png"];
+        if (defaultImage != nil)
+        {
+            [self setDefaultImage:defaultImage];
+        }
+
         // Configure the in-memory image cache to keep approximately
         // 5 images in memory, assuming that each picture's dimensions
         // are 320x480. Note that your images can have whatever dimensions
