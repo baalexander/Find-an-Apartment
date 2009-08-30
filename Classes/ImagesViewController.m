@@ -14,6 +14,9 @@
 {
     if ((self = [super init]))
     {
+        //Increases the max allowed image size in bytes
+        [[TTURLRequestQueue mainQueue] setMaxContentLength:750000];
+        
         //Sets the default image to a placeholder image if it exists
         UIImage *defaultImage = [UIImage imageNamed:@"imageLoading.png"];
         if (defaultImage != nil)
