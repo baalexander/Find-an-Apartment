@@ -385,9 +385,9 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				455BFE530FDC9EDF000BCD39 /* General */,
 				455BFE520FDC9E99000BCD39 /* Property */,
 				459CA0CE100AA97000108747 /* Mortgage */,
-				455BFE530FDC9EDF000BCD39 /* Utility */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -488,7 +488,7 @@
 		455BFE510FDC9E47000BCD39 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				455BFE640FDCA012000BCD39 /* General UI */,
+				455BFE640FDCA012000BCD39 /* General */,
 				455BFE630FDCA004000BCD39 /* Property */,
 				45BEE7CF100595A10031613E /* Mortgage */,
 			);
@@ -504,7 +504,7 @@
 			name = Property;
 			sourceTree = "<group>";
 		};
-		455BFE530FDC9EDF000BCD39 /* Utility */ = {
+		455BFE530FDC9EDF000BCD39 /* General */ = {
 			isa = PBXGroup;
 			children = (
 				DDDF6A91101E2C18001621C7 /* Three20.xcodeproj */,
@@ -526,13 +526,13 @@
 				457AA33A0FDAC26100F0D16C /* XmlParser.m */,
 				45E6EB9C1040F09E001E66F2 /* SaveAndRestoreProtocol.h */,
 			);
-			name = Utility;
+			name = General;
 			sourceTree = "<group>";
 		};
 		455BFE600FDC9F7C000BCD39 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				455BFE650FDCA022000BCD39 /* General UI */,
+				455BFE650FDCA022000BCD39 /* General */,
 				455BFE610FDC9F84000BCD39 /* Property */,
 				4558D64E10058C770065C4DD /* Mortgage */,
 			);
@@ -587,7 +587,7 @@
 			name = Property;
 			sourceTree = "<group>";
 		};
-		455BFE640FDCA012000BCD39 /* General UI */ = {
+		455BFE640FDCA012000BCD39 /* General */ = {
 			isa = PBXGroup;
 			children = (
 				453EE36D0FF084DB0044390F /* DescriptionCell.xib */,
@@ -597,10 +597,10 @@
 				457931000FE36A08008E2ACD /* SummaryCell.xib */,
 				4557336B10374A800013278E /* WebView.xib */,
 			);
-			name = "General UI";
+			name = General;
 			sourceTree = "<group>";
 		};
-		455BFE650FDCA022000BCD39 /* General UI */ = {
+		455BFE650FDCA022000BCD39 /* General */ = {
 			isa = PBXGroup;
 			children = (
 				45BEE9851008FACC0031613E /* CriteriaViewController.h */,
@@ -620,7 +620,7 @@
 				DD6F22551027E1AD000C8207 /* WebViewController.h */,
 				DD6F22561027E1AD000C8207 /* WebViewController.m */,
 			);
-			name = "General UI";
+			name = General;
 			sourceTree = "<group>";
 		};
 		455BFE660FDCA036000BCD39 /* Property */ = {
