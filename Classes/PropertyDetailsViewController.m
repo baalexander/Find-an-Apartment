@@ -7,7 +7,7 @@
 #import "PropertyMapViewController.h"
 #import "PropertyImage.h"
 #import "WebViewController.h"
-#import "PropertyImageViewController.h"
+#import "ImagesViewController.h"
 
 #ifdef HOME_FINDER
     #import "MortgageCriteriaViewController.h"
@@ -461,15 +461,16 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     
     if ([key isEqual:kDetailsImages])
     {
-        // The property photos need to have an order so they are converted to an array from a set
-        NSMutableArray *images = [[NSMutableArray alloc] initWithCapacity:[detail intValue]];
-        for(PropertyImage *image in [[self details] images])
+        NSMutableArray *urls = [[NSMutableArray alloc] init];
+        for (PropertyImage *image in [[self details] images])
         {
-            [images addObject:[image url]];
+            NSURL *url = [[NSURL alloc] initWithString:[image url]];
+            [urls addObject:url];
+            [url release];
         }
         
-        PropertyImageViewController *imageViewController = [[PropertyImageViewController alloc] initWithImages:images];
-        [images release];
+        ImagesViewController *imageViewController = [[ImagesViewController alloc] initWithUrls:urls];
+        [urls release];
         
         [[self navigationController] pushViewController:imageViewController animated:YES];
         [imageViewController release];
