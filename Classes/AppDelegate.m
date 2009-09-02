@@ -3,7 +3,6 @@
 #import "PropertyStatesViewController.h"
 #import "State.h"
 #import "CityOrPostalCode.h"
-#import "LocationManager.h"
 #import "PropertyHistoryViewController.h"
 #import "PropertyFavoritesViewController.h"
 #import "SaveAndRestoreConstants.h"
@@ -23,8 +22,6 @@
 @property (nonatomic, retain, readwrite) NSManagedObjectContext *geographyObjectContext;
 @property (nonatomic, retain, readwrite) NSPersistentStoreCoordinator *geographyStoreCoordinator;
 
-@property (nonatomic, retain, readwrite) LocationManager *locationManager;
-
 - (void)populateViewController:(UIViewController *)viewController;
 
 @end
@@ -40,7 +37,6 @@
 @synthesize geographyObjectModel = geographyObjectModel_;
 @synthesize geographyObjectContext = geographyObjectContext_;
 @synthesize geographyStoreCoordinator = geographyStoreCoordinator_;
-@synthesize locationManager = locationManager_;
 
 
 #pragma mark -
@@ -287,15 +283,9 @@
 {
     if ([viewController isKindOfClass:[PropertyStatesViewController class]])
     {
-        LocationManager *locationManager = [[LocationManager alloc] init];
-        [locationManager setPropertyObjectContext:[self propertyObjectContext]];
-        [self setLocationManager:locationManager];
-        [locationManager release];
-        
         PropertyStatesViewController *statesViewController = (PropertyStatesViewController *)viewController;
         [statesViewController setPropertyObjectContext:[self propertyObjectContext]];
         [statesViewController setGeographyObjectContext:[self geographyObjectContext]];
-        [statesViewController setLocationManager:[self locationManager]];            
     }
     else if ([viewController isKindOfClass:[PropertyHistoryViewController class]])
     {

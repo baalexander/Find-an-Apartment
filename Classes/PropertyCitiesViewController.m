@@ -1,6 +1,6 @@
 #import "PropertyCitiesViewController.h"
 
-#import "LocationManager.h"
+#import "Locator.h"
 #import "PropertyCriteriaViewController.h"
 #import "CityOrPostalCode.h"
 #import "SaveAndRestoreConstants.h"
@@ -8,7 +8,7 @@
 
 @interface PropertyCitiesViewController ()
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
-- (void)pushCriteriaViewControllerWithCity:(CityOrPostalCode *)cityOrZip animated:(BOOL)animated;
+- (void)pushCriteriaViewControllerWithCity:(NSString *)cityOrZip animated:(BOOL)animated;
 @end
 
 
@@ -17,7 +17,6 @@
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize propertyObjectContext = propertyObjectContext_;
 @synthesize state = state_;
-@synthesize locationManager = locationManager_;
 @synthesize searchBar = searchBar_;
 @synthesize searchDisplayController = searchDisplayController_;
 @synthesize filteredContent = filteredContent_;
@@ -82,23 +81,27 @@
     return fetchedResultsController_;
 }
 
-- (void)pushCriteriaViewControllerWithCity:(CityOrPostalCode *)cityOrZip animated:(BOOL)animated
+- (void)pushCriteriaViewControllerWithCity:(NSString *)cityOrZip animated:(BOOL)animated
 {
     PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaView" bundle:nil];
-    [criteriaViewController setState:[[self state] name]];
-    
+    [criteriaViewController setPropertyObjectContext:[self propertyObjectContext]];
+
+    //Fills out Location for Criteria view controller
+    Location *location = [[Location alloc] init];
+    [location setState:[[self state] name]];
     //Is it a city or a zip?
-    NSRange rangeOfDigit = [[cityOrZip value] rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]];
+    NSRange rangeOfDigit = [cityOrZip rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]];
     if (rangeOfDigit.location == NSNotFound)
     {
-        [criteriaViewController setCity:[cityOrZip value]];
+        [location setCity:cityOrZip];
     }
     else
     {
-        [criteriaViewController setPostalCode:[cityOrZip value]];
+        [location setPostalCode:cityOrZip];
     }
+    [criteriaViewController setLocation:location];
+    [location release];
 
-    [criteriaViewController setPropertyObjectContext:[self propertyObjectContext]];
     [[self navigationController] pushViewController:criteriaViewController animated:animated];
     [criteriaViewController release];
 }
@@ -109,28 +112,11 @@
 
 - (void)restore
 {
-    NSString *cityName = [[NSUserDefaults standardUserDefaults] stringForKey:kSavedCity];
+    NSString *city = [[NSUserDefaults standardUserDefaults] stringForKey:kSavedCity];
     
-    if (cityName != nil && [cityName length] > 0)
+    if (city != nil && [city length] > 0)
     {
-        NSManagedObjectContext *managedObjectContext = [[self state] managedObjectContext];
-        
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription *cityEntity = [NSEntityDescription entityForName:@"CityOrPostalCode" inManagedObjectContext:managedObjectContext];
-        [fetchRequest setEntity:cityEntity];
-        
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(value == %@)", cityName];
-        [fetchRequest setPredicate:predicate];
-        
-        NSError *error = nil;
-        NSArray *fetchResults = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
-        [fetchRequest release];
-        
-        if (fetchResults != nil && [fetchResults count] > 0)
-        {
-            CityOrPostalCode *cityOrZip = [fetchResults objectAtIndex:0];
-            [self pushCriteriaViewControllerWithCity:cityOrZip animated:NO];
-        }
+        [self pushCriteriaViewControllerWithCity:city animated:NO];
     }    
 }
 
@@ -155,12 +141,12 @@
 	[[self searchBar] setDelegate:self]; // Become delegate to detect changes in scope.
     
     // Setup the location button
-    UIBarButtonItem *locationBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"locate.png"]
-                                                                    style:UIBarButtonItemStyleBordered 
-                                                                   target:[self locationManager] action:@selector(locateUser)];
-    [[self navigationItem] setRightBarButtonItem:locationBtn];
-    [locationBtn release];
-    [[self locationManager] setLocationCaller:self];
+    [[Locator sharedInstance] setDelegate:self];
+    UIBarButtonItem *locationButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"locate.png"]
+                                                                       style:UIBarButtonItemStyleBordered 
+                                                                      target:[Locator sharedInstance] action:@selector(locate)];
+    [[self navigationItem] setRightBarButtonItem:locationButton];
+    [locationButton release];
     
     NSError *error = nil;
     [[self fetchedResultsController] performFetch:&error];
@@ -173,19 +159,14 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
     //Reset all restore values up to this view controller (does not delete saved State as the State view controller is the parent of this one)
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSavedCity];
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSavedPostalCode];
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSavedStreet];
     [[NSUserDefaults standardUserDefaults] setDouble:0 forKey:kSavedLongitude];
     [[NSUserDefaults standardUserDefaults] setDouble:0 forKey:kSavedLatitude];
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUsedCoreLocation];
-}
-
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
 }
 
 
@@ -271,26 +252,29 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     //Saves the selected city for restoring later
     [[NSUserDefaults standardUserDefaults] setObject:[cityOrZip value] forKey:kSavedCity];
 
-    [self pushCriteriaViewControllerWithCity:cityOrZip animated:YES];
+    [self pushCriteriaViewControllerWithCity:[cityOrZip value] animated:YES];
 }
 
 
 #pragma mark -
-#pragma mark Location Callback
+#pragma mark LocatorDelegate
 
-- (void)useCriteria:(PropertyCriteria *)criteria
+- (void)locator:(Locator *)locator setLocation:(Location *)location
 {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kUsedCoreLocation];
     
     //Archives the location data for restoring later
-    [[NSUserDefaults standardUserDefaults] setDouble:[[criteria longitude] doubleValue] forKey:kSavedLongitude];
-    [[NSUserDefaults standardUserDefaults] setDouble:[[criteria latitude] doubleValue] forKey:kSavedLatitude];
-    [[NSUserDefaults standardUserDefaults] setObject:[criteria state] forKey:kSavedState];
-    [[NSUserDefaults standardUserDefaults] setObject:[criteria city] forKey:kSavedCity];
-    [[NSUserDefaults standardUserDefaults] setObject:[criteria postalCode] forKey:kSavedPostalCode];
+    CLLocationCoordinate2D coordinate = [location coordinate];
+    [[NSUserDefaults standardUserDefaults] setDouble:coordinate.longitude forKey:kSavedLongitude];
+    [[NSUserDefaults standardUserDefaults] setDouble:coordinate.latitude forKey:kSavedLatitude];
+    [[NSUserDefaults standardUserDefaults] setObject:[location state] forKey:kSavedState];
+    [[NSUserDefaults standardUserDefaults] setObject:[location city] forKey:kSavedCity];
+    [[NSUserDefaults standardUserDefaults] setObject:[location postalCode] forKey:kSavedPostalCode];
+    [[NSUserDefaults standardUserDefaults] setObject:[location street] forKey:kSavedStreet];
     
     PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] init];
-    [criteriaViewController setCriteria:criteria];
+    [criteriaViewController setPropertyObjectContext:[self propertyObjectContext]];
+    [criteriaViewController setLocation:location];
     [[self navigationController] pushViewController:criteriaViewController animated:YES];
     [criteriaViewController release];
 }

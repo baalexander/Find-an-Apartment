@@ -325,7 +325,10 @@ static void charactersFoundSAX(void *ctx, const xmlChar *ch, int len)
 static void errorEncounteredSAX(void *ctx, const char *msg, ...)
 {
     //TODO: Call parseError on main thread with initialized error message using *msg
-    printf(msg);
+    // printf(msg);
+//    NSString *message = [[NSString alloc] initWithCString:msg];
+//    DebugLog(message);
+//    [message release];
 }
 
 // The handler struct has positions for a large number of callback functions. If NULL is supplied at a given position,

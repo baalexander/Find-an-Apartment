@@ -5,6 +5,7 @@
 #define kSavedState @"SAVED_STATE"
 #define kSavedCity @"SAVED_CITY"
 #define kSavedPostalCode @"SAVED_POSTAL_CODE"
+#define kSavedStreet @"SAVED_STREET"
 #define kSavedLongitude @"SAVED_LONGITUDE"
 #define kSavedLatitude @"SAVED_LATITUDE"
 

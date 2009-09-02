@@ -1,5 +1,7 @@
 #import "PropertyCriteriaViewController.h"
 
+#import <CoreLocation/CoreLocation.h>
+
 #import "PropertyHistoryViewController.h"
 #import "PropertyCriteriaConstants.h"
 #import "InputRangeCell.h"
@@ -14,13 +16,15 @@
 #endif
 
 
+@interface PropertyCriteriaViewController ()
+@property (nonatomic, retain) PropertyCriteria *criteria;
+@end
+
+
 @implementation PropertyCriteriaViewController
 
 @synthesize propertyObjectContext = propertyObjectContext_;
-@synthesize state = state_;
-@synthesize city = city_;
-@synthesize postalCode = postalCode_;
-@synthesize coordinates = coordinates_;
+@synthesize location = location_;
 @synthesize criteria = criteria_;
 
 
@@ -40,9 +44,7 @@
 - (void)dealloc
 {
     [propertyObjectContext_ release];    
-    [state_ release];
-    [city_ release];
-    [postalCode_ release];
+    [location_ release];
     [criteria_ release];
     
     [super dealloc];
@@ -56,64 +58,65 @@
 {
     [super viewDidLoad];
 
-    if([self criteria] == nil)
-    {
-        //Gets most recent Property Criteria from most recent History to pre-populate non-geographic criteria
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:[self propertyObjectContext]];
-        [fetchRequest setEntity:entity];
-        
-        //Sorts so most recent is first
-        NSSortDescriptor *createdDescriptor = [[NSSortDescriptor alloc] initWithKey:@"created" ascending:NO];
-        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:createdDescriptor, nil];
-        [createdDescriptor release];
-        [fetchRequest setSortDescriptors:sortDescriptors];
-        [sortDescriptors release];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(isFavorite == NO)"];
-        [fetchRequest setPredicate:predicate];
+    //Gets most recent Property Criteria from most recent History to pre-populate non-geographic criteria
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:[self propertyObjectContext]];
+    [fetchRequest setEntity:entity];
     
-        NSError *error = nil;
-        NSArray *fetchResults = [[self propertyObjectContext] executeFetchRequest:fetchRequest error:&error];
-        [fetchRequest release];
-        
-        //No recent History object to get Criteria from, creates Criteria
-        if (fetchResults == nil || [fetchResults count] == 0)
-        {
-            NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyCriteria" inManagedObjectContext:[self propertyObjectContext]];
-            PropertyCriteria *criteria = [[PropertyCriteria alloc] initWithEntity:entity insertIntoManagedObjectContext:[self propertyObjectContext]];
-            [self setCriteria:criteria];
-            [criteria release];            
-        }
-        //Gets most recent Criteria object from History
-        else
-        {
-            PropertyHistory *history = [fetchResults objectAtIndex:0];
-            [self setCriteria:[history criteria]];
-        }
+    //Sorts so most recent is first
+    NSSortDescriptor *createdDescriptor = [[NSSortDescriptor alloc] initWithKey:@"created" ascending:NO];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:createdDescriptor, nil];
+    [createdDescriptor release];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    [sortDescriptors release];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(isFavorite == NO)"];
+    [fetchRequest setPredicate:predicate];
 
-        //Fills criteria in with passed in information
-        [[self criteria] setState:[self state]];    
-        [[self criteria] setCity:[self city]];
-        [[self criteria] setPostalCode:[self postalCode]];
-        //Sets coordinate details
-        NSNumber *latitude = [[NSNumber alloc] initWithDouble:[self coordinates].latitude];
-        [[self criteria] setLatitude:latitude];
-        [latitude release];
-        NSNumber *longitude = [[NSNumber alloc] initWithDouble:[self coordinates].longitude];
-        [[self criteria] setLongitude:longitude];
-        [longitude release];        
+    NSError *error = nil;
+    NSArray *fetchResults = [[self propertyObjectContext] executeFetchRequest:fetchRequest error:&error];
+    [fetchRequest release];
+    
+    //No recent History object to get Criteria from, creates Criteria
+    if (fetchResults == nil || [fetchResults count] == 0)
+    {
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertyCriteria" inManagedObjectContext:[self propertyObjectContext]];
+        PropertyCriteria *criteria = [[PropertyCriteria alloc] initWithEntity:entity insertIntoManagedObjectContext:[self propertyObjectContext]];
+        [self setCriteria:criteria];
+        [criteria release];            
     }
+    //Gets most recent Criteria object from History
+    else
+    {
+        PropertyHistory *history = [fetchResults objectAtIndex:0];
+        [self setCriteria:[history criteria]];
+    }
+
+    //Fills criteria in with passed in information
+    [[self criteria] setState:[[self location] state]];
+    [[self criteria] setCity:[[self location] city]];
+    [[self criteria] setPostalCode:[[self location] postalCode]];
+    [[self criteria] setStreet:[[self location] street]];
+
+    //Sets coordinate details
+    CLLocationCoordinate2D coordinate = [[self location] coordinate];
+    NSNumber *latitude = [[NSNumber alloc] initWithDouble:coordinate.latitude];
+    [[self criteria] setLatitude:latitude];
+    [latitude release];
+    NSNumber *longitude = [[NSNumber alloc] initWithDouble:coordinate.longitude];
+    [[self criteria] setLongitude:longitude];
+    [longitude release];
+
     //Sets title to location
     NSString *title;
-    if ([[self criteria] postalCode] != nil && [[[self criteria] postalCode] length] > 0)
+    if ([[self location] postalCode] != nil && [[[self location] postalCode] length] > 0)
     {
         title = [[self criteria] postalCode];
     }
-    else if ([[self criteria] city] != nil && [[[self criteria] city] length] > 0)
+    else if ([[self location] city] != nil && [[[self location] city] length] > 0)
     {
         title = [[self criteria] city];
     }
-    else if ([[self criteria] state] != nil && [[[self criteria] state] length] > 0)
+    else if ([[self location] state] != nil && [[[self location] state] length] > 0)
     {
         title = [[self criteria] state];
     }
@@ -124,6 +127,7 @@
     [self setTitle:title];
     
     //Row Ids outlines the order of the rows in the table
+    //Different for each app
     NSArray *rowIds;
 #ifdef HOME_FINDER
     rowIds = [[NSArray alloc] initWithObjects:kPropertyCriteriaSearchSource, kPropertyCriteriaKeywords, kPropertyCriteriaPrice, kPropertyCriteriaSquareFeet, kPropertyCriteriaBedrooms, kPropertyCriteriaBathrooms, kPropertyCriteriaSortBy, kPropertyCriteriaSearch, nil];

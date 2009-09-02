@@ -40,6 +40,7 @@
         }
         
         ImageSource *imageSource = [[ImageSource alloc] initWithTitle:@"Images" withImages:images];
+        [images release];
         [self setPhotoSource:imageSource];
         [imageSource release];        
     }
