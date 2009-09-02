@@ -138,11 +138,6 @@
     [rowIds release];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
-
 - (void)viewDidUnload
 {
     
@@ -301,9 +296,6 @@
 
         [[self navigationController] pushViewController:listViewController animated:YES];
         [listViewController release];
-        
-        // Remember which row was selected
-        [self setSelectedIndexPath:indexPath];
     }
     //Selected sort by, brings up list of sort choices
     else if ([rowId isEqual:kPropertyCriteriaSortBy]) 
@@ -312,8 +304,6 @@
         [choicesViewController setCriteria:[self criteria]];
         [[self navigationController] pushViewController:choicesViewController animated:YES];
         [choicesViewController release];
-        
-        [self setSelectedIndexPath:indexPath];
     }
 #ifdef HOME_FINDER
     //Selected search source, brings up list of search sources
@@ -323,8 +313,6 @@
         [choicesViewController setCriteria:[self criteria]];
         [[self navigationController] pushViewController:choicesViewController animated:YES];
         [choicesViewController release];
-        
-        [self setSelectedIndexPath:indexPath];
     }    
 #endif
     //Puts the cell in edit mode or view mode if already in edit mode

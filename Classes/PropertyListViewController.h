@@ -29,9 +29,7 @@
         NSFetchedResultsController *fetchedResultsController_;
     
         NSInteger selectedIndex_;
-    
-        NSIndexPath *selectedIndexPath_;
-    
+
         IBOutlet SummaryCell *summaryCell_;
 }
 
@@ -39,7 +37,6 @@
 
 @property (nonatomic, retain) PropertyHistory *history;
 @property (nonatomic, retain) SummaryCell *summaryCell;
-@property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 //This is "public" since needs to be inherited by Favorites. Would be protected if such a thing existed.
 @property (nonatomic, retain, readonly) NSFetchedResultsController *fetchedResultsController;
 

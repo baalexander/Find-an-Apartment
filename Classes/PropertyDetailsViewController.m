@@ -29,7 +29,6 @@
 @synthesize locationCell = locationCell_;
 @synthesize descriptionCell = descriptionCell_;
 @synthesize addToFavoritesButton = addToFavoritesButton_;
-@synthesize selectedIndex = selectedIndex_;
 
 
 #pragma mark -
@@ -52,7 +51,6 @@
     [sectionTitles_ release];
     [sectionDetails_ release];
     [locationCell_ release];
-    [selectedIndex_ release];
     
     [super dealloc];
 }
@@ -262,17 +260,16 @@
 #pragma mark -
 #pragma mark UIViewController
 
-// The TTPhotoViewer changes the nav bar and status bar style to translucent back, so it needs to be changed back
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    
+    NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
+    [[self tableView] deselectRowAtIndexPath:indexPath animated:YES];
+
+    // The TTPhotoViewer changes the nav bar and status bar style to translucent back, so it needs to be changed back
     [[[self navigationController] navigationBar] setTintColor:[UIColor blackColor]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
-}
-
-// Used solely to animate the deselection of the link cell
-- (void)viewDidAppear:(BOOL)animated
-{
-    [[self tableView] deselectRowAtIndexPath:[self selectedIndex] animated:YES];
 }
 
 - (void)viewDidLoad
@@ -306,15 +303,6 @@
     {
         [[self addToFavoritesButton] setEnabled:NO];
     }
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
-
-- (void)viewDidUnload
-{
 }
 
 
@@ -456,7 +444,6 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
         
         [[self navigationController] pushViewController:mapController animated:YES];
         [mapController release];
-        [self setSelectedIndex:indexPath];
     }
     
     if ([key isEqual:kDetailsImages])
@@ -474,7 +461,6 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
         
         [[self navigationController] pushViewController:imageViewController animated:YES];
         [imageViewController release];
-        [self setSelectedIndex:indexPath];
     }
     
     if ([key isEqual:kDetailsLink])
@@ -487,7 +473,6 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
         [[self navigationController] pushViewController:webViewController animated:YES];
         [webViewController release];
-        [self setSelectedIndex:indexPath];
     }
     
     if ([key isEqual:kDetailsEmail])

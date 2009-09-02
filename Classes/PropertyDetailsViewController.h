@@ -37,8 +37,6 @@
         IBOutlet DescriptionCell *descriptionCell_;
         
         UIBarButtonItem *addToFavoritesButton_;
-    
-        NSIndexPath *selectedIndex_;
 }
 
 @property (nonatomic, assign) id<PropertyDetailsDelegate> delegate;
@@ -47,7 +45,6 @@
 @property (nonatomic, retain) LocationCell *locationCell;
 @property (nonatomic, retain) DescriptionCell *descriptionCell;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *addToFavoritesButton;
-@property (nonatomic, retain) NSIndexPath *selectedIndex;
 
 - (IBAction)share:(id)sender;
 - (IBAction)addToFavorites:(id)sender;

@@ -14,7 +14,6 @@
 
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize propertyObjectContext = propertyObjectContext_;
-@synthesize selectedIndex = selectedIndex_;
 
 
 #pragma mark -
@@ -159,18 +158,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     NSIndexPath *selectedRowIndexPath = [[self tableView] indexPathForSelectedRow];
-    if (selectedRowIndexPath != nil)
-    {
-        [[self tableView] deselectRowAtIndexPath:selectedRowIndexPath animated:NO];
-    }
+
     [[self tableView] reloadData];
     
-    [[self tableView] selectRowAtIndexPath:[self selectedIndex] animated:NO scrollPosition:UITableViewScrollPositionNone];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [[self tableView] deselectRowAtIndexPath:[self selectedIndex] animated:YES];
+    //Selects/Deselects since reloading table data
+    [[self tableView] selectRowAtIndexPath:selectedRowIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    [[self tableView] deselectRowAtIndexPath:selectedRowIndexPath animated:YES];
 }
 
 
@@ -237,8 +230,6 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     [listViewController setHistory:history];
     [[self navigationController] pushViewController:listViewController animated:YES];
     [listViewController release];
-    
-    [self setSelectedIndex:indexPath];
 }
 
 

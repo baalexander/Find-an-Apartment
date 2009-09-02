@@ -32,7 +32,6 @@
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize summaryCell = summaryCell_;
 @synthesize selectedIndex = selectedIndex_;
-@synthesize selectedIndexPath = selectedIndexPath_;
 
 
 #pragma mark -
@@ -57,7 +56,6 @@
     [history_ release];
     [details_ release];
     [summary_ release];
-    [selectedIndexPath_ release];
     [fetchedResultsController_ release];
     
     [super dealloc];
@@ -194,20 +192,10 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSIndexPath *selectedRowIndexPath = [[self tableView] indexPathForSelectedRow];
-    if (selectedRowIndexPath != nil)
-    {
-        [[self tableView] deselectRowAtIndexPath:selectedRowIndexPath animated:NO];
-    }
+    [super viewWillAppear:animated];
     
-    // Reselect the previously selected cell
-    [[self tableView] selectRowAtIndexPath:[self selectedIndexPath] animated:NO scrollPosition:UITableViewScrollPositionNone];
-}
-
-// Deselect the previously selected cell
-- (void)viewDidAppear:(BOOL)animated
-{
-    [[self tableView] deselectRowAtIndexPath:[self selectedIndexPath] animated:YES];
+    NSIndexPath *selectedRowIndexPath = [[self tableView] indexPathForSelectedRow];
+    [[self tableView] deselectRowAtIndexPath:selectedRowIndexPath animated:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -286,8 +274,6 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     [detailsViewController setDetails:details];
     [[self navigationController] pushViewController:detailsViewController animated:YES];
     [detailsViewController release];
-    
-    [self setSelectedIndexPath:indexPath];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
