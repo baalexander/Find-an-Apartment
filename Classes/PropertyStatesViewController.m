@@ -90,22 +90,6 @@
     {
         PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaView" bundle:nil];
         [criteriaViewController setPropertyObjectContext:[self propertyObjectContext]];
-
-        //Populates Location view with saved location details
-        Location *location = [[Location alloc] init];
-        CLLocationCoordinate2D coordinate;
-        coordinate.longitude = [[NSUserDefaults standardUserDefaults] doubleForKey:kSavedLongitude];
-        coordinate.latitude = [[NSUserDefaults standardUserDefaults] doubleForKey:kSavedLatitude];
-        [location setCoordinate:coordinate];
-        
-        [location setState:[[NSUserDefaults standardUserDefaults] objectForKey:kSavedState]];
-        [location setCity:[[NSUserDefaults standardUserDefaults] objectForKey:kSavedCity]];
-        [location setPostalCode:[[NSUserDefaults standardUserDefaults] objectForKey:kSavedPostalCode]];
-        [location setStreet:[[NSUserDefaults standardUserDefaults] objectForKey:kSavedStreet]];
-        
-        [criteriaViewController setLocation:location];
-        [location release];
-        
         [[self navigationController] pushViewController:criteriaViewController animated:NO];
         [criteriaViewController release];
     }
@@ -292,9 +276,9 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     [[NSUserDefaults standardUserDefaults] setObject:[location postalCode] forKey:kSavedPostalCode];
     [[NSUserDefaults standardUserDefaults] setObject:[location street] forKey:kSavedStreet];
     
+    //Goes directly to Criteria view controller
     PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] init];
     [criteriaViewController setPropertyObjectContext:[self propertyObjectContext]];
-    [criteriaViewController setLocation:location];
     [[self navigationController] pushViewController:criteriaViewController animated:YES];
     [criteriaViewController release];
 }

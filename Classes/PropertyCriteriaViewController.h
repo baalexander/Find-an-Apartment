@@ -9,11 +9,9 @@
 {
     @private
         NSManagedObjectContext *propertyObjectContext_;
-        Location *location_;
         PropertyCriteria *criteria_;
 }
 
 @property (nonatomic, retain) NSManagedObjectContext *propertyObjectContext;
-@property (nonatomic, retain) Location *location;
 
 @end

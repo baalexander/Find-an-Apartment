@@ -85,23 +85,6 @@
 {
     PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaView" bundle:nil];
     [criteriaViewController setPropertyObjectContext:[self propertyObjectContext]];
-
-    //Fills out Location for Criteria view controller
-    Location *location = [[Location alloc] init];
-    [location setState:[[self state] name]];
-    //Is it a city or a zip?
-    NSRange rangeOfDigit = [cityOrZip rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]];
-    if (rangeOfDigit.location == NSNotFound)
-    {
-        [location setCity:cityOrZip];
-    }
-    else
-    {
-        [location setPostalCode:cityOrZip];
-    }
-    [criteriaViewController setLocation:location];
-    [location release];
-
     [[self navigationController] pushViewController:criteriaViewController animated:animated];
     [criteriaViewController release];
 }
@@ -113,10 +96,15 @@
 - (void)restore
 {
     NSString *city = [[NSUserDefaults standardUserDefaults] stringForKey:kSavedCity];
+    NSString *postalCode = [[NSUserDefaults standardUserDefaults] stringForKey:kSavedPostalCode];
     
-    if (city != nil && [city length] > 0)
+    //Determines if user exited on the Cities view controller or one after
+    if ((city != nil && [city length] > 0) || (postalCode != nil && [postalCode length] > 0))
     {
-        [self pushCriteriaViewControllerWithCity:city animated:NO];
+        PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaView" bundle:nil];
+        [criteriaViewController setPropertyObjectContext:[self propertyObjectContext]];
+        [[self navigationController] pushViewController:criteriaViewController animated:NO];
+        [criteriaViewController release];
     }    
 }
 
@@ -239,20 +227,31 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CityOrPostalCode *cityOrZip;
+    NSString *cityOrZip;
     if(tableView == [[self searchDisplayController] searchResultsTableView])
     {
-        cityOrZip = [[self filteredContent] objectAtIndex:[indexPath row]];
+        cityOrZip = [[[self filteredContent] objectAtIndex:[indexPath row]] value];
     }
     else
     {
-        cityOrZip = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+        cityOrZip = [[[self fetchedResultsController] objectAtIndexPath:indexPath] value];
     }
-    
-    //Saves the selected city for restoring later
-    [[NSUserDefaults standardUserDefaults] setObject:[cityOrZip value] forKey:kSavedCity];
 
-    [self pushCriteriaViewControllerWithCity:[cityOrZip value] animated:YES];
+    //Saves selected value as city or zip
+    NSRange rangeOfDigit = [cityOrZip rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]];
+    if (rangeOfDigit.location == NSNotFound)
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:cityOrZip forKey:kSavedCity];
+    }
+    else
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:cityOrZip forKey:kSavedPostalCode];
+    }
+
+    PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaView" bundle:nil];
+    [criteriaViewController setPropertyObjectContext:[self propertyObjectContext]];
+    [[self navigationController] pushViewController:criteriaViewController animated:YES];
+    [criteriaViewController release];
 }
 
 
@@ -274,7 +273,6 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     
     PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] init];
     [criteriaViewController setPropertyObjectContext:[self propertyObjectContext]];
-    [criteriaViewController setLocation:location];
     [[self navigationController] pushViewController:criteriaViewController animated:YES];
     [criteriaViewController release];
 }

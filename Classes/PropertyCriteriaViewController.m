@@ -10,6 +10,7 @@
 #import "PropertyListViewController.h"
 #import "PropertySortChoicesViewController.h"
 #import "StringFormatter.h"
+#import "SaveAndRestoreConstants.h"
 
 #ifdef HOME_FINDER
     #import "PropertySearchSourcesViewController.h"
@@ -24,7 +25,6 @@
 @implementation PropertyCriteriaViewController
 
 @synthesize propertyObjectContext = propertyObjectContext_;
-@synthesize location = location_;
 @synthesize criteria = criteria_;
 
 
@@ -44,7 +44,6 @@
 - (void)dealloc
 {
     [propertyObjectContext_ release];    
-    [location_ release];
     [criteria_ release];
     
     [super dealloc];
@@ -91,32 +90,31 @@
         [self setCriteria:[history criteria]];
     }
 
-    //Fills criteria in with passed in information
-    [[self criteria] setState:[[self location] state]];
-    [[self criteria] setCity:[[self location] city]];
-    [[self criteria] setPostalCode:[[self location] postalCode]];
-    [[self criteria] setStreet:[[self location] street]];
-
+    //Fills criteria in with saved information
+    [[self criteria] setState:[[NSUserDefaults standardUserDefaults] objectForKey:kSavedState]];
+    [[self criteria] setCity:[[NSUserDefaults standardUserDefaults] objectForKey:kSavedCity]];
+    [[self criteria] setPostalCode:[[NSUserDefaults standardUserDefaults] objectForKey:kSavedPostalCode]];
+    [[self criteria] setStreet:[[NSUserDefaults standardUserDefaults] objectForKey:kSavedStreet]];
+    
     //Sets coordinate details
-    CLLocationCoordinate2D coordinate = [[self location] coordinate];
-    NSNumber *latitude = [[NSNumber alloc] initWithDouble:coordinate.latitude];
+    NSNumber *latitude = [[NSNumber alloc] initWithDouble:[[NSUserDefaults standardUserDefaults] doubleForKey:kSavedLatitude]];
     [[self criteria] setLatitude:latitude];
     [latitude release];
-    NSNumber *longitude = [[NSNumber alloc] initWithDouble:coordinate.longitude];
+    NSNumber *longitude = [[NSNumber alloc] initWithDouble:[[NSUserDefaults standardUserDefaults] doubleForKey:kSavedLongitude]];
     [[self criteria] setLongitude:longitude];
     [longitude release];
 
     //Sets title to location
     NSString *title;
-    if ([[self location] postalCode] != nil && [[[self location] postalCode] length] > 0)
+    if ([[self criteria] postalCode] != nil && [[[self criteria] postalCode] length] > 0)
     {
         title = [[self criteria] postalCode];
     }
-    else if ([[self location] city] != nil && [[[self location] city] length] > 0)
+    else if ([[self criteria] city] != nil && [[[self criteria] city] length] > 0)
     {
         title = [[self criteria] city];
     }
-    else if ([[self location] state] != nil && [[[self location] state] length] > 0)
+    else if ([[self criteria] state] != nil && [[[self criteria] state] length] > 0)
     {
         title = [[self criteria] state];
     }
@@ -280,6 +278,9 @@
     //Selected the search button, begins searching
     if ([rowId isEqual:kPropertyCriteriaSearch])
     {
+        //Saves some geography criteria information not saved by the States or Cities view controller
+        [[NSUserDefaults standardUserDefaults] setObject:[[self criteria] street] forKey:kSavedStreet];        
+        
         PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
         
         //Sets History
