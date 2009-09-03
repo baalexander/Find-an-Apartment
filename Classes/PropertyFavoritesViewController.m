@@ -156,7 +156,7 @@
     if ([fetchResults count] == 0)
     {
         NSEntityDescription *historyEntity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:managedObjectContext];
-        PropertyHistory *history = [[PropertyHistory alloc] initWithEntity:historyEntity insertIntoManagedObjectContext:managedObjectContext];
+        PropertyHistory *history = [[[PropertyHistory alloc] initWithEntity:historyEntity insertIntoManagedObjectContext:managedObjectContext] autorelease];
         
         //Sets History attributes
         [history setTitle:@"Favorites"];
