@@ -114,14 +114,10 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSIndexPath *selectedRowIndexPath = [[self tableView] indexPathForSelectedRow];
+    [super viewWillAppear:animated];
     
     //If selecting a choices view controller like Sort By choices, then need to reload any changes it may have made on the Criteria
     [[self tableView] reloadData];
-
-    //Selects/Deselects since reloading table data
-    [[self tableView] selectRowAtIndexPath:selectedRowIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-    [[self tableView] deselectRowAtIndexPath:selectedRowIndexPath animated:YES];
 }
 
 - (void)viewDidLoad
