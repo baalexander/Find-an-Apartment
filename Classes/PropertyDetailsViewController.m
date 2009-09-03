@@ -441,6 +441,8 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     {
         PropertyMapViewController *mapController = [[PropertyMapViewController alloc] initWithNibName:@"PropertyMapView" bundle:nil];
         [mapController setSummary:[[self details] summary]];
+        //Do not make placemark a button, it will just push to this view
+        [mapController setShouldAddButtonToAnnotation:NO];
         
         [[self navigationController] pushViewController:mapController animated:YES];
         [mapController release];

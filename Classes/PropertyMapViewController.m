@@ -37,6 +37,7 @@
 @synthesize isFromFavorites = isFromFavorites_;
 @synthesize summaryIndex = summaryIndex_;
 @synthesize selectedIndex = selectedIndex_;
+@synthesize shouldAddButtonToAnnotation = shouldAddButtonToAnnotation_;
 
 
 #pragma mark -
@@ -49,6 +50,7 @@
         //Default is NOT from Favorites
         [self setIsFromFavorites:NO];
         [self setIsCancelled:NO];
+        [self setShouldAddButtonToAnnotation:YES];
     }
     
     return self;
@@ -234,14 +236,17 @@
         {
             annotationView = [[[MKPinAnnotationView alloc] initWithAnnotation:propertyAnnotation reuseIdentifier:kPropertyPinId] autorelease];
             [annotationView setCanShowCallout:YES];
-                
+            
             //Adds button the annnotation
-            UIButton *detailsButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-            [detailsButton setTag:[propertyAnnotation summaryIndex]];
-            [detailsButton addTarget:self action:@selector(pinClick:) forControlEvents:UIControlEventTouchUpInside];
-            detailsButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-            detailsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-            [annotationView setRightCalloutAccessoryView:detailsButton];
+            if ([self shouldAddButtonToAnnotation])
+            {
+                UIButton *detailsButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+                [detailsButton setTag:[propertyAnnotation summaryIndex]];
+                [detailsButton addTarget:self action:@selector(pinClick:) forControlEvents:UIControlEventTouchUpInside];
+                detailsButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+                detailsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+                [annotationView setRightCalloutAccessoryView:detailsButton];                
+            }                
         }
         
         return annotationView;
