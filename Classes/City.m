@@ -1,12 +1,11 @@
-#import "State.h"
-
 #import "City.h"
 
-@implementation State 
+#import "State.h"
+
+@implementation City 
 
 @dynamic name;
-@dynamic abbreviation;
-@dynamic cities;
+@dynamic state;
 
 - (NSString *)sectionCharacter
 {

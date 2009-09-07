@@ -2,13 +2,12 @@
 
 #import "Locator.h"
 #import "PropertyCriteriaViewController.h"
-#import "CityOrPostalCode.h"
+#import "City.h"
 #import "SaveAndRestoreConstants.h"
 
 
 @interface PropertyCitiesViewController ()
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
-- (void)pushCriteriaViewControllerWithCity:(NSString *)cityOrZip animated:(BOOL)animated;
 @end
 
 
@@ -29,7 +28,7 @@
 {
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
     {     
-        [self setTitle:@"City or Zip"];        
+        [self setTitle:@"City"];        
     }
     
     return self;
@@ -54,17 +53,15 @@
         NSManagedObjectContext *geographyObjectContext = [[self state] managedObjectContext];
         
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"CityOrPostalCode" inManagedObjectContext:geographyObjectContext];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"City" inManagedObjectContext:geographyObjectContext];
         [fetchRequest setEntity:entity];
         
         NSPredicate *fetchPredicate = [NSPredicate predicateWithFormat:@"state == %@", [self state]];
         [fetchRequest setPredicate:fetchPredicate];
-        
-        NSSortDescriptor *cityDescriptor = [[NSSortDescriptor alloc] initWithKey:@"isCity" ascending:NO];
-        NSSortDescriptor *nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"value" ascending:YES];
-        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:cityDescriptor, nameDescriptor, nil];
+
+        NSSortDescriptor *nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:nameDescriptor, nil];
         [nameDescriptor release];
-        [cityDescriptor release];
         [fetchRequest setSortDescriptors:sortDescriptors];
         [sortDescriptors release];
         
@@ -79,14 +76,6 @@
     }
     
     return fetchedResultsController_;
-}
-
-- (void)pushCriteriaViewControllerWithCity:(NSString *)cityOrZip animated:(BOOL)animated
-{
-    PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaView" bundle:nil];
-    [criteriaViewController setPropertyObjectContext:[self propertyObjectContext]];
-    [[self navigationController] pushViewController:criteriaViewController animated:animated];
-    [criteriaViewController release];
 }
 
 
@@ -207,16 +196,16 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     }
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     
-    CityOrPostalCode *cityOrZip;
+    City *city;
     if(tableView == [[self searchDisplayController] searchResultsTableView])
     {
-        cityOrZip = [[self filteredContent] objectAtIndex:[indexPath row]];        
+        city = [[self filteredContent] objectAtIndex:[indexPath row]];        
     }
     else
     {
-        cityOrZip = [[self fetchedResultsController] objectAtIndexPath:indexPath];        
+        city = [[self fetchedResultsController] objectAtIndexPath:indexPath];        
     }
-    [[cell textLabel] setText:[cityOrZip value]];
+    [[cell textLabel] setText:[city name]];
     
     return cell;
 }
@@ -227,26 +216,18 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *cityOrZip;
+    NSString *city;
     if(tableView == [[self searchDisplayController] searchResultsTableView])
     {
-        cityOrZip = [[[self filteredContent] objectAtIndex:[indexPath row]] value];
+        city = [[[self filteredContent] objectAtIndex:[indexPath row]] name];
     }
     else
     {
-        cityOrZip = [[[self fetchedResultsController] objectAtIndexPath:indexPath] value];
+        city = [[[self fetchedResultsController] objectAtIndexPath:indexPath] name];
     }
 
-    //Saves selected value as city or zip
-    NSRange rangeOfDigit = [cityOrZip rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]];
-    if (rangeOfDigit.location == NSNotFound)
-    {
-        [[NSUserDefaults standardUserDefaults] setObject:cityOrZip forKey:kSavedCity];
-    }
-    else
-    {
-        [[NSUserDefaults standardUserDefaults] setObject:cityOrZip forKey:kSavedPostalCode];
-    }
+    //Saves selected value as city
+    [[NSUserDefaults standardUserDefaults] setObject:city forKey:kSavedCity];
 
     PropertyCriteriaViewController *criteriaViewController = [[PropertyCriteriaViewController alloc] initWithNibName:@"PropertyCriteriaView" bundle:nil];
     [criteriaViewController setPropertyObjectContext:[self propertyObjectContext]];
@@ -286,18 +267,16 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     NSManagedObjectContext *geographyObjectContext = [[self state] managedObjectContext];
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"CityOrPostalCode" 
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"City" 
                                               inManagedObjectContext:geographyObjectContext];
     [fetchRequest setEntity:entity];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"state == %@ and value beginswith[cd] %@", [self state], searchText];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"state == %@ and name beginswith[cd] %@", [self state], searchText];
     [fetchRequest setPredicate:predicate];
     
-    NSSortDescriptor *cityDescriptor = [[NSSortDescriptor alloc] initWithKey:@"isCity" ascending:NO];
-    NSSortDescriptor *nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"value" ascending:YES];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:cityDescriptor, nameDescriptor, nil];
+    NSSortDescriptor *nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:nameDescriptor, nil];
     [nameDescriptor release];
-    [cityDescriptor release];
     [fetchRequest setSortDescriptors:sortDescriptors];
     [sortDescriptors release];
     

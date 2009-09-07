@@ -1,8 +1,6 @@
 #import "AppDelegate.h"
 
 #import "PropertyStatesViewController.h"
-#import "State.h"
-#import "CityOrPostalCode.h"
 #import "PropertyHistoryViewController.h"
 #import "PropertyFavoritesViewController.h"
 #import "SaveAndRestoreConstants.h"
