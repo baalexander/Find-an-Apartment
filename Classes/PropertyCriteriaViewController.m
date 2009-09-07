@@ -94,6 +94,7 @@
     [[self criteria] setState:[[NSUserDefaults standardUserDefaults] objectForKey:kSavedState]];
     [[self criteria] setCity:[[NSUserDefaults standardUserDefaults] objectForKey:kSavedCity]];
     [[self criteria] setPostalCode:[[NSUserDefaults standardUserDefaults] objectForKey:kSavedPostalCode]];
+    //Street could be set when searching by location
     [[self criteria] setStreet:[[NSUserDefaults standardUserDefaults] objectForKey:kSavedStreet]];
     
     //Sets coordinate details
@@ -106,11 +107,7 @@
 
     //Sets title to location
     NSString *title;
-    if ([[self criteria] postalCode] != nil && [[[self criteria] postalCode] length] > 0)
-    {
-        title = [[self criteria] postalCode];
-    }
-    else if ([[self criteria] city] != nil && [[[self criteria] city] length] > 0)
+    if ([[self criteria] city] != nil && [[[self criteria] city] length] > 0)
     {
         title = [[self criteria] city];
     }
@@ -128,9 +125,9 @@
     //Different for each app
     NSArray *rowIds;
 #ifdef HOME_FINDER
-    rowIds = [[NSArray alloc] initWithObjects:kPropertyCriteriaSearchSource, kPropertyCriteriaKeywords, kPropertyCriteriaPrice, kPropertyCriteriaSquareFeet, kPropertyCriteriaBedrooms, kPropertyCriteriaBathrooms, kPropertyCriteriaSortBy, kPropertyCriteriaSearch, nil];
+    rowIds = [[NSArray alloc] initWithObjects:kPropertyCriteriaSearchSource, kPropertyCriteriaPostalCode, kPropertyCriteriaKeywords, kPropertyCriteriaPrice, kPropertyCriteriaSquareFeet, kPropertyCriteriaBedrooms, kPropertyCriteriaSortBy, kPropertyCriteriaSearch, nil];
 #else
-    rowIds = [[NSArray alloc] initWithObjects:kPropertyCriteriaStreet, kPropertyCriteriaKeywords, kPropertyCriteriaPrice, kPropertyCriteriaSquareFeet, kPropertyCriteriaBedrooms, kPropertyCriteriaBathrooms, kPropertyCriteriaSortBy, kPropertyCriteriaSearch, nil];
+    rowIds = [[NSArray alloc] initWithObjects:kPropertyCriteriaPostalCode, kPropertyCriteriaKeywords, kPropertyCriteriaPrice, kPropertyCriteriaSquareFeet, kPropertyCriteriaBedrooms, kPropertyCriteriaBathrooms, kPropertyCriteriaSortBy, kPropertyCriteriaSearch, nil];
 #endif
     [self setRowIds:rowIds];
     [rowIds release];
@@ -153,21 +150,21 @@
     BOOL isSelectedRow = [self selectedRow] >= 0 && [self selectedRow] == (NSInteger)[indexPath row];
     
     //When selected, these cells display a simple input cell
-    if ([rowId isEqual:kPropertyCriteriaStreet])
+    if ([rowId isEqual:kPropertyCriteriaPostalCode])
     {
         if (isSelectedRow)
         {
-            return [self inputSimpleCellWithText:[[self criteria] street]];
+            return [self inputSimpleCellWithText:[[self criteria] postalCode]];
         }
         else
         {
             NSString *detailText = @"(optional)";
-            if ([[self criteria] street] != nil && [[[self criteria] street] length] > 0)
+            if ([[self criteria] postalCode] != nil && [[[self criteria] postalCode] length] > 0)
             {
-                detailText = [[self criteria] street];
+                detailText = [[self criteria] postalCode];
             }
             
-            return [self simpleCellWithText:@"street" withDetail:detailText];
+            return [self simpleCellWithText:@"zip" withDetail:detailText];
         }
     }
     else if ([rowId isEqual:kPropertyCriteriaKeywords])
@@ -279,7 +276,7 @@
     if ([rowId isEqual:kPropertyCriteriaSearch])
     {
         //Saves some geography criteria information not saved by the States or Cities view controller
-        [[NSUserDefaults standardUserDefaults] setObject:[[self criteria] street] forKey:kSavedStreet];        
+        [[NSUserDefaults standardUserDefaults] setObject:[[self criteria] postalCode] forKey:kSavedPostalCode];
         
         PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
         
@@ -346,9 +343,9 @@
     BOOL isSimpleInputCell = NO;
     
     //Sets the correct Criteria attribute to the inputted valu
-    if ([rowId isEqual:kPropertyCriteriaStreet])
+    if ([rowId isEqual:kPropertyCriteriaPostalCode])
     {
-        [[self criteria] setStreet:text];
+        [[self criteria] setPostalCode:text];
         isSimpleInputCell = YES;
     }
     else if ([rowId isEqual:kPropertyCriteriaKeywords])

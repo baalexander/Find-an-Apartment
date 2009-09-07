@@ -1,5 +1,5 @@
 //Criteria rows
-#define kPropertyCriteriaStreet @"STREET"
+#define kPropertyCriteriaPostalCode @"POSTAL_CODE"
 #define kPropertyCriteriaKeywords @"KEYWORDS"
 #define kPropertyCriteriaPrice @"PRICE"
 #define kPropertyCriteriaSquareFeet @"SQUARE_FEET"
