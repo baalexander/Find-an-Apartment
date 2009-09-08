@@ -164,7 +164,7 @@
                 detailText = [[self criteria] postalCode];
             }
             
-            return [self simpleCellWithText:@"zip" withDetail:detailText];
+            return [self simpleCellWithText:@"zip code" withDetail:detailText];
         }
     }
     else if ([rowId isEqual:kPropertyCriteriaKeywords])
