@@ -189,7 +189,6 @@
         PropertyMapViewController *mapViewController = [[PropertyMapViewController alloc] initWithNibName:@"PropertyMapView" bundle:nil];
         [mapViewController setHistory:[self history]];
         [mapViewController setIsFromFavorites:YES];
-        [mapViewController setShouldAddButtonToAnnotation:YES];
         [mapViewController setTitle:@"Favorites"];
         
         NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithArray:[[self navigationController] viewControllers]];

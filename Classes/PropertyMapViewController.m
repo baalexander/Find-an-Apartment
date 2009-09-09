@@ -37,7 +37,6 @@
 @synthesize isFromFavorites = isFromFavorites_;
 @synthesize summaryIndex = summaryIndex_;
 @synthesize selectedIndex = selectedIndex_;
-@synthesize shouldAddButtonToAnnotation = shouldAddButtonToAnnotation_;
 
 
 #pragma mark -
@@ -50,7 +49,6 @@
         //Default is NOT from Favorites
         [self setIsFromFavorites:NO];
         [self setIsCancelled:NO];
-        [self setShouldAddButtonToAnnotation:YES];
     }
     
     return self;
@@ -101,7 +99,7 @@
     }
 }
 
-- (IBAction)pinClick:(id)sender
+- (IBAction)loadDetailsView:(id)sender
 {
     UIButton *button = (UIButton *)sender;
     [self setSelectedIndex:[button tag]];
@@ -113,6 +111,20 @@
     [detailsViewController setDetails:[summary details]];
     [[self navigationController] pushViewController:detailsViewController animated:YES];
     [detailsViewController release];
+}
+
+- (IBAction)loadGoogleMaps:(id)sender
+{
+    UIButton *button = (UIButton *)sender;
+    [self setSelectedIndex:[button tag]];
+    PropertySummary *summary = [[self summaries] objectAtIndex:[self selectedIndex]];
+    NSString *location = [summary location];
+    
+    //Opens up location in Google Maps app
+    NSMutableString *url = [[NSMutableString alloc] initWithString:@"http://maps.google.com/maps?q="];
+    [url appendString:[UrlUtil encodeUrl:location]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+    [url release];
 }
 
 - (void)geocodeProperties
@@ -236,17 +248,23 @@
         {
             annotationView = [[[MKPinAnnotationView alloc] initWithAnnotation:propertyAnnotation reuseIdentifier:kPropertyPinId] autorelease];
             [annotationView setCanShowCallout:YES];
+
+            UIButton *detailsButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+            [detailsButton setTag:[propertyAnnotation summaryIndex]];
+            [detailsButton setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
+            [detailsButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
+            [annotationView setRightCalloutAccessoryView:detailsButton];
             
-            //Adds button the annnotation
-            if ([self shouldAddButtonToAnnotation])
+            //If History is set, then coming from a List view controller and should load the Details view controller.
+            if ([self history] != nil)
             {
-                UIButton *detailsButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-                [detailsButton setTag:[propertyAnnotation summaryIndex]];
-                [detailsButton addTarget:self action:@selector(pinClick:) forControlEvents:UIControlEventTouchUpInside];
-                detailsButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-                detailsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-                [annotationView setRightCalloutAccessoryView:detailsButton];                
-            }                
+                [detailsButton addTarget:self action:@selector(loadDetailsView:) forControlEvents:UIControlEventTouchUpInside];
+            }
+            //If History is not set, then coming from Details view controller. Pressing button should load in Google Maps.
+            else
+            {
+                [detailsButton addTarget:self action:@selector(loadGoogleMaps:) forControlEvents:UIControlEventTouchUpInside];
+            }        
         }
         
         return annotationView;

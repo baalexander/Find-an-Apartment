@@ -23,13 +23,11 @@
         BOOL isFromFavorites_;
         NSInteger summaryIndex_;
         NSInteger selectedIndex_;
-        BOOL shouldAddButtonToAnnotation_;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
 @property (nonatomic, retain) PropertyHistory *history;
 @property (nonatomic, retain) PropertySummary *summary;
 @property (nonatomic, assign) BOOL isFromFavorites;
-@property (nonatomic, assign) BOOL shouldAddButtonToAnnotation;
 
 @end
