@@ -31,6 +31,8 @@
         NSInteger selectedIndex_;
 
         IBOutlet SummaryCell *summaryCell_;
+    
+        UIAlertView *alertView_;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;

@@ -18,6 +18,7 @@
 @property (nonatomic, retain) PropertySummary *summary;
 @property (nonatomic, retain, readwrite) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, assign) NSInteger selectedIndex;
+@property (nonatomic, retain) UIAlertView *alertView;
 @end
 
 @implementation PropertyListViewController
@@ -32,6 +33,7 @@
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize summaryCell = summaryCell_;
 @synthesize selectedIndex = selectedIndex_;
+@synthesize alertView = alertView_;
 
 
 #pragma mark -
@@ -57,6 +59,7 @@
     [details_ release];
     [summary_ release];
     [fetchedResultsController_ release];
+    [alertView_ release];
     
     [super dealloc];
 }
@@ -84,6 +87,15 @@
 - (void)parse:(NSURL *)url
 {
     [self setIsParsing:YES];
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:@"Searching"
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:nil];
+    [self setAlertView:alertView];
+    [alertView release];
+    [[self alertView] show];
     
     NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
     [self setOperationQueue:operationQueue];
@@ -288,7 +300,12 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    [[self navigationController] popViewControllerAnimated:YES];
+    //If a user clicked the button, then the index is 0.
+    //If the parser finished successfully, it will dismiss with a 1
+    if (buttonIndex == 0)
+    {
+        [[self navigationController] popViewControllerAnimated:YES];
+    }
 }
 
 
@@ -355,13 +372,8 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
         NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
         [managedObjectContext deleteObject:[self history]];
         
-        UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:nil
-                                                             message:@"No properties found." 
-                                                            delegate:self 
-                                                   cancelButtonTitle:@"Ok"
-                                                   otherButtonTitles:nil];
-        [errorAlert show];
-        [errorAlert release];
+        [[self alertView] setTitle:nil];
+        [[self alertView] setMessage:@"No properties found."];
         
         return;
     }
@@ -384,6 +396,9 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     [segmentedControl setEnabled:YES forSegmentAtIndex:kMapItem];
 
     [[self tableView] reloadData];
+    
+    //Send a cancel index of 1 to show the app sent the dismiss, not a user
+    [[self alertView] dismissWithClickedButtonIndex:1 animated:YES];
 }
 
 - (void)parser:(XmlParser *)parser addXmlElement:(XmlElement *)xmlElement
@@ -540,13 +555,8 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
     [managedObjectContext deleteObject:[self history]];    
     
-    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error finding results" 
-                                                         message:[error localizedDescription] 
-                                                        delegate:self 
-                                               cancelButtonTitle:@"Ok"
-                                               otherButtonTitles:nil];
-    [errorAlert show];
-    [errorAlert release];
+    [[self alertView] setTitle:@"Error finding results"];
+    [[self alertView] setMessage:[error localizedDescription]];
 }
 
 @end
