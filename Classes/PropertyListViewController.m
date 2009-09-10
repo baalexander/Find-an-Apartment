@@ -88,7 +88,7 @@
     [self setIsParsing:YES];
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:@"Searching"
+                                                        message:@"Looking up property listings"
                                                        delegate:self
                                               cancelButtonTitle:@"Cancel"
                                               otherButtonTitles:nil];
@@ -372,7 +372,7 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
         [managedObjectContext deleteObject:[self history]];
         
         [[self alertView] setTitle:nil];
-        [[self alertView] setMessage:@"No properties found."];
+        [[self alertView] setMessage:@"No properties found"];
         
         return;
     }
