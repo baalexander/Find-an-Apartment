@@ -26,6 +26,7 @@ static const char *kItemName = "loan";
 @synthesize sectionTitles = sectionTitles_;
 @synthesize loan = loan_;
 @synthesize criteria = criteria_;
+@synthesize providedByZillowCell = providedByZillowCell_;
 
 
 #pragma mark -
@@ -47,6 +48,7 @@ static const char *kItemName = "loan";
     [sectionTitles_ release];
     [loan_ release];
     [criteria_ release];
+    [providedByZillowCell_ release];
     
     [super dealloc];
 }
@@ -108,6 +110,11 @@ static const char *kItemName = "loan";
     [self calculateCustomLoan];
 }
 
+- (BOOL)hasZillowCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    return (NSInteger)[indexPath section] == [self numberOfSectionsInTableView:[self tableView]] - 1;
+}
+
 - (NSOperationQueue *)operationQueue
 {
     if (operationQueue_ == nil)
@@ -142,71 +149,141 @@ static NSString *kDetailCellId = @"DETAIL_CELL_ID";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[self loans] count];
+    //If has results, then return number of results + 1 for the Provided by Zillow cell
+    if ([[self loans] count] > 0)
+    {
+        return [[self loans] count] + 1;        
+    }
+    else
+    {
+        return 0;
+    }
+
+
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSDictionary *loan = [[self loans] objectAtIndex:section];
-    
-    return [[loan allKeys] count];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+    if ([self hasZillowCellAtIndexPath:indexPath])
+    {
+        return 1;
+    }
+    else
+    {
+        NSDictionary *loan = [[self loans] objectAtIndex:section];
+        
+        return [[loan allKeys] count];        
+    }                                   
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return [[self sectionTitles] objectAtIndex:section];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+    if ([self hasZillowCellAtIndexPath:indexPath])
+    {
+        return @"Results provided by Zillow";
+    }
+    else
+    {
+        return [[self sectionTitles] objectAtIndex:section];
+    }
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //Return custom height for Provided by Zillow cell
+    if ([self hasZillowCellAtIndexPath:indexPath])
+    {
+        return [ProvidedByZillowCell height];
+    }
+    //Returns default row height
+    else
+    {
+        return [[self tableView] rowHeight];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDetailCellId];
-    if (cell == nil)
+    //Returns Provided by Zillow Cell
+    if ([self hasZillowCellAtIndexPath:indexPath])
     {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:kDetailCellId] autorelease];
+        static NSString *kProvidedByZillowCell = @"PROVIDED_BY_ZILLOW_CELL_ID";
+        
+        [self setProvidedByZillowCell:(ProvidedByZillowCell *)[[self tableView] dequeueReusableCellWithIdentifier:kProvidedByZillowCell]];
+        if ([self providedByZillowCell] == nil)
+        {
+            [[NSBundle mainBundle] loadNibNamed:@"ProvidedByZillowCell" owner:self options:nil];
+        }
+        
+        return [self providedByZillowCell];        
     }
+    //Returns standard cell for mortgage data
+    else
+    {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDetailCellId];
+        if (cell == nil)
+        {
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:kDetailCellId] autorelease];
+        }
+        
+        NSDictionary *loan = [[self loans] objectAtIndex:[indexPath section]];
+        NSString *key = [[loan allKeys] objectAtIndex:[indexPath row]];
+        NSString *detail = [loan objectForKey:key];
+        
+        [[cell textLabel] setText:key];
+        
+        if ([key isEqual:kMortgageResultsTerm])
+        {
+            detail = [NSString stringWithFormat:@"%@ years", detail];
+        }
+        else if ([key isEqual:kMortgageResultsRate])
+        {
+            detail = [NSString stringWithFormat:@"%@%%", detail];
+        }
+        else if ([key isEqual:kMortgageResultsPayment])
+        {
+            NSNumber *number = [[NSNumber alloc] initWithFloat:[detail floatValue]];
+            detail = [StringFormatter formatCurrency:number];
+            [number release];
+        }
+        else if ([key isEqual:kMortgageResultsPropertyTaxes])
+        {
+            NSNumber *number = [[NSNumber alloc] initWithFloat:[detail floatValue]];
+            detail = [StringFormatter formatCurrency:number];
+            [number release];
+        }
+        else if ([key isEqual:kMortgageResultsHazardInsurance])
+        {
+            NSNumber *number = [[NSNumber alloc] initWithFloat:[detail floatValue]];
+            detail = [StringFormatter formatCurrency:number];
+            [number release];
+        }
+        else if ([key isEqual:kMortgageResultsMortgageInsurance])
+        {
+            NSNumber *number = [[NSNumber alloc] initWithFloat:[detail floatValue]];
+            detail = [StringFormatter formatCurrency:number];
+            [number release];
+        }
+        
+        [[cell detailTextLabel] setText:detail];
+        
+        return cell;
+    }
+}
 
-    NSDictionary *loan = [[self loans] objectAtIndex:[indexPath section]];
-    NSString *key = [[loan allKeys] objectAtIndex:[indexPath row]];
-    NSString *detail = [loan objectForKey:key];
-    
-    [[cell textLabel] setText:key];
-    
-    if ([key isEqual:kMortgageResultsTerm])
+#pragma mark -
+#pragma mark UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //The Provided by Zillow row was selected
+    if ([self hasZillowCellAtIndexPath:indexPath])
     {
-        detail = [NSString stringWithFormat:@"%@ years", detail];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kZillowUrl]];
     }
-    else if ([key isEqual:kMortgageResultsRate])
-    {
-        detail = [NSString stringWithFormat:@"%@%%", detail];
-    }
-    else if ([key isEqual:kMortgageResultsPayment])
-    {
-        NSNumber *number = [[NSNumber alloc] initWithFloat:[detail floatValue]];
-        detail = [StringFormatter formatCurrency:number];
-        [number release];
-    }
-    else if ([key isEqual:kMortgageResultsPropertyTaxes])
-    {
-        NSNumber *number = [[NSNumber alloc] initWithFloat:[detail floatValue]];
-        detail = [StringFormatter formatCurrency:number];
-        [number release];
-    }
-    else if ([key isEqual:kMortgageResultsHazardInsurance])
-    {
-        NSNumber *number = [[NSNumber alloc] initWithFloat:[detail floatValue]];
-        detail = [StringFormatter formatCurrency:number];
-        [number release];
-    }
-    else if ([key isEqual:kMortgageResultsMortgageInsurance])
-    {
-        NSNumber *number = [[NSNumber alloc] initWithFloat:[detail floatValue]];
-        detail = [StringFormatter formatCurrency:number];
-        [number release];
-    }
-    
-    [[cell detailTextLabel] setText:detail];
-    
-    return cell;
 }
 
 

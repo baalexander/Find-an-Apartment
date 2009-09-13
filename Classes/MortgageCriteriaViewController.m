@@ -92,10 +92,10 @@
 
 - (void)calculatePurchasePrice
 {
-    float cashDown = [[[self criteria] cashDown] floatValue];
     float loanAmount = [[[self criteria] loanAmount] floatValue];
-
-    NSNumber *purchasePrice = [[NSNumber alloc] initWithFloat:(loanAmount + cashDown)];
+    float percentDown = [[[self criteria] percentDown] floatValue] * (float).01;
+    
+    NSNumber *purchasePrice = [[NSNumber alloc] initWithFloat:(loanAmount / (1 - percentDown))];
     [[self criteria] setPurchasePrice:purchasePrice];
     [purchasePrice release];
 }
@@ -390,6 +390,20 @@
     //Selected the search button, begins searching
     if ([rowId isEqual:kMortgageCriteriaCalculate])
     {
+        //Validates input
+        if ([[self criteria] purchasePrice] <= 0)
+        {
+            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:nil
+                                                                 message:@"Purchase price must be set."
+                                                                delegate:self 
+                                                       cancelButtonTitle:@"Ok"
+                                                       otherButtonTitles:nil];
+            [errorAlert show];
+            [errorAlert release];
+            
+            return;
+        }
+        
         MortgageResultsViewController *resultsViewController = [[MortgageResultsViewController alloc] initWithNibName:@"MortgageResultsView" bundle:nil];
         
         [resultsViewController setCriteria:[self criteria]];
@@ -473,6 +487,7 @@
         
         //Update dependent values
         [self calculatePurchasePrice];
+        [self calculateCashDown];
     }
     else if ([rowId isEqual:kMortgageCriteriaLoanTerm])
     {

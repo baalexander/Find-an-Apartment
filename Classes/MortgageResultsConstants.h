@@ -6,3 +6,5 @@
 #define kMortgageResultsPropertyTaxes @"prop taxes"
 #define kMortgageResultsHazardInsurance @"hazard ins"
 #define kMortgageResultsMortgageInsurance @"PMI"
+
+#define kZillowUrl @"http://www.zillow.com"
