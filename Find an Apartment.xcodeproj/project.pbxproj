@@ -78,6 +78,11 @@
 		45C9B1C7105D8F3100428FFE /* providedByZillow.png in Resources */ = {isa = PBXBuildFile; fileRef = 45C9B1C6105D8F3100428FFE /* providedByZillow.png */; };
 		45C9B1DA105D984F00428FFE /* ProvidedByZillowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C9B1D8105D984F00428FFE /* ProvidedByZillowCell.m */; };
 		45C9B1DB105D984F00428FFE /* ProvidedByZillowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C9B1D9105D984F00428FFE /* ProvidedByZillowCell.xib */; };
+		45C9B2AE105DD13700428FFE /* ProvidedByTruliaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C9B2AC105DD13700428FFE /* ProvidedByTruliaCell.m */; };
+		45C9B2AF105DD13700428FFE /* ProvidedByTruliaCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C9B2AD105DD13700428FFE /* ProvidedByTruliaCell.xib */; };
+		45C9B2BE105DD6D200428FFE /* TruliaCopyrightCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C9B2BC105DD6D200428FFE /* TruliaCopyrightCell.m */; };
+		45C9B2BF105DD6D200428FFE /* TruliaCopyrightCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C9B2BD105DD6D200428FFE /* TruliaCopyrightCell.xib */; };
+		45C9B310105DDDEA00428FFE /* providedByTrulia.png in Resources */ = {isa = PBXBuildFile; fileRef = 45C9B30F105DDDEA00428FFE /* providedByTrulia.png */; };
 		45D4550B1001970000944852 /* InputRangeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457AA37B0FDAC45900F0D16C /* InputRangeCell.xib */; };
 		45D4550C1001970000944852 /* InputSimpleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457AA37E0FDAC45900F0D16C /* InputSimpleCell.xib */; };
 		45D4550D1001970000944852 /* PropertyCitiesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457AA3810FDAC45900F0D16C /* PropertyCitiesView.xib */; };
@@ -304,6 +309,13 @@
 		45C9B1D7105D984F00428FFE /* ProvidedByZillowCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProvidedByZillowCell.h; path = Classes/ProvidedByZillowCell.h; sourceTree = "<group>"; };
 		45C9B1D8105D984F00428FFE /* ProvidedByZillowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProvidedByZillowCell.m; path = Classes/ProvidedByZillowCell.m; sourceTree = "<group>"; };
 		45C9B1D9105D984F00428FFE /* ProvidedByZillowCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ProvidedByZillowCell.xib; path = Classes/ProvidedByZillowCell.xib; sourceTree = "<group>"; };
+		45C9B2AB105DD13700428FFE /* ProvidedByTruliaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProvidedByTruliaCell.h; path = Classes/ProvidedByTruliaCell.h; sourceTree = "<group>"; };
+		45C9B2AC105DD13700428FFE /* ProvidedByTruliaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProvidedByTruliaCell.m; path = Classes/ProvidedByTruliaCell.m; sourceTree = "<group>"; };
+		45C9B2AD105DD13700428FFE /* ProvidedByTruliaCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ProvidedByTruliaCell.xib; path = Classes/ProvidedByTruliaCell.xib; sourceTree = "<group>"; };
+		45C9B2BB105DD6D200428FFE /* TruliaCopyrightCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TruliaCopyrightCell.h; path = Classes/TruliaCopyrightCell.h; sourceTree = "<group>"; };
+		45C9B2BC105DD6D200428FFE /* TruliaCopyrightCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TruliaCopyrightCell.m; path = Classes/TruliaCopyrightCell.m; sourceTree = "<group>"; };
+		45C9B2BD105DD6D200428FFE /* TruliaCopyrightCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TruliaCopyrightCell.xib; path = Classes/TruliaCopyrightCell.xib; sourceTree = "<group>"; };
+		45C9B30F105DDDEA00428FFE /* providedByTrulia.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = providedByTrulia.png; path = Images/providedByTrulia.png; sourceTree = "<group>"; };
 		45D455511001970000944852 /* Home Finder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Home Finder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		45D455531001970000944852 /* Home_Finder-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Home_Finder-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		45D4559210019BDE00944852 /* HomeFinderIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HomeFinderIcon.png; sourceTree = "<group>"; };
@@ -579,6 +591,10 @@
 				4579324B0FE59783008E2ACD /* PropertySortChoicesViewController.m */,
 				457AA3880FDAC45900F0D16C /* PropertyStatesViewController.h */,
 				457AA3890FDAC45900F0D16C /* PropertyStatesViewController.m */,
+				45C9B2AB105DD13700428FFE /* ProvidedByTruliaCell.h */,
+				45C9B2AC105DD13700428FFE /* ProvidedByTruliaCell.m */,
+				45C9B2BB105DD6D200428FFE /* TruliaCopyrightCell.h */,
+				45C9B2BC105DD6D200428FFE /* TruliaCopyrightCell.m */,
 			);
 			name = Property;
 			sourceTree = "<group>";
@@ -598,6 +614,8 @@
 				455734341038FC770013278E /* PropertySearchSourcesView.xib */,
 				4579324D0FE59791008E2ACD /* PropertySortChoicesView.xib */,
 				457AA38A0FDAC45900F0D16C /* PropertyStatesView.xib */,
+				45C9B2AD105DD13700428FFE /* ProvidedByTruliaCell.xib */,
+				45C9B2BD105DD6D200428FFE /* TruliaCopyrightCell.xib */,
 			);
 			name = Property;
 			sourceTree = "<group>";
@@ -730,14 +748,15 @@
 		45D93C6A0FECABA800AD4A5B /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				45C9B1C6105D8F3100428FFE /* providedByZillow.png */,
-				45DB3C8E104A33BA003A8163 /* imageLoading.png */,
 				DD6F1F571026718C000C8207 /* back.png */,
-				DD6F1F581026718C000C8207 /* forward.png */,
-				45BEE7A810058F7E0031613E /* mortgageTabBar.png */,
 				45D942280FF0696C00AD4A5B /* down.png */,
-				45D942290FF0696C00AD4A5B /* up.png */,
+				DD6F1F581026718C000C8207 /* forward.png */,
+				45DB3C8E104A33BA003A8163 /* imageLoading.png */,
 				45D93C6D0FECAC1C00AD4A5B /* locate.png */,
+				45BEE7A810058F7E0031613E /* mortgageTabBar.png */,
+				45C9B30F105DDDEA00428FFE /* providedByTrulia.png */,
+				45C9B1C6105D8F3100428FFE /* providedByZillow.png */,
+				45D942290FF0696C00AD4A5B /* up.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -896,6 +915,9 @@
 				45DB3C8F104A33BA003A8163 /* imageLoading.png in Resources */,
 				45C9B1C7105D8F3100428FFE /* providedByZillow.png in Resources */,
 				45C9B1DB105D984F00428FFE /* ProvidedByZillowCell.xib in Resources */,
+				45C9B2AF105DD13700428FFE /* ProvidedByTruliaCell.xib in Resources */,
+				45C9B2BF105DD6D200428FFE /* TruliaCopyrightCell.xib in Resources */,
+				45C9B310105DDDEA00428FFE /* providedByTrulia.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1004,6 +1026,8 @@
 				45C5FEED1055AEDE001B0CB3 /* State.m in Sources */,
 				45C5FEEE1055AEDE001B0CB3 /* City.m in Sources */,
 				45C9B1DA105D984F00428FFE /* ProvidedByZillowCell.m in Sources */,
+				45C9B2AE105DD13700428FFE /* ProvidedByTruliaCell.m in Sources */,
+				45C9B2BE105DD6D200428FFE /* TruliaCopyrightCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

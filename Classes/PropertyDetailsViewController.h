@@ -6,6 +6,12 @@
 #import "LocationCell.h"
 #import "DescriptionCell.h"
 
+#ifdef HOME_FINDER
+#import "TruliaCopyrightCell.h"
+#import "ProvidedByTruliaCell.h"
+#endif
+
+
 @class PropertyDetailsViewController;
 @class WebViewController;
 
@@ -37,6 +43,11 @@
         IBOutlet DescriptionCell *descriptionCell_;
         
         UIBarButtonItem *addToFavoritesButton_;
+    
+#ifdef HOME_FINDER
+        IBOutlet TruliaCopyrightCell *truliaCopyrightCell_;
+        IBOutlet ProvidedByTruliaCell *providedByTruliaCell_;
+#endif
 }
 
 @property (nonatomic, assign) id<PropertyDetailsDelegate> delegate;
@@ -45,6 +56,11 @@
 @property (nonatomic, retain) LocationCell *locationCell;
 @property (nonatomic, retain) DescriptionCell *descriptionCell;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *addToFavoritesButton;
+
+#ifdef HOME_FINDER
+@property (nonatomic, retain) TruliaCopyrightCell *truliaCopyrightCell;
+@property (nonatomic, retain) ProvidedByTruliaCell *providedByTruliaCell;
+#endif
 
 - (IBAction)share:(id)sender;
 - (IBAction)addToFavorites:(id)sender;

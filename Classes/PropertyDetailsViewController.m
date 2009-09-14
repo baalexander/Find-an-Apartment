@@ -30,6 +30,11 @@
 @synthesize descriptionCell = descriptionCell_;
 @synthesize addToFavoritesButton = addToFavoritesButton_;
 
+#ifdef HOME_FINDER
+@synthesize truliaCopyrightCell = truliaCopyrightCell_;
+@synthesize providedByTruliaCell = providedByTruliaCell_;
+#endif
+
 
 #pragma mark -
 #pragma mark PropertyDetailsViewController
@@ -51,6 +56,11 @@
     [sectionTitles_ release];
     [sectionDetails_ release];
     [locationCell_ release];
+    
+#ifdef HOME_FINDER
+    [truliaCopyrightCell_ release];
+    [providedByTruliaCell_ release];
+#endif
     
     [super dealloc];
 }
@@ -119,7 +129,7 @@
 - (BOOL)hasDisclosureIndicator:(NSString *)key
 {
     #ifdef HOME_FINDER
-        return [key isEqual:kDetailsImages] || [key isEqual:kDetailsLink] || [key isEqual:kDetailsEmail] || [key isEqual:kDetailsLocation] || [key isEqual:kDetailsPrice];
+        return [key isEqual:kDetailsImages] || [key isEqual:kDetailsLink] || [key isEqual:kDetailsEmail] || [key isEqual:kDetailsLocation] || [key isEqual:kDetailsPrice] || [key isEqual:kDetailsTruliaCopyright] || [key isEqual:kDetailsProvidedByTrulia];
     #else
         return [key isEqual:kDetailsImages] || [key isEqual:kDetailsLink] || [key isEqual:kDetailsEmail] || [key isEqual:kDetailsLocation];
     #endif
@@ -200,7 +210,20 @@
     NSMutableDictionary *contactSection = [[NSMutableDictionary alloc] init];
     if ([[self details] source] != nil)
     {
+#ifdef HOME_FINDER
+        if ([[[self details] source] isEqual:@"Trulia"])
+        {
+            [contactSection setObject:@"copyright placeholder" forKey:kDetailsTruliaCopyright];
+            [contactSection setObject:@"image placeholder" forKey:kDetailsProvidedByTrulia];
+        }
+        else
+        {
+
+            [contactSection setObject:[[self details] source] forKey:kDetailsSource];
+        }
+#else
         [contactSection setObject:[[self details] source] forKey:kDetailsSource];
+#endif
     }
     if ([[self details] email] != nil)
     {
@@ -218,7 +241,7 @@
     if ([[self details] link] != nil)
     {
         [contactSection setObject:[[self details] link] forKey:kDetailsLink];
-    }  
+    }
     if ([contactSection count] > 0)
     {
         [[self sectionTitles] addObject:@"Source"];
@@ -343,6 +366,16 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     {
         return [DescriptionCell height];
     }
+#ifdef HOME_FINDER
+    else if ([key isEqual:kDetailsTruliaCopyright])
+    {
+        return [TruliaCopyrightCell height];
+    }
+    else if ([key isEqual:kDetailsProvidedByTrulia])
+    {
+        return [ProvidedByTruliaCell height];
+    }
+#endif
     
     //Returns default row height
     return [[self tableView] rowHeight];
@@ -384,6 +417,37 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
         
         return [self descriptionCell];
     }
+    
+// Cells specific to Home Finder
+#ifdef HOME_FINDER
+    //Trulia copyright cell
+    if ([key isEqual:kDetailsTruliaCopyright])
+    {
+        static NSString *kTruliaCopyrightCell = @"TRULIA_COPYRIGHT_CELL_ID";
+        
+        [self setTruliaCopyrightCell:(TruliaCopyrightCell *)[[self tableView] dequeueReusableCellWithIdentifier:kTruliaCopyrightCell]];
+        if ([self truliaCopyrightCell] == nil)
+        {
+            [[NSBundle mainBundle] loadNibNamed:@"TruliaCopyrightCell" owner:self options:nil];
+        }
+        
+        return [self truliaCopyrightCell];
+    }
+    
+    //Provided by Trulia cell
+    if ([key isEqual:kDetailsProvidedByTrulia])
+    {
+        static NSString *kProvidedByTruliaCell = @"PROVIDED_BY_TRULIA_CELL_ID";
+        
+        [self setProvidedByTruliaCell:(ProvidedByTruliaCell *)[[self tableView] dequeueReusableCellWithIdentifier:kProvidedByTruliaCell]];
+        if ([self providedByTruliaCell] == nil)
+        {
+            [[NSBundle mainBundle] loadNibNamed:@"ProvidedByTruliaCell" owner:self options:nil];
+        }
+        
+        return [self providedByTruliaCell];
+    }
+#endif
     
     //Default cell
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSimpleCellId];
@@ -496,6 +560,33 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
         [criteriaViewController setPropertySummary:[[self details] summary]];
         [[self navigationController] pushViewController:criteriaViewController animated:YES];
         [criteriaViewController release];                            
+    }
+
+    //See http://developer.trulia.com/page/read/Tou for Trulia Terms of Use
+    //Trulia copyright loads Terms of Use page
+    if ([key isEqual:kDetailsTruliaCopyright])
+    {
+        WebViewController *webViewController = [[WebViewController alloc] initWithNibName:@"WebView" bundle:nil];
+        
+        NSURL *url = [[NSURL alloc] initWithString:@"http://developer.trulia.com/page/read/Tou"];
+        [webViewController setUrl:url];
+        [url release];
+        
+        [[self navigationController] pushViewController:webViewController animated:YES];
+        [webViewController release];
+    }
+
+    //Provided by Trulia goes to www.trulia.com
+    if ([key isEqual:kDetailsProvidedByTrulia])
+    {
+        WebViewController *webViewController = [[WebViewController alloc] initWithNibName:@"WebView" bundle:nil];
+        
+        NSURL *url = [[NSURL alloc] initWithString:@"http://www.trulia.com"];
+        [webViewController setUrl:url];
+        [url release];
+        
+        [[self navigationController] pushViewController:webViewController animated:YES];
+        [webViewController release];        
     }
 #endif
 
