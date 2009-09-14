@@ -2,6 +2,7 @@
 
 #import "MortgageResultsConstants.h"
 #import "StringFormatter.h"
+#import "WebViewController.h"
 
 
 //Element name that separates each item in the XML results
@@ -36,7 +37,7 @@ static const char *kItemName = "loan";
 {
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
     {
-        [self setTitle:@"Loan Results"];
+
     }
     
     return self;
@@ -282,7 +283,14 @@ static NSString *kDetailCellId = @"DETAIL_CELL_ID";
     //The Provided by Zillow row was selected
     if ([self hasZillowCellAtIndexPath:indexPath])
     {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kZillowUrl]];
+        WebViewController *webViewController = [[WebViewController alloc] initWithNibName:@"WebView" bundle:nil];
+        
+        NSURL *url = [[NSURL alloc] initWithString:kZillowUrl];
+        [webViewController setUrl:url];
+        [url release];
+        
+        [[self navigationController] pushViewController:webViewController animated:YES];
+        [webViewController release];
     }
 }
 

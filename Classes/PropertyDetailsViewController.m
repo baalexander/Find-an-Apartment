@@ -568,7 +568,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     {
         WebViewController *webViewController = [[WebViewController alloc] initWithNibName:@"WebView" bundle:nil];
         
-        NSURL *url = [[NSURL alloc] initWithString:@"http://developer.trulia.com/page/read/Tou"];
+        NSURL *url = [[NSURL alloc] initWithString:kDetailsTruliaCopyrightUrl];
         [webViewController setUrl:url];
         [url release];
         
@@ -581,7 +581,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     {
         WebViewController *webViewController = [[WebViewController alloc] initWithNibName:@"WebView" bundle:nil];
         
-        NSURL *url = [[NSURL alloc] initWithString:@"http://www.trulia.com"];
+        NSURL *url = [[NSURL alloc] initWithString:kDetailsProvidedByTruliaUrl];
         [webViewController setUrl:url];
         [url release];
         

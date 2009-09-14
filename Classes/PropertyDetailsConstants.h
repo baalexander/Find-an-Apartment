@@ -14,10 +14,12 @@
 #define kDetailsPrice @"price"
 #define kDetailsLocation @"location"
 
-//Home Finder keys
+//Home Finder keys and URLs
 #ifdef HOME_FINDER
 #define kDetailsTruliaCopyright @"truliaCopyright"
+#define kDetailsTruliaCopyrightUrl @"http://developer.trulia.com/page/read/Tou"
 #define kDetailsProvidedByTrulia @"providedByTrulia"
+#define kDetailsProvidedByTruliaUrl @"http://www.trulia.com"
 #endif
 
 //Segment control indexes
