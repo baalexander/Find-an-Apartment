@@ -102,7 +102,7 @@
 
 - (MortgageCriteria *)criteria
 {
-    if(criteria_ == nil)
+    if (criteria_ == nil)
     {
         //Fetches existing Mortgage Criteria if it exists
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -402,6 +402,14 @@
             [errorAlert release];
             
             return;
+        }
+        
+        //Saves Criteria
+        NSManagedObjectContext *managedObjectContext = [[self criteria] managedObjectContext];
+        NSError *error;
+        if (![managedObjectContext save:&error])
+        {
+            DebugLog(@"Error saving context.");
         }
         
         MortgageResultsViewController *resultsViewController = [[MortgageResultsViewController alloc] initWithNibName:@"MortgageResultsView" bundle:nil];
