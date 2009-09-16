@@ -2,6 +2,7 @@
 
 #import "PropertySummary.h"
 #import "StringFormatter.h"
+#import "Constants.h"
 
 
 @interface PropertyListEmailerViewController ()
@@ -33,12 +34,16 @@
     //Singular or plural
     if ([[self properties] count] == 1)
     {
-        [self setSubject:@"Property found on Find an Apartment"];
+        NSString *subject = [[NSString alloc] initWithFormat:@"Property found with %@", kAppName];
+        [self setSubject:subject];
+        [subject release];
         [body appendString:@"<p>Property to check out:</p>"];
     }
     else
     {
-        [self setSubject:@"Properties found on Find an Apartment"];
+        NSString *subject = [[NSString alloc] initWithFormat:@"Properties found with %@", kAppName];
+        [self setSubject:subject];
+        [subject release];
         [body appendString:@"<p>Properties to check out:</p>"];
     }
     
