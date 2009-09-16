@@ -391,7 +391,7 @@
     if ([rowId isEqual:kMortgageCriteriaCalculate])
     {
         //Validates input
-        if ([[self criteria] purchasePrice] <= 0)
+        if ([[self criteria] purchasePrice] == nil || [[[self criteria] purchasePrice] floatValue] <= 0.0)
         {
             UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:nil
                                                                  message:@"Purchase price must be set."
@@ -400,6 +400,8 @@
                                                        otherButtonTitles:nil];
             [errorAlert show];
             [errorAlert release];
+            
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
             
             return;
         }
