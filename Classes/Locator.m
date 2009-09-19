@@ -58,6 +58,7 @@ static Locator *instance_ = NULL;
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Please Wait" message:@"Finding your location" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
     [self setAlert:alert];
+    [alert release];
     [[self alert] show];
     
     if(locationManager_ == nil)
@@ -78,6 +79,7 @@ static Locator *instance_ = NULL;
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
     [self setAlert:alert];
+    [alert release];
     [[self alert] show];
 }
 
