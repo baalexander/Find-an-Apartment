@@ -60,6 +60,7 @@
     [summary_ release];
     [fetchedResultsController_ release];
     [alertView_ release];
+    [summaryCell_ release];
     
     [super dealloc];
 }

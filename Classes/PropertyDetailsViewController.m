@@ -56,6 +56,7 @@
     [sectionTitles_ release];
     [sectionDetails_ release];
     [locationCell_ release];
+    [descriptionCell_ release];
     
 #ifdef HOME_FINDER
     [truliaCopyrightCell_ release];
