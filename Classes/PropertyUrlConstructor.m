@@ -2,6 +2,7 @@
 
 #import "PropertyCriteriaConstants.h"
 #import "UrlUtil.h"
+#import "Constants.h"
 
 
 @interface PropertyUrlConstructor ()
@@ -168,7 +169,7 @@
 
 - (NSString *)version
 {
-    return @"&version=2.0";
+    return [NSString stringWithFormat:@"&version=%@", kAppVersion];
 }
 
 - (NSURL *)urlFromCriteria:(PropertyCriteria *)criteria

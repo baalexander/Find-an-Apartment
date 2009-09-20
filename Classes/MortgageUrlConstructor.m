@@ -2,6 +2,7 @@
 
 #import "MortgageCriteriaConstants.h"
 #import "UrlUtil.h"
+#import "Constants.h"
 
 
 @interface MortgageUrlConstructor ()
@@ -76,6 +77,11 @@
     return [self parameter:@"interest_rate" withNumericValue:[[self criteria] interestRate]];
 }
 
+- (NSString *)version
+{
+    return [NSString stringWithFormat:@"&version=%@", kAppVersion];
+}
+
 - (NSURL *)urlFromCriteria:(MortgageCriteria *)criteria
 {
     [self setCriteria:criteria];
@@ -95,6 +101,7 @@
     [mutableUrl appendString:[self loanAmount]];
     [mutableUrl appendString:[self loanTerm]];
     [mutableUrl appendString:[self interestRate]];
+    [mutableUrl appendString:[self version]];
     
     NSURL *url = [[[NSURL alloc] initWithString:mutableUrl] autorelease];
     DebugLog(@"MORTGAGE URL:%@", url);
