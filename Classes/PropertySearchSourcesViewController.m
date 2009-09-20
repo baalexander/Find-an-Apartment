@@ -95,6 +95,16 @@ static NSString *kChoiceCellId = @"CHOICE_CELL_ID";
     
     //Update the choice in the entity
     [[self criteria] setSearchSource:[[self choices] objectAtIndex:[indexPath row]]];
+
+    //Google Base and Trulia have different default searches.
+    if ([[[self criteria] searchSource] isEqual:kPropertyCriteriaTrulia])
+    {
+        [[self criteria] setSortBy:kPropertyCriteriaSortByBestMatch];
+    }
+    else if ([[[self criteria] searchSource] isEqual:kPropertyCriteriaGoogleBase])
+    {
+        [[self criteria] setSortBy:kPropertyCriteriaSortByDistance];
+    }
     
     //Deselect the row
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

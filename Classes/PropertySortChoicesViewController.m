@@ -3,11 +3,6 @@
 #import "PropertyCriteriaConstants.h"
 
 
-@interface PropertySortChoicesViewController ()
-@property (nonatomic, retain) NSArray *choices;
-@end
-
-
 @implementation PropertySortChoicesViewController
 
 @synthesize criteria = criteria_;
@@ -21,6 +16,7 @@
 {
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
     {
+        // Default Sort By choices
         NSArray *choices = [[NSArray alloc] initWithObjects:kPropertyCriteriaSortByPriceAscending, kPropertyCriteriaSortByPriceDescending, kPropertyCriteriaSortByDistance, nil];
         [self setChoices:choices];
         [choices release];
@@ -32,6 +28,7 @@
 - (void)dealloc
 {
     [criteria_ release];
+    [choices_ release];
     
     [super dealloc];
 }

@@ -13,6 +13,8 @@
 #define kPropertyCriteriaSortByDistance @"distance"
 #define kPropertyCriteriaSortByPriceAscending @"price (low to high)"
 #define kPropertyCriteriaSortByPriceDescending @"price (high to low)"
+//Option specific for Trulia
+#define kPropertyCriteriaSortByBestMatch @"best match"
 
 //Search source choices
 #define kPropertyCriteriaGoogleBase @"Google Base"

@@ -300,6 +300,15 @@
     {
         PropertySortChoicesViewController *choicesViewController = [[PropertySortChoicesViewController alloc] initWithNibName:@"PropertySortChoicesView" bundle:nil];
         [choicesViewController setCriteria:[self criteria]];
+#ifdef HOME_FINDER
+        //Trulia has different sort choices
+        if ([[[self criteria] searchSource] isEqual:kPropertyCriteriaTrulia])
+        {
+            NSArray *sortChoices = [[NSArray alloc] initWithObjects:kPropertyCriteriaSortByPriceAscending, kPropertyCriteriaSortByPriceDescending, kPropertyCriteriaSortByBestMatch, nil];
+            [choicesViewController setChoices:sortChoices];
+            [sortChoices release];
+        }
+#endif
         [[self navigationController] pushViewController:choicesViewController animated:YES];
         [choicesViewController release];
     }

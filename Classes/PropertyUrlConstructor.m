@@ -130,7 +130,7 @@
 {
     NSString *choice = [[self criteria] searchSource];
     
-    if ([choice isEqual:@"Trulia"])
+    if ([choice isEqual:kPropertyCriteriaTrulia])
     {
         return @"&search_source=trulia";
     }
@@ -152,6 +152,10 @@
     else if ([choice isEqual:kPropertyCriteriaSortByPriceDescending])
     {
         return @"&sort_by=price&sort_order=descending";
+    }
+    else if ([choice isEqual:kPropertyCriteriaSortByBestMatch])
+    {
+        return @"&sort_by=best_match&sort_order=ascending";
     }
     //Default sort is distance
     else

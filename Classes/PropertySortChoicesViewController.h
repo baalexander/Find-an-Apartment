@@ -11,5 +11,6 @@
 }
 
 @property (nonatomic, retain) PropertyCriteria *criteria;
+@property (nonatomic, retain) NSArray *choices;
 
 @end
