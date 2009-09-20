@@ -58,6 +58,8 @@ static xmlSAXHandler simpleSAXHandlerStruct;
 
 - (void)dealloc
 {
+    [url_ release];
+
     [super dealloc];
 }
 
@@ -113,11 +115,14 @@ static xmlSAXHandler simpleSAXHandlerStruct;
     NSAutoreleasePool *downloadAndParsePool = [[NSAutoreleasePool alloc] init];
     
     [self setDone:NO];
-    [self setCharacterBuffer:[NSMutableData data]];
+    NSMutableData *characterBuffer = [[NSMutableData alloc] init];
+    [self setCharacterBuffer:characterBuffer];
+    [characterBuffer release];
     
     //Begins downloading URL
-    NSURLRequest *request = [NSURLRequest requestWithURL:[self url]];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[self url]];
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [request release];
     [self setConnection:connection];
     [connection release];
     
@@ -147,6 +152,7 @@ static xmlSAXHandler simpleSAXHandlerStruct;
     
     // Release resources used only in this thread.
     xmlFreeParserCtxt(context_);
+    context_ = NULL;
     [self setCharacterBuffer:nil];
     [downloadAndParsePool release];
     downloadAndParsePool = nil;
@@ -187,7 +193,7 @@ static xmlSAXHandler simpleSAXHandlerStruct;
     {        
         // Signal the context that parsing is complete by passing "1" as the last parameter.
         xmlParseChunk(context_, NULL, 0, 1);
-        context_ = NULL;
+        //Sample code has context_ = NULL here. But the free up context function call happens after this and would happen on a NULL pointer. Won't cause an error, but appears to cause memory leaks.
         [self performSelectorOnMainThread:@selector(parseEnded) withObject:nil waitUntilDone:NO];
 
         // Set the condition which ends the run loop.
