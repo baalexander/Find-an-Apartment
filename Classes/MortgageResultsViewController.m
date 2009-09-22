@@ -56,7 +56,12 @@ static const char *kItemName = "loan";
 
 - (void)calculateCustomLoan
 {
-    if ([[self criteria] loanAmount] == nil || [[self criteria] loanTerm] == nil || [[self criteria] interestRate] == nil)
+    if ([[self criteria] loanAmount] == nil
+        || [[[self criteria] loanAmount] floatValue] == 0.0
+        || [[self criteria] loanTerm] == nil
+        || [[[self criteria] loanTerm] floatValue] == 0.0
+        || [[self criteria] interestRate] == nil
+        || [[[self criteria] interestRate] floatValue] == 0.0)
     {
         return;
     }
