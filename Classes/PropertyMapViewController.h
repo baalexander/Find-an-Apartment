@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import <ObjectiveLibxml2/ObjectiveLibxml2.h>
 
-#import "XmlParser.h"
 #import "Placemark.h"
 #import "PropertyHistory.h"
 #import "PropertySummary.h"

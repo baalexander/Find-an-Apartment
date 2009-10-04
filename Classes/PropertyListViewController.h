@@ -1,10 +1,10 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import <ObjectiveLibxml2/ObjectiveLibxml2.h>
 
 #import "PropertyHistory.h"
 #import "PropertyDetails.h"
 #import "PropertySummary.h"
-#import "XmlParser.h"
 #import "SummaryCell.h"
 #import "PropertyDetailsViewController.h"
 

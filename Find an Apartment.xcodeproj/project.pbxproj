@@ -13,8 +13,10 @@
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* FindAnApartmentMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* FindAnApartmentMainWindow.xib */; };
 		28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D801B30F44B63D00FB423F /* CoreData.framework */; };
-		452A89F61033A07F00AD21AB /* XmlElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 452A89F51033A07F00AD21AB /* XmlElement.m */; };
-		452A89F71033A07F00AD21AB /* XmlElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 452A89F51033A07F00AD21AB /* XmlElement.m */; };
+		4526603B10795E910046610B /* libObjectiveLibxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4526603A10795E6D0046610B /* libObjectiveLibxml2.a */; };
+		4526604310795F120046610B /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4526604210795F120046610B /* libxml2.dylib */; };
+		45266078107961520046610B /* libObjectiveLibxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4526603A10795E6D0046610B /* libObjectiveLibxml2.a */; };
+		4526608F107961F50046610B /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4526604210795F120046610B /* libxml2.dylib */; };
 		452A8AD51033AED400AD21AB /* Placemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 452A8AD41033AED400AD21AB /* Placemark.m */; };
 		452A8AD61033AED400AD21AB /* Placemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 452A8AD41033AED400AD21AB /* Placemark.m */; };
 		453DBF881002ED760090982C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D456881002E4C000944852 /* AppDelegate.m */; };
@@ -36,9 +38,7 @@
 		4579324C0FE59783008E2ACD /* PropertySortChoicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4579324B0FE59783008E2ACD /* PropertySortChoicesViewController.m */; };
 		4579324E0FE59791008E2ACD /* PropertySortChoicesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4579324D0FE59791008E2ACD /* PropertySortChoicesView.xib */; };
 		457933800FE5ED93008E2ACD /* PropertyFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4579337F0FE5ED93008E2ACD /* PropertyFavoritesViewController.m */; };
-		457AA2AF0FD8D4FF00F0D16C /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 457AA2AE0FD8D4FF00F0D16C /* libxml2.2.dylib */; };
 		457AA3490FDAC26100F0D16C /* UrlUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA3380FDAC26100F0D16C /* UrlUtil.m */; };
-		457AA34A0FDAC26100F0D16C /* XmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA33A0FDAC26100F0D16C /* XmlParser.m */; };
 		457AA38E0FDAC45900F0D16C /* InputRangeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA37A0FDAC45900F0D16C /* InputRangeCell.m */; };
 		457AA38F0FDAC45900F0D16C /* InputRangeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457AA37B0FDAC45900F0D16C /* InputRangeCell.xib */; };
 		457AA3900FDAC45900F0D16C /* InputSimpleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA37D0FDAC45900F0D16C /* InputSimpleCell.m */; };
@@ -103,7 +103,6 @@
 		45D4551D1001970000944852 /* DescriptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453EE36D0FF084DB0044390F /* DescriptionCell.xib */; };
 		45D4551F1001970000944852 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		45D455201001970000944852 /* UrlUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA3380FDAC26100F0D16C /* UrlUtil.m */; };
-		45D455211001970000944852 /* XmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA33A0FDAC26100F0D16C /* XmlParser.m */; };
 		45D455231001970000944852 /* InputRangeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA37A0FDAC45900F0D16C /* InputRangeCell.m */; };
 		45D455241001970000944852 /* InputSimpleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA37D0FDAC45900F0D16C /* InputSimpleCell.m */; };
 		45D455251001970000944852 /* PropertyCitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 457AA3800FDAC45900F0D16C /* PropertyCitiesViewController.m */; };
@@ -131,7 +130,6 @@
 		45D455471001970000944852 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		45D455481001970000944852 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		45D455491001970000944852 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D801B30F44B63D00FB423F /* CoreData.framework */; };
-		45D4554A1001970000944852 /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 457AA2AE0FD8D4FF00F0D16C /* libxml2.2.dylib */; };
 		45D4554B1001970000944852 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45C7682B0FEC804100C75D90 /* MessageUI.framework */; };
 		45D4554C1001970000944852 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD9B5E1B0FF42D0600348478 /* CoreLocation.framework */; };
 		45D4554D1001970000944852 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD9B5F2A0FF4432E00348478 /* MapKit.framework */; };
@@ -184,6 +182,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		4526603910795E6D0046610B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4526603210795E6D0046610B /* ObjectiveLibxml2.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = ObjectiveLibxml2;
+		};
+		4526603D10795EBF0046610B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4526603210795E6D0046610B /* ObjectiveLibxml2.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = ObjectiveLibxml2;
+		};
+		4526603F10795ED20046610B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4526603210795E6D0046610B /* ObjectiveLibxml2.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = ObjectiveLibxml2;
+		};
 		DDDF6A98101E2C18001621C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DDDF6A91101E2C18001621C7 /* Three20.xcodeproj */;
@@ -216,9 +235,9 @@
 		28D801B30F44B63D00FB423F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Find_an_Apartment_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Find_an_Apartment_Prefix.pch; sourceTree = "<group>"; };
+		4526603210795E6D0046610B /* ObjectiveLibxml2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjectiveLibxml2.xcodeproj; path = objectiveLibxml2/src/ObjectiveLibxml2.xcodeproj; sourceTree = SOURCE_ROOT; };
+		4526604210795F120046610B /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = /usr/lib/libxml2.dylib; sourceTree = "<absolute>"; };
 		45267CF6102EA866007BED9D /* MortgageResultsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MortgageResultsConstants.h; path = Classes/MortgageResultsConstants.h; sourceTree = "<group>"; };
-		452A89F41033A07F00AD21AB /* XmlElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XmlElement.h; path = Classes/XmlElement.h; sourceTree = "<group>"; };
-		452A89F51033A07F00AD21AB /* XmlElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XmlElement.m; path = Classes/XmlElement.m; sourceTree = "<group>"; };
 		452A8AD31033AED400AD21AB /* Placemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Placemark.h; path = Classes/Placemark.h; sourceTree = "<group>"; };
 		452A8AD41033AED400AD21AB /* Placemark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Placemark.m; path = Classes/Placemark.m; sourceTree = "<group>"; };
 		453EE36D0FF084DB0044390F /* DescriptionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DescriptionCell.xib; path = Classes/DescriptionCell.xib; sourceTree = "<group>"; };
@@ -246,11 +265,8 @@
 		4579324D0FE59791008E2ACD /* PropertySortChoicesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertySortChoicesView.xib; path = Classes/PropertySortChoicesView.xib; sourceTree = "<group>"; };
 		4579337E0FE5ED93008E2ACD /* PropertyFavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyFavoritesViewController.h; path = Classes/PropertyFavoritesViewController.h; sourceTree = "<group>"; };
 		4579337F0FE5ED93008E2ACD /* PropertyFavoritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyFavoritesViewController.m; path = Classes/PropertyFavoritesViewController.m; sourceTree = "<group>"; };
-		457AA2AE0FD8D4FF00F0D16C /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		457AA3370FDAC26100F0D16C /* UrlUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlUtil.h; sourceTree = "<group>"; };
 		457AA3380FDAC26100F0D16C /* UrlUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlUtil.m; sourceTree = "<group>"; };
-		457AA3390FDAC26100F0D16C /* XmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XmlParser.h; sourceTree = "<group>"; };
-		457AA33A0FDAC26100F0D16C /* XmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XmlParser.m; sourceTree = "<group>"; };
 		457AA3790FDAC45900F0D16C /* InputRangeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InputRangeCell.h; path = Classes/InputRangeCell.h; sourceTree = "<group>"; };
 		457AA37A0FDAC45900F0D16C /* InputRangeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InputRangeCell.m; path = Classes/InputRangeCell.m; sourceTree = "<group>"; };
 		457AA37B0FDAC45900F0D16C /* InputRangeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = InputRangeCell.xib; path = Classes/InputRangeCell.xib; sourceTree = "<group>"; };
@@ -377,12 +393,13 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
 				28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */,
-				457AA2AF0FD8D4FF00F0D16C /* libxml2.2.dylib in Frameworks */,
 				45C7682C0FEC804100C75D90 /* MessageUI.framework in Frameworks */,
 				DD9B5E1C0FF42D0600348478 /* CoreLocation.framework in Frameworks */,
 				DD9B5F2B0FF4432E00348478 /* MapKit.framework in Frameworks */,
 				45E9CD6E102BD39F003D157D /* QuartzCore.framework in Frameworks */,
 				45E9CD91102BD897003D157D /* libThree20.a in Frameworks */,
+				45266078107961520046610B /* libObjectiveLibxml2.a in Frameworks */,
+				4526608F107961F50046610B /* libxml2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,12 +411,13 @@
 				45D455471001970000944852 /* UIKit.framework in Frameworks */,
 				45D455481001970000944852 /* CoreGraphics.framework in Frameworks */,
 				45D455491001970000944852 /* CoreData.framework in Frameworks */,
-				45D4554A1001970000944852 /* libxml2.2.dylib in Frameworks */,
 				45D4554B1001970000944852 /* MessageUI.framework in Frameworks */,
 				45D4554C1001970000944852 /* CoreLocation.framework in Frameworks */,
 				45D4554D1001970000944852 /* MapKit.framework in Frameworks */,
 				45E9CD6D102BD39F003D157D /* QuartzCore.framework in Frameworks */,
 				45E9CD8F102BD87B003D157D /* libThree20.a in Frameworks */,
+				4526603B10795E910046610B /* libObjectiveLibxml2.a in Frameworks */,
+				4526604310795F120046610B /* libxml2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -478,13 +496,21 @@
 				DD9B5F2A0FF4432E00348478 /* MapKit.framework */,
 				DD9B5E1B0FF42D0600348478 /* CoreLocation.framework */,
 				45C7682B0FEC804100C75D90 /* MessageUI.framework */,
-				457AA2AE0FD8D4FF00F0D16C /* libxml2.2.dylib */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
 				28D801B30F44B63D00FB423F /* CoreData.framework */,
+				4526604210795F120046610B /* libxml2.dylib */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4526603310795E6D0046610B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4526603A10795E6D0046610B /* libObjectiveLibxml2.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		452A89F310339FDC00AD21AB /* General */ = {
@@ -494,8 +520,6 @@
 				4576665C104DF8F500EEFF22 /* Location.m */,
 				452A8AD31033AED400AD21AB /* Placemark.h */,
 				452A8AD41033AED400AD21AB /* Placemark.m */,
-				452A89F41033A07F00AD21AB /* XmlElement.h */,
-				452A89F51033A07F00AD21AB /* XmlElement.m */,
 			);
 			name = General;
 			sourceTree = "<group>";
@@ -535,6 +559,7 @@
 		455BFE530FDC9EDF000BCD39 /* General */ = {
 			isa = PBXGroup;
 			children = (
+				4526603210795E6D0046610B /* ObjectiveLibxml2.xcodeproj */,
 				DDDF6A91101E2C18001621C7 /* Three20.xcodeproj */,
 				45E6EE251048890E006F8896 /* Image.h */,
 				45E6EE261048890E006F8896 /* Image.m */,
@@ -550,8 +575,6 @@
 				459CA0D3100AAA0000108747 /* UrlConstructor.m */,
 				457AA3370FDAC26100F0D16C /* UrlUtil.h */,
 				457AA3380FDAC26100F0D16C /* UrlUtil.m */,
-				457AA3390FDAC26100F0D16C /* XmlParser.h */,
-				457AA33A0FDAC26100F0D16C /* XmlParser.m */,
 				45E6EB9C1040F09E001E66F2 /* SaveAndRestoreProtocol.h */,
 			);
 			name = General;
@@ -786,6 +809,7 @@
 			);
 			dependencies = (
 				DDDF6AAF101E2C5D001621C7 /* PBXTargetDependency */,
+				4526603E10795EBF0046610B /* PBXTargetDependency */,
 			);
 			name = "Find an Apartment";
 			productName = "Find an Apartment";
@@ -804,6 +828,7 @@
 			);
 			dependencies = (
 				DDDF6AB5101E2C70001621C7 /* PBXTargetDependency */,
+				4526604010795ED20046610B /* PBXTargetDependency */,
 			);
 			name = "Home Finder";
 			productName = "Find an Apartment";
@@ -825,6 +850,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 4526603310795E6D0046610B /* Products */;
+					ProjectRef = 4526603210795E6D0046610B /* ObjectiveLibxml2.xcodeproj */;
+				},
+				{
 					ProductGroup = DDDF6A92101E2C18001621C7 /* Products */;
 					ProjectRef = DDDF6A91101E2C18001621C7 /* Three20.xcodeproj */;
 				},
@@ -838,6 +867,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		4526603A10795E6D0046610B /* libObjectiveLibxml2.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libObjectiveLibxml2.a;
+			remoteRef = 4526603910795E6D0046610B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		DDDF6A99101E2C18001621C7 /* libThree20.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -932,7 +968,6 @@
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				457AA3490FDAC26100F0D16C /* UrlUtil.m in Sources */,
-				457AA34A0FDAC26100F0D16C /* XmlParser.m in Sources */,
 				457AA38E0FDAC45900F0D16C /* InputRangeCell.m in Sources */,
 				457AA3900FDAC45900F0D16C /* InputSimpleCell.m in Sources */,
 				457AA3920FDAC45900F0D16C /* PropertyCitiesViewController.m in Sources */,
@@ -964,7 +999,6 @@
 				DD7DAAD910293FBA00EE70AB /* PropertyAnnotation.m in Sources */,
 				45E9CE0C102BE338003D157D /* LocationParser.m in Sources */,
 				458A49AB1031373000375D4C /* PropertySummary.m in Sources */,
-				452A89F71033A07F00AD21AB /* XmlElement.m in Sources */,
 				452A8AD61033AED400AD21AB /* Placemark.m in Sources */,
 				4557346E103901C30013278E /* PropertyCriteria.m in Sources */,
 				45DD4492104502AE0001A93D /* ImageSource.m in Sources */,
@@ -981,7 +1015,6 @@
 			files = (
 				45D4551F1001970000944852 /* main.m in Sources */,
 				45D455201001970000944852 /* UrlUtil.m in Sources */,
-				45D455211001970000944852 /* XmlParser.m in Sources */,
 				45D455231001970000944852 /* InputRangeCell.m in Sources */,
 				45D455241001970000944852 /* InputSimpleCell.m in Sources */,
 				45D455251001970000944852 /* PropertyCitiesViewController.m in Sources */,
@@ -1018,7 +1051,6 @@
 				DD7DAADA10293FBA00EE70AB /* PropertyAnnotation.m in Sources */,
 				45E9CE0B102BE338003D157D /* LocationParser.m in Sources */,
 				458A49AA1031373000375D4C /* PropertySummary.m in Sources */,
-				452A89F61033A07F00AD21AB /* XmlElement.m in Sources */,
 				452A8AD51033AED400AD21AB /* Placemark.m in Sources */,
 				455734351038FC770013278E /* PropertySearchSourcesViewController.m in Sources */,
 				4557346D103901C30013278E /* PropertyCriteria.m in Sources */,
@@ -1036,6 +1068,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		4526603E10795EBF0046610B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ObjectiveLibxml2;
+			targetProxy = 4526603D10795EBF0046610B /* PBXContainerItemProxy */;
+		};
+		4526604010795ED20046610B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ObjectiveLibxml2;
+			targetProxy = 4526603F10795ED20046610B /* PBXContainerItemProxy */;
+		};
 		DDDF6AAF101E2C5D001621C7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Three20;
@@ -1113,8 +1155,9 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
+					objectiveLibxml2/src,
 					three20/src,
-					/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.0.sdk/usr/include/libxml2,
+					"/usr/include/libxml2/**",
 				);
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -1226,8 +1269,9 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
+					objectiveLibxml2/src,
 					three20/src,
-					/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.0.sdk/usr/include/libxml2,
+					"/usr/include/libxml2/**",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -1264,8 +1308,9 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
+					objectiveLibxml2/src,
 					three20/src,
-					/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.0.sdk/usr/include/libxml2,
+					"/usr/include/libxml2/**",
 				);
 				PREBINDING = NO;
 				SDKROOT = iphoneos3.0;
