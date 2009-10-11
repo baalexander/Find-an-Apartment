@@ -4,6 +4,7 @@
 @interface PropertyGeocoder ()
 @property (nonatomic, assign, readwrite, getter=isQuerying) BOOL querying;
 @property (nonatomic, retain) Geocoder *geocoder;
+@property (nonatomic, retain) PropertySummary *summary;
 - (void)enqueueNextSummary;
 @end
 
@@ -12,6 +13,7 @@
 
 @synthesize delegate = delegate_;
 @synthesize summaries = summaries_;
+@synthesize summary = summary_;
 @synthesize querying = querying_;
 @synthesize geocoder = geocoder_;
 
@@ -39,6 +41,7 @@ static PropertyGeocoder *propertyGeocoder_ = NULL;
 - (void)dealloc
 {
     [summaries_ release];
+    [summary_ release];
     [geocoder_ release];
     
     [super dealloc];
@@ -79,13 +82,17 @@ static PropertyGeocoder *propertyGeocoder_ = NULL;
 - (void)enqueueNextSummary
 {
     // Looks for next summary that has not been geocoded
+    BOOL foundUngeocodedSummary = NO;
     for (PropertySummary *summary in [self summaries])
     {
         // Checks if longitude and latitude already set. Ignores properties with
         // no location.
         if ([summary location] != nil
             && ([summary longitude] == nil || [summary latitude] == nil))
-        {   
+        {
+            // Needs to know which summary to populate coordinate data with
+            [self setSummary:summary];
+            
             // Create a Geocoder with the property's location
             Geocoder *geocoder = [[Geocoder alloc] initWithLocation:[summary location]];
             [self setGeocoder:geocoder];
@@ -93,7 +100,26 @@ static PropertyGeocoder *propertyGeocoder_ = NULL;
             
             [[self geocoder] setDelegate:self];
             [[self geocoder] start];
+            
+            // Only enqueue one summary at a time
+            foundUngeocodedSummary = YES;
+            break;
         }
+    }
+    
+    // Every property has been geocoded, saves the context and update status
+    if (!foundUngeocodedSummary)
+    {
+        // Saves the context
+        NSError *error;
+        NSManagedObjectContext *managedObjectContext = [[self summary] managedObjectContext];
+        if (![managedObjectContext save:&error])
+        {
+            DebugLog(@"Error saving summary context in Property Geocoder's enqueueNextSummary.");
+        }
+        
+        // Updates the status
+        [self setQuerying:NO];
     }
 }
 
@@ -112,12 +138,50 @@ static PropertyGeocoder *propertyGeocoder_ = NULL;
 
 - (void)geocoder:(Geocoder *)geocoder didFindCoordinate:(CLLocationCoordinate2D)coordinate
 {
+    // If cancel was called before this call back, stop all processing
+    if (![self isQuerying])
+    {
+        return;
+    }
     
+    // Sorry equator and Prime Meridian, no 0 coordinates allowed because
+    // _usually_ a parsing or downloading mishap
+    if (coordinate.longitude != 0 && coordinate.latitude != 0)
+    {
+        // Sets the coordinate data in the property
+        NSNumber *longitude = [[NSNumber alloc] initWithDouble:coordinate.longitude];
+        [[self summary] setLongitude:longitude];
+        [longitude release];
+        NSNumber *latitude = [[NSNumber alloc] initWithDouble:coordinate.latitude];
+        [[self summary] setLatitude:latitude];
+        [latitude release];
+        
+        // Saves the context
+        // TODO: Only save every x number of times
+        NSError *error;
+        NSManagedObjectContext *managedObjectContext = [[self summary] managedObjectContext];
+        if (![managedObjectContext save:&error])
+        {
+            DebugLog(@"Error saving summary context in Property Geocoder's didFindCoordinate.");
+        }
+    }
+    
+    // Lets delegate know a new property has been geocoded
+    [[self delegate] propertyGeocoder:self didFindProperty:[self summary]];
+    
+    // Fetches next summary to download
+    [self enqueueNextSummary];
 }
 
 - (void)geocoder:(Geocoder *)geocoder didFailWithError:(NSError *)error
 {
-    
+    // If cancel was called before this call back, stop all processing
+    if (![self isQuerying])
+    {
+        return;
+    }
+
+    [[self delegate] propertyGeocoder:self didFailWithError:error];
 }
 
 @end

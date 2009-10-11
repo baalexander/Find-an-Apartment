@@ -25,6 +25,7 @@
         NSSet *summaries_;
         BOOL querying_;
         Geocoder *geocoder_;
+        PropertySummary *summary_;
 }
 
 /**

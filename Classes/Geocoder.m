@@ -145,6 +145,12 @@
 
 - (void)parser:(XmlParser *)parser didFailWithError:(NSError *)error
 {
+    // If cancel was called before this call back, stop all processing
+    if (![self isQuerying])
+    {
+        return;
+    }
+    
     [self setQuerying:NO];
     
     [[self delegate] geocoder:self didFailWithError:error];
