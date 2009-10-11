@@ -15,6 +15,8 @@
 		28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D801B30F44B63D00FB423F /* CoreData.framework */; };
 		45011E6510815FFD0045DAB5 /* Geography2.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 45011E6410815FFD0045DAB5 /* Geography2.sqlite */; };
 		45011E6610815FFD0045DAB5 /* Geography2.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 45011E6410815FFD0045DAB5 /* Geography2.sqlite */; };
+		45011EC5108164E10045DAB5 /* Geocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45011EC4108164E10045DAB5 /* Geocoder.m */; };
+		45011EC6108164E10045DAB5 /* Geocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45011EC4108164E10045DAB5 /* Geocoder.m */; };
 		4526603B10795E910046610B /* libObjectiveLibxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4526603A10795E6D0046610B /* libObjectiveLibxml2.a */; };
 		4526604310795F120046610B /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4526604210795F120046610B /* libxml2.dylib */; };
 		45266078107961520046610B /* libObjectiveLibxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4526603A10795E6D0046610B /* libObjectiveLibxml2.a */; };
@@ -236,6 +238,9 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Find_an_Apartment_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Find_an_Apartment_Prefix.pch; sourceTree = "<group>"; };
 		45011E6410815FFD0045DAB5 /* Geography2.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Geography2.sqlite; sourceTree = "<group>"; };
+		45011EC2108164C20045DAB5 /* GeocoderConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GeocoderConstants.h; path = Classes/GeocoderConstants.h; sourceTree = "<group>"; };
+		45011EC3108164E10045DAB5 /* Geocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geocoder.h; sourceTree = "<group>"; };
+		45011EC4108164E10045DAB5 /* Geocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Geocoder.m; sourceTree = "<group>"; };
 		4526603210795E6D0046610B /* ObjectiveLibxml2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjectiveLibxml2.xcodeproj; path = objectiveLibxml2/src/ObjectiveLibxml2.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4526604210795F120046610B /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = /usr/lib/libxml2.dylib; sourceTree = "<absolute>"; };
 		45267CF6102EA866007BED9D /* MortgageResultsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MortgageResultsConstants.h; path = Classes/MortgageResultsConstants.h; sourceTree = "<group>"; };
@@ -561,6 +566,8 @@
 			children = (
 				4526603210795E6D0046610B /* ObjectiveLibxml2.xcodeproj */,
 				DDDF6A91101E2C18001621C7 /* Three20.xcodeproj */,
+				45011EC3108164E10045DAB5 /* Geocoder.h */,
+				45011EC4108164E10045DAB5 /* Geocoder.m */,
 				45E6EE251048890E006F8896 /* Image.h */,
 				45E6EE261048890E006F8896 /* Image.m */,
 				45DD4490104502AE0001A93D /* ImageSource.h */,
@@ -710,6 +717,7 @@
 			isa = PBXGroup;
 			children = (
 				458C8075106085DF005CD7A2 /* Constants.h */,
+				45011EC2108164C20045DAB5 /* GeocoderConstants.h */,
 				457932490FE59771008E2ACD /* PropertyCriteriaConstants.h */,
 				45991A220FF0927F00627B7D /* PropertyDetailsConstants.h */,
 				455733CD103779940013278E /* PropertyListAndMapConstants.h */,
@@ -1006,6 +1014,7 @@
 				4576665E104DF8F500EEFF22 /* Location.m in Sources */,
 				45C5FEEF1055AEDE001B0CB3 /* State.m in Sources */,
 				45C5FEF01055AEDE001B0CB3 /* City.m in Sources */,
+				45011EC6108164E10045DAB5 /* Geocoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1062,6 +1071,7 @@
 				45C9B1DA105D984F00428FFE /* ProvidedByZillowCell.m in Sources */,
 				45C9B2AE105DD13700428FFE /* ProvidedByTruliaCell.m in Sources */,
 				45C9B2BE105DD6D200428FFE /* TruliaCopyrightCell.m in Sources */,
+				45011EC5108164E10045DAB5 /* Geocoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1134,7 +1144,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Brandon Alexander";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -1164,7 +1174,7 @@
 					"-ObjC",
 				);
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3714B723-2869-4B46-837F-354F224EC063";
 				SDKROOT = iphoneos3.0;
 			};
 			name = Distribution;
