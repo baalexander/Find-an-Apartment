@@ -5,7 +5,8 @@
 @property (nonatomic, assign, readwrite, getter=isQuerying) BOOL querying;
 @property (nonatomic, retain) Geocoder *geocoder;
 @property (nonatomic, retain) PropertySummary *summary;
-- (void)enqueueNextSummary;
+- (void)enqueueNextProperty;
+- (void)geocodeProperty:(PropertySummary *)summary;
 @end
 
 
@@ -76,13 +77,13 @@ static PropertyGeocoder *propertyGeocoder_ = NULL;
 {
     [self setQuerying:YES];
     
-    [self enqueueNextSummary];
+    [self enqueueNextProperty];
 }
 
-- (void)enqueueNextSummary
+- (void)enqueueNextProperty
 {
     // Looks for next summary that has not been geocoded
-    BOOL foundUngeocodedSummary = NO;
+    BOOL foundUngeocodedProperty = NO;
     for (PropertySummary *summary in [self summaries])
     {
         // Checks if longitude and latitude already set. Ignores properties with
@@ -90,25 +91,20 @@ static PropertyGeocoder *propertyGeocoder_ = NULL;
         if ([summary location] != nil
             && ([summary longitude] == nil || [summary latitude] == nil))
         {
-            // Needs to know which summary to populate coordinate data with
-            [self setSummary:summary];
+            // To prevent overloading map requests and getting errors from their
+            // server, add a delay
+            [self performSelector:@selector(geocodeProperty:)
+                       withObject:summary
+                       afterDelay:0.150]; 
             
-            // Create a Geocoder with the property's location
-            Geocoder *geocoder = [[Geocoder alloc] initWithLocation:[summary location]];
-            [self setGeocoder:geocoder];
-            [geocoder release];
-            
-            [[self geocoder] setDelegate:self];
-            [[self geocoder] start];
-            
-            // Only enqueue one summary at a time
-            foundUngeocodedSummary = YES;
+            // Only enqueue one property at a time
+            foundUngeocodedProperty = YES;
             break;
         }
     }
     
     // Every property has been geocoded, saves the context and update status
-    if (!foundUngeocodedSummary)
+    if (!foundUngeocodedProperty)
     {
         // Saves the context
         NSError *error;
@@ -121,6 +117,23 @@ static PropertyGeocoder *propertyGeocoder_ = NULL;
         // Updates the status
         [self setQuerying:NO];
     }
+}
+
+// Begins geocoding the next property
+// Meant to be called as a selector with a delay to prevent flooding request to
+// maps
+- (void)geocodeProperty:(PropertySummary *)summary
+{
+    // Needs to know which summary to populate coordinate data with
+    [self setSummary:summary];
+    
+    // Create a Geocoder with the property's location
+    Geocoder *geocoder = [[Geocoder alloc] initWithLocation:[summary location]];
+    [self setGeocoder:geocoder];
+    [geocoder release];
+    
+    [[self geocoder] setDelegate:self];
+    [[self geocoder] start];
 }
 
 - (void)cancel
@@ -167,10 +180,13 @@ static PropertyGeocoder *propertyGeocoder_ = NULL;
     }
     
     // Lets delegate know a new property has been geocoded
-    [[self delegate] propertyGeocoder:self didFindProperty:[self summary]];
+    if ([self delegate] != nil)
+    {
+        [[self delegate] propertyGeocoder:self didFindProperty:[self summary]];
+    }
     
     // Fetches next summary to download
-    [self enqueueNextSummary];
+    [self enqueueNextProperty];
 }
 
 - (void)geocoder:(Geocoder *)geocoder didFailWithError:(NSError *)error
@@ -181,7 +197,10 @@ static PropertyGeocoder *propertyGeocoder_ = NULL;
         return;
     }
 
-    [[self delegate] propertyGeocoder:self didFailWithError:error];
+    if ([self delegate] != nil)
+    {
+        [[self delegate] propertyGeocoder:self didFailWithError:error];
+    }
 }
 
 @end

@@ -27,6 +27,10 @@
 {
     if ((self = [super init]))
     {
+        NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
+        [self setOperationQueue:operationQueue];
+        [operationQueue release];
+        
         [self setQuerying:NO];
         [self setLocation:location];
     }
@@ -63,6 +67,7 @@
     
     // Begins geocoding operation by making the API request then parsing the 
     // results
+    NSLog(@"ADDING TO OPERATION");
     [[self operationQueue] addOperation:parser];
     [parser release];
 }

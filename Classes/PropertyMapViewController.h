@@ -3,16 +3,17 @@
 #import <ObjectiveLibxml2/ObjectiveLibxml2.h>
 
 #import "Placemark.h"
+#import "PropertyGeocoder.h"
 #import "PropertyHistory.h"
 #import "PropertySummary.h"
 #import "PropertyDetailsViewController.h"
 
 
-@interface PropertyMapViewController : UIViewController <PropertyDetailsDelegate, ParserDelegate, MKMapViewDelegate>
+@interface PropertyMapViewController : UIViewController <PropertyDetailsDelegate, PropertyGeocoderDelegate, MKMapViewDelegate>
 {
     @private
         PropertyHistory *history_;
-        NSArray *summaries_;
+        NSSet *summaries_;
         PropertySummary *summary_;
         MKMapView *mapView_;
         NSOperationQueue *operationQueue_;
