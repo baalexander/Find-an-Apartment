@@ -13,6 +13,8 @@
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* FindAnApartmentMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* FindAnApartmentMainWindow.xib */; };
 		28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D801B30F44B63D00FB423F /* CoreData.framework */; };
+		45011E6510815FFD0045DAB5 /* Geography2.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 45011E6410815FFD0045DAB5 /* Geography2.sqlite */; };
+		45011E6610815FFD0045DAB5 /* Geography2.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 45011E6410815FFD0045DAB5 /* Geography2.sqlite */; };
 		4526603B10795E910046610B /* libObjectiveLibxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4526603A10795E6D0046610B /* libObjectiveLibxml2.a */; };
 		4526604310795F120046610B /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4526604210795F120046610B /* libxml2.dylib */; };
 		45266078107961520046610B /* libObjectiveLibxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4526603A10795E6D0046610B /* libObjectiveLibxml2.a */; };
@@ -94,7 +96,6 @@
 		45D455131001970000944852 /* PropertyHistoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C974150FDCCA150021EE6D /* PropertyHistoryView.xib */; };
 		45D455141001970000944852 /* SummaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457931000FE36A08008E2ACD /* SummaryCell.xib */; };
 		45D455151001970000944852 /* PropertySortChoicesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4579324D0FE59791008E2ACD /* PropertySortChoicesView.xib */; };
-		45D455161001970000944852 /* Geography.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = DD8C53470FE9F8AE0056F3B7 /* Geography.sqlite */; };
 		45D455171001970000944852 /* PropertyFavoritesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */; };
 		45D455191001970000944852 /* locate.png in Resources */ = {isa = PBXBuildFile; fileRef = 45D93C6D0FECAC1C00AD4A5B /* locate.png */; };
 		45D4551A1001970000944852 /* LocationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D9401D0FEFDA3600AD4A5B /* LocationCell.xib */; };
@@ -172,7 +173,6 @@
 		DD6F225C1027E1C6000C8207 /* ImagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6F225A1027E1C6000C8207 /* ImagesViewController.m */; };
 		DD7DAAD910293FBA00EE70AB /* PropertyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7DAAD810293FBA00EE70AB /* PropertyAnnotation.m */; };
 		DD7DAADA10293FBA00EE70AB /* PropertyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7DAAD810293FBA00EE70AB /* PropertyAnnotation.m */; };
-		DD8C53480FE9F8AE0056F3B7 /* Geography.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = DD8C53470FE9F8AE0056F3B7 /* Geography.sqlite */; };
 		DD9B5E1C0FF42D0600348478 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD9B5E1B0FF42D0600348478 /* CoreLocation.framework */; };
 		DD9B5F2B0FF4432E00348478 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD9B5F2A0FF4432E00348478 /* MapKit.framework */; };
 		DD9B613E0FF45FED00348478 /* Locator.m in Sources */ = {isa = PBXBuildFile; fileRef = DD9B613D0FF45FED00348478 /* Locator.m */; };
@@ -235,6 +235,7 @@
 		28D801B30F44B63D00FB423F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Find_an_Apartment_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Find_an_Apartment_Prefix.pch; sourceTree = "<group>"; };
+		45011E6410815FFD0045DAB5 /* Geography2.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Geography2.sqlite; sourceTree = "<group>"; };
 		4526603210795E6D0046610B /* ObjectiveLibxml2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjectiveLibxml2.xcodeproj; path = objectiveLibxml2/src/ObjectiveLibxml2.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4526604210795F120046610B /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = /usr/lib/libxml2.dylib; sourceTree = "<absolute>"; };
 		45267CF6102EA866007BED9D /* MortgageResultsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MortgageResultsConstants.h; path = Classes/MortgageResultsConstants.h; sourceTree = "<group>"; };
@@ -375,7 +376,6 @@
 		DD6F225A1027E1C6000C8207 /* ImagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImagesViewController.m; path = Classes/ImagesViewController.m; sourceTree = "<group>"; };
 		DD6F225D1027E1F3000C8207 /* PropertyAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyAnnotation.h; path = Classes/PropertyAnnotation.h; sourceTree = "<group>"; };
 		DD7DAAD810293FBA00EE70AB /* PropertyAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyAnnotation.m; path = Classes/PropertyAnnotation.m; sourceTree = "<group>"; };
-		DD8C53470FE9F8AE0056F3B7 /* Geography.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Geography.sqlite; sourceTree = "<group>"; };
 		DD9B5E1B0FF42D0600348478 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		DD9B5F2A0FF4432E00348478 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		DD9B613C0FF45FED00348478 /* Locator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Locator.h; sourceTree = "<group>"; };
@@ -478,7 +478,7 @@
 				45D4559410019BED00944852 /* FindAnApartmentIcon.png */,
 				45D4559210019BDE00944852 /* HomeFinderIcon.png */,
 				DD4581250FEEC7B500783A46 /* Geography.xcdatamodel */,
-				DD8C53470FE9F8AE0056F3B7 /* Geography.sqlite */,
+				45011E6410815FFD0045DAB5 /* Geography2.sqlite */,
 				45858DE30FDEF476003F8831 /* Property.xcdatamodel */,
 				45BEE8FF1006D7D00031613E /* Mortgage.xcdatamodel */,
 				28AD733E0D9D9553002E5188 /* FindAnApartmentMainWindow.xib */,
@@ -900,7 +900,6 @@
 				45C974180FDCCA150021EE6D /* PropertyHistoryView.xib in Resources */,
 				457931020FE36A08008E2ACD /* SummaryCell.xib in Resources */,
 				4579324E0FE59791008E2ACD /* PropertySortChoicesView.xib in Resources */,
-				DD8C53480FE9F8AE0056F3B7 /* Geography.sqlite in Resources */,
 				45FF76C80FE9FF810053B4D8 /* PropertyFavoritesView.xib in Resources */,
 				45D93C6E0FECAC1C00AD4A5B /* locate.png in Resources */,
 				45D9401F0FEFDA3600AD4A5B /* LocationCell.xib in Resources */,
@@ -914,6 +913,7 @@
 				DD6F1F5C1026718C000C8207 /* forward.png in Resources */,
 				4557336C10374A800013278E /* WebView.xib in Resources */,
 				45DB3D01104A3BFF003A8163 /* imageLoading.png in Resources */,
+				45011E6610815FFD0045DAB5 /* Geography2.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -932,7 +932,6 @@
 				45D455131001970000944852 /* PropertyHistoryView.xib in Resources */,
 				45D455141001970000944852 /* SummaryCell.xib in Resources */,
 				45D455151001970000944852 /* PropertySortChoicesView.xib in Resources */,
-				45D455161001970000944852 /* Geography.sqlite in Resources */,
 				45D455171001970000944852 /* PropertyFavoritesView.xib in Resources */,
 				45D455191001970000944852 /* locate.png in Resources */,
 				45D4551A1001970000944852 /* LocationCell.xib in Resources */,
@@ -956,6 +955,7 @@
 				45C9B2AF105DD13700428FFE /* ProvidedByTruliaCell.xib in Resources */,
 				45C9B2BF105DD6D200428FFE /* TruliaCopyrightCell.xib in Resources */,
 				45C9B310105DDDEA00428FFE /* providedByTrulia.png in Resources */,
+				45011E6510815FFD0045DAB5 /* Geography2.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -139,14 +139,14 @@
 {
     if (geographyStoreCoordinator_ == nil) 
     {    
-        NSString *storePath = [[AppDelegate applicationDocumentsDirectory] stringByAppendingPathComponent:@"Geography.sqlite"];
+        NSString *storePath = [[AppDelegate applicationDocumentsDirectory] stringByAppendingPathComponent:@"Geography2.sqlite"];
         
         // Check to see if the store already exists
         NSFileManager *fileManager = [NSFileManager defaultManager];
         // Copy the default store if necessary
         if (![fileManager fileExistsAtPath:storePath]) 
         {
-            NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"Geography" ofType:@"sqlite"];
+            NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"Geography2" ofType:@"sqlite"];
             if (defaultStorePath) 
             {
                 [fileManager copyItemAtPath:defaultStorePath toPath:storePath error:NULL];
@@ -159,9 +159,9 @@
         
         NSMutableDictionary *options = nil;
         //Implement options when updating the model. Then comment options back out.
-        //options = [NSMutableDictionary dictionary];
+        options = [NSMutableDictionary dictionary];
         //Uncomment the line below to ignore version hash checks
-        //[options setObject:[NSNumber numberWithBool:YES] forKey:NSIgnorePersistentStoreVersioningOption];
+        [options setObject:[NSNumber numberWithBool:YES] forKey:NSIgnorePersistentStoreVersioningOption];
         //When migrating, uncomment the setObject lines belows
         //[options setObject:[NSNumber numberWithBool:YES] forKey:NSMigratePersistentStoresAutomaticallyOption];
         //[options setObject:[NSNumber numberWithBool:YES] forKey:NSInferMappingModelAutomaticallyOption];        
