@@ -27,6 +27,7 @@
 {
     if ((self = [super init]))
     {
+        [self setQuerying:NO];
         [self setLocation:location];
     }
     
@@ -42,6 +43,8 @@
 
 - (void)start
 {
+    [self setQuerying:YES];
+    
     // Add the Parser to an operation queue for background processing (works on 
     // a separate thread)
     XmlParser *parser = [[XmlParser alloc] init];
