@@ -10,33 +10,24 @@
 
 
 @interface PropertyMapViewController ()
-@property (nonatomic, retain) NSSet *summaries;
-@property (nonatomic, retain) NSOperationQueue *operationQueue;
-@property (nonatomic, retain) Placemark *placemark;
-@property (nonatomic, assign) CLLocationCoordinate2D maxPoint;
-@property (nonatomic, assign) CLLocationCoordinate2D minPoint;
+@property (nonatomic, retain) NSArray *properties;
+@property (nonatomic, retain) NSMutableArray *geocodedProperties;
 @property (nonatomic, assign) BOOL isCancelled;
-@property (nonatomic, assign) NSInteger summaryIndex;
 @property (nonatomic, assign) NSInteger selectedIndex;
-- (void)geocodeProperties;
-//- (BOOL)enqueueNextSummary;
-- (void)placeGeocodedPropertyOnMap:(PropertySummary *)summary;
+- (void)geocodeProperties:(NSArray *)properties;
+- (void)placeGeocodedPropertyOnMap:(PropertySummary *)property withIndex:(NSInteger)index;
 @end
 
 
 @implementation PropertyMapViewController
 
+@synthesize properties = properties_;
+@synthesize geocodedProperties = geocodedProperties_;
 @synthesize history = history_;
-@synthesize summaries = summaries_;
 @synthesize summary = summary_;
 @synthesize mapView = mapView_;
-@synthesize operationQueue = operationQueue_;
-@synthesize placemark = placemark_;
-@synthesize maxPoint = maxPoint_;
-@synthesize minPoint = minPoint_;
 @synthesize isCancelled = isCancelled_;
 @synthesize isFromFavorites = isFromFavorites_;
-@synthesize summaryIndex = summaryIndex_;
 @synthesize selectedIndex = selectedIndex_;
 
 
@@ -58,11 +49,10 @@
 - (void)dealloc
 {
     [mapView_ release];
+    [properties_ release];
+    [geocodedProperties_ release];
     [history_ release];
-    [summaries_ release];
     [summary_ release];
-    [operationQueue_ release];
-    [placemark_ release];
  
     [super dealloc];
 }
@@ -104,8 +94,7 @@
 {
     UIButton *button = (UIButton *)sender;
     [self setSelectedIndex:[button tag]];
-    PropertySummary *summary;
-    //PropertySummary *summary = [[self summaries] objectAtIndex:[self selectedIndex]];
+    PropertySummary *summary = [[self geocodedProperties] objectAtIndex:[self selectedIndex]];
     
     //Pushes the Details view controller with the summary
     PropertyDetailsViewController *detailsViewController = [[PropertyDetailsViewController alloc] initWithNibName:@"PropertyDetailsView" bundle:nil];
@@ -119,8 +108,7 @@
 {
     UIButton *button = (UIButton *)sender;
     [self setSelectedIndex:[button tag]];
-    PropertySummary *summary;
-    //PropertySummary *summary = [[self summaries] objectAtIndex:[self selectedIndex]];
+    PropertySummary *summary = [[self geocodedProperties] objectAtIndex:[self selectedIndex]];
     NSString *location = [summary location];
     
     //Opens up location in Google Maps app
@@ -130,109 +118,56 @@
     [url release];
 }
 
-- (void)geocodeProperties
+- (void)geocodeProperties:(NSArray *)properties
 {
+    // Non-geocoded properties
+    [self setProperties:properties];
+    
     PropertyGeocoder *geocoder = [PropertyGeocoder sharedInstance];
     [geocoder setDelegate:self];
-    [geocoder setSummaries:[self summaries]];
+    [geocoder setProperties:properties];
 
-    // Could be properties already geocoded, even though hasn't started
+    // There could be properties already geocoded, even though hasn't started
     // geocoding yet.
-    NSSet *geocodedProperties = [geocoder geocodedProperties];
-    for (PropertySummary *summary in geocodedProperties)
+    NSMutableArray *geocodedProperties = 
+        [[NSMutableArray alloc] initWithArray:[[geocoder geocodedProperties] allObjects]];
+    [self setGeocodedProperties:geocodedProperties];
+    [geocodedProperties release];
+    
+    // Maps all geocoded properties
+    for (NSUInteger i = 0; i < [[self geocodedProperties] count]; i++)
     {
-        [self placeGeocodedPropertyOnMap:summary];
+        PropertySummary *property = [[self geocodedProperties] objectAtIndex:i];
+        [self placeGeocodedPropertyOnMap:property withIndex:i];
     }
     
     // Start geocoding
     [geocoder start];
 }
 
-- (void)placeGeocodedPropertyOnMap:(PropertySummary *)summary
+- (void)placeGeocodedPropertyOnMap:(PropertySummary *)property withIndex:(NSInteger)index
 {
     // Creates Placemark
     Placemark *placemark = [[Placemark alloc] init];
-    [placemark setAddress:[summary location]];
+    [placemark setAddress:[property location]];
     
     // Adds coordinate
     CLLocationCoordinate2D coordinate;
-    coordinate.longitude = [[summary longitude] doubleValue];
-    coordinate.latitude = [[summary latitude] doubleValue];
+    coordinate.longitude = [[property longitude] doubleValue];
+    coordinate.latitude = [[property latitude] doubleValue];
     [placemark setCoordinate:coordinate];
     
     // Setup the pin to be placed on the map
     PropertyAnnotation *annotation = [[PropertyAnnotation alloc] initWithPlacemark:placemark];
-    [annotation setSummaryIndex:[self summaryIndex]];
+    // Index is used to keep track of button pressings on the map and the
+    // property they correspond to
+    [annotation setIndex:index];
     
     // Add pin to the map
     [[self mapView] addAnnotation:annotation];
     [annotation release];
 }
 
-//Returns NO if no properties left to enqueue
-//- (BOOL)enqueueNextSummary
-//{
-//    //Loops through list of summaries.
-//    //If a cached result (has longitude and latitude), then maps. If an uncached result, enqueues to parse and returns YES.
-//    for (; [self summaryIndex] < (NSInteger)[[self summaries] count] && [self summaryIndex] < kMaxMapItems; [self setSummaryIndex:[self summaryIndex] + 1])
-//    {
-//        PropertySummary *summary = [[self summaries] objectAtIndex:[self summaryIndex]];
-//        //If longitude and latitude already cache and not a single property, add directly to map
-//        //Does the check for single property, because need to fetch additional data, like region box
-//        if ([[self summaries] count] > 1 && [summary longitude] != nil && [summary latitude] != nil)
-//        {
-//            //Creates Placemark
-//            Placemark *placemark = [[Placemark alloc] init];
-//            [placemark setAddress:[summary location]];            
-//            CLLocationCoordinate2D coordinate;
-//            coordinate.longitude = [[summary longitude] doubleValue];
-//            coordinate.latitude = [[summary latitude] doubleValue];
-//            [placemark setCoordinate:coordinate];
-//            
-//            //Adds to map
-//            [self mapPlacemark:placemark];
-//        }
-//        else
-//        {
-//            //Add the Parser to an operation queue for background processing (works on a separate thread)
-//            XmlParser *parser = [[XmlParser alloc] init];
-//            [parser setDelegate:self];
-//            
-//            //Sets item delimiter
-//            [parser setItemDelimiter:kGeocodeDelimiter];
-//            
-//            //Sets URL
-//            NSString *encodedLocation = [UrlUtil encodeUrl:[summary location]];
-//            NSString *urlString = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps/geo?q=%@&output=xml&oe=utf8", encodedLocation];
-//            NSURL *url = [[NSURL alloc] initWithString:urlString];
-//            [urlString release];
-//            [parser setUrl:url];
-//            [url release];    
-//            
-//            [[self operationQueue] addOperation:parser];
-//            [parser release];
-//            
-//            return YES;
-//        }
-//    }
-//    
-//    return NO;
-//}
-
-//            
-//- (void)mapPlacemark:(Placemark *)placemark
-//{    
-//    // Centers map on pin, with padding
-//    // Add padding so the pins aren't on the very edge of the map
-//    MKCoordinateSpan span;
-//    span.longitudeDelta = kLongitudeDelta;
-//    span.latitudeDelta = kLatitudeDelta;
-//    
-//    MKCoordinateRegion region;
-//    region.center = [placemark coordinate];
-//    region.span = span;
-//    [[self mapView] setRegion:region animated:YES];
-//}
 
 #pragma mark -
 #pragma mark MKMapViewDelegate
@@ -254,7 +189,7 @@
             [annotationView setCanShowCallout:YES];
 
             UIButton *detailsButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-            [detailsButton setTag:[propertyAnnotation summaryIndex]];
+            [detailsButton setTag:[propertyAnnotation index]];
             [detailsButton setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
             [detailsButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
             [annotationView setRightCalloutAccessoryView:detailsButton];
@@ -285,10 +220,7 @@
     [super viewDidLoad];
 
     if ([self history])
-    {
-        NSSet *summaries = [[self history] summaries];
-        [self setSummaries:summaries];
-        
+    {   
         // Segmented control
         NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", nil];
         UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
@@ -304,17 +236,19 @@
         [segmentedControl release];
         [[self navigationItem] setRightBarButtonItem:segmentBarItem];
         [segmentBarItem release];
+        
+        NSArray *properties = [[[self history] summaries] allObjects];
+        [self geocodeProperties:properties];
     }
+    // Special set up when mapping a single property
     else if ([self summary])
     {
         [self setTitle:[[self summary] location]];
         
-        NSSet *summaries = [[NSSet alloc] initWithObjects:[self summary], nil];
-        [self setSummaries:summaries];
-        [summaries release];
+        NSArray *properties = [[NSArray alloc] initWithObjects:[self summary], nil];
+        [self geocodeProperties:properties];
+        [properties release];
     }
-    
-    [self geocodeProperties];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -328,6 +262,7 @@
 
 
 //PropertyDetailsDelegate is used by Property Details view controller's segment control for previous/next
+// TODO: Update delegate signatures, this isn't really a delegate right now
 #pragma mark -
 #pragma mark PropertyDetailsDelegate
 
@@ -338,7 +273,7 @@
 
 - (NSInteger)detailsCount:(PropertyDetailsViewController *)details
 {
-    return [[self summaries] count];
+    return [[self properties] count];
 }
 
 - (PropertyDetails *)detailsPrevious:(PropertyDetailsViewController *)details
@@ -351,8 +286,7 @@
     {
         [self setSelectedIndex:[self detailsCount:details] - 1];
     } 
-    PropertySummary *summary;
-    // TODO: PropertySummary *summary = [[self summaries] objectAtIndex:[self selectedIndex]];
+    PropertySummary *summary = [[self properties] objectAtIndex:[self selectedIndex]];
 
     return [summary details];
 }
@@ -367,10 +301,9 @@
     {
         [self setSelectedIndex:0];
     }
-    PropertySummary *summary;
-    // TODO: PropertySummary *summary = [[self summaries] objectAtIndex:[self selectedIndex]];
+    PropertySummary *summary = [[self properties] objectAtIndex:[self selectedIndex]];
     
-    return [summary details];    
+    return [summary details];
 }
 
 
@@ -379,7 +312,9 @@
 
 - (void)propertyGeocoder:(PropertyGeocoder *)geocoder didFindProperty:(PropertySummary *)summary
 {
-    [self placeGeocodedPropertyOnMap:summary];
+    [[self geocodedProperties] addObject:summary];
+    
+    [self placeGeocodedPropertyOnMap:summary withIndex:([[self geocodedProperties] count] - 1)];
 }
 
 - (void)propertyGeocoder:(PropertyGeocoder *)geocoder didFailWithError:(NSError *)error
@@ -392,139 +327,5 @@
     [errorAlert show];
     [errorAlert release];    
 }
-
-
-//#pragma mark -
-//#pragma mark ParserDelegate
-//
-//- (void)parserDidEndParsingData:(XmlParser *)parser
-//{
-//    if ([self isCancelled])
-//    {
-//        return;
-//    }
-//
-//    //Placemark's coordinate
-//    CLLocationCoordinate2D coordinate = [[self placemark] coordinate];
-//
-//    //Sorry equator and Prime Meridian, no 0 coordinates allowed because _usually_ a parsing or downloading mishap
-//    if (coordinate.longitude != 0 && coordinate.latitude != 0)
-//    {
-//        //Sets Coordinates and updates Location in Summary
-//        PropertySummary *summary = [[self summaries] objectAtIndex:[self summaryIndex]];
-//        NSNumber *longitude = [[NSNumber alloc] initWithDouble:coordinate.longitude];
-//        [summary setLongitude:longitude];
-//        [longitude release];
-//        NSNumber *latitude = [[NSNumber alloc] initWithDouble:coordinate.latitude];
-//        [summary setLatitude:latitude];
-//        [latitude release];
-//        [summary setLocation:[[self placemark] address]];
-//        
-//        //Maps the current summary
-//        [self mapPlacemark:[self placemark]];
-//
-//        //Enqueues next summary
-//        [self setSummaryIndex:[self summaryIndex] + 1];
-//        if (![self enqueueNextSummary])
-//        {
-//            //If no more queued operations, saves context to save the new summary coordinate data.            
-//            if ([self history] != nil)
-//            {
-//                NSError *error;
-//                NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
-//                if (![managedObjectContext save:&error])
-//                {
-//                    DebugLog(@"Error saving history context in Maps.");
-//                }
-//            }
-//            else if ([self summary] != nil)
-//            {
-//                NSError *error;
-//                NSManagedObjectContext *managedObjectContext = [[self summary] managedObjectContext];
-//                if (![managedObjectContext save:&error])
-//                {
-//                    DebugLog(@"Error saving summary context in Maps.");
-//                }            
-//            }            
-//        }
-//    }    
-//}
-//
-//- (void)parser:(XmlParser *)parser addXmlElement:(XmlElement *)xmlElement
-//{
-//    if ([self isCancelled])
-//    {
-//        return;
-//    }
-//
-//    NSString *elementName = [xmlElement name];
-//    NSString *elementValue = [xmlElement value];
-//    NSDictionary *attributes = [xmlElement attributes];
-//    
-//    //Address format is: <address>2600 Lake Austin Blvd, Austin, TX 78703, USA</address>
-//    if ([elementName isEqual:@"address"])
-//    {
-//        if (elementValue != nil)
-//        {
-//            [[self placemark] setAddress:elementValue];
-//        }
-//    }
-//    //Coordinate format is: <coordinates>-97.7743400,30.2797450,0</coordinates>
-//    //First param is longitude, second param is latitude, can ignore third param
-//    if ([elementName isEqual:@"coordinates"])
-//    {
-//        if (elementValue != nil)
-//        {
-//            NSArray *coordinateComponents = [elementValue componentsSeparatedByString:@","];
-//            if ([coordinateComponents count] >= 2)
-//            {
-//                CLLocationCoordinate2D coordinate;
-//                coordinate.longitude = [[coordinateComponents objectAtIndex:0] doubleValue];
-//                coordinate.latitude = [[coordinateComponents objectAtIndex:1] doubleValue];
-//                
-//                [[self placemark] setCoordinate:coordinate];
-//            }
-//        }
-//    }
-//    //LatLonBox format is: <LatLonBox north="30.2847876" south="30.2784924" east="-97.7719254" west="-97.7782206"/>
-//    else if ([elementName isEqual:@"LatLonBox"])
-//    {
-//        if (attributes != nil)
-//        {
-//            [[self placemark] setNorth:[[attributes objectForKey:@"north"] doubleValue]];
-//            [[self placemark] setEast:[[attributes objectForKey:@"east"] doubleValue]];
-//            [[self placemark] setSouth:[[attributes objectForKey:@"south"] doubleValue]];
-//            [[self placemark] setWest:[[attributes objectForKey:@"west"] doubleValue]];
-//        }
-//    }
-//}
-//
-//- (void)parserDidBeginItem:(XmlParser *)parser
-//{
-//    if ([self isCancelled])
-//    {
-//        return;
-//    }
-//    
-//    Placemark *placemark = [[Placemark alloc] init];
-//    [self setPlacemark:placemark];
-//    [placemark release];    
-//}
-//
-//- (void)parserDidEndItem:(XmlParser *)parser
-//{
-//    //Currently nothing to do
-//}
-//
-//- (void)parser:(XmlParser *)parser didFailWithError:(NSError *)error
-//{
-//    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error mapping results" 
-//                                                         message:[error localizedDescription] 
-//                                                        delegate:self 
-//                                               cancelButtonTitle:@"Ok"
-//                                               otherButtonTitles:nil];
-//    [errorAlert show];
-//    [errorAlert release];
-//}
 
 @end

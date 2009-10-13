@@ -9,7 +9,7 @@
  */
 @protocol PropertyGeocoderDelegate <NSObject>
 - (void)propertyGeocoder:(PropertyGeocoder *)geocoder didFailWithError:(NSError *)error;
-- (void)propertyGeocoder:(PropertyGeocoder *)geocoder didFindProperty:(PropertySummary *)summary;
+- (void)propertyGeocoder:(PropertyGeocoder *)geocoder didFindProperty:(PropertySummary *)property;
 @end
 
 /**
@@ -22,10 +22,10 @@
 {
     @private
         id <PropertyGeocoderDelegate> delegate_;
-        NSSet *summaries_;
+        NSArray *properties_;
         BOOL querying_;
         Geocoder *geocoder_;
-        PropertySummary *summary_;
+        PropertySummary *property_;
 }
 
 /**
@@ -38,7 +38,7 @@
  * Set of properties to geocode. Already geocoded properties in the set will be 
  * ignored. Setting summaries will cancel the currently running geocode process.
  */
-@property (nonatomic, retain) NSSet *summaries;
+@property (nonatomic, retain) NSArray *properties;
 
 /**
  * Tells if currently geocoding or not.

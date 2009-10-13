@@ -12,17 +12,13 @@
 @interface PropertyMapViewController : UIViewController <PropertyDetailsDelegate, PropertyGeocoderDelegate, MKMapViewDelegate>
 {
     @private
+        NSArray *properties_;
+        NSMutableArray *geocodedProperties_;
         PropertyHistory *history_;
-        NSSet *summaries_;
         PropertySummary *summary_;
         MKMapView *mapView_;
-        NSOperationQueue *operationQueue_;
-        Placemark *placemark_;
-        CLLocationCoordinate2D maxPoint_;
-        CLLocationCoordinate2D minPoint_;
         BOOL isCancelled_;
         BOOL isFromFavorites_;
-        NSInteger summaryIndex_;
         NSInteger selectedIndex_;
 }
 

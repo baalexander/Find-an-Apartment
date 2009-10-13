@@ -4,7 +4,7 @@
 @implementation PropertyAnnotation
 
 @synthesize placemark = placemark_;
-@synthesize summaryIndex = summaryIndex_;
+@synthesize index = index_;
 
 
 - (id)initWithPlacemark:(Placemark *)placemark

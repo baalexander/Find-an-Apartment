@@ -8,12 +8,12 @@
 {
     @private
         Placemark *placemark_;
-        NSInteger summaryIndex_;
+        NSInteger index_;
 }
 
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 @property (nonatomic, retain) Placemark *placemark;
-@property (nonatomic, assign) NSInteger summaryIndex;
+@property (nonatomic, assign) NSInteger index;
 
 - (id)initWithPlacemark:(Placemark *)placemark;
 
