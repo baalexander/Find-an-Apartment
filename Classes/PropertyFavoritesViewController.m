@@ -201,23 +201,26 @@
 
 - (void)share:(id)sender
 {    
-    PropertyListEmailerViewController *listEmailer = [[PropertyListEmailerViewController alloc] init];
-    [listEmailer setMailComposeDelegate:self];
-    
-    NSArray *properties = [[self fetchedResultsController] fetchedObjects];
-    [listEmailer setProperties:properties];
-    
-    [self presentModalViewController:listEmailer animated:YES];
-    [listEmailer release];
+//    PropertyListEmailerViewController *listEmailer = [[PropertyListEmailerViewController alloc] init];
+//    [listEmailer setMailComposeDelegate:self];
+//    
+//    NSArray *properties = [[self fetchedResultsController] fetchedObjects];
+//    [listEmailer setProperties:properties];
+//    
+//    [self presentModalViewController:listEmailer animated:YES];
+//    [listEmailer release];
 }
 
 - (void)edit:(id)sender
 {
-    //Switches editing status
-    BOOL isEditing = ![[self tableView] isEditing];
-    [[self tableView] setEditing:isEditing animated:YES];
+    UITableView *tableView = [[self listViewController] tableView];
     
-    if ([[self tableView] isEditing])
+    //Switches editing status
+    BOOL isEditing = ![tableView isEditing];
+    
+    [tableView setEditing:isEditing animated:YES];
+    
+    if ([tableView isEditing])
     {
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(edit:)];
         [[self navigationItem] setLeftBarButtonItem:doneButton];
@@ -231,37 +234,18 @@
     }    
 }
 
-- (NSFetchedResultsController *)fetchedResultsController
-{
-    NSFetchedResultsController *fetchedResultsController = [super fetchedResultsController];
-    [fetchedResultsController setDelegate:self];
-    
-    return fetchedResultsController;
-}
+//- (NSFetchedResultsController *)fetchedResultsController
+//{
+//    NSFetchedResultsController *fetchedResultsController = [super fetchedResultsController];
+//    [fetchedResultsController setDelegate:self];
+//    
+//    return fetchedResultsController;
+//}
 
 
 #pragma mark -
 #pragma mark UITableViewDataSource
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete)
-    {
-        //Deletes the summary, should cascade to delete Details
-        PropertySummary *summary = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-        NSManagedObjectContext *managedObjectContext = [summary managedObjectContext];
-        [managedObjectContext deleteObject:summary];
-        
-        // Commit the change.
-        NSError *error;
-        if (![managedObjectContext save:&error])
-        {
-            DebugLog(@"Error saving the deletion in Favorites.");
-        }
-        
-        //The fetched results controller delegate calls will handle changes to the table
-    }
-}
 
 
 #pragma mark -
@@ -278,48 +262,48 @@
 }
 
 
-#pragma mark -
-#pragma mark NSFetchedResultsControllerDelegate
-
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
-{
-    // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
-    [[self tableView] beginUpdates];
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
-{
-    if (type == NSFetchedResultsChangeInsert)
-    {
-        NSArray *indexPaths = [[NSArray alloc] initWithObjects:newIndexPath, nil];
-        [[self tableView] insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-        [indexPaths release];
-    }
-    else if (type == NSFetchedResultsChangeDelete)
-    {
-        NSArray *indexPaths = [[NSArray alloc] initWithObjects:indexPath, nil];
-        [[self tableView] deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-        [indexPaths release];
-    }
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
-{
-    if (type == NSFetchedResultsChangeInsert)
-    {
-        [[self tableView] insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-    }
-    else if (type == NSFetchedResultsChangeDelete)
-    {
-        [[self tableView] deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-    }
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
-    [[self tableView] endUpdates];
-}
+//#pragma mark -
+//#pragma mark NSFetchedResultsControllerDelegate
+//
+//- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+//{
+//    // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
+//    [[self tableView] beginUpdates];
+//}
+//
+//- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
+//{
+//    if (type == NSFetchedResultsChangeInsert)
+//    {
+//        NSArray *indexPaths = [[NSArray alloc] initWithObjects:newIndexPath, nil];
+//        [[self tableView] insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+//        [indexPaths release];
+//    }
+//    else if (type == NSFetchedResultsChangeDelete)
+//    {
+//        NSArray *indexPaths = [[NSArray alloc] initWithObjects:indexPath, nil];
+//        [[self tableView] deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+//        [indexPaths release];
+//    }
+//}
+//
+//- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
+//{
+//    if (type == NSFetchedResultsChangeInsert)
+//    {
+//        [[self tableView] insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+//    }
+//    else if (type == NSFetchedResultsChangeDelete)
+//    {
+//        [[self tableView] deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+//    }
+//}
+//
+//- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+//{
+//    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
+//    [[self tableView] endUpdates];
+//}
 
 
 #pragma mark -

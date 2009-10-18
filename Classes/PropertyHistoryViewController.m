@@ -2,7 +2,7 @@
 
 #import "PropertyHistory.h"
 #import "PropertyCriteria.h"
-#import "PropertyListViewController.h"
+#import "PropertyResultsViewController.h"
 
 
 @interface PropertyHistoryViewController ()
@@ -226,10 +226,10 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 {
     PropertyHistory *history = [[self fetchedResultsController] objectAtIndexPath:indexPath];
  
-    PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
-    [listViewController setHistory:history];
-    [[self navigationController] pushViewController:listViewController animated:YES];
-    [listViewController release];
+    PropertyResultsViewController *resultsViewController = [[PropertyResultsViewController alloc] initWithNibName:@"PropertyResultsView" bundle:nil];
+    [resultsViewController setHistory:history];
+    [[self navigationController] pushViewController:resultsViewController animated:YES];
+    [resultsViewController release];
 }
 
 

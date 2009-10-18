@@ -60,34 +60,34 @@
 //The segmented control was clicked, handle it here
 - (IBAction)changeView:(id)sender
 {
-    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
-    
-    //Bring up list view. Releases this view.
-    if ([segmentedControl selectedSegmentIndex] == kListItem)
-    {
-        if ([self isFromFavorites])
-        {
-            PropertyFavoritesViewController *favoritesViewController = [[PropertyFavoritesViewController alloc] initWithNibName:@"PropertyFavoritesView" bundle:nil];
-            [favoritesViewController setHistory:[self history]];
-            
-            NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithArray:[[self navigationController] viewControllers]];
-            [viewControllers replaceObjectAtIndex:[viewControllers count] - 1 withObject:favoritesViewController];
-            [favoritesViewController release];
-            [[self navigationController] setViewControllers:viewControllers animated:NO];
-            [viewControllers release];            
-        }
-        else
-        {
-            PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
-            [listViewController setHistory:[self history]];
-            
-            NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithArray:[[self navigationController] viewControllers]];
-            [viewControllers replaceObjectAtIndex:[viewControllers count] - 1 withObject:listViewController];
-            [listViewController release];
-            [[self navigationController] setViewControllers:viewControllers animated:NO];
-            [viewControllers release];
-        }
-    }
+//    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+//    
+//    //Bring up list view. Releases this view.
+//    if ([segmentedControl selectedSegmentIndex] == kListItem)
+//    {
+//        if ([self isFromFavorites])
+//        {
+//            PropertyFavoritesViewController *favoritesViewController = [[PropertyFavoritesViewController alloc] initWithNibName:@"PropertyFavoritesView" bundle:nil];
+//            [favoritesViewController setHistory:[self history]];
+//            
+//            NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithArray:[[self navigationController] viewControllers]];
+//            [viewControllers replaceObjectAtIndex:[viewControllers count] - 1 withObject:favoritesViewController];
+//            [favoritesViewController release];
+//            [[self navigationController] setViewControllers:viewControllers animated:NO];
+//            [viewControllers release];            
+//        }
+//        else
+//        {
+//            PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
+//            [listViewController setHistory:[self history]];
+//            
+//            NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithArray:[[self navigationController] viewControllers]];
+//            [viewControllers replaceObjectAtIndex:[viewControllers count] - 1 withObject:listViewController];
+//            [listViewController release];
+//            [[self navigationController] setViewControllers:viewControllers animated:NO];
+//            [viewControllers release];
+//        }
+//    }
 }
 
 - (IBAction)loadDetailsView:(id)sender

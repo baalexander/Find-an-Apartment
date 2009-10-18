@@ -7,7 +7,7 @@
 #import "InputRangeCell.h"
 #import "InputSimpleCell.h"
 #import "PropertyUrlConstructor.h"
-#import "PropertyListViewController.h"
+#import "PropertyResultsViewController.h"
 #import "PropertySortChoicesViewController.h"
 #import "StringFormatter.h"
 #import "SaveAndRestoreConstants.h"
@@ -278,22 +278,22 @@
         //Saves some geography criteria information not saved by the States or Cities view controller
         [[NSUserDefaults standardUserDefaults] setObject:[[self criteria] postalCode] forKey:kSavedPostalCode];
         
-        PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
+        PropertyResultsViewController *resultViewController = [[PropertyResultsViewController alloc] initWithNibName:@"PropertyResultsView" bundle:nil];
         
         //Sets History
         PropertyHistory *history = [PropertyHistoryViewController historyWithCopyOfCriteria:[self criteria]];
         [history setTitle:[self title]];
-        [listViewController setHistory:history];
+        [resultViewController setHistory:history];
         [history release];
         
         //Turns Criteria into URL then parses
         PropertyUrlConstructor *urlConstructor = [[PropertyUrlConstructor alloc] init];
         NSURL *url = [urlConstructor urlFromCriteria:[self criteria]];
         [urlConstructor release];
-        [listViewController parse:url];
+        [resultViewController parse:url];
 
-        [[self navigationController] pushViewController:listViewController animated:YES];
-        [listViewController release];
+        [[self navigationController] pushViewController:resultViewController animated:YES];
+        [resultViewController release];
     }
     //Selected sort by, brings up list of sort choices
     else if ([rowId isEqual:kPropertyCriteriaSortBy]) 

@@ -2,10 +2,10 @@
 #import <MessageUI/MessageUI.h>
 #import <MessageUI/MFMailComposeViewController.h>
 
-#import "PropertyListViewController.h"
+#import "PropertyResultsViewController.h"
 #import "PropertySummary.h"
 
-@interface PropertyFavoritesViewController : PropertyListViewController <NSFetchedResultsControllerDelegate, MFMailComposeViewControllerDelegate>
+@interface PropertyFavoritesViewController : PropertyResultsViewController <NSFetchedResultsControllerDelegate, MFMailComposeViewControllerDelegate>
 {
 }
 
