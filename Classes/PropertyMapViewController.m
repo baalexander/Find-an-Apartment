@@ -7,15 +7,14 @@
 #import "PropertyListAndMapConstants.h"
 #import "UrlUtil.h"
 #import "PropertyGeocoder.h"
+#import "LocationParser.h"
 
 
 @interface PropertyMapViewController ()
 @property (nonatomic, retain) NSArray *properties;
 @property (nonatomic, retain) NSMutableArray *geocodedProperties;
 @property (nonatomic, assign) BOOL isCancelled;
-@property (nonatomic, assign) NSInteger selectedIndex;
-- (void)geocodeProperties:(NSArray *)properties;
-- (void)placeGeocodedPropertyOnMap:(PropertySummary *)property withIndex:(NSInteger)index;
+@property (nonatomic, retain) Geocoder *geocoder;
 @end
 
 
@@ -23,12 +22,11 @@
 
 @synthesize properties = properties_;
 @synthesize geocodedProperties = geocodedProperties_;
-@synthesize history = history_;
 @synthesize summary = summary_;
 @synthesize mapView = mapView_;
 @synthesize isCancelled = isCancelled_;
-@synthesize isFromFavorites = isFromFavorites_;
-@synthesize selectedIndex = selectedIndex_;
+@synthesize propertyDataSource = propertyDataSource_;
+@synthesize geocoder = geocoder_;
 
 
 #pragma mark -
@@ -38,8 +36,6 @@
 {
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
     {
-        //Default is NOT from Favorites
-        [self setIsFromFavorites:NO];
         [self setIsCancelled:NO];
     }
     
@@ -53,52 +49,19 @@
     [geocodedProperties_ release];
     [history_ release];
     [summary_ release];
+    [geocoder_ release];
  
     [super dealloc];
-}
-
-//The segmented control was clicked, handle it here
-- (IBAction)changeView:(id)sender
-{
-//    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
-//    
-//    //Bring up list view. Releases this view.
-//    if ([segmentedControl selectedSegmentIndex] == kListItem)
-//    {
-//        if ([self isFromFavorites])
-//        {
-//            PropertyFavoritesViewController *favoritesViewController = [[PropertyFavoritesViewController alloc] initWithNibName:@"PropertyFavoritesView" bundle:nil];
-//            [favoritesViewController setHistory:[self history]];
-//            
-//            NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithArray:[[self navigationController] viewControllers]];
-//            [viewControllers replaceObjectAtIndex:[viewControllers count] - 1 withObject:favoritesViewController];
-//            [favoritesViewController release];
-//            [[self navigationController] setViewControllers:viewControllers animated:NO];
-//            [viewControllers release];            
-//        }
-//        else
-//        {
-//            PropertyListViewController *listViewController = [[PropertyListViewController alloc] initWithNibName:@"PropertyListView" bundle:nil];
-//            [listViewController setHistory:[self history]];
-//            
-//            NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithArray:[[self navigationController] viewControllers]];
-//            [viewControllers replaceObjectAtIndex:[viewControllers count] - 1 withObject:listViewController];
-//            [listViewController release];
-//            [[self navigationController] setViewControllers:viewControllers animated:NO];
-//            [viewControllers release];
-//        }
-//    }
 }
 
 - (IBAction)loadDetailsView:(id)sender
 {
     UIButton *button = (UIButton *)sender;
-    [self setSelectedIndex:[button tag]];
-    PropertySummary *summary = [[self geocodedProperties] objectAtIndex:[self selectedIndex]];
+    PropertySummary *summary = [[self geocodedProperties] objectAtIndex:[button tag]];
     
     //Pushes the Details view controller with the summary
     PropertyDetailsViewController *detailsViewController = [[PropertyDetailsViewController alloc] initWithNibName:@"PropertyDetailsView" bundle:nil];
-    [detailsViewController setDelegate:self];
+    //[detailsViewController setDelegate:self];
     [detailsViewController setDetails:[summary details]];
     [[self navigationController] pushViewController:detailsViewController animated:YES];
     [detailsViewController release];
@@ -107,8 +70,7 @@
 - (IBAction)loadGoogleMaps:(id)sender
 {
     UIButton *button = (UIButton *)sender;
-    [self setSelectedIndex:[button tag]];
-    PropertySummary *summary = [[self geocodedProperties] objectAtIndex:[self selectedIndex]];
+    PropertySummary *summary = [[self geocodedProperties] objectAtIndex:[button tag]];
     NSString *location = [summary location];
     
     //Opens up location in Google Maps app
@@ -118,32 +80,32 @@
     [url release];
 }
 
-- (void)geocodeProperties:(NSArray *)properties
-{
-    // Non-geocoded properties
-    [self setProperties:properties];
-    
-    PropertyGeocoder *geocoder = [PropertyGeocoder sharedInstance];
-    [geocoder setDelegate:self];
-    [geocoder setProperties:properties];
-
-    // There could be properties already geocoded, even though hasn't started
-    // geocoding yet.
-    NSMutableArray *geocodedProperties = 
-        [[NSMutableArray alloc] initWithArray:[[geocoder geocodedProperties] allObjects]];
-    [self setGeocodedProperties:geocodedProperties];
-    [geocodedProperties release];
-    
-    // Maps all geocoded properties
-    for (NSUInteger i = 0; i < [[self geocodedProperties] count]; i++)
-    {
-        PropertySummary *property = [[self geocodedProperties] objectAtIndex:i];
-        [self placeGeocodedPropertyOnMap:property withIndex:i];
-    }
-    
-    // Start geocoding
-    [geocoder start];
-}
+//- (void)geocodeProperties:(NSArray *)properties
+//{
+//    // Non-geocoded properties
+//    [self setProperties:properties];
+//    
+//    PropertyGeocoder *geocoder = [PropertyGeocoder sharedInstance];
+//    [geocoder setDelegate:self];
+//    [geocoder setProperties:properties];
+//
+//    // There could be properties already geocoded, even though hasn't started
+//    // geocoding yet.
+//    NSMutableArray *geocodedProperties = 
+//        [[NSMutableArray alloc] initWithArray:[[geocoder geocodedProperties] allObjects]];
+//    [self setGeocodedProperties:geocodedProperties];
+//    [geocodedProperties release];
+//    
+//    // Maps all geocoded properties
+//    for (NSUInteger i = 0; i < [[self geocodedProperties] count]; i++)
+//    {
+//        PropertySummary *property = [[self geocodedProperties] objectAtIndex:i];
+//        [self placeGeocodedPropertyOnMap:property withIndex:i];
+//    }
+//    
+//    // Start geocoding
+//    [geocoder start];
+//}
 
 - (void)placeGeocodedPropertyOnMap:(PropertySummary *)property withIndex:(NSInteger)index
 {
@@ -166,6 +128,47 @@
     // Add pin to the map
     [[self mapView] addAnnotation:annotation];
     [annotation release];
+}
+
+- (void)centerOnCriteria:(PropertyCriteria *)criteria
+{
+    CLLocationCoordinate2D coordinate;
+    coordinate.latitude = [[criteria latitude] doubleValue];
+    coordinate.longitude = [[criteria longitude] doubleValue];
+
+    if (coordinate.latitude != 0 && coordinate.longitude != 0)
+    {
+        [self centerOnCoordinate:coordinate];
+    }
+    else
+    {
+        NSString *location = [LocationParser locationWithStreet:[criteria street]
+                                                       withCity:[criteria city]
+                                                      withState:[criteria state]
+                                                 withPostalCode:[criteria postalCode]];
+
+        // Create a Geocoder with the property's location
+        Geocoder *geocoder = [[Geocoder alloc] initWithLocation:location];
+        [self setGeocoder:geocoder];
+        [geocoder release];
+        
+        [[self geocoder] setDelegate:self];
+        [[self geocoder] start];
+    }
+
+}
+
+- (void)centerOnCoordinate:(CLLocationCoordinate2D)coordinate
+{
+    // Add padding so the pins aren't on the very edge of the map
+    MKCoordinateSpan span;
+    span.longitudeDelta = kLongitudeDelta;
+    span.latitudeDelta = kLatitudeDelta;
+    
+    MKCoordinateRegion region;
+    region.center = coordinate;
+    region.span = span;
+    [[self mapView] setRegion:region animated:YES]; 
 }
 
 
@@ -194,8 +197,8 @@
             [detailsButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
             [annotationView setRightCalloutAccessoryView:detailsButton];
             
-            //If History is set, then coming from a List view controller and should load the Details view controller.
-            if ([self history] != nil)
+            //If Property Data Source is set, then coming from a List view controller and should load the Details view controller.
+            if ([self propertyDataSource] != nil)
             {
                 [detailsButton addTarget:self action:@selector(loadDetailsView:) forControlEvents:UIControlEventTouchUpInside];
             }
@@ -219,36 +222,15 @@
 {
     [super viewDidLoad];
 
-    if ([self history])
-    {   
-        // Segmented control
-        NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", nil];
-        UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
-        [segmentOptions release];
-        
-        // Set selected segment index must come before addTarget, otherwise the action will be called as if the segment was pressed
-        [segmentedControl setSelectedSegmentIndex:kMapItem];
-        [segmentedControl addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventValueChanged];
-        [segmentedControl setFrame:CGRectMake(0, 0, 90, 30)];
-        [segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
-        
-        UIBarButtonItem *segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
-        [segmentedControl release];
-        [[self navigationItem] setRightBarButtonItem:segmentBarItem];
-        [segmentBarItem release];
-        
-        NSArray *properties = [[[self history] summaries] allObjects];
-        [self geocodeProperties:properties];
-    }
-    // Special set up when mapping a single property
-    else if ([self summary])
-    {
-        [self setTitle:[[self summary] location]];
-        
-        NSArray *properties = [[NSArray alloc] initWithObjects:[self summary], nil];
-        [self geocodeProperties:properties];
-        [properties release];
-    }
+//    // Special set up when mapping a single property
+//    if ([self summary])
+//    {
+//        [self setTitle:[[self summary] location]];
+//        
+//        NSArray *properties = [[NSArray alloc] initWithObjects:[self summary], nil];
+//        [self geocodeProperties:properties];
+//        [properties release];
+//    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -258,52 +240,6 @@
     // TODO: How to cancel properly? Don't want to stop geocoding
     PropertyGeocoder *geocoder = [PropertyGeocoder sharedInstance];
     [geocoder setDelegate:nil];
-}
-
-
-//PropertyDetailsDelegate is used by Property Details view controller's segment control for previous/next
-// TODO: Update delegate signatures, this isn't really a delegate right now
-#pragma mark -
-#pragma mark PropertyDetailsDelegate
-
-- (NSInteger)detailsIndex:(PropertyDetailsViewController *)details
-{
-    return [self selectedIndex];
-}
-
-- (NSInteger)detailsCount:(PropertyDetailsViewController *)details
-{
-    return [[self properties] count];
-}
-
-- (PropertyDetails *)detailsPrevious:(PropertyDetailsViewController *)details
-{
-    if ([self selectedIndex] > 0)
-    {
-        [self setSelectedIndex:[self selectedIndex] - 1];
-    }
-    else
-    {
-        [self setSelectedIndex:[self detailsCount:details] - 1];
-    } 
-    PropertySummary *summary = [[self properties] objectAtIndex:[self selectedIndex]];
-
-    return [summary details];
-}
-
-- (PropertyDetails *)detailsNext:(PropertyDetailsViewController *)details
-{
-    if ([self selectedIndex] < [self detailsCount:details] - 1)
-    {
-        [self setSelectedIndex:[self selectedIndex] + 1];
-    }
-    else
-    {
-        [self setSelectedIndex:0];
-    }
-    PropertySummary *summary = [[self properties] objectAtIndex:[self selectedIndex]];
-    
-    return [summary details];
 }
 
 
@@ -326,6 +262,40 @@
                                                otherButtonTitles:nil];
     [errorAlert show];
     [errorAlert release];    
+}
+
+
+#pragma mark -
+#pragma mark GeocoderDelegate
+
+- (void)geocoder:(Geocoder *)geocoder didFindCoordinate:(CLLocationCoordinate2D)coordinate
+{
+//    // If cancel was called before this call back, stop all processing
+//    if (![self isQuerying])
+//    {
+//        return;
+//    }
+    
+    // Sorry equator and Prime Meridian, no 0 coordinates allowed because
+    // _usually_ a parsing or downloading mishap
+    if (coordinate.longitude != 0 && coordinate.latitude != 0)
+    {
+        [self centerOnCoordinate:coordinate];
+    }
+}
+
+- (void)geocoder:(Geocoder *)geocoder didFailWithError:(NSError *)error
+{
+//    // If cancel was called before this call back, stop all processing
+//    if (![self isQuerying])
+//    {
+//        return;
+//    }
+//    
+//    if ([self delegate] != nil)
+//    {
+//        [[self delegate] propertyGeocoder:self didFailWithError:error];
+//    }
 }
 
 @end

@@ -59,7 +59,7 @@
     
     // Sets URL
     NSString *encodedLocation = [UrlUtil encodeUrl:[self location]];
-    NSString *urlString = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps/geo?q=%@&output=xml&oe=utf8", encodedLocation];
+    NSString *urlString = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps/geo?q=%@&output=xml&oe=utf8&sensor=false&key=%@", encodedLocation, kGoogleMapKey];
     NSURL *url = [[NSURL alloc] initWithString:urlString];
     [urlString release];
     [parser setUrl:url];
@@ -67,7 +67,6 @@
     
     // Begins geocoding operation by making the API request then parsing the 
     // results
-    NSLog(@"ADDING TO OPERATION");
     [[self operationQueue] addOperation:parser];
     [parser release];
 }

@@ -7,9 +7,11 @@
 #import "PropertyHistory.h"
 #import "PropertySummary.h"
 #import "PropertyDetailsViewController.h"
+#import "PropertyDataSource.h"
+#import "Geocoder.h"
 
 
-@interface PropertyMapViewController : UIViewController <PropertyDetailsDelegate, PropertyGeocoderDelegate, MKMapViewDelegate>
+@interface PropertyMapViewController : UIViewController <GeocoderDelegate, PropertyGeocoderDelegate, MKMapViewDelegate>
 {
     @private
         NSArray *properties_;
@@ -18,13 +20,16 @@
         PropertySummary *summary_;
         MKMapView *mapView_;
         BOOL isCancelled_;
-        BOOL isFromFavorites_;
-        NSInteger selectedIndex_;
+        id <PropertyDataSource> propertyDataSource_;
+        Geocoder *geocoder_;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
-@property (nonatomic, retain) PropertyHistory *history;
 @property (nonatomic, retain) PropertySummary *summary;
-@property (nonatomic, assign) BOOL isFromFavorites;
+@property (nonatomic, assign) IBOutlet id <PropertyDataSource> propertyDataSource;
+
+- (void)placeGeocodedPropertyOnMap:(PropertySummary *)property withIndex:(NSInteger)index;
+- (void)centerOnCriteria:(PropertyCriteria *)criteria;
+- (void)centerOnCoordinate:(CLLocationCoordinate2D)coordinate;
 
 @end

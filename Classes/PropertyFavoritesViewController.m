@@ -178,27 +178,6 @@
     }
 }
 
-//The segmented control was clicked, handle it here
-- (IBAction)changeView:(id)sender
-{
-    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
-    
-    //Bring up map
-    if ([segmentedControl selectedSegmentIndex] == kMapItem)
-    {
-        PropertyMapViewController *mapViewController = [[PropertyMapViewController alloc] initWithNibName:@"PropertyMapView" bundle:nil];
-        [mapViewController setHistory:[self history]];
-        [mapViewController setIsFromFavorites:YES];
-        [mapViewController setTitle:@"Favorites"];
-        
-        NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithArray:[[self navigationController] viewControllers]];
-        [viewControllers replaceObjectAtIndex:[viewControllers count] - 1 withObject:mapViewController];
-        [mapViewController release];
-        [[self navigationController] setViewControllers:viewControllers animated:NO];
-        [viewControllers release];
-    }
-}
-
 - (void)share:(id)sender
 {    
 //    PropertyListEmailerViewController *listEmailer = [[PropertyListEmailerViewController alloc] init];

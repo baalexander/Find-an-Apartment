@@ -14,6 +14,8 @@
 @property (nonatomic, retain) PropertySummary *summary;
 @property (nonatomic, retain, readwrite) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) UIAlertView *alertView;
+@property (nonatomic, retain) NSMutableArray *geocodedProperties;
+- (void)geocodeProperties;
 @end
 
 
@@ -28,6 +30,7 @@
 @synthesize details = details_;
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize alertView = alertView_;
+@synthesize geocodedProperties = geocodedProperties_;
 
 
 #pragma mark -
@@ -52,12 +55,23 @@
     [summary_ release];
     [fetchedResultsController_ release];
     [alertView_ release];
+    [geocodedProperties_ release];
     
     [super dealloc];
 }
 
 - (IBAction)changeView:(id)sender
 {
+    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+    
+    // Start geocoding properties if switching to a view requiring geocoded
+    // properties and not already geocoding
+    if ([segmentedControl selectedSegmentIndex] == kMapItem)
+    {
+        [self geocodeProperties];
+    }
+    
+    
 //    // First create a CATransition object to describe the transition
 //	CATransition *transition = [CATransition animation];
 //	// Animate over 3/4 of a second
@@ -76,7 +90,6 @@
 //	[self.view.layer addAnimation:transition forKey:nil];
 	
     // Switch between views based on selected segment
-    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     if ([segmentedControl selectedSegmentIndex] == kListItem)
     {
         [[[self mapViewController] mapView] setHidden:YES];
@@ -116,6 +129,32 @@
     // a separate thread)
     [[self operationQueue] addOperation:parser];
     [parser release];
+}
+
+- (void)geocodeProperties
+{
+    PropertyGeocoder *geocoder = [PropertyGeocoder sharedInstance];
+    [geocoder setDelegate:self];
+    NSArray *properties = [[self fetchedResultsController] fetchedObjects];
+    [geocoder setProperties:properties];
+    
+    // There could be properties already geocoded, even though hasn't started
+    // geocoding yet.
+    NSMutableArray *geocodedProperties =
+        [[NSMutableArray alloc] initWithArray:[[geocoder geocodedProperties] allObjects]];
+    [self setGeocodedProperties:geocodedProperties];
+    [geocodedProperties release];
+    
+    // Maps all geocoded properties
+    for (NSUInteger i = 0; i < [[self geocodedProperties] count]; i++)
+    {
+        PropertySummary *property = [[self geocodedProperties] objectAtIndex:i];
+        [[self mapViewController] placeGeocodedPropertyOnMap:property
+                                                   withIndex:i];
+    }
+    
+    // Start geocoding
+    [geocoder start];
 }
 
 - (NSFetchedResultsController *)fetchedResultsController
@@ -195,7 +234,11 @@
     // visible by default
     [[self view] addSubview:[[self mapViewController] mapView]];
     [[[self mapViewController] mapView] setHidden:YES];
+    // Centers the Map view controller
+    [[self mapViewController] centerOnCriteria:[[self history] criteria]];
+    
     [[self view] addSubview:[[self listViewController] tableView]];
+    [[[self listViewController] tableView] setHidden:NO];
     
     // Segmented control
     NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", nil];
@@ -203,7 +246,7 @@
     [segmentOptions release];
     
     // Set selected segment index must come before addTarget, otherwise the action will be called as if the segment was pressed
-    [segmentedControl setSelectedSegmentIndex:kMapItem];
+    [segmentedControl setSelectedSegmentIndex:kListItem];
     [segmentedControl addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventValueChanged];
     [segmentedControl setFrame:CGRectMake(0, 0, 90, 30)];
     [segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
@@ -264,6 +307,30 @@
     }
     
     return YES;
+}
+
+
+#pragma mark -
+#pragma mark PropertyGeocoderDelegate
+
+- (void)propertyGeocoder:(PropertyGeocoder *)geocoder didFindProperty:(PropertySummary *)summary
+{
+    [[self geocodedProperties] addObject:summary];
+    
+    NSInteger lastIndex = [[self geocodedProperties] count] - 1;
+    [[self mapViewController] placeGeocodedPropertyOnMap:summary
+                                               withIndex:lastIndex];
+}
+
+- (void)propertyGeocoder:(PropertyGeocoder *)geocoder didFailWithError:(NSError *)error
+{
+    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error mapping results" 
+                                                         message:[error localizedDescription] 
+                                                        delegate:self 
+                                               cancelButtonTitle:@"Ok"
+                                               otherButtonTitles:nil];
+    [errorAlert show];
+    [errorAlert release];    
 }
 
 
