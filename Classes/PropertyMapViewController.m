@@ -18,6 +18,7 @@
 @property (nonatomic, assign) NSInteger summaryIndex;
 @property (nonatomic, assign) NSInteger selectedIndex;
 - (void)geocodeProperties;
+- (void)geocodeProperty:(PropertySummary *)summary;
 - (BOOL)enqueueNextSummary;
 - (void)mapPlacemark:(Placemark *)placemark ;
 @end
@@ -162,29 +163,38 @@
         }
         else
         {
-            //Add the Parser to an operation queue for background processing (works on a separate thread)
-            XmlParser *parser = [[XmlParser alloc] init];
-            [parser setDelegate:self];
-            
-            //Sets item delimiter
-            [parser setItemDelimiter:kGeocodeDelimiter];
-            
-            //Sets URL
-            NSString *encodedLocation = [UrlUtil encodeUrl:[summary location]];
-            NSString *urlString = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps/geo?q=%@&output=xml&oe=utf8", encodedLocation];
-            NSURL *url = [[NSURL alloc] initWithString:urlString];
-            [urlString release];
-            [parser setUrl:url];
-            [url release];    
-            
-            [[self operationQueue] addOperation:parser];
-            [parser release];
+            // To prevent overloading map requests and getting errors from their
+            // server, add a delay
+            [self performSelector:@selector(geocodeProperty:)
+                       withObject:summary
+                       afterDelay:0.150]; 
             
             return YES;
         }
     }
     
     return NO;
+}
+
+- (void)geocodeProperty:(PropertySummary *)summary
+{
+    //Add the Parser to an operation queue for background processing (works on a separate thread)
+    XmlParser *parser = [[XmlParser alloc] init];
+    [parser setDelegate:self];
+    
+    //Sets item delimiter
+    [parser setItemDelimiter:kGeocodeDelimiter];
+    
+    //Sets URL
+    NSString *encodedLocation = [UrlUtil encodeUrl:[summary location]];
+    NSString *urlString = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps/geo?q=%@&output=xml&oe=utf8&sensor=false&key=%@", encodedLocation, @"REPLACE_WITH_KEY"];
+    NSURL *url = [[NSURL alloc] initWithString:urlString];
+    [urlString release];
+    [parser setUrl:url];
+    [url release];    
+    
+    [[self operationQueue] addOperation:parser];
+    [parser release];    
 }
             
 - (void)mapPlacemark:(Placemark *)placemark

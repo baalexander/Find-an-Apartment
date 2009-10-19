@@ -3,7 +3,7 @@
 #define kMapItem 1
 
 // Maximum number of pins to load
-#define kMaxMapItems 15
+#define kMaxMapItems 20
 
 //Element name that separates each item in the property list XML results
 #define kPropertyDelimiter "property"
