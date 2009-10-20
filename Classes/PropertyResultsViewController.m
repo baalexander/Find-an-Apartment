@@ -1,4 +1,5 @@
 #import "PropertyResultsViewController.h"
+#import <QuartzCore/QuartzCore.h>
 #import "PropertyListAndMapConstants.h"
 #import "PropertyCriteriaConstants.h"
 #import "PropertyCriteria.h"
@@ -76,26 +77,25 @@
     // properties and not already geocoding
     if ([segmentedControl selectedSegmentIndex] == kMapItem)
     {
+        // TODO: Add condition to check if geocoding
         [self geocodeNextProperty];
     }
     
-    
-//    // First create a CATransition object to describe the transition
-//	CATransition *transition = [CATransition animation];
-//	// Animate over 3/4 of a second
-//	transition.duration = .5;
-//	// using the ease in/out timing function
-//	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-//	
-//	// Now to set the type of transition. Since we need to choose at random, we'll setup a couple of arrays to help us.
-//	transition.type = kCATransitionFade;
-//    //transition.subtype = kCATransitionFromLeft;
-//	// Finally, to avoid overlapping transitions we assign ourselves as the delegate for the animation and wait for the
-//	// -animationDidStop:finished: message. When it comes in, we will flag that we are no longer transitioning.
-//	transition.delegate = self;
-//	
-//	// Next add it to the containerView's layer. This will perform the transition based on how we change its contents.
-//	[self.view.layer addAnimation:transition forKey:nil];
+    // Create a tranisiton animation to switch views
+	CATransition *transition = [CATransition animation];
+	transition.duration = .5;
+	// Using the ease in/out timing function
+	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+	// Type of transition
+	transition.type = kCATransitionFade;
+
+	// Finally, to avoid overlapping transitions we assign ourselves as the delegate for the animation and wait for the
+	// -animationDidStop:finished: message. When it comes in, we will flag that we are no longer transitioning.
+	//transition.delegate = self;
+	
+	// Add the transition to the containerView's layer. This will perform the
+    // transition based on how the contents change.
+	[[[self view] layer] addAnimation:transition forKey:nil];
 	
     // Switch between views based on selected segment
     if ([segmentedControl selectedSegmentIndex] == kListItem)
