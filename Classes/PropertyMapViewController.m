@@ -6,13 +6,10 @@
 #import "PropertyAnnotation.h"
 #import "PropertyListAndMapConstants.h"
 #import "UrlUtil.h"
-#import "PropertyGeocoder.h"
 #import "LocationParser.h"
 
 
 @interface PropertyMapViewController ()
-@property (nonatomic, retain) NSArray *properties;
-@property (nonatomic, retain) NSMutableArray *geocodedProperties;
 @property (nonatomic, assign) BOOL isCancelled;
 @property (nonatomic, retain) Geocoder *geocoder;
 @end
@@ -20,10 +17,8 @@
 
 @implementation PropertyMapViewController
 
-@synthesize properties = properties_;
-@synthesize geocodedProperties = geocodedProperties_;
-@synthesize summary = summary_;
 @synthesize mapView = mapView_;
+@synthesize summary = summary_;
 @synthesize isCancelled = isCancelled_;
 @synthesize propertyDataSource = propertyDataSource_;
 @synthesize geocoder = geocoder_;
@@ -45,9 +40,6 @@
 - (void)dealloc
 {
     [mapView_ release];
-    [properties_ release];
-    [geocodedProperties_ release];
-    [history_ release];
     [summary_ release];
     [geocoder_ release];
  
@@ -57,27 +49,29 @@
 - (IBAction)loadDetailsView:(id)sender
 {
     UIButton *button = (UIButton *)sender;
-    PropertySummary *summary = [[self geocodedProperties] objectAtIndex:[button tag]];
+    PropertySummary *property = [[self propertyDataSource] propertyAtIndex:[button tag]];
     
     //Pushes the Details view controller with the summary
-    PropertyDetailsViewController *detailsViewController = [[PropertyDetailsViewController alloc] initWithNibName:@"PropertyDetailsView" bundle:nil];
+    PropertyDetailsViewController *detailsViewController =
+        [[PropertyDetailsViewController alloc] initWithNibName:@"PropertyDetailsView"
+                                                        bundle:nil];
     //[detailsViewController setDelegate:self];
-    [detailsViewController setDetails:[summary details]];
+    [detailsViewController setDetails:[property details]];
     [[self navigationController] pushViewController:detailsViewController animated:YES];
     [detailsViewController release];
 }
 
 - (IBAction)loadGoogleMaps:(id)sender
 {
-    UIButton *button = (UIButton *)sender;
-    PropertySummary *summary = [[self geocodedProperties] objectAtIndex:[button tag]];
-    NSString *location = [summary location];
-    
-    //Opens up location in Google Maps app
-    NSMutableString *url = [[NSMutableString alloc] initWithString:@"http://maps.google.com/maps?q="];
-    [url appendString:[UrlUtil encodeUrl:location]];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
-    [url release];
+//    UIButton *button = (UIButton *)sender;
+//    PropertySummary *summary = [[self geocodedProperties] objectAtIndex:[button tag]];
+//    NSString *location = [summary location];
+//    
+//    //Opens up location in Google Maps app
+//    NSMutableString *url = [[NSMutableString alloc] initWithString:@"http://maps.google.com/maps?q="];
+//    [url appendString:[UrlUtil encodeUrl:location]];
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+//    [url release];
 }
 
 //- (void)geocodeProperties:(NSArray *)properties
@@ -236,32 +230,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [self setIsCancelled:YES];
-    //Cancels any operations in the queue. This is for when pressing the back button and dismissing the view controller. This prevents the parser from still running and failing when calling its delegate.
-    // TODO: How to cancel properly? Don't want to stop geocoding
-    PropertyGeocoder *geocoder = [PropertyGeocoder sharedInstance];
-    [geocoder setDelegate:nil];
-}
-
-
-#pragma mark -
-#pragma mark PropertyGeocoderDelegate
-
-- (void)propertyGeocoder:(PropertyGeocoder *)geocoder didFindProperty:(PropertySummary *)summary
-{
-    [[self geocodedProperties] addObject:summary];
-    
-    [self placeGeocodedPropertyOnMap:summary withIndex:([[self geocodedProperties] count] - 1)];
-}
-
-- (void)propertyGeocoder:(PropertyGeocoder *)geocoder didFailWithError:(NSError *)error
-{
-    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error mapping results" 
-                                                         message:[error localizedDescription] 
-                                                        delegate:self 
-                                               cancelButtonTitle:@"Ok"
-                                               otherButtonTitles:nil];
-    [errorAlert show];
-    [errorAlert release];    
 }
 
 

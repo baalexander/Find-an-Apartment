@@ -7,10 +7,10 @@
 #import "PropertyDetails.h"
 #import "PropertyListViewController.h"
 #import "PropertyMapViewController.h"
-#import "PropertyGeocoder.h"
+#import "Geocoder.h"
 
 
-@interface PropertyResultsViewController : UIViewController <PropertyDataSource, PropertyGeocoderDelegate, ParserDelegate>
+@interface PropertyResultsViewController : UIViewController <PropertyDataSource, GeocoderDelegate, ParserDelegate>
 {    
     @private
         // Sub-view controllers
@@ -30,7 +30,8 @@
         BOOL isParsing_;
     
         // Geocoding
-        NSMutableArray *geocodedProperties_;
+        Geocoder *geocoder_;
+        NSInteger geocodeIndex_;
     
         UIAlertView *alertView_;
 }

@@ -1,5 +1,5 @@
 #import "Geocoder.h"
-#import "GeocoderConstants.h"
+#import "GeocoderGoogleMapsKey.h"
 #import "UrlUtil.h"
 
 
@@ -54,12 +54,12 @@
     XmlParser *parser = [[XmlParser alloc] init];
     [parser setDelegate:self];
     
-    // Sets item delimiter for the Xml results
-    [parser setItemDelimiter:kGeocoderItemDelimiter];
+    // Sets item delimiter for the Xml results. Expects a C string.
+    [parser setItemDelimiter:"Placemark"];
     
     // Sets URL
     NSString *encodedLocation = [UrlUtil encodeUrl:[self location]];
-    NSString *urlString = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps/geo?q=%@&output=xml&oe=utf8&sensor=false&key=%@", encodedLocation, kGoogleMapKey];
+    NSString *urlString = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps/geo?q=%@&output=xml&oe=utf8&sensor=false&key=%@", encodedLocation, kGoogleMapsKey];
     NSURL *url = [[NSURL alloc] initWithString:urlString];
     [urlString release];
     [parser setUrl:url];

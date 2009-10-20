@@ -17,8 +17,6 @@
 		45011E6610815FFD0045DAB5 /* Geography2.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 45011E6410815FFD0045DAB5 /* Geography2.sqlite */; };
 		45011EC5108164E10045DAB5 /* Geocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45011EC4108164E10045DAB5 /* Geocoder.m */; };
 		45011EC6108164E10045DAB5 /* Geocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45011EC4108164E10045DAB5 /* Geocoder.m */; };
-		45011ED910816C9E0045DAB5 /* PropertyGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45011ED810816C9E0045DAB5 /* PropertyGeocoder.m */; };
-		45011EDA10816C9E0045DAB5 /* PropertyGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45011ED810816C9E0045DAB5 /* PropertyGeocoder.m */; };
 		4526603B10795E910046610B /* libObjectiveLibxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4526603A10795E6D0046610B /* libObjectiveLibxml2.a */; };
 		4526604310795F120046610B /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4526604210795F120046610B /* libxml2.dylib */; };
 		45266078107961520046610B /* libObjectiveLibxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4526603A10795E6D0046610B /* libObjectiveLibxml2.a */; };
@@ -244,11 +242,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Find_an_Apartment_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Find_an_Apartment_Prefix.pch; sourceTree = "<group>"; };
 		45011E6410815FFD0045DAB5 /* Geography2.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Geography2.sqlite; sourceTree = "<group>"; };
-		45011EC2108164C20045DAB5 /* GeocoderConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GeocoderConstants.h; path = Classes/GeocoderConstants.h; sourceTree = "<group>"; };
 		45011EC3108164E10045DAB5 /* Geocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geocoder.h; sourceTree = "<group>"; };
 		45011EC4108164E10045DAB5 /* Geocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Geocoder.m; sourceTree = "<group>"; };
-		45011ED710816C9E0045DAB5 /* PropertyGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyGeocoder.h; sourceTree = "<group>"; };
-		45011ED810816C9E0045DAB5 /* PropertyGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertyGeocoder.m; sourceTree = "<group>"; };
 		4526603210795E6D0046610B /* ObjectiveLibxml2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjectiveLibxml2.xcodeproj; path = objectiveLibxml2/src/ObjectiveLibxml2.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4526604210795F120046610B /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = /usr/lib/libxml2.dylib; sourceTree = "<absolute>"; };
 		45267CF6102EA866007BED9D /* MortgageResultsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MortgageResultsConstants.h; path = Classes/MortgageResultsConstants.h; sourceTree = "<group>"; };
@@ -268,6 +263,7 @@
 		4558D65710058CF30065C4DD /* MortgageCriteriaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MortgageCriteriaViewController.m; path = Classes/MortgageCriteriaViewController.m; sourceTree = "<group>"; };
 		4558D65810058CF30065C4DD /* MortgageCriteriaView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MortgageCriteriaView.xib; path = Classes/MortgageCriteriaView.xib; sourceTree = "<group>"; };
 		455BFE3F0FDC9BC4000BCD39 /* PropertyDetailsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyDetailsView.xib; path = Classes/PropertyDetailsView.xib; sourceTree = "<group>"; };
+		45691745108D5B3200B061E9 /* GeocoderGoogleMapsKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GeocoderGoogleMapsKey.h; path = Classes/GeocoderGoogleMapsKey.h; sourceTree = "<group>"; };
 		4576665B104DF8F500EEFF22 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Location.h; path = Classes/Location.h; sourceTree = "<group>"; };
 		4576665C104DF8F500EEFF22 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Location.m; path = Classes/Location.m; sourceTree = "<group>"; };
 		45783B9310841BF000844E51 /* PropertyResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyResultsViewController.h; path = Classes/PropertyResultsViewController.h; sourceTree = "<group>"; };
@@ -567,8 +563,6 @@
 		455BFE520FDC9E99000BCD39 /* Property */ = {
 			isa = PBXGroup;
 			children = (
-				45011ED710816C9E0045DAB5 /* PropertyGeocoder.h */,
-				45011ED810816C9E0045DAB5 /* PropertyGeocoder.m */,
 				457AA38B0FDAC45900F0D16C /* PropertyUrlConstructor.h */,
 				457AA38C0FDAC45900F0D16C /* PropertyUrlConstructor.m */,
 				45783B9E10841EBB00844E51 /* PropertyDataSource.h */,
@@ -735,7 +729,7 @@
 			isa = PBXGroup;
 			children = (
 				458C8075106085DF005CD7A2 /* Constants.h */,
-				45011EC2108164C20045DAB5 /* GeocoderConstants.h */,
+				45691745108D5B3200B061E9 /* GeocoderGoogleMapsKey.h */,
 				457932490FE59771008E2ACD /* PropertyCriteriaConstants.h */,
 				45991A220FF0927F00627B7D /* PropertyDetailsConstants.h */,
 				455733CD103779940013278E /* PropertyListAndMapConstants.h */,
@@ -1035,7 +1029,6 @@
 				45C5FEEF1055AEDE001B0CB3 /* State.m in Sources */,
 				45C5FEF01055AEDE001B0CB3 /* City.m in Sources */,
 				45011EC6108164E10045DAB5 /* Geocoder.m in Sources */,
-				45011EDA10816C9E0045DAB5 /* PropertyGeocoder.m in Sources */,
 				45783B9610841BF000844E51 /* PropertyResultsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1094,7 +1087,6 @@
 				45C9B2AE105DD13700428FFE /* ProvidedByTruliaCell.m in Sources */,
 				45C9B2BE105DD6D200428FFE /* TruliaCopyrightCell.m in Sources */,
 				45011EC5108164E10045DAB5 /* Geocoder.m in Sources */,
-				45011ED910816C9E0045DAB5 /* PropertyGeocoder.m in Sources */,
 				45783B9810841BF000844E51 /* PropertyResultsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -6,6 +6,10 @@
 
 
 // TODO: Implement low memory functions
+// TODO: When exiting:
+//      cancel geocoder
+//      cancel parser
+//      stop internet activity
 
 @interface PropertyResultsViewController ()
 @property (nonatomic, retain) NSOperationQueue *operationQueue;
@@ -14,8 +18,11 @@
 @property (nonatomic, retain) PropertySummary *summary;
 @property (nonatomic, retain, readwrite) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) UIAlertView *alertView;
-@property (nonatomic, retain) NSMutableArray *geocodedProperties;
-- (void)geocodeProperties;
+@property (nonatomic, retain) Geocoder *geocoder;
+@property (nonatomic, assign) NSInteger geocodeIndex;
+- (void)geocodeNextProperty;
+- (void)geocodeProperty:(PropertySummary *)property;
+- (void)updateViewsWithGeocodedProperty:(PropertySummary *)property withIndex:(NSInteger)index;
 @end
 
 
@@ -30,7 +37,8 @@
 @synthesize details = details_;
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize alertView = alertView_;
-@synthesize geocodedProperties = geocodedProperties_;
+@synthesize geocoder = geocoder_;
+@synthesize geocodeIndex = geocodeIndex_;
 
 
 #pragma mark -
@@ -40,7 +48,7 @@
 {
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
     {
-        
+        [self setGeocodeIndex:0];
     }
     
     return self;
@@ -55,7 +63,7 @@
     [summary_ release];
     [fetchedResultsController_ release];
     [alertView_ release];
-    [geocodedProperties_ release];
+    [geocoder_ release];
     
     [super dealloc];
 }
@@ -68,7 +76,7 @@
     // properties and not already geocoding
     if ([segmentedControl selectedSegmentIndex] == kMapItem)
     {
-        [self geocodeProperties];
+        [self geocodeNextProperty];
     }
     
     
@@ -131,30 +139,73 @@
     [parser release];
 }
 
-- (void)geocodeProperties
+- (void)geocodeNextProperty
 {
-    PropertyGeocoder *geocoder = [PropertyGeocoder sharedInstance];
-    [geocoder setDelegate:self];
-    NSArray *properties = [[self fetchedResultsController] fetchedObjects];
-    [geocoder setProperties:properties];
-    
-    // There could be properties already geocoded, even though hasn't started
-    // geocoding yet.
-    NSMutableArray *geocodedProperties =
-        [[NSMutableArray alloc] initWithArray:[[geocoder geocodedProperties] allObjects]];
-    [self setGeocodedProperties:geocodedProperties];
-    [geocodedProperties release];
-    
-    // Maps all geocoded properties
-    for (NSUInteger i = 0; i < [[self geocodedProperties] count]; i++)
+    // Looks for next property that has not been geocoded
+    BOOL foundUngeocodedProperty = NO;
+    for (;
+         [self geocodeIndex] < [self propertyCount] && !foundUngeocodedProperty;
+         [self setGeocodeIndex:([self geocodeIndex] + 1)])
     {
-        PropertySummary *property = [[self geocodedProperties] objectAtIndex:i];
-        [[self mapViewController] placeGeocodedPropertyOnMap:property
-                                                   withIndex:i];
+        PropertySummary *property = [self propertyAtIndex:[self geocodeIndex]];
+        // Checks if longitude and latitude already set. Ignores properties with
+        // no location.
+        if ([property location] != nil
+            && ([property longitude] == nil || [property latitude] == nil))
+        {
+            // To prevent overloading map requests and getting errors from their
+            // server, add a delay
+            [self performSelector:@selector(geocodeProperty:)
+                       withObject:property
+                       afterDelay:0.150]; 
+            
+            // Only enqueue one property at a time
+            foundUngeocodedProperty = YES;
+        }
+        // If property already geocoded, updates view controllers with the
+        // geocoded property
+        else if ([property longitude] != nil && [property latitude] != nil)
+        {
+            [self updateViewsWithGeocodedProperty:property withIndex:[self geocodeIndex]];
+        }
+
     }
     
-    // Start geocoding
-    [geocoder start];
+    // Every property has been geocoded, saves the context and update status
+    if (!foundUngeocodedProperty)
+    {
+        // Saves the context
+        NSError *error;
+        NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
+        if (![managedObjectContext save:&error])
+        {
+            DebugLog(@"Error saving property context in Results geocoder's enqueue.");
+        }
+        
+        //        // Updates the status
+        //        [self setQuerying:NO];
+    }
+}
+
+// Begins geocoding the next property
+// Meant to be called as a selector with a delay to prevent flooding request to
+// maps
+- (void)geocodeProperty:(PropertySummary *)property
+{    
+    // Create a Geocoder with the property's location
+    Geocoder *geocoder = [[Geocoder alloc] initWithLocation:[property location]];
+    [self setGeocoder:geocoder];
+    [geocoder release];
+    
+    [[self geocoder] setDelegate:self];
+    [[self geocoder] start];
+}
+
+- (void)updateViewsWithGeocodedProperty:(PropertySummary *)property withIndex:(NSInteger)index
+{
+    // Updates the Map view with the new property
+    [[self mapViewController] placeGeocodedPropertyOnMap:property
+                                               withIndex:index];
 }
 
 - (NSFetchedResultsController *)fetchedResultsController
@@ -210,6 +261,68 @@
     }
     
     return fetchedResultsController_;
+}
+
+
+#pragma mark -
+#pragma mark GeocoderDelegate
+
+- (void)geocoder:(Geocoder *)geocoder didFindCoordinate:(CLLocationCoordinate2D)coordinate
+{
+//    // If cancel was called before this call back, stop all processing
+//    if (![self isQuerying])
+//    {
+//        return;
+//    }
+//    
+    // Sorry equator and Prime Meridian, no 0 coordinates allowed because
+    // _usually_ a parsing or downloading mishap
+    if (coordinate.longitude != 0 && coordinate.latitude != 0)
+    {
+        // Subtracts 1 from geocode index because index would have been
+        // incremented in the geocode next property loop
+        NSInteger propertyIndex = [self geocodeIndex] - 1;
+        
+        PropertySummary *property = [self propertyAtIndex:propertyIndex];
+        
+        // Sets the coordinate data in the property
+        NSNumber *longitude = [[NSNumber alloc] initWithDouble:coordinate.longitude];
+        [property setLongitude:longitude];
+        [longitude release];
+        
+        NSNumber *latitude = [[NSNumber alloc] initWithDouble:coordinate.latitude];
+        [property setLatitude:latitude];
+        [latitude release];
+        
+        // Update the views with the new geocoded property
+        [self updateViewsWithGeocodedProperty:property withIndex:propertyIndex];
+        
+        // Saves the context
+        // TODO: Only save every x number of times
+        NSError *error;
+        NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
+        if (![managedObjectContext save:&error])
+        {
+            DebugLog(@"Error saving property context in Property Geocoder's didFindCoordinate.");
+        }
+    }
+    
+    // Fetches next property to download
+    [self geocodeNextProperty];
+}
+
+- (void)geocoder:(Geocoder *)geocoder didFailWithError:(NSError *)error
+{
+//    // If cancel was called before this call back, stop all processing
+//    if (![self isQuerying])
+//    {
+//        return;
+//    }
+//    
+//    if ([self delegate] != nil)
+//    {
+//        [[self delegate] propertyGeocoder:self didFailWithError:error];
+//    }
 }
 
 
@@ -284,6 +397,7 @@
 - (PropertySummary *)propertyAtIndex:(NSInteger)index
 {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    [[self fetchedResultsController] objectAtIndexPath:indexPath];
 
     return [[self fetchedResultsController] objectAtIndexPath:indexPath];
 }
@@ -301,36 +415,12 @@
     NSError *error;
     if (![managedObjectContext save:&error])
     {
-        DebugLog(@"Error saving the deletion in Favorites.");
+        DebugLog(@"Error saving after deleting a property.");
         
         return NO;
     }
     
     return YES;
-}
-
-
-#pragma mark -
-#pragma mark PropertyGeocoderDelegate
-
-- (void)propertyGeocoder:(PropertyGeocoder *)geocoder didFindProperty:(PropertySummary *)summary
-{
-    [[self geocodedProperties] addObject:summary];
-    
-    NSInteger lastIndex = [[self geocodedProperties] count] - 1;
-    [[self mapViewController] placeGeocodedPropertyOnMap:summary
-                                               withIndex:lastIndex];
-}
-
-- (void)propertyGeocoder:(PropertyGeocoder *)geocoder didFailWithError:(NSError *)error
-{
-    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error mapping results" 
-                                                         message:[error localizedDescription] 
-                                                        delegate:self 
-                                               cancelButtonTitle:@"Ok"
-                                               otherButtonTitles:nil];
-    [errorAlert show];
-    [errorAlert release];    
 }
 
 

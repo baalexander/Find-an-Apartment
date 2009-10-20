@@ -3,7 +3,6 @@
 #import <ObjectiveLibxml2/ObjectiveLibxml2.h>
 
 #import "Placemark.h"
-#import "PropertyGeocoder.h"
 #import "PropertyHistory.h"
 #import "PropertySummary.h"
 #import "PropertyDetailsViewController.h"
@@ -11,14 +10,11 @@
 #import "Geocoder.h"
 
 
-@interface PropertyMapViewController : UIViewController <GeocoderDelegate, PropertyGeocoderDelegate, MKMapViewDelegate>
+@interface PropertyMapViewController : UIViewController <GeocoderDelegate, MKMapViewDelegate>
 {
     @private
-        NSArray *properties_;
-        NSMutableArray *geocodedProperties_;
-        PropertyHistory *history_;
-        PropertySummary *summary_;
         MKMapView *mapView_;
+        PropertySummary *summary_;
         BOOL isCancelled_;
         id <PropertyDataSource> propertyDataSource_;
         Geocoder *geocoder_;
