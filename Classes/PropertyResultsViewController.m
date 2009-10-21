@@ -14,10 +14,11 @@
 
 @interface PropertyResultsViewController ()
 @property (nonatomic, retain) NSOperationQueue *operationQueue;
-@property (nonatomic, assign) BOOL isParsing;
+@property (nonatomic, assign, getter=isParsing) BOOL parsing;
+@property (nonatomic, assign, getter=isGeocoding) BOOL geocoding;
 @property (nonatomic, retain) PropertyDetails *details;
 @property (nonatomic, retain) PropertySummary *summary;
-@property (nonatomic, retain, readwrite) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) UIAlertView *alertView;
 @property (nonatomic, retain) Geocoder *geocoder;
 @property (nonatomic, assign) NSInteger geocodeIndex;
@@ -32,7 +33,8 @@
 @synthesize listViewController = listViewController_;
 @synthesize mapViewController = mapViewController_;
 @synthesize operationQueue = operationQueue_;
-@synthesize isParsing = isParsing_;
+@synthesize parsing = parsing_;
+@synthesize geocoding = geocoding_;
 @synthesize history = history_;
 @synthesize summary = summary_;
 @synthesize details = details_;
@@ -50,6 +52,8 @@
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
     {
         [self setGeocodeIndex:0];
+        [self setParsing:NO];
+        [self setGeocoding:NO];
     }
     
     return self;
@@ -75,9 +79,9 @@
     
     // Start geocoding properties if switching to a view requiring geocoded
     // properties and not already geocoding
-    if ([segmentedControl selectedSegmentIndex] == kMapItem)
+    if ([segmentedControl selectedSegmentIndex] == kMapItem
+        && ![self isGeocoding])
     {
-        // TODO: Add condition to check if geocoding
         [self geocodeNextProperty];
     }
     
@@ -112,7 +116,7 @@
 
 - (void)parse:(NSURL *)url
 {
-    [self setIsParsing:YES];
+    [self setParsing:YES];
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
                                                         message:@"Looking up property listings"
@@ -141,6 +145,14 @@
 
 - (void)geocodeNextProperty
 {
+    // If already geocoding, do not go onto the next property
+    if ([self isGeocoding])
+    {
+        return;
+    }
+    
+    [self setGeocoding:YES];
+    
     // Looks for next property that has not been geocoded
     BOOL foundUngeocodedProperty = NO;
     for (;
@@ -174,6 +186,8 @@
     // Every property has been geocoded, saves the context and update status
     if (!foundUngeocodedProperty)
     {
+        [self setGeocoding:NO];
+        
         // Saves the context
         NSError *error;
         NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
@@ -181,9 +195,6 @@
         {
             DebugLog(@"Error saving property context in Results geocoder's enqueue.");
         }
-        
-        //        // Updates the status
-        //        [self setQuerying:NO];
     }
 }
 
@@ -191,7 +202,13 @@
 // Meant to be called as a selector with a delay to prevent flooding request to
 // maps
 - (void)geocodeProperty:(PropertySummary *)property
-{    
+{
+    // If cancel was called before this, stop all geocoding
+    if (![self isGeocoding])
+    {
+        return;
+    }
+    
     // Create a Geocoder with the property's location
     Geocoder *geocoder = [[Geocoder alloc] initWithLocation:[property location]];
     [self setGeocoder:geocoder];
@@ -269,12 +286,14 @@
 
 - (void)geocoder:(Geocoder *)geocoder didFindCoordinate:(CLLocationCoordinate2D)coordinate
 {
-//    // If cancel was called before this call back, stop all processing
-//    if (![self isQuerying])
-//    {
-//        return;
-//    }
-//    
+    // If cancel was called before this call back, stop all geocoding
+    if (![self isGeocoding])
+    {
+        return;
+    }
+    
+    [self setGeocoding:NO];
+
     // Sorry equator and Prime Meridian, no 0 coordinates allowed because
     // _usually_ a parsing or downloading mishap
     if (coordinate.longitude != 0 && coordinate.latitude != 0)
@@ -313,16 +332,16 @@
 
 - (void)geocoder:(Geocoder *)geocoder didFailWithError:(NSError *)error
 {
-//    // If cancel was called before this call back, stop all processing
-//    if (![self isQuerying])
-//    {
-//        return;
-//    }
-//    
-//    if ([self delegate] != nil)
-//    {
-//        [[self delegate] propertyGeocoder:self didFailWithError:error];
-//    }
+    // If cancel was called before this call back, stop all geocoding
+    if (![self isGeocoding])
+    {
+        return;
+    }
+    
+    [self setGeocoding:NO];
+
+    // User doesn't need to know of geocoding error... probably
+    DebugLog(@"Geocoder did fail with error:%@", [error localizedDescription]);
 }
 
 
@@ -372,8 +391,11 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    DebugLog(@"DISAPPEAR");
     //Cancels any operations in the queue. This is for when pressing the back button and dismissing the view controller. This prevents the parser from still running and failing when calling its delegate.
     [[self operationQueue] cancelAllOperations];
+    [self setParsing:NO];
+    [self setGeocoding:NO];
 }
 
 
@@ -429,7 +451,13 @@
 
 - (void)parserDidEndParsingData:(XmlParser *)parser
 {
-    [self setIsParsing:NO];
+    // If cancel was called before this call back, stop all parsing
+    if (![self isParsing])
+    {
+        return;
+    }
+    
+    [self setParsing:NO];
     
     if ([[[self history] summaries] count] == 0)
     {
@@ -468,6 +496,12 @@
 
 - (void)parser:(XmlParser *)parser addXmlElement:(XmlElement *)xmlElement
 {
+    // If cancel was called before this call back, stop all parsing
+    if (![self isParsing])
+    {
+        return;
+    }
+    
     NSString *elementName = [xmlElement name];
     NSString *elementValue = [xmlElement value];
     
@@ -583,6 +617,12 @@
 
 - (void)parserDidBeginItem:(XmlParser *)parser
 {
+    // If cancel was called before this call back, stop all parsing
+    if (![self isParsing])
+    {
+        return;
+    }
+    
     NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
     
     NSEntityDescription *detailsEntity = [NSEntityDescription entityForName:@"PropertyDetails" inManagedObjectContext:managedObjectContext];
@@ -608,7 +648,13 @@
 
 - (void)parser:(XmlParser *)parser didFailWithError:(NSError *)error
 {
-    [self setIsParsing:NO];
+    // If cancel was called before this call back, stop all parsing
+    if (![self isParsing])
+    {
+        return;
+    }
+    
+    [self setParsing:NO];
     
     //Do not record these results
     NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];

@@ -229,6 +229,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    DebugLog(@"MAP DISAPPEAR");
     [self setIsCancelled:YES];
 }
 

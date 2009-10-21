@@ -23,15 +23,14 @@
         PropertyDetails *details_;
         NSFetchedResultsController *fetchedResultsController_;
     
-        //Queues parsing thread
+        // Parsing
         NSOperationQueue *operationQueue_;
-    
-        // Determines if view controller is in the middle of a parsing operation
-        BOOL isParsing_;
+        BOOL parsing_;
     
         // Geocoding
         Geocoder *geocoder_;
         NSInteger geocodeIndex_;
+        BOOL geocoding_;
     
         UIAlertView *alertView_;
 }
