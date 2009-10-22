@@ -23,7 +23,6 @@
 
 @implementation MortgageCriteriaViewController
 
-@synthesize propertySummary = propertySummary_;
 @synthesize criteria = criteria_;
 @synthesize mortgageObjectModel = mortgageObjectModel_;
 @synthesize mortgageObjectContext = mortgageObjectContext_;
@@ -45,7 +44,6 @@
 
 - (void)dealloc
 {
-    [propertySummary_ release];
     [criteria_ release];
     [mortgageObjectModel_ release];
     [mortgageObjectContext_ release];
@@ -141,14 +139,10 @@
     return criteria_;
 }
 
-- (void)setPropertySummary:(PropertySummary *)propertySummary
+- (void)setProperty:(PropertySummary *)property
 {
-    [propertySummary retain];
-    [propertySummary_ release];
-    propertySummary_ = propertySummary;
-    
-    //Sets postal code
-    NSString *location = [propertySummary location];
+    // Sets postal code
+    NSString *location = [property location];
     LocationParser *parser = [[LocationParser alloc] initWithLocation:location];
     NSString *postalCode = [parser postalCode];
     [parser release];
@@ -157,13 +151,13 @@
         [[self criteria] setPostalCode:postalCode];
     }
     
-    //Sets price
-    NSNumber *price = [propertySummary price];
+    // Sets price
+    NSNumber *price = [property price];
     if (price != nil)
     {
         [[self criteria] setPurchasePrice:price];
         
-        //Update dependent values
+        // Update dependent values
         [self calculateCashDown];
         [self calculateLoanAmount];        
     }

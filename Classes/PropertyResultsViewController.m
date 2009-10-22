@@ -17,8 +17,8 @@
 @property (nonatomic, retain) NSOperationQueue *operationQueue;
 @property (nonatomic, assign, getter=isParsing) BOOL parsing;
 @property (nonatomic, assign, getter=isGeocoding) BOOL geocoding;
+@property (nonatomic, retain) PropertySummary *property;
 @property (nonatomic, retain) PropertyDetails *details;
-@property (nonatomic, retain) PropertySummary *summary;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) UIAlertView *alertView;
 @property (nonatomic, retain) Geocoder *geocoder;
@@ -37,7 +37,7 @@
 @synthesize parsing = parsing_;
 @synthesize geocoding = geocoding_;
 @synthesize history = history_;
-@synthesize summary = summary_;
+@synthesize property = property_;
 @synthesize details = details_;
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize alertView = alertView_;
@@ -66,7 +66,8 @@
     [mapViewController_ release];
     [operationQueue_ release];
     [history_ release];
-    [summary_ release];
+    [property_ release];
+    [details_ release];
     [fetchedResultsController_ release];
     [alertView_ release];
     [geocoder_ release];
@@ -226,20 +227,20 @@
 {
     if (fetchedResultsController_ == nil)
     {
-        //History should NEVER be nil. Must always set before calling list view.
+        // History should NEVER be nil. Must always set before calling list view.
         if ([self history] == nil)
         {
-            DebugLog(@"Error: History is nil in fetched results controller in List view controller.");
+            DebugLog(@"History cannot be nil");
         }
         
-        //Get managed object context from History
+        // Get managed object context from History
         NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
         
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertySummary" inManagedObjectContext:managedObjectContext];
         [fetchRequest setEntity:entity];
         
-        //Create the sort descriptors array based on the users sort by selection.
+        // Create the sort descriptors array based on the users sort by selection.
         PropertyCriteria *criteria = [[self history] criteria];
         NSSortDescriptor *descriptor;
         if ([[criteria sortBy] isEqual:kPropertyCriteriaSortByPriceAscending])
@@ -250,7 +251,7 @@
         {
             descriptor = [[NSSortDescriptor alloc] initWithKey:@"price" ascending:NO];
         }
-        //Distance is the default search
+        // Distance is the default search
         else
         {
             descriptor = [[NSSortDescriptor alloc] initWithKey:@"distance" ascending:YES];
@@ -260,7 +261,7 @@
         [fetchRequest setSortDescriptors:sortDescriptors];
         [sortDescriptors release];
         
-        //Search all summaries for the most recent search (summaries with this stored history)
+        // Search all summaries for the most recent search (summaries with this stored history)
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(history = %@)", [self history]];
         [fetchRequest setPredicate:predicate];
         
@@ -349,25 +350,25 @@
 {
     [super viewDidLoad];
     
-    // TODO: Needed still?
-    //If fetched objects is nil and not currently parsing results, the call perform fetch to get the most recent results. This would happen when switching from Map to List view. If the parse function already performed, then it has retrieved the results. This very much assumes that the parse function is being called before the view is loading.
-    if (![self isParsing] && [[self fetchedResultsController] fetchedObjects] == nil)
+    // If not in the middle of parsing, fetch all objects
+    // This will occur when going from History view controller to Results
+    if (![self isParsing])
     {
         if (![[self fetchedResultsController] performFetch:nil])
         {
-            DebugLog(@"Error performing fetch in viewDidLoad.");
+            DebugLog(@"Error performing fetch.");
         }        
     }
     
     // Sets the views as subviews for transition animations and selects which is
     // visible by default
     [[self view] addSubview:[[self mapViewController] mapView]];
-    [[[self mapViewController] mapView] setHidden:YES];
-    // Centers the Map view controller
-    [[self mapViewController] centerOnCriteria:[[self history] criteria]];
-    
+    [[[self mapViewController] mapView] setHidden:YES];    
     [[self view] addSubview:[[self listViewController] tableView]];
     [[[self listViewController] tableView] setHidden:NO];
+    
+    // Centers the Map view controller
+    [[self mapViewController] centerOnCriteria:[[self history] criteria]];
     
     // Segmented control
     NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", nil];
@@ -388,8 +389,10 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    DebugLog(@"DISAPPEAR");
-    //Cancels any operations in the queue. This is for when pressing the back button and dismissing the view controller. This prevents the parser from still running and failing when calling its delegate.
+    // Cancels any operations in the queue. This is for when pressing the back
+    // button and dismissing the view controller. This prevents any asynchronous
+    // actions like parser or geocoder from still running and failing when
+    // calling its delegate.
     [[self operationQueue] cancelAllOperations];
     [self setParsing:NO];
     [self setGeocoding:NO];
@@ -425,10 +428,10 @@
 {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     
-    //Deletes the summary, should cascade to delete Details
-    PropertySummary *summary = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-    NSManagedObjectContext *managedObjectContext = [summary managedObjectContext];
-    [managedObjectContext deleteObject:summary];
+    // Deletes the property, should cascade to delete Details
+    PropertySummary *property = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    NSManagedObjectContext *managedObjectContext = [property managedObjectContext];
+    [managedObjectContext deleteObject:property];
     
     // Commit the change.
     NSError *error;
@@ -444,10 +447,11 @@
 
 - (void)view:(UIView *)view didSelectPropertyAtIndex:(NSInteger)index
 {
-    //Gets result from relationship with summary
-    PropertySummary *summary = [self view:[self view] propertyAtIndex:index];
-    PropertyDetails *details = [summary details];   
+    // Gets details from relationship with summary
+    PropertySummary *property = [self view:[self view] propertyAtIndex:index];
+    PropertyDetails *details = [property details];   
     
+    // Pushes the Details view controller
     PropertyDetailsViewController *detailsViewController = [[PropertyDetailsViewController alloc] initWithNibName:@"PropertyDetailsView" bundle:nil];
     [detailsViewController setPropertyDataSource:self];
     [detailsViewController setPropertyIndex:index];
@@ -472,7 +476,7 @@
     
     if ([[[self history] summaries] count] == 0)
     {
-        //Do not record these results
+        // Do not record these results
         NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
         [managedObjectContext deleteObject:[self history]];
         
@@ -495,13 +499,11 @@
         DebugLog(@"Error performing fetch.");
     }
     
-    //Enable Map button
-    UISegmentedControl *segmentedControl = (UISegmentedControl *)[[[self navigationItem] rightBarButtonItem] customView];
-    [segmentedControl setEnabled:YES forSegmentAtIndex:kMapItem];
-    
+    // Reloads the List view
     [[[self listViewController] tableView] reloadData];
     
-    //Send a cancel index of 1 to show the app sent the dismiss, not a user
+    // Dismisses the progress alert
+    // Send a cancel index of 1 to show the app sent the dismiss, not a user
     [[self alertView] dismissWithClickedButtonIndex:1 animated:YES];
 }
 
@@ -521,38 +523,38 @@
         return;
     }
     
-    //Shared attributes
+    // Shared attributes
     if ([elementName isEqual:@"link"])
     {
-        [[self summary] setLink:elementValue];
+        [[self property] setLink:elementValue];
         [[self details] setLink:elementValue];
     }
     else if ([elementName isEqual:@"location"])
     {
-        [[self summary] setLocation:elementValue];
+        [[self property] setLocation:elementValue];
         [[self details] setLocation:elementValue];
     }
     else if ([elementName isEqual:@"price"])
     {
         NSNumber *number = [[NSNumber alloc] initWithInteger:[elementValue integerValue]];
-        [[self summary] setPrice:number];
+        [[self property] setPrice:number];
         [[self details] setPrice:number];
         [number release];
     }
-    //Summary attributes
+    // Summary attributes
     else if ([elementName isEqual:@"title"])
     {
-        [[self summary] setTitle:elementValue];
+        [[self property] setTitle:elementValue];
     }
     else if ([elementName isEqual:@"subtitle"])
     {
-        [[self summary] setSubtitle:elementValue];
+        [[self property] setSubtitle:elementValue];
     }
     else if ([elementName isEqual:@"summary"])
     {
-        [[self summary] setSummary:elementValue];
+        [[self property] setSummary:elementValue];
     }
-    //Details attributes
+    // Details attributes
     else if ([elementName isEqual:@"agent"])
     {
         [[self details] setAgent:elementValue];
@@ -642,19 +644,19 @@
     [details release];
     
     NSEntityDescription *summaryEntity = [NSEntityDescription entityForName:@"PropertySummary" inManagedObjectContext:managedObjectContext];
-    PropertySummary *summary = [[PropertySummary alloc] initWithEntity:summaryEntity insertIntoManagedObjectContext:managedObjectContext];
-    [self setSummary:summary];
-    [summary release];
+    PropertySummary *property = [[PropertySummary alloc] initWithEntity:summaryEntity insertIntoManagedObjectContext:managedObjectContext];
+    [self setProperty:property];
+    [property release];
     
-    //Sets relationships
-    [[self summary] setHistory:[self history]];
-    [[self summary] setDetails:[self details]];
-    [[self details] setSummary:[self summary]];
+    // Sets relationships
+    [[self property] setHistory:[self history]];
+    [[self property] setDetails:[self details]];
+    [[self details] setSummary:[self property]];
 }
 
 - (void)parserDidEndItem:(XmlParser *)parser
 {
-    //Currently nothing to do
+    // Currently nothing to do
 }
 
 - (void)parser:(XmlParser *)parser didFailWithError:(NSError *)error
@@ -667,7 +669,7 @@
     
     [self setParsing:NO];
     
-    //Do not record these results
+    // Do not record these results
     NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
     [managedObjectContext deleteObject:[self history]];    
     

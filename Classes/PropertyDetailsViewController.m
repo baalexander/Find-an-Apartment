@@ -127,8 +127,8 @@
     PropertyListEmailerViewController *listEmailer = [[PropertyListEmailerViewController alloc] init];
     [listEmailer setMailComposeDelegate:self];
     
-    PropertySummary *summary = [[self details] summary];
-    NSArray *properties = [[NSArray alloc] initWithObjects:summary, nil];
+    PropertySummary *property = [[self details] summary];
+    NSArray *properties = [[NSArray alloc] initWithObjects:property, nil];
     [listEmailer setProperties:properties];
     [properties release];
     
@@ -138,8 +138,8 @@
 
 - (void)addToFavorites:(id)sender
 {
-    PropertySummary *summary = [[self details] summary];
-    if (![PropertyFavoritesViewController addCopyOfProperty:summary])
+    PropertySummary *property = [[self details] summary];
+    if (![PropertyFavoritesViewController addCopyOfProperty:property])
     {
         DebugLog(@"Already in favorites.");
     }
@@ -348,7 +348,7 @@
     [segmentBarItem release];
     
     // Disable "Add to Favorites" if the property is already saved
-    if([PropertyFavoritesViewController isPropertyAFavorite:[[self details] summary]])
+    if ([PropertyFavoritesViewController isPropertyAFavorite:[[self details] summary]])
     {
         [[self addToFavoritesButton] setEnabled:NO];
     }
@@ -583,7 +583,7 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     if ([key isEqual:kDetailsPrice])
     {
         MortgageCriteriaViewController *criteriaViewController = [[MortgageCriteriaViewController alloc] initWithNibName:@"MortgageCriteriaView" bundle:nil];
-        [criteriaViewController setPropertySummary:[[self details] summary]];
+        [criteriaViewController setProperty:[[self details] summary]];
         [[self navigationController] pushViewController:criteriaViewController animated:YES];
         [criteriaViewController release];                            
     }

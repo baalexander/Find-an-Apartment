@@ -23,7 +23,7 @@
     
         // Core data
         PropertyHistory *history_;
-        PropertySummary *summary_;
+        PropertySummary *property_;
         PropertyDetails *details_;
         NSFetchedResultsController *fetchedResultsController_;
     

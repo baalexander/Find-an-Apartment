@@ -1,11 +1,6 @@
 #import "PropertyListViewController.h"
 
-#import "PropertyImage.h"
-#import "PropertyCriteria.h"
-#import "PropertyDetailsViewController.h"
 #import "StringFormatter.h"
-#import "PropertyListAndMapConstants.h"
-#import "PropertyCriteriaConstants.h"
 
 
 @interface PropertyListViewController ()
@@ -62,7 +57,6 @@
 #pragma mark -
 #pragma mark UITableViewDataSource
 
-//This must match the identifier of in the Xib. Otherwise, will never reuse a cell.
 static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 
 
@@ -84,13 +78,14 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
         [[NSBundle mainBundle] loadNibNamed:@"SummaryCell" owner:self options:nil];
     }
 
-    //Configures cell with Summary data
-    PropertySummary *summary = [[self propertyDataSource] view:[self tableView] propertyAtIndex:[indexPath row]];
-    [[[self summaryCell] title] setText:[summary title]];
-    [[[self summaryCell] subtitle] setText:[summary subtitle]];
-    [[[self summaryCell] summary] setText:[summary summary]];
+    // Configures cell with Summary data
+    PropertySummary *property = [[self propertyDataSource] view:[self tableView]
+                                               propertyAtIndex:[indexPath row]];
+    [[[self summaryCell] title] setText:[property title]];
+    [[[self summaryCell] subtitle] setText:[property subtitle]];
+    [[[self summaryCell] summary] setText:[property summary]];
     
-    NSString *price = [StringFormatter formatCurrency:[summary price]];
+    NSString *price = [StringFormatter formatCurrency:[property price]];
     [[[self summaryCell] price] setText:price];
     
     return [self summaryCell];
@@ -111,17 +106,6 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [[self propertyDelegate] view:[self tableView] didSelectPropertyAtIndex:[indexPath row]];
-//    [[self propertyDelegate] didSelectPropertyAtIndex:[indexPath row]];
-    //Gets result from relationship with summary
-//    PropertySummary *summary = [[self propertyDataSource] propertyAtIndex:[indexPath row]];
-//    PropertyDetails *details = [summary details];   
-//    
-//    PropertyDetailsViewController *detailsViewController = [[PropertyDetailsViewController alloc] initWithNibName:@"PropertyDetailsView" bundle:nil];
-//    //[detailsViewController setDelegate:self];
-//    [detailsViewController setDetails:details];
-//    [[self navigationController] pushViewController:detailsViewController animated:YES];
-//    [detailsViewController release];
-//    DebugLog(@"PRESSED");
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
