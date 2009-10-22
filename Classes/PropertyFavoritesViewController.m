@@ -1,9 +1,8 @@
 #import "PropertyFavoritesViewController.h"
 
-#import "PropertyMapViewController.h"
 #import "PropertyListEmailerViewController.h"
+#import "PropertyDetails.h"
 #import "PropertyImage.h"
-#import "PropertyListAndMapConstants.h"
 
 
 @implementation PropertyFavoritesViewController
@@ -27,17 +26,19 @@
     [super dealloc];
 }
 
-//Performas a deep copy on the property then adds to favorites. Is not called copyProperty because the copy prefix implies returning a copied object.
-//Returns NO if property is already in favorites.
-+ (BOOL)addCopyOfProperty:(PropertySummary *)summary
+// Performas a deep copy on the property then adds to favorites.
+// Is not called copyProperty because the copy prefix implies returning a copied
+// object.
+// Returns NO if property is already in favorites.
++ (BOOL)addCopyOfProperty:(PropertySummary *)property
 {
-    //Do NOT add if already a favorite
-    if ([PropertyFavoritesViewController isPropertyAFavorite:summary])
+    // Do not add if already a favorite
+    if ([PropertyFavoritesViewController isPropertyAFavorite:property])
     {
         return NO;
     }
     
-    NSManagedObjectContext *managedObjectContext = [summary managedObjectContext];
+    NSManagedObjectContext *managedObjectContext = [property managedObjectContext];
 
     PropertyHistory *history = [PropertyFavoritesViewController favoriteHistoryFromContext:managedObjectContext];
     if (history == nil)
@@ -47,7 +48,7 @@
         return NO;
     }
     
-    //Deep copies the Summary
+    // Deep copies the Property Summary
     NSEntityDescription *summaryEntity = [NSEntityDescription entityForName:@"PropertySummary"
                                                      inManagedObjectContext:managedObjectContext];
     PropertySummary *copySummary = [[PropertySummary alloc] initWithEntity:summaryEntity
@@ -55,11 +56,11 @@
     NSDictionary *summaryAttributes = [summaryEntity attributesByName];
     for (NSString *key in summaryAttributes)
     {
-        [copySummary setValue:[summary valueForKey:key] forKey:key];
+        [copySummary setValue:[property valueForKey:key] forKey:key];
     }
     
-    //Deep copies the Details
-    PropertyDetails *details = [summary details];
+    // Deep copies the Property Details
+    PropertyDetails *details = [property details];
     NSEntityDescription *detailsEntity = [NSEntityDescription entityForName:@"PropertyDetails"
                                                      inManagedObjectContext:managedObjectContext];
     PropertyDetails *copyDetails = [[PropertyDetails alloc] initWithEntity:detailsEntity
@@ -70,7 +71,7 @@
         [copyDetails setValue:[details valueForKey:key] forKey:key];
     }
     
-    //Deep copies the Images
+    // Deep copies the Property Images
     NSSet *images = [details images];
     for (PropertyImage *image in images)
     {
@@ -84,20 +85,20 @@
             [copyImage setValue:[image valueForKey:key] forKey:key];
         }
         
-        //Adds to Copy Details
+        // Adds to Copy Details
         [copyDetails addImagesObject:copyImage];
         [copyImage release];
     }
     
-    //Adds details to summary
+    // Adds details to summary
     [copySummary setDetails:copyDetails];
     [copyDetails release];
     
-    //Adds summary to favorites History
+    // Adds summary to favorites History
     [history addSummariesObject:copySummary];
     [copySummary release];
     
-    //Saves!
+    // Saves
     NSError *error = nil;
     if (![managedObjectContext save:&error])
     {
@@ -107,7 +108,7 @@
     return YES;
 }
 
-//Returns YES if already a favorite
+// Returns YES if already a favorite
 + (BOOL)isPropertyAFavorite:(PropertySummary *)summary
 {
     NSManagedObjectContext *managedObjectContext = [summary managedObjectContext];
@@ -130,7 +131,6 @@
     [fetchRequest release];
     if (fetchResults == nil)
     {
-        // Handle the error.
         DebugLog(@"Error checking if property is a favorite.");
     }
 
@@ -139,6 +139,8 @@
 
 + (PropertyHistory *)favoriteHistoryFromContext:(NSManagedObjectContext *)managedObjectContext
 {
+    PropertyHistory *history = nil;
+    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *historyEntity = [NSEntityDescription entityForName:@"PropertyHistory" inManagedObjectContext:managedObjectContext];
     [fetchRequest setEntity:historyEntity];
@@ -151,22 +153,21 @@
     NSError *error = nil;
     NSArray *fetchResults = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
     [fetchRequest release];
+    // Error fetching
     if (fetchResults == nil)
     {
-        // Handle the error.
         DebugLog(@"Error fetching favorites History object.");
         
-        return nil;
+        history = nil;
     }
-    
     // No favorites History, creates a new one
-    if ([fetchResults count] == 0)
+    else if ([fetchResults count] == 0)
     {
         NSEntityDescription *historyEntity = [NSEntityDescription entityForName:@"PropertyHistory"
                                                          inManagedObjectContext:managedObjectContext];
-        PropertyHistory *history = [[[PropertyHistory alloc] initWithEntity:historyEntity
-                                             insertIntoManagedObjectContext:managedObjectContext]
-                                    autorelease];
+        history = [[[PropertyHistory alloc] initWithEntity:historyEntity
+                            insertIntoManagedObjectContext:managedObjectContext]
+                   autorelease];
         
         // Sets History attributes
         [history setTitle:@"Favorites"];
@@ -178,14 +179,14 @@
         NSNumber *yesObject = [[NSNumber alloc] initWithBool:YES];
         [history setIsFavorite:yesObject];
         [yesObject release];
-        
-        return history;
     }
     // Gets existing favorites History
     else
     {
-        return [fetchResults objectAtIndex:0];
+        history = [fetchResults objectAtIndex:0];
     }
+    
+    return history;
 }
 
 - (void)share:(id)sender
@@ -204,11 +205,12 @@
 {
     UITableView *tableView = [[self listViewController] tableView];
     
-    //Switches editing status
+    // Switches editing status
     BOOL isEditing = ![tableView isEditing];
     
     [tableView setEditing:isEditing animated:YES];
     
+    // Switches Edit button to Done or Edit depending on status
     if ([tableView isEditing])
     {
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(edit:)];
@@ -260,8 +262,10 @@
 {
     [super viewDidLoad];
     
-    //Add the Edit button to the left in the navigation bar
-    UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(edit:)];
+    // Add the Edit button to the left in the navigation bar
+    UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                                target:self
+                                                                                action:@selector(edit:)];
     [[self navigationItem] setLeftBarButtonItem:editButton];
     [editButton release];
 }
@@ -277,35 +281,46 @@
     [[[self listViewController] tableView] beginUpdates];
 }
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath
 {
     UITableView *tableView = [[self listViewController] tableView];
     
     if (type == NSFetchedResultsChangeInsert)
     {
         NSArray *indexPaths = [[NSArray alloc] initWithObjects:newIndexPath, nil];
-        [tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        [tableView insertRowsAtIndexPaths:indexPaths
+                         withRowAnimation:UITableViewRowAnimationFade];
         [indexPaths release];
     }
     else if (type == NSFetchedResultsChangeDelete)
     {
         NSArray *indexPaths = [[NSArray alloc] initWithObjects:indexPath, nil];
-        [tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        [tableView deleteRowsAtIndexPaths:indexPaths
+                         withRowAnimation:UITableViewRowAnimationFade];
         [indexPaths release];
     }
 }
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
+- (void)controller:(NSFetchedResultsController *)controller
+  didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+           atIndex:(NSUInteger)sectionIndex
+     forChangeType:(NSFetchedResultsChangeType)type
 {
     UITableView *tableView = [[self listViewController] tableView];
     
     if (type == NSFetchedResultsChangeInsert)
     {
-        [tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+        [tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]
+                 withRowAnimation:UITableViewRowAnimationFade];
     }
     else if (type == NSFetchedResultsChangeDelete)
     {
-        [tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+        [tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]
+                 withRowAnimation:UITableViewRowAnimationFade];
     }
 }
 
@@ -321,7 +336,9 @@
 #pragma mark MFMailComposeViewControllerDelegate
 
 // Dismisses the email composition interface when users tap Cancel or Send.
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError*)error 
 {    
     [self dismissModalViewControllerAnimated:YES];
 }
