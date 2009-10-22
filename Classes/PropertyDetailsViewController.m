@@ -529,11 +529,11 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     
     if ([key isEqual:kDetailsLocation])
     {
-        PropertyMapViewController *mapController = [[PropertyMapViewController alloc] initWithNibName:@"PropertyMapView" bundle:nil];
-        [mapController setSummary:[[self details] summary]];
-        
-        [[self navigationController] pushViewController:mapController animated:YES];
-        [mapController release];
+//        PropertyMapViewController *mapController = [[PropertyMapViewController alloc] initWithNibName:@"PropertyMapView" bundle:nil];
+//        [mapController setSummary:[[self details] summary]];
+//        
+//        [[self navigationController] pushViewController:mapController animated:YES];
+//        [mapController release];
     }
     
     if ([key isEqual:kDetailsImages])

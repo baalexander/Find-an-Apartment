@@ -1,11 +1,7 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
-#import <ObjectiveLibxml2/ObjectiveLibxml2.h>
 
-#import "Placemark.h"
-#import "PropertyHistory.h"
-#import "PropertySummary.h"
-#import "PropertyDetailsViewController.h"
+#import "PropertyCriteria.h"
 #import "PropertyResultsDataSource.h"
 #import "PropertyResultsDelegate.h"
 #import "Geocoder.h"
@@ -15,16 +11,14 @@
 {
     @private
         MKMapView *mapView_;
-        PropertySummary *summary_;
-        BOOL isCancelled_;
         id <PropertyResultsDataSource> propertyDataSource_;
         id <PropertyResultsDelegate> propertyDelegate_;
-    
+        PropertyCriteria *criteria_;
         Geocoder *geocoder_;
+        BOOL geocoding_;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
-@property (nonatomic, retain) PropertySummary *summary;
 @property (nonatomic, assign) IBOutlet id <PropertyResultsDataSource> propertyDataSource;
 @property (nonatomic, assign) IBOutlet id <PropertyResultsDelegate> propertyDelegate;
 
