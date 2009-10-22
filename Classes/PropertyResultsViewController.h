@@ -44,6 +44,9 @@
 @property (nonatomic, retain) IBOutlet PropertyListViewController *listViewController;
 @property (nonatomic, retain) IBOutlet PropertyMapViewController *mapViewController;
 
+// This would be "protected" for Favorites to use, if such a thing existed
+@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+
 - (void)parse:(NSURL *)url;
 
 @end

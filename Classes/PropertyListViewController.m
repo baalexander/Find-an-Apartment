@@ -95,7 +95,10 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        [[self propertyDataSource] view:[self tableView] deletePropertyAtIndex:[indexPath row]];
+        if ([[self propertyDataSource] respondsToSelector:@selector(view:deletePropertyAtIndex:)])
+        {
+            [[self propertyDataSource] view:[self tableView] deletePropertyAtIndex:[indexPath row]];
+        }
     }
 }
 

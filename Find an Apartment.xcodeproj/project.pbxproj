@@ -627,6 +627,8 @@
 				457AA3860FDAC45900F0D16C /* PropertyListViewController.m */,
 				458783A30FDB45F7000B4F5D /* PropertyMapViewController.h */,
 				458783A40FDB45F7000B4F5D /* PropertyMapViewController.m */,
+				45783B9310841BF000844E51 /* PropertyResultsViewController.h */,
+				45783B9410841BF000844E51 /* PropertyResultsViewController.m */,
 				455734321038FC770013278E /* PropertySearchSourcesViewController.h */,
 				455734331038FC770013278E /* PropertySearchSourcesViewController.m */,
 				4579324A0FE59783008E2ACD /* PropertySortChoicesViewController.h */,
@@ -637,8 +639,6 @@
 				45C9B2AC105DD13700428FFE /* ProvidedByTruliaCell.m */,
 				45C9B2BB105DD6D200428FFE /* TruliaCopyrightCell.h */,
 				45C9B2BC105DD6D200428FFE /* TruliaCopyrightCell.m */,
-				45783B9310841BF000844E51 /* PropertyResultsViewController.h */,
-				45783B9410841BF000844E51 /* PropertyResultsViewController.m */,
 			);
 			name = Property;
 			sourceTree = "<group>";

@@ -19,7 +19,6 @@
 @property (nonatomic, assign, getter=isGeocoding) BOOL geocoding;
 @property (nonatomic, retain) PropertySummary *property;
 @property (nonatomic, retain) PropertyDetails *details;
-@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) UIAlertView *alertView;
 @property (nonatomic, retain) Geocoder *geocoder;
 @property (nonatomic, assign) NSInteger geocodeIndex;
@@ -422,23 +421,6 @@
     [[self fetchedResultsController] objectAtIndexPath:indexPath];
 
     return [[self fetchedResultsController] objectAtIndexPath:indexPath];
-}
-
-- (void)view:(UIView *)view deletePropertyAtIndex:(NSInteger)index
-{
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-    
-    // Deletes the property, should cascade to delete Details
-    PropertySummary *property = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-    NSManagedObjectContext *managedObjectContext = [property managedObjectContext];
-    [managedObjectContext deleteObject:property];
-    
-    // Commit the change.
-    NSError *error;
-    if (![managedObjectContext save:&error])
-    {
-        DebugLog(@"Error saving after deleting a property.");
-    }
 }
 
 

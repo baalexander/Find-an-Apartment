@@ -7,6 +7,7 @@
 
 @interface PropertyFavoritesViewController : PropertyResultsViewController <NSFetchedResultsControllerDelegate, MFMailComposeViewControllerDelegate>
 {
+    
 }
 
 + (BOOL)addCopyOfProperty:(PropertySummary *)summary;
