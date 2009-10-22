@@ -2,6 +2,7 @@
 #import <MessageUI/MessageUI.h>
 #import <MessageUI/MFMailComposeViewController.h>
 
+#import "PropertyResultsDataSource.h"
 #import "PropertyDetails.h"
 #import "LocationCell.h"
 #import "DescriptionCell.h"
@@ -12,28 +13,29 @@
 #endif
 
 
-@class PropertyDetailsViewController;
-@class WebViewController;
-
-// Protocol for the PropertyDetails view controller to talk back to its delegate
-@protocol PropertyDetailsDelegate <NSObject>
-//Index of details in result list
-- (NSInteger)detailsIndex:(PropertyDetailsViewController *)details;
-//Size of result list
-- (NSInteger)detailsCount:(PropertyDetailsViewController *)details;
-//Gets the previous detail
-- (PropertyDetails *)detailsPrevious:(PropertyDetailsViewController *)details;
-//Gets the next detail
-- (PropertyDetails *)detailsNext:(PropertyDetailsViewController *)details;
-@end
+//@class PropertyDetailsViewController;
+//@class WebViewController;
+//
+//// Protocol for the PropertyDetails view controller to talk back to its delegate
+//@protocol PropertyDetailsDelegate <NSObject>
+////Index of details in result list
+//- (NSInteger)detailsIndex:(PropertyDetailsViewController *)details;
+////Size of result list
+//- (NSInteger)detailsCount:(PropertyDetailsViewController *)details;
+////Gets the previous detail
+//- (PropertyDetails *)detailsPrevious:(PropertyDetailsViewController *)details;
+////Gets the next detail
+//- (PropertyDetails *)detailsNext:(PropertyDetailsViewController *)details;
+//@end
 
 
 @interface PropertyDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate>
 {
     @private
-        id <PropertyDetailsDelegate> delegate_;
-    
         UITableView *tableView_;
+    
+        id <PropertyResultsDataSource> propertyDataSource_;
+        NSInteger propertyIndex_;
     
         PropertyDetails *details_;
         NSMutableArray *sectionTitles_;
@@ -50,8 +52,11 @@
 #endif
 }
 
-@property (nonatomic, assign) id<PropertyDetailsDelegate> delegate;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
+
+@property (nonatomic, assign) id<PropertyResultsDataSource> propertyDataSource;
+@property (nonatomic, assign) NSInteger propertyIndex;
+
 @property (nonatomic, retain) PropertyDetails *details;
 @property (nonatomic, retain) LocationCell *locationCell;
 @property (nonatomic, retain) DescriptionCell *descriptionCell;

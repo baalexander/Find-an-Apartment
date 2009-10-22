@@ -6,7 +6,8 @@
 #import "PropertyHistory.h"
 #import "PropertySummary.h"
 #import "PropertyDetailsViewController.h"
-#import "PropertyDataSource.h"
+#import "PropertyResultsDataSource.h"
+#import "PropertyResultsDelegate.h"
 #import "Geocoder.h"
 
 
@@ -16,13 +17,16 @@
         MKMapView *mapView_;
         PropertySummary *summary_;
         BOOL isCancelled_;
-        id <PropertyDataSource> propertyDataSource_;
+        id <PropertyResultsDataSource> propertyDataSource_;
+        id <PropertyResultsDelegate> propertyDelegate_;
+    
         Geocoder *geocoder_;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
 @property (nonatomic, retain) PropertySummary *summary;
-@property (nonatomic, assign) IBOutlet id <PropertyDataSource> propertyDataSource;
+@property (nonatomic, assign) IBOutlet id <PropertyResultsDataSource> propertyDataSource;
+@property (nonatomic, assign) IBOutlet id <PropertyResultsDelegate> propertyDelegate;
 
 - (void)placeGeocodedPropertyOnMap:(PropertySummary *)property withIndex:(NSInteger)index;
 - (void)centerOnCriteria:(PropertyCriteria *)criteria;

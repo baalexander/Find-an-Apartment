@@ -21,8 +21,9 @@
 
 @implementation PropertyDetailsViewController
 
-@synthesize delegate = delegate_;
 @synthesize tableView = tableView_;
+@synthesize propertyDataSource = propertyDataSource_;
+@synthesize propertyIndex = propertyIndex_;
 @synthesize details = details_;
 @synthesize sectionTitles = sectionTitles_;
 @synthesize sectionDetails = sectionDetails_;
@@ -43,7 +44,7 @@
 {
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
     {
-        
+        DebugLog(@"INIT DETAILS");
     }
     
     return self;
@@ -68,22 +69,44 @@
 
 - (IBAction)previousNext:(id)sender
 {
+    NSInteger propertyCount = [[self propertyDataSource] numberOfPropertiesInView:[self tableView]];
+    
+    // Gets the previous or next property
 	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     NSInteger selectedSegment = [segmentedControl selectedSegmentIndex];
     if (selectedSegment == kDetailsPrevious)
     {
-        PropertyDetails *details = [[self delegate] detailsPrevious:self];
-        [self setDetails:details];
+        // Wraps the property index around if at the first property already
+        if ([self propertyIndex] > 0)
+        {
+            [self setPropertyIndex:[self propertyIndex] - 1];
+        }
+        else
+        {
+            [self setPropertyIndex:propertyCount - 1];
+        }
     }
     else if (selectedSegment == kDetailsNext)
     {
-        PropertyDetails *details = [[self delegate] detailsNext:self];
-        [self setDetails:details];        
+        // Wraps the property index around if at the last property already
+        if ([self propertyIndex] < propertyCount - 1)
+        {
+            [self setPropertyIndex:[self propertyIndex] + 1];
+        }
+        else
+        {
+            [self setPropertyIndex:0];
+        }
     }
     
-    NSString *title = [[NSString alloc] initWithFormat:@"%d of %d", [[self delegate] detailsIndex:self] + 1, [[self delegate] detailsCount:self]];
+    PropertySummary *property = [[self propertyDataSource] view:[self tableView] propertyAtIndex:[self propertyIndex]];
+    PropertyDetails *details = [property details];
+    [self setDetails:details];
+    
+    // Updates the title 
+    NSString *title = [[NSString alloc] initWithFormat:@"%d of %d", [self propertyIndex] + 1, propertyCount];
     [self setTitle:title];
-    [title release];
+    [title release];  
     
     // Disable "Add to Favorites" if the property is already saved
     if([PropertyFavoritesViewController isPropertyAFavorite:[[self details] summary]])
@@ -298,10 +321,12 @@
 
 - (void)viewDidLoad
 {
+    DebugLog(@"DID LOAD");
     [super viewDidLoad];
     
     //Sets title to: "1 of 50"
-    NSString *title = [[NSString alloc] initWithFormat:@"%d of %d", [[self delegate] detailsIndex:self] + 1, [[self delegate] detailsCount:self]];
+    NSInteger propertyCount = [[self propertyDataSource] numberOfPropertiesInView:[self tableView]];
+    NSString *title = [[NSString alloc] initWithFormat:@"%d of %d", [self propertyIndex] + 1, propertyCount];
     [self setTitle:title];
     [title release];    
     

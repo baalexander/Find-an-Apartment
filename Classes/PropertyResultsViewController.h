@@ -1,7 +1,8 @@
 #import <UIKit/UIKit.h>
 #import <ObjectiveLibxml2/ObjectiveLibxml2.h>
 
-#import "PropertyDataSource.h"
+#import "PropertyResultsDelegate.h"
+#import "PropertyResultsDataSource.h"
 #import "PropertyHistory.h"
 #import "PropertySummary.h"
 #import "PropertyDetails.h"
@@ -10,7 +11,10 @@
 #import "Geocoder.h"
 
 
-@interface PropertyResultsViewController : UIViewController <PropertyDataSource, GeocoderDelegate, ParserDelegate>
+@interface PropertyResultsViewController : UIViewController <PropertyResultsDelegate,
+                                                             PropertyResultsDataSource,
+                                                             GeocoderDelegate,
+                                                             ParserDelegate>
 {    
     @private
         // Sub-view controllers

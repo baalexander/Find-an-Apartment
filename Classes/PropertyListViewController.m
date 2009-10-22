@@ -16,6 +16,7 @@
 
 @synthesize tableView = tableView_;
 @synthesize summaryCell = summaryCell_;
+@synthesize propertyDelegate = propertyDelegate_;
 @synthesize propertyDataSource = propertyDataSource_;
 
 
@@ -72,7 +73,7 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[self propertyDataSource] propertyCount];
+    return [[self propertyDataSource] numberOfPropertiesInView:[self tableView]];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -84,7 +85,7 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
     }
 
     //Configures cell with Summary data
-    PropertySummary *summary = [[self propertyDataSource] propertyAtIndex:[indexPath row]];
+    PropertySummary *summary = [[self propertyDataSource] view:[self tableView] propertyAtIndex:[indexPath row]];
     [[[self summaryCell] title] setText:[summary title]];
     [[[self summaryCell] subtitle] setText:[summary subtitle]];
     [[[self summaryCell] summary] setText:[summary summary]];
@@ -99,7 +100,7 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        [[self propertyDataSource] deletePropertyAtIndex:[indexPath row]];
+        [[self propertyDataSource] view:[self tableView] deletePropertyAtIndex:[indexPath row]];
     }
 }
 
@@ -108,16 +109,19 @@ static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 #pragma mark UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{    
+{
+    [[self propertyDelegate] view:[self tableView] didSelectPropertyAtIndex:[indexPath row]];
+//    [[self propertyDelegate] didSelectPropertyAtIndex:[indexPath row]];
     //Gets result from relationship with summary
-    PropertySummary *summary = [[self propertyDataSource] propertyAtIndex:[indexPath row]];
-    PropertyDetails *details = [summary details];   
-    
-    PropertyDetailsViewController *detailsViewController = [[PropertyDetailsViewController alloc] initWithNibName:@"PropertyDetailsView" bundle:nil];
-    //[detailsViewController setDelegate:self];
-    [detailsViewController setDetails:details];
-    [[self navigationController] pushViewController:detailsViewController animated:YES];
-    [detailsViewController release];
+//    PropertySummary *summary = [[self propertyDataSource] propertyAtIndex:[indexPath row]];
+//    PropertyDetails *details = [summary details];   
+//    
+//    PropertyDetailsViewController *detailsViewController = [[PropertyDetailsViewController alloc] initWithNibName:@"PropertyDetailsView" bundle:nil];
+//    //[detailsViewController setDelegate:self];
+//    [detailsViewController setDetails:details];
+//    [[self navigationController] pushViewController:detailsViewController animated:YES];
+//    [detailsViewController release];
+//    DebugLog(@"PRESSED");
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

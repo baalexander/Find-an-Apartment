@@ -269,7 +269,7 @@
 		45783B9310841BF000844E51 /* PropertyResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyResultsViewController.h; path = Classes/PropertyResultsViewController.h; sourceTree = "<group>"; };
 		45783B9410841BF000844E51 /* PropertyResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyResultsViewController.m; path = Classes/PropertyResultsViewController.m; sourceTree = "<group>"; };
 		45783B9510841BF000844E51 /* PropertyResultsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyResultsView.xib; path = Classes/PropertyResultsView.xib; sourceTree = "<group>"; };
-		45783B9E10841EBB00844E51 /* PropertyDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyDataSource.h; sourceTree = "<group>"; };
+		45783B9E10841EBB00844E51 /* PropertyResultsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyResultsDataSource.h; sourceTree = "<group>"; };
 		457930FE0FE36A08008E2ACD /* SummaryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SummaryCell.h; path = Classes/SummaryCell.h; sourceTree = "<group>"; };
 		457930FF0FE36A08008E2ACD /* SummaryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SummaryCell.m; path = Classes/SummaryCell.m; sourceTree = "<group>"; };
 		457931000FE36A08008E2ACD /* SummaryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SummaryCell.xib; path = Classes/SummaryCell.xib; sourceTree = "<group>"; };
@@ -326,6 +326,7 @@
 		45BEE9861008FACC0031613E /* CriteriaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CriteriaViewController.m; path = Classes/CriteriaViewController.m; sourceTree = "<group>"; };
 		45BEEA73100962FF0031613E /* MortgageCriteria.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MortgageCriteria.h; path = Classes/MortgageCriteria.h; sourceTree = "<group>"; };
 		45BEEA74100962FF0031613E /* MortgageCriteria.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MortgageCriteria.m; path = Classes/MortgageCriteria.m; sourceTree = "<group>"; };
+		45C49FCF1090056E00D1D8C0 /* PropertyResultsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyResultsDelegate.h; sourceTree = "<group>"; };
 		45C5FEE91055AEDE001B0CB3 /* State.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = State.h; path = Classes/State.h; sourceTree = "<group>"; };
 		45C5FEEA1055AEDE001B0CB3 /* State.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = State.m; path = Classes/State.m; sourceTree = "<group>"; };
 		45C5FEEB1055AEDE001B0CB3 /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = City.h; path = Classes/City.h; sourceTree = "<group>"; };
@@ -565,7 +566,8 @@
 			children = (
 				457AA38B0FDAC45900F0D16C /* PropertyUrlConstructor.h */,
 				457AA38C0FDAC45900F0D16C /* PropertyUrlConstructor.m */,
-				45783B9E10841EBB00844E51 /* PropertyDataSource.h */,
+				45783B9E10841EBB00844E51 /* PropertyResultsDataSource.h */,
+				45C49FCF1090056E00D1D8C0 /* PropertyResultsDelegate.h */,
 			);
 			name = Property;
 			sourceTree = "<group>";

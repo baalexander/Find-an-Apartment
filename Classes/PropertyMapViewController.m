@@ -21,6 +21,7 @@
 @synthesize summary = summary_;
 @synthesize isCancelled = isCancelled_;
 @synthesize propertyDataSource = propertyDataSource_;
+@synthesize propertyDelegate = propertyDelegate_;
 @synthesize geocoder = geocoder_;
 
 
@@ -49,16 +50,19 @@
 - (IBAction)loadDetailsView:(id)sender
 {
     UIButton *button = (UIButton *)sender;
-    PropertySummary *property = [[self propertyDataSource] propertyAtIndex:[button tag]];
-    
-    //Pushes the Details view controller with the summary
-    PropertyDetailsViewController *detailsViewController =
-        [[PropertyDetailsViewController alloc] initWithNibName:@"PropertyDetailsView"
-                                                        bundle:nil];
-    //[detailsViewController setDelegate:self];
-    [detailsViewController setDetails:[property details]];
-    [[self navigationController] pushViewController:detailsViewController animated:YES];
-    [detailsViewController release];
+    DebugLog(@"CLICKED MAP BUTTON");
+    [[self propertyDelegate] view:[self mapView] didSelectPropertyAtIndex:[button tag]];
+//    PropertySummary *property = [[self propertyDataSource] view:[self mapView] propertyAtIndex:[button tag]];
+//    PropertySummary *property = [[self propertyDataSource] propertyAtIndex:[button tag]];
+//    
+//    //Pushes the Details view controller with the summary
+//    PropertyDetailsViewController *detailsViewController =
+//        [[PropertyDetailsViewController alloc] initWithNibName:@"PropertyDetailsView"
+//                                                        bundle:nil];
+//    //[detailsViewController setDelegate:self];
+//    [detailsViewController setDetails:[property details]];
+//    [[self navigationController] pushViewController:detailsViewController animated:YES];
+//    [detailsViewController release];
 }
 
 - (IBAction)loadGoogleMaps:(id)sender
@@ -192,15 +196,15 @@
             [annotationView setRightCalloutAccessoryView:detailsButton];
             
             //If Property Data Source is set, then coming from a List view controller and should load the Details view controller.
-            if ([self propertyDataSource] != nil)
-            {
+//            if ([self propertyDataSource] != nil)
+//            {
                 [detailsButton addTarget:self action:@selector(loadDetailsView:) forControlEvents:UIControlEventTouchUpInside];
-            }
-            //If History is not set, then coming from Details view controller. Pressing button should load in Google Maps.
-            else
-            {
-                [detailsButton addTarget:self action:@selector(loadGoogleMaps:) forControlEvents:UIControlEventTouchUpInside];
-            }        
+//            }
+//            //If History is not set, then coming from Details view controller. Pressing button should load in Google Maps.
+//            else
+//            {
+//                [detailsButton addTarget:self action:@selector(loadGoogleMaps:) forControlEvents:UIControlEventTouchUpInside];
+//            }        
         }
         
         return annotationView;

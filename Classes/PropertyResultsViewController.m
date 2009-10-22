@@ -4,6 +4,7 @@
 #import "PropertyCriteriaConstants.h"
 #import "PropertyCriteria.h"
 #import "PropertyImage.h"
+#import "PropertyDetailsViewController.h"
 
 
 // TODO: Implement low memory functions
@@ -92,10 +93,6 @@
 	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 	// Type of transition
 	transition.type = kCATransitionFade;
-
-	// Finally, to avoid overlapping transitions we assign ourselves as the delegate for the animation and wait for the
-	// -animationDidStop:finished: message. When it comes in, we will flag that we are no longer transitioning.
-	//transition.delegate = self;
 	
 	// Add the transition to the containerView's layer. This will perform the
     // transition based on how the contents change.
@@ -156,10 +153,10 @@
     // Looks for next property that has not been geocoded
     BOOL foundUngeocodedProperty = NO;
     for (;
-         [self geocodeIndex] < [self propertyCount] && !foundUngeocodedProperty;
+         [self geocodeIndex] < [self numberOfPropertiesInView:[self view]] && !foundUngeocodedProperty;
          [self setGeocodeIndex:([self geocodeIndex] + 1)])
     {
-        PropertySummary *property = [self propertyAtIndex:[self geocodeIndex]];
+        PropertySummary *property = [self view:[self view] propertyAtIndex:[self geocodeIndex]];
         // Checks if longitude and latitude already set. Ignores properties with
         // no location.
         if ([property location] != nil
@@ -302,7 +299,7 @@
         // incremented in the geocode next property loop
         NSInteger propertyIndex = [self geocodeIndex] - 1;
         
-        PropertySummary *property = [self propertyAtIndex:propertyIndex];
+        PropertySummary *property = [self view:[self view] propertyAtIndex:propertyIndex];
         
         // Sets the coordinate data in the property
         NSNumber *longitude = [[NSNumber alloc] initWithDouble:coordinate.longitude];
@@ -402,7 +399,7 @@
 #pragma mark -
 #pragma mark PropertyDataSource
 
-- (NSInteger)propertyCount
+- (NSInteger)numberOfPropertiesInView:(UIView *)view
 {
     NSInteger numberOfRows = 0;
     
@@ -416,7 +413,7 @@
     return numberOfRows;
 }
 
-- (PropertySummary *)propertyAtIndex:(NSInteger)index
+- (PropertySummary *)view:(UIView *)view propertyAtIndex:(NSInteger)index;
 {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     [[self fetchedResultsController] objectAtIndexPath:indexPath];
@@ -424,7 +421,7 @@
     return [[self fetchedResultsController] objectAtIndexPath:indexPath];
 }
 
-- (BOOL)deletePropertyAtIndex:(NSInteger)index
+- (void)view:(UIView *)view deletePropertyAtIndex:(NSInteger)index
 {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     
@@ -438,11 +435,25 @@
     if (![managedObjectContext save:&error])
     {
         DebugLog(@"Error saving after deleting a property.");
-        
-        return NO;
     }
+}
+
+
+#pragma mark -
+#pragma mark PropertyResultsDelegate
+
+- (void)view:(UIView *)view didSelectPropertyAtIndex:(NSInteger)index
+{
+    //Gets result from relationship with summary
+    PropertySummary *summary = [self view:[self view] propertyAtIndex:index];
+    PropertyDetails *details = [summary details];   
     
-    return YES;
+    PropertyDetailsViewController *detailsViewController = [[PropertyDetailsViewController alloc] initWithNibName:@"PropertyDetailsView" bundle:nil];
+    [detailsViewController setPropertyDataSource:self];
+    [detailsViewController setPropertyIndex:index];
+    [detailsViewController setDetails:details];
+    [[self navigationController] pushViewController:detailsViewController animated:YES];
+    [detailsViewController release];
 }
 
 
