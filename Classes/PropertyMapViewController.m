@@ -11,6 +11,7 @@
 @property (nonatomic, retain) PropertyCriteria *criteria;
 @property (nonatomic, retain) Geocoder *geocoder;
 @property (nonatomic, assign, getter=isGeocoding) BOOL geocoding;
+@property (nonatomic, assign, getter=isCentered) BOOL centered;
 @end
 
 
@@ -22,6 +23,7 @@
 @synthesize criteria = criteria_;
 @synthesize geocoder = geocoder_;
 @synthesize geocoding = geocoding_;
+@synthesize centered = centered_;
 
 
 #pragma mark -
@@ -32,6 +34,7 @@
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
     {
         [self setGeocoding:NO];
+        [self setCentered:NO];
     }
     
     return self;
@@ -73,6 +76,14 @@
     // Add pin to the map
     [[self mapView] addAnnotation:annotation];
     [annotation release];
+    
+    // If the map is not already centered, center on this property
+    if (![self isCentered])
+    {
+        [self setCentered:YES];
+        
+        [self centerOnCoordinate:coordinate];
+    }
 }
 
 - (void)centerOnCriteria:(PropertyCriteria *)criteria
@@ -109,6 +120,8 @@
 
 - (void)centerOnCoordinate:(CLLocationCoordinate2D)coordinate
 {
+    [self setCentered:YES];
+    
     // Add padding so the pins aren't on the very edge of the map
     MKCoordinateSpan span;
     span.longitudeDelta = kLongitudeDelta;
@@ -117,7 +130,7 @@
     MKCoordinateRegion region;
     region.center = coordinate;
     region.span = span;
-    [[self mapView] setRegion:region animated:YES]; 
+    [[self mapView] setRegion:region animated:NO]; 
 }
 
 

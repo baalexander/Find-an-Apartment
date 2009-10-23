@@ -16,6 +16,7 @@
         PropertyCriteria *criteria_;
         Geocoder *geocoder_;
         BOOL geocoding_;
+        BOOL centered_;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;

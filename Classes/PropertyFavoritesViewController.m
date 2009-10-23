@@ -3,6 +3,7 @@
 #import "PropertyListEmailerViewController.h"
 #import "PropertyDetails.h"
 #import "PropertyImage.h"
+#import "PropertyListAndMapConstants.h"
 
 
 @implementation PropertyFavoritesViewController
@@ -187,6 +188,25 @@
     }
     
     return history;
+}
+
+- (IBAction)changeView:(id)sender
+{
+    [super changeView:sender];
+    
+    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+    
+    // Enables Edit button if going to List view
+    if ([segmentedControl selectedSegmentIndex] == kListItem)
+    {
+        [[[self navigationItem] leftBarButtonItem] setEnabled:YES];
+    }
+    // Disables Edit button if not switching to a List view
+    else
+    {
+        [[[self navigationItem] leftBarButtonItem] setEnabled:NO];
+    }
+
 }
 
 - (void)share:(id)sender

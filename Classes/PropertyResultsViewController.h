@@ -48,5 +48,6 @@
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
 - (void)parse:(NSURL *)url;
+- (IBAction)changeView:(id)sender;
 
 @end
