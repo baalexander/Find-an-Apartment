@@ -1,6 +1,8 @@
 #import "PropertyResultsViewController.h"
+
 #import <QuartzCore/QuartzCore.h>
-#import "PropertyListAndMapConstants.h"
+
+#import "PropertyResultsConstants.h"
 #import "PropertyCriteriaConstants.h"
 #import "PropertyCriteria.h"
 #import "PropertyImage.h"
@@ -123,7 +125,7 @@
     XmlParser *parser = [[XmlParser alloc] init];
     [parser setDelegate:self];
     [parser setUrl:url];
-    [parser setItemDelimiter:kPropertyDelimiter];
+    [parser setItemDelimiter:"property"];
     
     // Add the Parser to an operation queue for background processing (works on
     // a separate thread)
@@ -144,7 +146,9 @@
     // Looks for next property that has not been geocoded
     BOOL foundUngeocodedProperty = NO;
     for (;
-         [self geocodeIndex] < [self numberOfPropertiesInView:[self view]] && !foundUngeocodedProperty;
+         [self geocodeIndex] < [self numberOfPropertiesInView:[self view]]
+            && [self geocodeIndex] < kMaxGeocodeProperties
+            && !foundUngeocodedProperty;
          [self setGeocodeIndex:([self geocodeIndex] + 1)])
     {
         PropertySummary *property = [self view:[self view] propertyAtIndex:[self geocodeIndex]];
@@ -176,10 +180,10 @@
     {
         [self setGeocoding:NO];
         
-        // Saves the context
+        // Saves the context if there's changes
         NSError *error;
         NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
-        if (![managedObjectContext save:&error])
+        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
         {
             DebugLog(@"Error saving property context in Results geocoder's enqueue.");
         }

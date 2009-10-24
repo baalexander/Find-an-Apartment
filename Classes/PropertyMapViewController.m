@@ -1,6 +1,5 @@
 #import "PropertyMapViewController.h"
 
-#import "PropertyListAndMapConstants.h"
 #import "Placemark.h"
 #import "PropertyAnnotation.h"
 #import "PropertySummary.h"
@@ -124,8 +123,8 @@
     
     // Add padding so the pins aren't on the very edge of the map
     MKCoordinateSpan span;
-    span.longitudeDelta = kLongitudeDelta;
-    span.latitudeDelta = kLatitudeDelta;
+    span.longitudeDelta = 0.05;
+    span.latitudeDelta = 0.05;
     
     MKCoordinateRegion region;
     region.center = coordinate;
@@ -140,6 +139,8 @@
 // Create the annotations view for use when it appears on the screen
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
+    static NSString *kPropertyPinId = @"PROPERTY_PIN_ID";
+
     // Create pins with buttons. Make sure a PropertyAnnotation so the current
     // location is still the "blue dot" pin.
     if ([annotation isMemberOfClass:[PropertyAnnotation class]])

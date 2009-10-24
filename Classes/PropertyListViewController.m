@@ -52,7 +52,6 @@
 
 static NSString *kSummaryCellId = @"SUMMARY_CELL_ID";
 
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
