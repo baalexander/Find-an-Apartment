@@ -31,16 +31,6 @@
 #pragma mark -
 #pragma mark PropertyCriteriaViewController
 
-- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
-{
-    if ((self = [super initWithNibName:nibName bundle:nibBundle]))
-    {
-
-    }
-    
-    return self;
-}
-
 - (void)dealloc
 {
     [propertyObjectContext_ release];    

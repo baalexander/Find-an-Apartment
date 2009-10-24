@@ -33,16 +33,6 @@ static const char *kItemName = "loan";
 #pragma mark -
 #pragma mark MortgageResultsViewController
 
-- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
-{
-    if ((self = [super initWithNibName:nibName bundle:nibBundle]))
-    {
-
-    }
-    
-    return self;
-}
-
 - (void)dealloc
 {
     [operationQueue_ release];

@@ -19,16 +19,6 @@
 #pragma mark -
 #pragma mark PropertyHistoryViewController
 
-- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
-{
-    if ((self = [super initWithNibName:nibName bundle:nibBundle]))
-    {
-
-    }
-    
-    return self;
-}
-
 - (void)dealloc
 {
     [fetchedResultsController_ release];

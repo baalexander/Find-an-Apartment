@@ -12,16 +12,6 @@
 #pragma mark -
 #pragma mark PropertyFavoritesViewController
 
-- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
-{
-    if ((self = [super initWithNibName:nibName bundle:nibBundle]))
-    {
-
-    }
-    
-    return self;
-}
-
 - (void)dealloc
 {
     [super dealloc];

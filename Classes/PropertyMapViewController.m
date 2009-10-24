@@ -29,17 +29,6 @@
 #pragma mark -
 #pragma mark PropertyMapViewController
 
-- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
-{
-    if ((self = [super initWithNibName:nibName bundle:nibBundle]))
-    {
-        [self setGeocoding:NO];
-        [self setCentered:NO];
-    }
-    
-    return self;
-}
-
 - (void)dealloc
 {
     [mapView_ release];

@@ -24,16 +24,6 @@
 #pragma mark -
 #pragma mark CitiesViewController
 
-- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
-{
-    if ((self = [super initWithNibName:nibName bundle:nibBundle]))
-    {     
-        [self setTitle:@"City"];        
-    }
-    
-    return self;
-}
-
 - (void)dealloc
 {
     [fetchedResultsController_ release];
@@ -104,6 +94,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self setTitle:@"City"];
 
     // Search setup
     [self setFilteredContent:[[NSArray alloc] init]];

@@ -40,16 +40,6 @@
 #pragma mark -
 #pragma mark PropertyDetailsViewController
 
-- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
-{
-    if ((self = [super initWithNibName:nibName bundle:nibBundle]))
-    {
-
-    }
-    
-    return self;
-}
-
 - (void)dealloc
 {
     [tableView_ release];
