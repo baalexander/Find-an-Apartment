@@ -355,10 +355,6 @@
 {
     [super viewDidLoad];
     
-    // Default state values
-    [self setGeocodeIndex:0];
-    [self setParsing:NO];
-    [self setGeocoding:NO];
     // Make Map dirty initially so will be geocoded when switching to it
     [self setMapIsDirty:YES];
     
