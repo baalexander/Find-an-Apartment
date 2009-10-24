@@ -385,6 +385,15 @@
     [segmentBarItem release];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Need to tell List view to deselect its row
+    // Is ignored if the List view has no selected row
+    [[self listViewController] deselectRow];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     // Cancels any operations in the queue. This is for when pressing the back

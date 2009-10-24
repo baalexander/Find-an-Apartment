@@ -26,6 +26,12 @@
     [super dealloc];
 }
 
+- (void)deselectRow
+{
+    NSIndexPath *selectedRowIndexPath = [[self tableView] indexPathForSelectedRow];
+    [[self tableView] deselectRowAtIndexPath:selectedRowIndexPath animated:YES];
+}
+
 
 #pragma mark -
 #pragma mark UIViewController
@@ -37,10 +43,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
-    
-    NSIndexPath *selectedRowIndexPath = [[self tableView] indexPathForSelectedRow];
-    [[self tableView] deselectRowAtIndexPath:selectedRowIndexPath animated:YES];
+    [super viewWillAppear:animated];    
 }
 
 

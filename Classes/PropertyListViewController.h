@@ -19,4 +19,6 @@
 @property (nonatomic, assign) IBOutlet id <PropertyResultsDataSource> propertyDataSource;
 @property (nonatomic, assign) IBOutlet id <PropertyResultsDelegate> propertyDelegate;
 
+- (void)deselectRow;
+
 @end
