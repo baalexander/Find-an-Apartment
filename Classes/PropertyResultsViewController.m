@@ -22,7 +22,6 @@
 @property (nonatomic, retain) UIAlertView *alertView;
 @property (nonatomic, retain) Geocoder *geocoder;
 @property (nonatomic, assign) NSInteger geocodeIndex;
-- (void)geocodeNextProperty;
 - (void)geocodeProperty:(PropertySummary *)property;
 - (void)updateViewsWithGeocodedProperty:(PropertySummary *)property withIndex:(NSInteger)index;
 @end
@@ -42,6 +41,7 @@
 @synthesize alertView = alertView_;
 @synthesize geocoder = geocoder_;
 @synthesize geocodeIndex = geocodeIndex_;
+@synthesize mapIsDirty = mapIsDirty_;
 
 
 #pragma mark -
@@ -51,9 +51,7 @@
 {
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
     {
-        [self setGeocodeIndex:0];
-        [self setParsing:NO];
-        [self setGeocoding:NO];
+
     }
     
     return self;
@@ -79,10 +77,13 @@
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     
     // Start geocoding properties if switching to a view requiring geocoded
-    // properties and not already geocoding
+    // properties, not already geocoding, and map view is out of sync (dirty)
     if ([segmentedControl selectedSegmentIndex] == kMapItem
-        && ![self isGeocoding])
+        && ![self isGeocoding]
+        && [self mapIsDirty])
     {
+        [self setMapIsDirty:NO];
+        
         [self geocodeNextProperty];
     }
     
@@ -195,6 +196,12 @@
     }
 }
 
+- (void)resetGeocoding
+{
+    [self setGeocoding:NO];
+    [self setGeocodeIndex:0];
+}
+
 // Begins geocoding the next property
 // Meant to be called as a selector with a delay to prevent flooding request to
 // maps
@@ -218,8 +225,7 @@
 - (void)updateViewsWithGeocodedProperty:(PropertySummary *)property withIndex:(NSInteger)index
 {
     // Updates the Map view with the new property
-    [[self mapViewController] placeGeocodedPropertyOnMap:property
-                                               withIndex:index];
+    [[self mapViewController] addGeocodedProperty:property atIndex:index];
 }
 
 - (NSFetchedResultsController *)fetchedResultsController
@@ -348,6 +354,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Default state values
+    [self setGeocodeIndex:0];
+    [self setParsing:NO];
+    [self setGeocoding:NO];
+    // Make Map dirty initially so will be geocoded when switching to it
+    [self setMapIsDirty:YES];
     
     // If not in the middle of parsing, fetch all objects
     // This will occur when going from History view controller to Results
@@ -483,6 +496,9 @@
     
     // Reloads the List view
     [[[self listViewController] tableView] reloadData];
+    
+    // Tell Map view data is out of sync and needs to be loaded
+    [self setMapIsDirty:YES];
     
     // Dismisses the progress alert
     // Send a cancel index of 1 to show the app sent the dismiss, not a user

@@ -55,7 +55,12 @@
     [[self propertyDelegate] view:[self mapView] didSelectPropertyAtIndex:[button tag]];
 }
 
-- (void)placeGeocodedPropertyOnMap:(PropertySummary *)property withIndex:(NSInteger)index
+- (void)addProperty:(PropertySummary *)property atIndex:(NSInteger)index
+{
+    // TODO: Implement
+}
+
+- (void)addGeocodedProperty:(PropertySummary *)property atIndex:(NSInteger)index
 {
     // Creates Placemark
     Placemark *placemark = [[Placemark alloc] init];
@@ -84,6 +89,12 @@
         
         [self centerOnCoordinate:coordinate];
     }
+}
+
+- (void)resetMap
+{
+    NSArray *annotations = [[self mapView] annotations];
+    [[self mapView] removeAnnotations:annotations];
 }
 
 - (void)centerOnCriteria:(PropertyCriteria *)criteria
@@ -153,15 +164,23 @@
         {
             annotationView = [[[MKPinAnnotationView alloc] initWithAnnotation:propertyAnnotation reuseIdentifier:kPropertyPinId] autorelease];
             [annotationView setCanShowCallout:YES];
-
+            
+            // Create a button and add to the Annotation view
             UIButton *detailsButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-            [detailsButton setTag:[propertyAnnotation index]];
             [detailsButton setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
             [detailsButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
             [annotationView setRightCalloutAccessoryView:detailsButton];
-            
-            [detailsButton addTarget:self action:@selector(clickedButton:) forControlEvents:UIControlEventTouchUpInside];
         }
+        
+        // The button tag maps to the property index
+        // This identifies which property to load when the button is clicked
+        UIButton *detailsButton = (UIButton *)[annotationView rightCalloutAccessoryView];
+        [detailsButton setTag:[propertyAnnotation index]];
+        
+        [detailsButton addTarget:self
+                          action:@selector(clickedButton:)
+                forControlEvents:UIControlEventTouchUpInside];
+        
         
         return annotationView;
     }

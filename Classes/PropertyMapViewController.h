@@ -23,7 +23,9 @@
 @property (nonatomic, assign) IBOutlet id <PropertyResultsDataSource> propertyDataSource;
 @property (nonatomic, assign) IBOutlet id <PropertyResultsDelegate> propertyDelegate;
 
-- (void)placeGeocodedPropertyOnMap:(PropertySummary *)property withIndex:(NSInteger)index;
+- (void)addProperty:(PropertySummary *)property atIndex:(NSInteger)index;
+- (void)addGeocodedProperty:(PropertySummary *)property atIndex:(NSInteger)index;
+- (void)resetMap;
 - (void)centerOnCriteria:(PropertyCriteria *)criteria;
 - (void)centerOnCoordinate:(CLLocationCoordinate2D)coordinate;
 

@@ -44,7 +44,7 @@
 {
     if ((self = [super initWithNibName:nibName bundle:nibBundle]))
     {
-        DebugLog(@"INIT DETAILS");
+
     }
     
     return self;
@@ -321,7 +321,6 @@
 
 - (void)viewDidLoad
 {
-    DebugLog(@"DID LOAD");
     [super viewDidLoad];
     
     //Sets title to: "1 of 50"

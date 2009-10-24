@@ -35,6 +35,7 @@
         Geocoder *geocoder_;
         NSInteger geocodeIndex_;
         BOOL geocoding_;
+        BOOL mapIsDirty_;
     
         UIAlertView *alertView_;
 }
@@ -44,10 +45,13 @@
 @property (nonatomic, retain) IBOutlet PropertyListViewController *listViewController;
 @property (nonatomic, retain) IBOutlet PropertyMapViewController *mapViewController;
 
-// This would be "protected" for Favorites to use, if such a thing existed
+// These would be "protected" for Favorites to use, if such a thing existed
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, assign) BOOL mapIsDirty;
 
 - (void)parse:(NSURL *)url;
+- (void)geocodeNextProperty;
+- (void)resetGeocoding;
 - (IBAction)changeView:(id)sender;
 
 @end

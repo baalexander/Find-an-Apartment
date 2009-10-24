@@ -44,7 +44,7 @@
     PropertyHistory *history = [PropertyFavoritesViewController favoriteHistoryFromContext:managedObjectContext];
     if (history == nil)
     {
-        DebugLog(@"Error getting a favorites History.");
+        DebugLog(@"Error getting a favorite History.");
         
         return NO;
     }
@@ -231,18 +231,21 @@
     [tableView setEditing:isEditing animated:YES];
     
     // Switches Edit button to Done or Edit depending on status
+    UIBarButtonItem *editButton;
     if ([tableView isEditing])
     {
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(edit:)];
-        [[self navigationItem] setLeftBarButtonItem:doneButton];
-        [doneButton release];        
+        editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                   target:self
+                                                                   action:@selector(edit:)];
     }
     else
     {
-        UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(edit:)];
-        [[self navigationItem] setLeftBarButtonItem:editButton];
-        [editButton release];        
-    }    
+        editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                   target:self
+                                                                   action:@selector(edit:)];
+    }
+    [[self navigationItem] setLeftBarButtonItem:editButton];
+    [editButton release];
 }
 
 - (NSFetchedResultsController *)fetchedResultsController
@@ -272,6 +275,9 @@
     {
         DebugLog(@"Error saving after deleting a property.");
     }
+    
+    // Fetched results controller delegate handles removing property from the
+    // view controllers
 }
 
 
@@ -288,6 +294,22 @@
                                                                                 action:@selector(edit:)];
     [[self navigationItem] setLeftBarButtonItem:editButton];
     [editButton release];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Could be switching tabs to the Favorites view controller. If the
+    // Favorites view controller is already on the Map view and the Map view is
+    // out of sync (dirty), then need to repopulate the Map view
+    if ([self mapIsDirty])
+    {
+        [self setMapIsDirty:NO];
+        
+        // Repopulate the map
+        [self geocodeNextProperty];
+    }
 }
 
 
@@ -307,40 +329,41 @@
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
-    UITableView *tableView = [[self listViewController] tableView];
-    
-    if (type == NSFetchedResultsChangeInsert)
+    // Only concerned with inserts and deletes
+    if (type == NSFetchedResultsChangeInsert || type == NSFetchedResultsChangeDelete)
     {
-        NSArray *indexPaths = [[NSArray alloc] initWithObjects:newIndexPath, nil];
-        [tableView insertRowsAtIndexPaths:indexPaths
-                         withRowAnimation:UITableViewRowAnimationFade];
-        [indexPaths release];
-    }
-    else if (type == NSFetchedResultsChangeDelete)
-    {
-        NSArray *indexPaths = [[NSArray alloc] initWithObjects:indexPath, nil];
-        [tableView deleteRowsAtIndexPaths:indexPaths
-                         withRowAnimation:UITableViewRowAnimationFade];
-        [indexPaths release];
-    }
-}
+        // The map will be out of sync after the change action
+        // Reset the map and stop any geocoding
+        // When to repopulate the map depends on the action
+        [[self mapViewController] resetMap];
+        [self resetGeocoding];
+        
+        // Signal for the map to be repopulated later (when the view appears)
+        // Do not repopulate the map right now
+        // Repopulating the map means re-geocoding all the properties. But
+        // geocoding saves the context after each property's coordinates are
+        // set. Since this delegate is called before the original insert or
+        // delete action context saves, an error will result.
+        [self setMapIsDirty:YES];
 
-- (void)controller:(NSFetchedResultsController *)controller
-  didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
-           atIndex:(NSUInteger)sectionIndex
-     forChangeType:(NSFetchedResultsChangeType)type
-{
-    UITableView *tableView = [[self listViewController] tableView];
-    
-    if (type == NSFetchedResultsChangeInsert)
-    {
-        [tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]
-                 withRowAnimation:UITableViewRowAnimationFade];
-    }
-    else if (type == NSFetchedResultsChangeDelete)
-    {
-        [tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]
-                 withRowAnimation:UITableViewRowAnimationFade];
+        // Updates the List view with the changes
+        UITableView *tableView = [[self listViewController] tableView];
+        if (type == NSFetchedResultsChangeInsert)
+        {
+            // Inserts row into the List view controller
+            NSArray *indexPaths = [[NSArray alloc] initWithObjects:newIndexPath, nil];
+            [tableView insertRowsAtIndexPaths:indexPaths
+                             withRowAnimation:UITableViewRowAnimationFade];
+            [indexPaths release];
+        }
+        else if (type == NSFetchedResultsChangeDelete)
+        {
+            // Deletes row from the List view controller
+            NSArray *indexPaths = [[NSArray alloc] initWithObjects:indexPath, nil];
+            [tableView deleteRowsAtIndexPaths:indexPaths
+                             withRowAnimation:UITableViewRowAnimationFade];
+            [indexPaths release];
+        }
     }
 }
 
