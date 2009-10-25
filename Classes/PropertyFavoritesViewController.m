@@ -1,9 +1,9 @@
 #import "PropertyFavoritesViewController.h"
 
+#import "PropertyResultsConstants.h"
 #import "PropertyListEmailerViewController.h"
 #import "PropertyDetails.h"
 #import "PropertyImage.h"
-#import "PropertyListAndMapConstants.h"
 
 
 @implementation PropertyFavoritesViewController

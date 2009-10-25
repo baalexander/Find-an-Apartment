@@ -14,7 +14,7 @@
 @interface PropertyResultsViewController : UIViewController <PropertyResultsDelegate,
                                                              PropertyResultsDataSource,
                                                              GeocoderDelegate,
-                                                             ParserDelegate>
+                                                             XmlParserDelegate>
 {    
     @private
         // Sub-view controllers

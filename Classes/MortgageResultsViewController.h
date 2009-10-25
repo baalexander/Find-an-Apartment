@@ -5,7 +5,7 @@
 #import "ProvidedByZillowCell.h"
 
 
-@interface MortgageResultsViewController : UITableViewController <ParserDelegate>
+@interface MortgageResultsViewController : UITableViewController <XmlParserDelegate>
 {
     @private
         NSOperationQueue *operationQueue_;

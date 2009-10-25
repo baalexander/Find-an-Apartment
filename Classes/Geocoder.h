@@ -15,7 +15,7 @@
  * Geocoder and GeocoderDelegate methods are meant to resemble MKReverseGeocoder 
  * and MKReverseGeocoderDelegate.
  */
-@interface Geocoder : NSObject <ParserDelegate>
+@interface Geocoder : NSObject <XmlParserDelegate>
 {
     @private
         id<GeocoderDelegate> delegate_;
