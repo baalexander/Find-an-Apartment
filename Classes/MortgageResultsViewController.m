@@ -11,7 +11,7 @@ static const char *kItemName = "loan";
 
 @interface MortgageResultsViewController ()
 @property (nonatomic, retain) NSOperationQueue *operationQueue;
-@property (nonatomic, assign) BOOL isParsing;
+@property (nonatomic, assign, getter=isParsing) BOOL parsing;
 @property (nonatomic, retain) NSMutableArray *loans;
 @property (nonatomic, retain) NSMutableArray *sectionTitles;
 @property (nonatomic, retain) NSMutableDictionary *loan;
@@ -22,7 +22,7 @@ static const char *kItemName = "loan";
 @implementation MortgageResultsViewController
 
 @synthesize operationQueue = operationQueue_;
-@synthesize isParsing = isParsing_;
+@synthesize parsing = parsing_;
 @synthesize loans = loans_;
 @synthesize sectionTitles = sectionTitles_;
 @synthesize loan = loan_;
@@ -82,7 +82,7 @@ static const char *kItemName = "loan";
 
 - (void)parse:(NSURL *)url
 {
-    [self setIsParsing:YES];
+    [self setParsing:YES];
     
     NSMutableArray *loans = [[NSMutableArray alloc] init];
     [self setLoans:loans];
@@ -111,6 +111,13 @@ static const char *kItemName = "loan";
     return (NSInteger)[indexPath section] == [self numberOfSectionsInTableView:[self tableView]] - 1;
 }
 
+- (void)setParsing:(BOOL)parsing
+{
+    parsing_ = parsing;
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:parsing];
+}
+
 - (NSOperationQueue *)operationQueue
 {
     if (operationQueue_ == nil)
@@ -132,8 +139,11 @@ static const char *kItemName = "loan";
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    //Cancels any operations in the queue. This is for when pressing the back button and dismissing the view controller. This prevents the parser from still running and failing when calling its delegate.
+    // Cancels any operations in the queue. This is for when pressing the back
+    // button and dismissing the view controller. This prevents the parser from
+    // still running and failing when calling its delegate.
     [[self operationQueue] cancelAllOperations];
+    [self setParsing:NO];
 }
 
 
@@ -295,13 +305,25 @@ static NSString *kDetailCellId = @"DETAIL_CELL_ID";
 
 - (void)parserDidEndParsingData:(XmlParser *)parser
 {
-    [self setIsParsing:NO];
+    // If cancel was called before this call back, stop all parsing
+    if (![self isParsing])
+    {
+        return;
+    }
+    
+    [self setParsing:NO];
     
     [[self tableView] reloadData];
 }
 
 - (void)parser:(XmlParser *)parser addXmlElement:(XmlElement *)xmlElement
 {
+    // If cancel was called before this call back, stop all parsing
+    if (![self isParsing])
+    {
+        return;
+    }
+    
     NSString *elementName = [xmlElement name];
     NSString *elementValue = [xmlElement value];
     
@@ -343,6 +365,12 @@ static NSString *kDetailCellId = @"DETAIL_CELL_ID";
 
 - (void)parserDidBeginItem:(XmlParser *)parser
 {
+    // If cancel was called before this call back, stop all parsing
+    if (![self isParsing])
+    {
+        return;
+    }
+    
     NSMutableDictionary *loan = [[NSMutableDictionary alloc] init];
     [self setLoan:loan];
     [loan release];
@@ -360,7 +388,13 @@ static NSString *kDetailCellId = @"DETAIL_CELL_ID";
 
 - (void)parser:(XmlParser *)parser didFailWithError:(NSError *)error
 {
-    [self setIsParsing:NO];
+    // If cancel was called before this call back, stop all parsing
+    if (![self isParsing])
+    {
+        return;
+    }
+    
+    [self setParsing:NO];
     
     UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error downloading rates"
                                                          message:[error localizedDescription] 

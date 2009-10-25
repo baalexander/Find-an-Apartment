@@ -9,7 +9,7 @@
 {
     @private
         NSOperationQueue *operationQueue_;
-        BOOL isParsing_;
+        BOOL parsing_;
         NSMutableArray *loans_;
         NSMutableArray *sectionTitles_;
         NSMutableDictionary *loan_;
