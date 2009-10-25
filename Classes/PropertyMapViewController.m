@@ -62,6 +62,7 @@
     
     // Setup the pin to be placed on the map
     PropertyAnnotation *annotation = [[PropertyAnnotation alloc] initWithPlacemark:placemark];
+    [placemark release];
     // Index is used to keep track of button pressings on the map and the
     // property they correspond to
     [annotation setIndex:index];

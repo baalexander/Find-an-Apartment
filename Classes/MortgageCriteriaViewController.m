@@ -67,15 +67,22 @@
 {
     float purchasePrice = [[[self criteria] purchasePrice] floatValue];
     float cashDown = [[[self criteria] cashDown] floatValue];
-    
-    NSNumber *percentDown = [[NSNumber alloc] initWithFloat:(((float) cashDown / purchasePrice) * (float)100.0)];
-    // percentDown can become NaN if the user sets percent down to 0 and cash down to 0
-    if(isnan([percentDown doubleValue]))
+    float percentDown = (((float) cashDown / purchasePrice) * (float)100.0);
+
+    NSNumber *percentDownNumber;
+    // percent down can become NaN if the user sets percent down to 0 and cash
+    // down to 0
+    if (isnan(percentDown))
     {
-        percentDown = [NSNumber numberWithInt:0];
+        percentDownNumber = [[NSNumber alloc] initWithFloat:0];
     }
-    [[self criteria] setPercentDown:percentDown];
-    [percentDown release];
+    else
+    {
+        percentDownNumber = [[NSNumber alloc] initWithFloat:percentDown];
+    }
+
+    [[self criteria] setPercentDown:percentDownNumber];
+    [percentDownNumber release];
 }
 
 - (void)calculatePurchasePrice
