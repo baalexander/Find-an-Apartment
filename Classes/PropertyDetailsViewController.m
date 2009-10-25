@@ -4,7 +4,7 @@
 #import "PropertyFavoritesViewController.h"
 #import "PropertyListEmailerViewController.h"
 #import "StringFormatter.h"
-#import "PropertyMapViewController.h"
+#import "PropertyDetailsMapViewController.h"
 #import "PropertyImage.h"
 #import "WebViewController.h"
 #import "ImagesViewController.h"
@@ -518,11 +518,14 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
     
     if ([key isEqual:kDetailsLocation])
     {
-//        PropertyMapViewController *mapController = [[PropertyMapViewController alloc] initWithNibName:@"PropertyMapView" bundle:nil];
-//        [mapController setSummary:[[self details] summary]];
-//        
-//        [[self navigationController] pushViewController:mapController animated:YES];
-//        [mapController release];
+        PropertyDetailsMapViewController *mapController =
+            [[PropertyDetailsMapViewController alloc] initWithNibName:@"PropertyDetailsMapView" bundle:nil];
+        [[self navigationController] pushViewController:mapController animated:YES];
+
+        // Need to map the property AFTER the view loads (from the pushViewController)
+        [mapController mapProperty:[[self details] summary]];
+
+        [mapController release];
     }
     
     if ([key isEqual:kDetailsImages])

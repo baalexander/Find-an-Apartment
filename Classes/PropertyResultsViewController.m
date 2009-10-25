@@ -423,6 +423,7 @@
     // actions like parser or geocoder from still running and failing when
     // calling its delegate.
     [[self operationQueue] cancelAllOperations];
+    [[self geocoder] cancel];
     [self setParsing:NO];
     [self setGeocoding:NO];
 }

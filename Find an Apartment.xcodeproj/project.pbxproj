@@ -66,6 +66,10 @@
 		458783A70FDB45F7000B4F5D /* PropertyMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458783A50FDB45F7000B4F5D /* PropertyMapView.xib */; };
 		458A49AA1031373000375D4C /* PropertySummary.m in Sources */ = {isa = PBXBuildFile; fileRef = 458A49A91031373000375D4C /* PropertySummary.m */; };
 		458A49AB1031373000375D4C /* PropertySummary.m in Sources */ = {isa = PBXBuildFile; fileRef = 458A49A91031373000375D4C /* PropertySummary.m */; };
+		4590CB46109503BA00CB6CF4 /* PropertyDetailsMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590CB44109503BA00CB6CF4 /* PropertyDetailsMapViewController.m */; };
+		4590CB47109503BA00CB6CF4 /* PropertyDetailsMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4590CB45109503BA00CB6CF4 /* PropertyDetailsMapView.xib */; };
+		4590CB48109503BA00CB6CF4 /* PropertyDetailsMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590CB44109503BA00CB6CF4 /* PropertyDetailsMapViewController.m */; };
+		4590CB49109503BA00CB6CF4 /* PropertyDetailsMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4590CB45109503BA00CB6CF4 /* PropertyDetailsMapView.xib */; };
 		459CA0D1100AA98700108747 /* MortgageUrlConstructor.m in Sources */ = {isa = PBXBuildFile; fileRef = 459CA0D0100AA98700108747 /* MortgageUrlConstructor.m */; };
 		459CA0D4100AAA0000108747 /* UrlConstructor.m in Sources */ = {isa = PBXBuildFile; fileRef = 459CA0D3100AAA0000108747 /* UrlConstructor.m */; };
 		459CA108100ABEF900108747 /* MortgageResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459CA106100ABEF900108747 /* MortgageResultsViewController.m */; };
@@ -310,6 +314,9 @@
 		458A49A81031373000375D4C /* PropertySummary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertySummary.h; path = Classes/PropertySummary.h; sourceTree = "<group>"; };
 		458A49A91031373000375D4C /* PropertySummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertySummary.m; path = Classes/PropertySummary.m; sourceTree = "<group>"; };
 		458C8075106085DF005CD7A2 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = Classes/Constants.h; sourceTree = "<group>"; };
+		4590CB43109503BA00CB6CF4 /* PropertyDetailsMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyDetailsMapViewController.h; path = Classes/PropertyDetailsMapViewController.h; sourceTree = "<group>"; };
+		4590CB44109503BA00CB6CF4 /* PropertyDetailsMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyDetailsMapViewController.m; path = Classes/PropertyDetailsMapViewController.m; sourceTree = "<group>"; };
+		4590CB45109503BA00CB6CF4 /* PropertyDetailsMapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyDetailsMapView.xib; path = Classes/PropertyDetailsMapView.xib; sourceTree = "<group>"; };
 		4596B7FD1040D40100B76AC0 /* SaveAndRestoreConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SaveAndRestoreConstants.h; path = Classes/SaveAndRestoreConstants.h; sourceTree = "<group>"; };
 		45991A220FF0927F00627B7D /* PropertyDetailsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyDetailsConstants.h; path = Classes/PropertyDetailsConstants.h; sourceTree = "<group>"; };
 		459CA0CF100AA98700108747 /* MortgageUrlConstructor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MortgageUrlConstructor.h; sourceTree = "<group>"; };
@@ -615,6 +622,8 @@
 				457AA3800FDAC45900F0D16C /* PropertyCitiesViewController.m */,
 				457AA3820FDAC45900F0D16C /* PropertyCriteriaViewController.h */,
 				457AA3830FDAC45900F0D16C /* PropertyCriteriaViewController.m */,
+				4590CB43109503BA00CB6CF4 /* PropertyDetailsMapViewController.h */,
+				4590CB44109503BA00CB6CF4 /* PropertyDetailsMapViewController.m */,
 				457AA3E60FDB04B200F0D16C /* PropertyDetailsViewController.h */,
 				457AA3E70FDB04B200F0D16C /* PropertyDetailsViewController.m */,
 				4579337E0FE5ED93008E2ACD /* PropertyFavoritesViewController.h */,
@@ -650,6 +659,7 @@
 				DD7DAAD810293FBA00EE70AB /* PropertyAnnotation.m */,
 				457AA3810FDAC45900F0D16C /* PropertyCitiesView.xib */,
 				457AA3840FDAC45900F0D16C /* PropertyCriteriaView.xib */,
+				4590CB45109503BA00CB6CF4 /* PropertyDetailsMapView.xib */,
 				455BFE3F0FDC9BC4000BCD39 /* PropertyDetailsView.xib */,
 				45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */,
 				45C974150FDCCA150021EE6D /* PropertyHistoryView.xib */,
@@ -937,6 +947,7 @@
 				45DB3D01104A3BFF003A8163 /* imageLoading.png in Resources */,
 				45011E6610815FFD0045DAB5 /* Geography2.sqlite in Resources */,
 				45783B9710841BF000844E51 /* PropertyResultsView.xib in Resources */,
+				4590CB49109503BA00CB6CF4 /* PropertyDetailsMapView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -980,6 +991,7 @@
 				45C9B310105DDDEA00428FFE /* providedByTrulia.png in Resources */,
 				45011E6510815FFD0045DAB5 /* Geography2.sqlite in Resources */,
 				45783B9910841BF000844E51 /* PropertyResultsView.xib in Resources */,
+				4590CB47109503BA00CB6CF4 /* PropertyDetailsMapView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1032,6 +1044,7 @@
 				45C5FEF01055AEDE001B0CB3 /* City.m in Sources */,
 				45011EC6108164E10045DAB5 /* Geocoder.m in Sources */,
 				45783B9610841BF000844E51 /* PropertyResultsViewController.m in Sources */,
+				4590CB48109503BA00CB6CF4 /* PropertyDetailsMapViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1090,6 +1103,7 @@
 				45C9B2BE105DD6D200428FFE /* TruliaCopyrightCell.m in Sources */,
 				45011EC5108164E10045DAB5 /* Geocoder.m in Sources */,
 				45783B9810841BF000844E51 /* PropertyResultsViewController.m in Sources */,
+				4590CB46109503BA00CB6CF4 /* PropertyDetailsMapViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
