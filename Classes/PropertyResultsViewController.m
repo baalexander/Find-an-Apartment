@@ -26,6 +26,7 @@
 @property (nonatomic, assign) NSInteger geocodeIndex;
 - (void)geocodeProperty:(PropertySummary *)property;
 - (void)updateViewsWithGeocodedProperty:(PropertySummary *)property withIndex:(NSInteger)index;
+- (void)updateNetworkActivityIndicator;
 @end
 
 
@@ -275,6 +276,27 @@
     }
     
     return fetchedResultsController_;
+}
+
+- (void)setGeocoding:(BOOL)geocoding
+{
+    geocoding_ = geocoding;
+    
+    [self updateNetworkActivityIndicator];
+}
+
+- (void)setParsing:(BOOL)parsing
+{
+    parsing_ = parsing;
+    
+    [self updateNetworkActivityIndicator];
+}
+
+- (void)updateNetworkActivityIndicator
+{
+    // Activate the network indicator if geocoding or parsing
+    BOOL activity = [self isGeocoding] || [self isParsing];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:activity];
 }
 
 
