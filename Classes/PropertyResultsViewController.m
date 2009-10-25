@@ -560,6 +560,7 @@
         [[self details] setPrice:number];
         [number release];
     }
+
     // Summary attributes
     else if ([elementName isEqual:@"title"])
     {
@@ -573,6 +574,19 @@
     {
         [[self property] setSummary:elementValue];
     }
+    else if ([elementName isEqual:@"latitude"])
+    {
+        NSNumber *latitude = [[NSNumber alloc] initWithDouble:[elementValue doubleValue]];
+        [[self property] setLatitude:latitude];
+        [latitude release];
+    }
+    else if ([elementName isEqual:@"longitude"])
+    {
+        NSNumber *longitude = [[NSNumber alloc] initWithDouble:[elementValue doubleValue]];
+        [[self property] setLongitude:longitude];
+        [longitude release];
+    }
+
     // Details attributes
     else if ([elementName isEqual:@"agent"])
     {
