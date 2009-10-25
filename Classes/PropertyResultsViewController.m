@@ -10,10 +10,6 @@
 
 
 // TODO: Implement low memory functions
-// TODO: When exiting:
-//      cancel geocoder
-//      cancel parser
-//      stop internet activity
 
 @interface PropertyResultsViewController ()
 @property (nonatomic, retain) NSOperationQueue *operationQueue;
@@ -429,6 +425,20 @@
     [[self operationQueue] cancelAllOperations];
     [self setParsing:NO];
     [self setGeocoding:NO];
+}
+
+
+#pragma mark -
+#pragma mark UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    //If a user clicked the button, then the index is 0.
+    //If the parser finished successfully, it will dismiss with a 1
+    if (buttonIndex == 0)
+    {
+        [[self navigationController] popViewControllerAnimated:YES];
+    }
 }
 
 
