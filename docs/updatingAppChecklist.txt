@@ -10,3 +10,5 @@ Below is a list of items to check when upgrading the app in the store. A few hav
 
 * Confirm Google Maps key is correct.
 
+* Confirm all URL constructors point to production.
+
