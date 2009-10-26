@@ -1,0 +1,12 @@
+Below is a list of items to check when upgrading the app in the store. A few have burned me in the past.
+
+* Change the bundle version in EACH app's Info.plist.
+
+* Change the app version in constants.h.
+
+* Clean all targets before final testing.
+
+* Run Ad Hoc build. This will make sure static libraries are linked up properly in Distribution configuration as well as Debug.
+
+* Confirm Google Maps key is correct.
+
