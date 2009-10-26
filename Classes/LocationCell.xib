@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">768</int>
-		<string key="IBDocument.SystemVersion">10A432</string>
+		<string key="IBDocument.SystemVersion">10B504</string>
 		<string key="IBDocument.InterfaceBuilderVersion">732</string>
-		<string key="IBDocument.AppKitVersion">1038</string>
+		<string key="IBDocument.AppKitVersion">1038.2</string>
 		<string key="IBDocument.HIToolboxVersion">437.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">58</string>
+			<string key="NS.object.0">62</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -48,7 +48,7 @@
 							<object class="IBUILabel" id="78357499">
 								<reference key="NSNextResponder" ref="924210458"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{86, 7}, {214, 21}}</string>
+								<string key="NSFrame">{{86, 7}, {188, 21}}</string>
 								<reference key="NSSuperview" ref="924210458"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -74,7 +74,7 @@
 							<object class="IBUILabel" id="282252746">
 								<reference key="NSNextResponder" ref="924210458"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{86, 32}, {214, 21}}</string>
+								<string key="NSFrame">{{86, 32}, {188, 21}}</string>
 								<reference key="NSSuperview" ref="924210458"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -318,23 +318,43 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>addToFavoritesButton</string>
-							<string>delegate_</string>
 							<string>descriptionCell_</string>
 							<string>locationCell_</string>
+							<string>propertyDataSource_</string>
+							<string>providedByTruliaCell_</string>
 							<string>tableView</string>
+							<string>truliaCopyrightCell_</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIBarButtonItem</string>
-							<string>id</string>
 							<string>DescriptionCell</string>
 							<string>LocationCell</string>
+							<string>id</string>
+							<string>ProvidedByTruliaCell</string>
 							<string>UITableView</string>
+							<string>TruliaCopyrightCell</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/PropertyDetailsViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">ProvidedByTruliaCell</string>
+					<string key="superclassName">UITableViewCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/ProvidedByTruliaCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TruliaCopyrightCell</string>
+					<string key="superclassName">UITableViewCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/TruliaCopyrightCell.h</string>
 					</object>
 				</object>
 			</object>
@@ -605,6 +625,6 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<string key="IBDocument.LastKnownRelativeProjectPath">../Find an Apartment.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">3.0</string>
+		<string key="IBCocoaTouchPluginVersion">3.1</string>
 	</data>
 </archive>
