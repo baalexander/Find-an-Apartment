@@ -30,6 +30,7 @@
 
 @synthesize listViewController = listViewController_;
 @synthesize mapViewController = mapViewController_;
+@synthesize arViewController = arViewController_;
 @synthesize operationQueue = operationQueue_;
 @synthesize parsing = parsing_;
 @synthesize geocoding = geocoding_;
@@ -50,6 +51,7 @@
 {
     [listViewController_ release];
     [mapViewController_ release];
+    [arViewController_ release];
     [operationQueue_ release];
     [history_ release];
     [property_ release];
@@ -67,9 +69,10 @@
     
     // Start geocoding properties if switching to a view requiring geocoded
     // properties, not already geocoding, and map view is out of sync (dirty)
-    if ([segmentedControl selectedSegmentIndex] == kMapItem
-        && ![self isGeocoding]
-        && [self mapIsDirty])
+    if (![self isGeocoding]
+        && [self mapIsDirty]
+        && ([segmentedControl selectedSegmentIndex] == kMapItem
+            || [segmentedControl selectedSegmentIndex] == kArItem))
     {
         [self setMapIsDirty:NO];
         
@@ -92,12 +95,20 @@
     if ([segmentedControl selectedSegmentIndex] == kListItem)
     {
         [[[self mapViewController] mapView] setHidden:YES];
+        [[[self arViewController] view] setHidden:YES];
         [[[self listViewController] tableView] setHidden:NO];
     }
     else if ([segmentedControl selectedSegmentIndex] == kMapItem)
     {
         [[[self mapViewController] mapView] setHidden:NO];
+        [[[self arViewController] view] setHidden:YES];
         [[[self listViewController] tableView] setHidden:YES];
+    }
+    else if ([segmentedControl selectedSegmentIndex] == kArItem)
+    {
+        [[[self mapViewController] mapView] setHidden:YES];
+        [[[self arViewController] view] setHidden:NO];
+        [[[self listViewController] tableView] setHidden:YES];        
     }
 }
 
@@ -383,7 +394,11 @@
     // Sets the views as subviews for transition animations and selects which is
     // visible by default
     [[self view] addSubview:[[self mapViewController] mapView]];
-    [[[self mapViewController] mapView] setHidden:YES];    
+    [[[self mapViewController] mapView] setHidden:YES];
+    
+    [[self view] addSubview:[[self arViewController] view]];
+    [[[self arViewController] view] setHidden:YES];
+
     [[self view] addSubview:[[self listViewController] tableView]];
     [[[self listViewController] tableView] setHidden:NO];
     
@@ -391,7 +406,7 @@
     [[self mapViewController] centerOnCriteria:[[self history] criteria]];
     
     // Segmented control
-    NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", nil];
+    NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", @"ar", nil];
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
     [segmentOptions release];
     

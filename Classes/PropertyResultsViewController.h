@@ -9,6 +9,7 @@
 #import "PropertyListViewController.h"
 #import "PropertyMapViewController.h"
 #import "Geocoder.h"
+#import "PropertyArViewController.h"
 
 
 @interface PropertyResultsViewController : UIViewController <PropertyResultsDelegate,
@@ -21,6 +22,7 @@
         // Sub-view controllers
         PropertyListViewController *listViewController_;
         PropertyMapViewController *mapViewController_;
+        PropertyArViewController *arViewController_;
     
         // Core data
         PropertyHistory *history_;
@@ -45,6 +47,7 @@
 
 @property (nonatomic, retain) IBOutlet PropertyListViewController *listViewController;
 @property (nonatomic, retain) IBOutlet PropertyMapViewController *mapViewController;
+@property (nonatomic, retain) IBOutlet PropertyArViewController *arViewController;
 
 // These would be "protected" for Favorites to use, if such a thing existed
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
