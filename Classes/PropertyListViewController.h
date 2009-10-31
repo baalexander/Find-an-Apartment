@@ -9,7 +9,7 @@
 #import "PropertyDetailsViewController.h"
 
 
-@interface PropertyListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, ParserDelegate, PropertyDetailsDelegate>
+@interface PropertyListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, XmlParserDelegate, PropertyDetailsDelegate>
 {    
     @private
         UITableView *tableView_;

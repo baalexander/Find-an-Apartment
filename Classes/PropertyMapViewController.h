@@ -8,7 +8,7 @@
 #import "PropertyDetailsViewController.h"
 
 
-@interface PropertyMapViewController : UIViewController <PropertyDetailsDelegate, ParserDelegate, MKMapViewDelegate>
+@interface PropertyMapViewController : UIViewController <PropertyDetailsDelegate, XmlParserDelegate, MKMapViewDelegate>
 {
     @private
         PropertyHistory *history_;
