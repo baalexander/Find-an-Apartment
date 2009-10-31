@@ -163,6 +163,14 @@
 		45DD4493104502AE0001A93D /* ImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DD4491104502AE0001A93D /* ImageSource.m */; };
 		45E6EE271048890E006F8896 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E6EE261048890E006F8896 /* Image.m */; };
 		45E6EE281048890E006F8896 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E6EE261048890E006F8896 /* Image.m */; };
+		45E902E1109CB3100069D41B /* ARCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E902DA109CB3100069D41B /* ARCoordinate.m */; };
+		45E902E2109CB3100069D41B /* ARGeoCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E902DC109CB3100069D41B /* ARGeoCoordinate.m */; };
+		45E902E3109CB3100069D41B /* ARGeoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E902DE109CB3100069D41B /* ARGeoViewController.m */; };
+		45E902E4109CB3100069D41B /* ARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E902E0109CB3100069D41B /* ARViewController.m */; };
+		45E902E5109CB3100069D41B /* ARCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E902DA109CB3100069D41B /* ARCoordinate.m */; };
+		45E902E6109CB3100069D41B /* ARGeoCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E902DC109CB3100069D41B /* ARGeoCoordinate.m */; };
+		45E902E7109CB3100069D41B /* ARGeoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E902DE109CB3100069D41B /* ARGeoViewController.m */; };
+		45E902E8109CB3100069D41B /* ARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E902E0109CB3100069D41B /* ARViewController.m */; };
 		45E9CD6D102BD39F003D157D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45E9CD6C102BD39F003D157D /* QuartzCore.framework */; };
 		45E9CD6E102BD39F003D157D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45E9CD6C102BD39F003D157D /* QuartzCore.framework */; };
 		45E9CD8F102BD87B003D157D /* libThree20.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDDF6A99101E2C18001621C7 /* libThree20.a */; };
@@ -382,6 +390,14 @@
 		45E6EB9C1040F09E001E66F2 /* SaveAndRestoreProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveAndRestoreProtocol.h; sourceTree = "<group>"; };
 		45E6EE251048890E006F8896 /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
 		45E6EE261048890E006F8896 /* Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
+		45E902D9109CB3100069D41B /* ARCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARCoordinate.h; path = arkit/ARKitDemo/Classes/ARCoordinate.h; sourceTree = SOURCE_ROOT; };
+		45E902DA109CB3100069D41B /* ARCoordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARCoordinate.m; path = arkit/ARKitDemo/Classes/ARCoordinate.m; sourceTree = SOURCE_ROOT; };
+		45E902DB109CB3100069D41B /* ARGeoCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARGeoCoordinate.h; path = arkit/ARKitDemo/Classes/ARGeoCoordinate.h; sourceTree = SOURCE_ROOT; };
+		45E902DC109CB3100069D41B /* ARGeoCoordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARGeoCoordinate.m; path = arkit/ARKitDemo/Classes/ARGeoCoordinate.m; sourceTree = SOURCE_ROOT; };
+		45E902DD109CB3100069D41B /* ARGeoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARGeoViewController.h; path = arkit/ARKitDemo/Classes/ARGeoViewController.h; sourceTree = SOURCE_ROOT; };
+		45E902DE109CB3100069D41B /* ARGeoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARGeoViewController.m; path = arkit/ARKitDemo/Classes/ARGeoViewController.m; sourceTree = SOURCE_ROOT; };
+		45E902DF109CB3100069D41B /* ARViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARViewController.h; path = arkit/ARKitDemo/Classes/ARViewController.h; sourceTree = SOURCE_ROOT; };
+		45E902E0109CB3100069D41B /* ARViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARViewController.m; path = arkit/ARKitDemo/Classes/ARViewController.m; sourceTree = SOURCE_ROOT; };
 		45E9CD6C102BD39F003D157D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		45E9CE09102BE338003D157D /* LocationParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationParser.h; sourceTree = "<group>"; };
 		45E9CE0A102BE338003D157D /* LocationParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationParser.m; sourceTree = "<group>"; };
@@ -474,6 +490,7 @@
 				455BFE510FDC9E47000BCD39 /* Views */,
 				457AA34B0FDAC27000F0D16C /* Model */,
 				080E96DDFE201D6D7F000001 /* Classes */,
+				45E902CC109CB0560069D41B /* Third Party */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -582,8 +599,6 @@
 		455BFE530FDC9EDF000BCD39 /* General */ = {
 			isa = PBXGroup;
 			children = (
-				4526603210795E6D0046610B /* ObjectiveLibxml2.xcodeproj */,
-				DDDF6A91101E2C18001621C7 /* Three20.xcodeproj */,
 				45011EC3108164E10045DAB5 /* Geocoder.h */,
 				45011EC4108164E10045DAB5 /* Geocoder.m */,
 				45E6EE251048890E006F8896 /* Image.h */,
@@ -818,6 +833,32 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
+		45E902CB109CB0410069D41B /* ARKit */ = {
+			isa = PBXGroup;
+			children = (
+				45E902D9109CB3100069D41B /* ARCoordinate.h */,
+				45E902DA109CB3100069D41B /* ARCoordinate.m */,
+				45E902DB109CB3100069D41B /* ARGeoCoordinate.h */,
+				45E902DC109CB3100069D41B /* ARGeoCoordinate.m */,
+				45E902DD109CB3100069D41B /* ARGeoViewController.h */,
+				45E902DE109CB3100069D41B /* ARGeoViewController.m */,
+				45E902DF109CB3100069D41B /* ARViewController.h */,
+				45E902E0109CB3100069D41B /* ARViewController.m */,
+			);
+			name = ARKit;
+			sourceTree = "<group>";
+		};
+		45E902CC109CB0560069D41B /* Third Party */ = {
+			isa = PBXGroup;
+			children = (
+				45E902CB109CB0410069D41B /* ARKit */,
+				4526603210795E6D0046610B /* ObjectiveLibxml2.xcodeproj */,
+				DDDF6A91101E2C18001621C7 /* Three20.xcodeproj */,
+			);
+			name = "Third Party";
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		DDDF6A92101E2C18001621C7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1045,6 +1086,10 @@
 				45011EC6108164E10045DAB5 /* Geocoder.m in Sources */,
 				45783B9610841BF000844E51 /* PropertyResultsViewController.m in Sources */,
 				4590CB48109503BA00CB6CF4 /* PropertyDetailsMapViewController.m in Sources */,
+				45E902E5109CB3100069D41B /* ARCoordinate.m in Sources */,
+				45E902E6109CB3100069D41B /* ARGeoCoordinate.m in Sources */,
+				45E902E7109CB3100069D41B /* ARGeoViewController.m in Sources */,
+				45E902E8109CB3100069D41B /* ARViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1104,6 +1149,10 @@
 				45011EC5108164E10045DAB5 /* Geocoder.m in Sources */,
 				45783B9810841BF000844E51 /* PropertyResultsViewController.m in Sources */,
 				4590CB46109503BA00CB6CF4 /* PropertyDetailsMapViewController.m in Sources */,
+				45E902E1109CB3100069D41B /* ARCoordinate.m in Sources */,
+				45E902E2109CB3100069D41B /* ARGeoCoordinate.m in Sources */,
+				45E902E3109CB3100069D41B /* ARGeoViewController.m in Sources */,
+				45E902E4109CB3100069D41B /* ARViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1180,7 +1229,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
@@ -1188,7 +1237,7 @@
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
-				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_MISSING_PARENTHESES = NO;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
@@ -1294,7 +1343,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
@@ -1302,7 +1351,7 @@
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
-				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_MISSING_PARENTHESES = NO;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
@@ -1333,7 +1382,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
@@ -1341,7 +1390,7 @@
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
-				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_MISSING_PARENTHESES = NO;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
