@@ -108,7 +108,9 @@
     {
         [[[self mapViewController] mapView] setHidden:YES];
         [[[self arViewController] view] setHidden:NO];
-        [[[self listViewController] tableView] setHidden:YES];        
+        [[[self listViewController] tableView] setHidden:YES];
+        
+        //[[self arViewController] startListening];
     }
 }
 
@@ -228,6 +230,7 @@
 {
     // Updates the Map view with the new property
     [[self mapViewController] addGeocodedProperty:property atIndex:index];
+    [[self arViewController] addGeocodedProperty:property atIndex:index];
 }
 
 - (NSFetchedResultsController *)fetchedResultsController

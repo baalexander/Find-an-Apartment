@@ -43,11 +43,6 @@
     [[self propertyDelegate] view:[self mapView] didSelectPropertyAtIndex:[button tag]];
 }
 
-- (void)addProperty:(PropertySummary *)property atIndex:(NSInteger)index
-{
-    // TODO: Implement
-}
-
 - (void)addGeocodedProperty:(PropertySummary *)property atIndex:(NSInteger)index
 {
     // Creates Placemark

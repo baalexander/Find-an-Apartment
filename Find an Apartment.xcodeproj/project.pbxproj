@@ -172,9 +172,7 @@
 		45E902E7109CB3100069D41B /* ARGeoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E902DE109CB3100069D41B /* ARGeoViewController.m */; };
 		45E902E8109CB3100069D41B /* ARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E902E0109CB3100069D41B /* ARViewController.m */; };
 		45E90325109CD87C0069D41B /* PropertyArViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E90323109CD87C0069D41B /* PropertyArViewController.m */; };
-		45E90326109CD87C0069D41B /* PropertyArView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45E90324109CD87C0069D41B /* PropertyArView.xib */; };
 		45E90327109CD87C0069D41B /* PropertyArViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E90323109CD87C0069D41B /* PropertyArViewController.m */; };
-		45E90328109CD87C0069D41B /* PropertyArView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45E90324109CD87C0069D41B /* PropertyArView.xib */; };
 		45E9CD6D102BD39F003D157D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45E9CD6C102BD39F003D157D /* QuartzCore.framework */; };
 		45E9CD6E102BD39F003D157D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45E9CD6C102BD39F003D157D /* QuartzCore.framework */; };
 		45E9CD8F102BD87B003D157D /* libThree20.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDDF6A99101E2C18001621C7 /* libThree20.a */; };
@@ -404,7 +402,6 @@
 		45E902E0109CB3100069D41B /* ARViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARViewController.m; path = arkit/ARKitDemo/Classes/ARViewController.m; sourceTree = SOURCE_ROOT; };
 		45E90322109CD87C0069D41B /* PropertyArViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyArViewController.h; path = Classes/PropertyArViewController.h; sourceTree = "<group>"; };
 		45E90323109CD87C0069D41B /* PropertyArViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyArViewController.m; path = Classes/PropertyArViewController.m; sourceTree = "<group>"; };
-		45E90324109CD87C0069D41B /* PropertyArView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyArView.xib; path = Classes/PropertyArView.xib; sourceTree = "<group>"; };
 		45E9CD6C102BD39F003D157D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		45E9CE09102BE338003D157D /* LocationParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationParser.h; sourceTree = "<group>"; };
 		45E9CE0A102BE338003D157D /* LocationParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationParser.m; sourceTree = "<group>"; };
@@ -679,7 +676,6 @@
 		455BFE630FDCA004000BCD39 /* Property */ = {
 			isa = PBXGroup;
 			children = (
-				45E90324109CD87C0069D41B /* PropertyArView.xib */,
 				DD6F225D1027E1F3000C8207 /* PropertyAnnotation.h */,
 				DD7DAAD810293FBA00EE70AB /* PropertyAnnotation.m */,
 				457AA3810FDAC45900F0D16C /* PropertyCitiesView.xib */,
@@ -999,7 +995,6 @@
 				45011E6610815FFD0045DAB5 /* Geography2.sqlite in Resources */,
 				45783B9710841BF000844E51 /* PropertyResultsView.xib in Resources */,
 				4590CB49109503BA00CB6CF4 /* PropertyDetailsMapView.xib in Resources */,
-				45E90326109CD87C0069D41B /* PropertyArView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1044,7 +1039,6 @@
 				45011E6510815FFD0045DAB5 /* Geography2.sqlite in Resources */,
 				45783B9910841BF000844E51 /* PropertyResultsView.xib in Resources */,
 				4590CB47109503BA00CB6CF4 /* PropertyDetailsMapView.xib in Resources */,
-				45E90328109CD87C0069D41B /* PropertyArView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
