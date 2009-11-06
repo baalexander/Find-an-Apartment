@@ -8,8 +8,8 @@
 #import "PropertyDetails.h"
 #import "PropertyListViewController.h"
 #import "PropertyMapViewController.h"
-#import "Geocoder.h"
 #import "PropertyArViewController.h"
+#import "Geocoder.h"
 
 
 @interface PropertyResultsViewController : UIViewController <PropertyResultsDelegate,

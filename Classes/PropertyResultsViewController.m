@@ -7,6 +7,7 @@
 #import "PropertyCriteria.h"
 #import "PropertyImage.h"
 #import "PropertyDetailsViewController.h"
+#import "ARGeoViewController.h"
 
 
 // TODO: Implement low memory functions
@@ -67,18 +68,6 @@
 {
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     
-    // Start geocoding properties if switching to a view requiring geocoded
-    // properties, not already geocoding, and map view is out of sync (dirty)
-    if (![self isGeocoding]
-        && [self mapIsDirty]
-        && ([segmentedControl selectedSegmentIndex] == kMapItem
-            || [segmentedControl selectedSegmentIndex] == kArItem))
-    {
-        [self setMapIsDirty:NO];
-        
-        [self geocodeNextProperty];
-    }
-    
     // Create a tranisiton animation to switch views
 	CATransition *transition = [CATransition animation];
 	transition.duration = .5;
@@ -106,11 +95,34 @@
     }
     else if ([segmentedControl selectedSegmentIndex] == kArItem)
     {
+        // Lazily initialize the AR view controller
+        if ([self arViewController] == nil)
+        {
+            PropertyArViewController *viewController = [[PropertyArViewController alloc] init];
+            [self setArViewController:viewController];
+            [viewController release];
+            
+            [[self arViewController] setPropertyDelegate:self];
+            [[self arViewController] setPropertyDataSource:self];            
+
+            [[self view] addSubview:[[self arViewController] view]];
+        }
+        
         [[[self mapViewController] mapView] setHidden:YES];
         [[[self arViewController] view] setHidden:NO];
         [[[self listViewController] tableView] setHidden:YES];
+    }
+    
+    // Start geocoding properties if switching to a view requiring geocoded
+    // properties, not already geocoding, and map view is out of sync (dirty)
+    if (![self isGeocoding]
+        && [self mapIsDirty]
+        && ([segmentedControl selectedSegmentIndex] == kMapItem
+            || [segmentedControl selectedSegmentIndex] == kArItem))
+    {
+        [self setMapIsDirty:NO];
         
-        //[[self arViewController] startListening];
+        [self geocodeNextProperty];
     }
 }
 
@@ -230,7 +242,7 @@
 {
     // Updates the Map view with the new property
     [[self mapViewController] addGeocodedProperty:property atIndex:index];
-    [[self arViewController] addGeocodedProperty:property atIndex:index];
+    [[self arViewController] addGeocodedProperty:property atIndex:index];    
 }
 
 - (NSFetchedResultsController *)fetchedResultsController
@@ -398,9 +410,6 @@
     // visible by default
     [[self view] addSubview:[[self mapViewController] mapView]];
     [[[self mapViewController] mapView] setHidden:YES];
-    
-    [[self view] addSubview:[[self arViewController] view]];
-    [[[self arViewController] view] setHidden:YES];
 
     [[self view] addSubview:[[self listViewController] tableView]];
     [[[self listViewController] tableView] setHidden:NO];
