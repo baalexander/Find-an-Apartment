@@ -1,6 +1,6 @@
 [submodule "three20"]
 	path = three20
-	url = git://github.com/joehewitt/three20.git
+        url = git://github.com/uprise78/three20-P31.git
 [submodule "objectiveLibxml2"]
 	path = objectiveLibxml2
 	url = git://github.com/baalexander/ObjectiveLibxml2.git
