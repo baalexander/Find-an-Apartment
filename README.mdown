@@ -1,0 +1,111 @@
+Home Finder and Find an Apartment
+=================================
+
+Home Finder and Find and Apartment are two real estate apps for the iPhone OS
+focusing on for-sale and for-rent properties, respectively. 
+
+
+Technical Overview
+==================
+
+Both Home Finder and Find an Apartment reside in a single XCode project as
+separate targets. Home Finder can be thought of as a superset of Find an
+Apartment, including all of Find an Apartment's functionality and adding
+mortgage calculations.
+
+
+XCode structure
+---------------
+
+Many groups in XCode, like Controllers, Views, and Models have subgroups for
+properties, mortgages, and general. The Property subgroup in Controllers is
+where most of the action is happening.
+
+<pre>
+| Images - Button images and third-party compliance images
+
+| Constants - Constants shared across more than one file. Also includes API
+    keys not to be committed, like Google Maps API key.
+
+| App Delegate - Self explanatory
+
+| Controllers - The view controllers
+  \
+   | General - Table cells, Image view controller, Web view controller, and 
+       base class for Criteria view controllers
+  \
+   | Property - Most of the view controllers, including view controllers to 
+       select state, select city, input property criteria, view property 
+       results in list, map, and AR, view details, view history, and save
+       favorites.
+  \
+   | Mortgage - View controllers to input mortgage criteria and view mortgage
+       results
+
+| Views - The xib files corresponding to the view controllers and table cells
+
+| Model - Classes representing the Core Data entities or classes to
+    encapsulate data
+  \
+   | General - Classes meant to encapsulate data only, like an address broken
+       up into components like state, city, and postal code.
+  \
+   | Geography - Geography Core Data objects
+  \
+   | Property - Property Core Data objects
+  \
+   | Mortgage - Mortgage Core Data objects
+
+| Classes - Classes not directly tied to any MVC component
+  \
+   | General - Utility classes for URL encoding, formatting strings, parsing
+       locations, geocoding, and locating the user.
+  \
+   | Property - Class to construct URL for property search and protocol
+       definitions
+  \
+   | Mortgage - Class to construct URL for mortgage rates
+
+| Third Party - All git submodules go here
+
+| Resources - Standard resources in XCode projects and Core Data model
+    definitions
+</pre>
+
+
+Core Data
+---------
+
+The project uses three Core Data models to manage the geography data (states
+and cities), property data (for-sale or for-rent), and mortgage data (applies
+to Home Finder only).
+
+
+Classes of Interest
+-------------------
+
+* Property Results View Controller
+
+This view controller is a beast acting as the parent view controller for the
+List, Map, and AR view. The view controller is responsible for parsing the XML
+REST results, geocoding properties, transitioning between List, Map, and AR
+views, and pushing the Details view when a property is selected for more
+information. Pay attention to the Property Results View xib to how the
+children view controllers are being connected.
+
+
+To run
+======
+
+1. Clone this repository
+
+2. As this repository uses Git Submodules, you'll need to run:
+
+        git submodule init
+        git submodule add
+
+
+License
+=======
+
+
