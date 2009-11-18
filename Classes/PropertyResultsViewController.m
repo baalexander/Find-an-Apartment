@@ -111,6 +111,8 @@
         [[[self mapViewController] mapView] setHidden:YES];
         [[[self arViewController] view] setHidden:NO];
         [[[self listViewController] tableView] setHidden:YES];
+		
+		// tim left a comment here to test out Git.
     }
     
     // Start geocoding properties if switching to a view requiring geocoded
