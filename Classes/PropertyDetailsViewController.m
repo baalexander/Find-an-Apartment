@@ -21,6 +21,7 @@
 
 @implementation PropertyDetailsViewController
 
+@synthesize delegate;
 @synthesize tableView = tableView_;
 @synthesize propertyDataSource = propertyDataSource_;
 @synthesize propertyIndex = propertyIndex_;
@@ -53,6 +54,10 @@
     [truliaCopyrightCell_ release];
     [providedByTruliaCell_ release];
 #endif
+	
+	if ([self.delegate respondsToSelector:@selector(onDetailsClose)]) {
+		[self.delegate onDetailsClose];
+	}
     
     [super dealloc];
 }

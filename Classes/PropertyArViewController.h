@@ -5,15 +5,19 @@
 #import "PropertyResultsDelegate.h"
 
 
-@interface PropertyArViewController : ARGeoViewController <ARViewDelegate>
+@interface PropertyArViewController : ARGeoViewController
 {
     @private
         id <PropertyResultsDataSource> propertyDataSource_;
         id <PropertyResultsDelegate> propertyDelegate_;
+		ARGeoViewController *arkitViewController_;
+	    UIImagePickerController *imgController_;
 }
 
 @property (nonatomic, assign) IBOutlet id <PropertyResultsDataSource> propertyDataSource;
 @property (nonatomic, assign) IBOutlet id <PropertyResultsDelegate> propertyDelegate;
+@property (nonatomic, assign) UIImagePickerController *imgController;
+@property (nonatomic, retain) IBOutlet ARGeoViewController *arkitViewController;
 
 - (void)addGeocodedProperty:(PropertySummary *)property atIndex:(NSInteger)index;
 

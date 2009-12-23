@@ -29,11 +29,18 @@
 //@end
 
 
+@protocol PropertyDetailsDelegate
+
+- (void)onDetailsClose;
+
+@end
+
 @interface PropertyDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate>
 {
     @private
         UITableView *tableView_;
-    
+		
+		id delegate;
         id <PropertyResultsDataSource> propertyDataSource_;
         NSInteger propertyIndex_;
     
@@ -61,6 +68,8 @@
 @property (nonatomic, retain) LocationCell *locationCell;
 @property (nonatomic, retain) DescriptionCell *descriptionCell;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *addToFavoritesButton;
+
+@property (nonatomic, assign) id delegate;
 
 #ifdef HOME_FINDER
 @property (nonatomic, retain) TruliaCopyrightCell *truliaCopyrightCell;

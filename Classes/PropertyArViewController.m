@@ -7,23 +7,27 @@
 
 @synthesize propertyDataSource = propertyDataSource_;
 @synthesize propertyDelegate = propertyDelegate_;
+@synthesize arkitViewController = arkitViewController_;
+@synthesize imgController;
 
 
 - (id)init
 {
     if ((self = [super init]))
     {
+		/*
         [self setDebugMode:YES];
         [self setDelegate:self];
         [self setScaleViewsBasedOnDistance:YES];
         [self setMinimumScaleFactor:0.5];
         [self setRotateViewsBasedOnPerspective:YES];
-        
-        CLLocation *newCenter = [[CLLocation alloc] initWithLatitude:37.41711 longitude:-122.02528];
-        [self setCenterLocation:newCenter];
-        [newCenter release];
-        
-        [self startListening];        
+        */
+		
+		//CLLocation *newCenter = [[CLLocation alloc] initWithLatitude:45.529651 longitude:-122.683039];
+		CLLocation *newCenter = [[CLLocation alloc] initWithLatitude:0 longitude:0];
+		
+		self.centerLocation = newCenter;
+		[newCenter release];
     }
     
     return self;
@@ -31,6 +35,7 @@
 
 - (void)dealloc
 {
+	[arkitViewController_ release];
     [super dealloc];
 }
 
@@ -38,57 +43,134 @@
 {
     UIButton *button = (UIButton *)sender;
     [[self propertyDelegate] view:[self view] didSelectPropertyAtIndex:[button tag]];
+	
+	
+	[self.camera dismissModalViewControllerAnimated:YES];
 }
 
 - (void)addGeocodedProperty:(PropertySummary *)property atIndex:(NSInteger)index
 {
+	self.recalibrateProximity = true;
     // Adds coordinate
     CLLocation *location = [[CLLocation alloc] initWithLatitude:[[property latitude] doubleValue]
                                                       longitude:[[property longitude] doubleValue]];
 
     ARGeoCoordinate *geoCoordinate = [[ARGeoCoordinate alloc] init];
-    [geoCoordinate setGeoLocation:location];
-    [location release];
+	geoCoordinate = [ARGeoCoordinate coordinateWithLocation:location];
     [geoCoordinate setTitle:[property title]];
-    
+	[geoCoordinate setSubtitle:[property subtitle]];
+	[geoCoordinate setSummary:[property summary]];
+	[geoCoordinate setPrice:[[property price] description]];
+	[geoCoordinate setIsMultiple:false];
+	[geoCoordinate setViewSet:false];
+    [location release];
+	
+	[geoCoordinate calibrateUsingOrigin: self.centerLocation];
+	
+	if(geoCoordinate.radialDistance < self.minDistance)
+	{
+		self.minDistance = geoCoordinate.radialDistance;
+		NSLog(@"distance: %.8f", geoCoordinate.radialDistance);
+	}
+	
+	if(self.baseItems == nil)
+		self.baseItems = [[NSMutableArray alloc] init];
+	
+	[self.baseItems addObject:geoCoordinate];
+	
+	NSMutableArray *tempArray = [[NSMutableArray alloc] initWithCapacity:[locationItems count] + 1];
+	
+	bool geoAdded = false;
+	for(ARGeoCoordinate *coord in locationItems)
+	{
+		// if the coordinates are nearby, add coordinate as a subset.
+		if(geoAdded == false && [self isNearCoordinate:coord newCoordinate:geoCoordinate] == true)
+		{
+			if([coord isMultiple] != true)
+			{
+				[coord setIsMultiple:true];
+				CLLocation *location = [[CLLocation alloc] initWithLatitude:coord.geoLocation.coordinate.latitude
+																  longitude:coord.geoLocation.coordinate.longitude];
+				
+				ARGeoCoordinate *newGeoCoordinate = [[ARGeoCoordinate alloc] init];
+				newGeoCoordinate = [ARGeoCoordinate coordinateWithLocation:location];
+				[newGeoCoordinate setTitle:[coord title]];
+				[newGeoCoordinate setIsMultiple:false];
+				[location release];
+				
+				coord.subLocations = [[NSMutableArray alloc] init];
+				
+				[[coord subLocations] addObject:newGeoCoordinate];
+			}
+		
+			[[coord subLocations] addObject:geoCoordinate];
+			[tempArray addObject:coord];
+			geoAdded = true;
+			
+			//NSLog(@"is near.. old: %@  new: %@", coord.title, geoCoordinate.title);
+		}
+		else
+		{
+			if(coord.geoLocation.coordinate.latitude != geoCoordinate.geoLocation.coordinate.latitude &&
+			   coord.geoLocation.coordinate.longitude != geoCoordinate.geoLocation.coordinate.longitude)
+			{
+				[tempArray addObject:coord];
+			}
+		}
+		
+		//NSLog(@"coord title: %@ count: %d", coord.title, coord.subLocations.count);
+	}
+	
+	if(geoAdded == false)
+	{
+		[tempArray addObject:geoCoordinate];
+	}
+	
+	[locationItems release];
+	locationItems = [tempArray retain];
+	
+	//NSMutableArray *sortedArray = [NSMutableArray arrayWithArray:tempArray];
+	//[sortedArray sortUsingFunction:LocationSortClosestFirst context:NULL];
+	
+	//locationItems = [sortedArray copy];
+	
+	for (UIView *view in self.locationLayerView.subviews) {
+		[view removeFromSuperview];
+	}
+	
+	NSMutableArray *newTempArray = [NSMutableArray array];
+	
+	for (ARGeoCoordinate *coordinate in locationItems) {
+		//create the views here.
+		
+		//call out for the delegate's view.
+		if ([self.delegate respondsToSelector:@selector(viewForCoordinate:)]) {
+			[newTempArray addObject:[self.delegate viewForCoordinate:coordinate]];
+		}
+	}
+	
+	self.locationViews = newTempArray;
+		 
+	
+	self.updatedLocations = true;
+	
+	//[tempArray release];
+	//[geoCoordinate release];
+	//[location release];
+	
+	
+	//NSLog(@"%@ lat: %.8f, long: %.8f", property.title, geoCoordinate.geoLocation.coordinate.latitude, geoCoordinate.geoLocation.coordinate.longitude);
+	//NSLog(@"center location: lat: %.8f, long: %.8f", self.centerLocation.coordinate.latitude, self.centerLocation.coordinate.longitude);
+	
+	//[self setLocationItems:tempLocationArray];
+	
+	//[tempLocationArray release];
+	
+	//[self addLocationItem:geoCoordinate];
+	
+	
     // TODO: Include index so can identify property clicked
-    [self addCoordinate:geoCoordinate];
-}
-
-
-#pragma mark -
-#pragma mark ARViewDelegate
-
-#define BOX_WIDTH 150
-#define BOX_HEIGHT 100
-
-- (UIView *)viewForCoordinate:(ARCoordinate *)coordinate
-{
-	CGRect theFrame = CGRectMake(0, 0, BOX_WIDTH, BOX_HEIGHT);
-	UIView *tempView = [[UIView alloc] initWithFrame:theFrame];
-	
-	//tempView.backgroundColor = [UIColor colorWithWhite:.5 alpha:.3];
-	
-	UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, BOX_WIDTH, 20.0)];
-	titleLabel.backgroundColor = [UIColor colorWithWhite:.3 alpha:.8];
-	titleLabel.textColor = [UIColor whiteColor];
-	titleLabel.textAlignment = UITextAlignmentCenter;
-	titleLabel.text = coordinate.title;
-	[titleLabel sizeToFit];
-	
-	titleLabel.frame = CGRectMake(BOX_WIDTH / 2.0 - titleLabel.frame.size.width / 2.0 - 4.0, 0, titleLabel.frame.size.width + 8.0, titleLabel.frame.size.height + 8.0);
-	
-	UIImageView *pointView = [[UIImageView alloc] initWithFrame:CGRectZero];
-	pointView.image = [UIImage imageNamed:@"locate.png"];
-	pointView.frame = CGRectMake((int)(BOX_WIDTH / 2.0 - pointView.image.size.width / 2.0), (int)(BOX_HEIGHT / 2.0 - pointView.image.size.height / 2.0), pointView.image.size.width, pointView.image.size.height);
-    
-	[tempView addSubview:titleLabel];
-	[tempView addSubview:pointView];
-	
-	[titleLabel release];
-	[pointView release];
-	
-	return [tempView autorelease];
+    //[self addCoordinate:geoCoordinate];
 }
 
 @end

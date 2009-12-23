@@ -8,6 +8,7 @@
 #import "PropertyImage.h"
 #import "PropertyDetailsViewController.h"
 #import "ARGeoViewController.h"
+#import "ARGeoCoordinate.h"
 
 
 // TODO: Implement low memory functions
@@ -19,6 +20,8 @@
 @property (nonatomic, retain) PropertySummary *property;
 @property (nonatomic, retain) PropertyDetails *details;
 @property (nonatomic, retain) UIAlertView *alertView;
+@property (nonatomic, retain) UISegmentedControl *segmentedControl;
+@property (nonatomic, assign, getter=previousSelectedSegment_) int previousSelectedSegment;
 @property (nonatomic, retain) Geocoder *geocoder;
 @property (nonatomic, assign) NSInteger geocodeIndex;
 - (void)geocodeProperty:(PropertySummary *)property;
@@ -40,9 +43,12 @@
 @synthesize details = details_;
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize alertView = alertView_;
+@synthesize segmentedControl = segmentedControl_;
+@synthesize previousSelectedSegment = previousSelectedSegment_;
 @synthesize geocoder = geocoder_;
 @synthesize geocodeIndex = geocodeIndex_;
 @synthesize mapIsDirty = mapIsDirty_;
+@synthesize camera = camera_;
 
 
 #pragma mark -
@@ -52,14 +58,16 @@
 {
     [listViewController_ release];
     [mapViewController_ release];
-    [arViewController_ release];
+    //[arViewController_ release];
     [operationQueue_ release];
     [history_ release];
     [property_ release];
     [details_ release];
     [fetchedResultsController_ release];
     [alertView_ release];
+	[segmentedControl_ release];
     [geocoder_ release];
+	[camera_ release];
     
     [super dealloc];
 }
@@ -86,12 +94,14 @@
         [[[self mapViewController] mapView] setHidden:YES];
         [[[self arViewController] view] setHidden:YES];
         [[[self listViewController] tableView] setHidden:NO];
+		self.previousSelectedSegment = kListItem;
     }
     else if ([segmentedControl selectedSegmentIndex] == kMapItem)
     {
         [[[self mapViewController] mapView] setHidden:NO];
         [[[self arViewController] view] setHidden:YES];
         [[[self listViewController] tableView] setHidden:YES];
+		self.previousSelectedSegment = kMapItem;
     }
     else if ([segmentedControl selectedSegmentIndex] == kArItem)
     {
@@ -99,20 +109,42 @@
         if ([self arViewController] == nil)
         {
             PropertyArViewController *viewController = [[PropertyArViewController alloc] init];
+			viewController.delegate = self;
             [self setArViewController:viewController];
             [viewController release];
             
             [[self arViewController] setPropertyDelegate:self];
-            [[self arViewController] setPropertyDataSource:self];            
-
-            [[self view] addSubview:[[self arViewController] view]];
-        }
-        
+            [[self arViewController] setPropertyDataSource:self];
+            
+			[self setMapIsDirty:YES];
+			
+            //[[self view] addSubview:[[self arViewController] view]];
+			
+			//[[self view] addSubview:camera.view];
+			//[camera viewWillAppear:YES];
+        } 
+		
+		[self.arViewController startListening];
+		
+		self.camera = [[UIImagePickerController alloc]init];
+		if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+#if !TARGET_IPHONE_SIMULATOR
+			self.camera.sourceType = UIImagePickerControllerSourceTypeCamera;	
+			self.camera.showsCameraControls = NO;
+#endif
+		}
+		
+		self.camera.cameraOverlayView = self.arViewController.view;
+		self.arViewController.camera = self.camera;
+		
+		//[[UIApplication sharedApplication] keyWindow addSubview:self.arViewController.camera];
+		
+		[self presentModalViewController:self.camera animated:NO];
+		       
         [[[self mapViewController] mapView] setHidden:YES];
         [[[self arViewController] view] setHidden:NO];
         [[[self listViewController] tableView] setHidden:YES];
-		
-		// tim left a comment here to test out Git.
+		 
     }
     
     // Start geocoding properties if switching to a view requiring geocoded
@@ -127,6 +159,63 @@
         [self geocodeNextProperty];
     }
 }
+
+#pragma mark -
+#pragma mark ARViewDelegate
+
+#define BOX_WIDTH 70
+#define BOX_HEIGHT 55
+
+- (UIView *)viewForCoordinate:(ARGeoCoordinate *)coordinate {
+	
+	[coordinate calibrateUsingOrigin: self.arViewController.centerLocation];
+		
+	coordinate.inclination = -.20 + (.05 * (coordinate.radialDistance - self.arViewController.minDistance));
+	
+	if(coordinate.radialDistance > 30)
+		coordinate.inclination = .4;
+	
+	CGRect theFrame = CGRectMake(0, 0, BOX_WIDTH, BOX_HEIGHT);
+	NSString *theImage = @"apt.png";
+	
+	if(coordinate.isMultiple)
+		theImage = @"apts.png";
+	
+	UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:theImage]];
+	imgView.frame = theFrame;
+	//imgView.alpha = .85;
+	[imgView setUserInteractionEnabled:TRUE];
+	
+	if(coordinate.isMultiple)
+	{
+		UILabel *numLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 2, 35, 40)];
+		numLabel.backgroundColor = [UIColor clearColor];
+		numLabel.textColor = [UIColor whiteColor];
+		numLabel.font =[UIFont fontWithName:@"Helvetica" size: 28];
+		numLabel.shadowColor = [UIColor grayColor];
+		numLabel.shadowOffset = CGSizeMake(1, 1);
+		numLabel.text = [NSString stringWithFormat:@"%d", coordinate.subLocations.count];
+		[numLabel setTextAlignment:UITextAlignmentCenter];
+		
+		[imgView addSubview:numLabel];
+		[numLabel release];
+	}
+	
+	return [imgView autorelease];
+}
+
+- (void)onARControllerClose
+{
+	if(self.previousSelectedSegment == kListItem)
+	{
+		[[self segmentedControl] setSelectedSegmentIndex:kListItem];
+	}
+	if(self.previousSelectedSegment == kMapItem)
+	{
+		[[self segmentedControl] setSelectedSegmentIndex:kMapItem];
+	}
+}
+
 
 - (void)parse:(NSURL *)url
 {
@@ -421,17 +510,18 @@
     
     // Segmented control
     NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", @"ar", nil];
-    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
+    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
     [segmentOptions release];
     
     // Set selected segment index must come before addTarget, otherwise the action will be called as if the segment was pressed
-    [segmentedControl setSelectedSegmentIndex:kListItem];
-    [segmentedControl addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventValueChanged];
-    [segmentedControl setFrame:CGRectMake(0, 0, 90, 30)];
-    [segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
+    [[self segmentedControl] setSelectedSegmentIndex:kListItem];
+	self.previousSelectedSegment = kListItem;
+    [[self segmentedControl] addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventValueChanged];
+    [[self segmentedControl] setFrame:CGRectMake(0, 0, 90, 30)];
+    [[self segmentedControl] setSegmentedControlStyle:UISegmentedControlStyleBar];
     
-    UIBarButtonItem *segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
-    [segmentedControl release];
+    UIBarButtonItem *segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:[self segmentedControl]];
+    [[self segmentedControl] release];
     [[self navigationItem] setRightBarButtonItem:segmentBarItem];
     [segmentBarItem release];
 }
@@ -497,6 +587,19 @@
     return [[self fetchedResultsController] objectAtIndexPath:indexPath];
 }
 
+#pragma mark -
+#pragma mark PropertyDetailsViewControllerDelegate
+
+- (void)onDetailsClose
+{
+	// if we backed out of the details view, re-click the AR segment button again.
+	if([[self segmentedControl] selectedSegmentIndex] == kArItem)
+	{
+		[[self segmentedControl] setSelectedSegmentIndex:kListItem];
+		[[self segmentedControl] setSelectedSegmentIndex:kArItem];
+	}
+}
+
 
 #pragma mark -
 #pragma mark PropertyResultsDelegate
@@ -509,10 +612,13 @@
     
     // Pushes the Details view controller
     PropertyDetailsViewController *detailsViewController = [[PropertyDetailsViewController alloc] initWithNibName:@"PropertyDetailsView" bundle:nil];
+	detailsViewController.delegate = self;
     [detailsViewController setPropertyDataSource:self];
     [detailsViewController setPropertyIndex:index];
     [detailsViewController setDetails:details];
+	
     [[self navigationController] pushViewController:detailsViewController animated:YES];
+	
     [detailsViewController release];
 }
 
