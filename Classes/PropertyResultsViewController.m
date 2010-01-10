@@ -109,7 +109,7 @@
         if ([self arViewController] == nil)
         {
             PropertyArViewController *viewController = [[PropertyArViewController alloc] init];
-			viewController.delegate = self;
+			viewController.propdelegate = self;
             [self setArViewController:viewController];
             [viewController release];
             
@@ -166,7 +166,7 @@
 #define BOX_WIDTH 70
 #define BOX_HEIGHT 55
 
-- (UIView *)viewForCoordinate:(ARGeoCoordinate *)coordinate {
+- (UIView *)viewForCoordinate:(PropertyARGeoCoordinate *)coordinate {
 	
 	[coordinate calibrateUsingOrigin: self.arViewController.centerLocation];
 		

@@ -3,7 +3,7 @@
 //  ARKitDemo
 //
 //  Created by Haseman on 8/1/09.
-//  Copyright 2009 Gravity Mobile. All rights reserved.
+//  Copyright 2009 Zac White. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -16,6 +16,8 @@
 }
 
 @property (nonatomic, retain) CLLocation *geoLocation;
+
+- (float)angleFromCoordinate:(CLLocationCoordinate2D)first toCoordinate:(CLLocationCoordinate2D)second;
 
 + (ARGeoCoordinate *)coordinateWithLocation:(CLLocation *)location;
 

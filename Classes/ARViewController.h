@@ -3,91 +3,101 @@
 //  ARKitDemo
 //
 //  Created by Zac White on 8/1/09.
-//  Modified by Tim Sears 11/2009.
-//  Copyright 2009 Gravity Mobile. All rights reserved.
+//  Copyright 2009 Zac White. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+
 #import <CoreLocation/CoreLocation.h>
 
 #import "ARCoordinate.h"
-#import "ARGeoCoordinate.h"
 
 @protocol ARViewDelegate
 
 - (UIView *)viewForCoordinate:(ARCoordinate *)coordinate;
-- (void)onARControllerClose;
 
 @end
 
+
 @interface ARViewController : UIViewController <UIAccelerometerDelegate, CLLocationManagerDelegate> {
-	
 	CLLocationManager *locationManager;
 	UIAccelerometer *accelerometerManager;
-	ARCoordinate *centerCoordinate;
-	NSRange *widthViewportRange;
-	NSRange *heightViewportRange;
-	id delegate;
-
-	NSArray *locationItems;
-	NSMutableArray *locationViews;
-	NSMutableArray *locationItemsInView;
-	NSMutableArray *baseItems;
-	CLLocation *centerLocation;
-	UIImageView *popupView;
-	UIView *contentView;
-	UIView *locationLayerView;
-	CGPoint gestureStartPoint;
-	ARGeoCoordinate *selectedPoint;
-	ARGeoCoordinate *selectedSubPoint;
-	int contentType;
-	UILabel *bottomView;
-	UIImagePickerController *camera;
-	UIActivityIndicatorView *progressView;
 	
-	bool popupIsAdded;
-	bool updatedLocations;
-	bool shouldChangeHighlight;
-	bool recalibrateProximity;
-	double minDistance; // used for calculating inclination
-	int currentPage; // current page selected of subitems
+	ARCoordinate *centerCoordinate;
+	
+	UIImagePickerController *cameraController;
+	
+	NSObject<ARViewDelegate> *delegate;
+	NSObject<CLLocationManagerDelegate> *locationDelegate;
+	NSObject<UIAccelerometerDelegate> *accelerometerDelegate;
+	
+	BOOL scaleViewsBasedOnDistance;
+	double maximumScaleDistance;
+	double minimumScaleFactor;
+	
+	//defaults to 20hz;
+	double updateFrequency;
+	
+	BOOL rotateViewsBasedOnPerspective;
+	double maximumRotationAngle;
+	
+@private
+	BOOL ar_debugMode;
+	
+	NSTimer *_updateTimer;
+	
+	UIView *ar_overlayView;
+	
+	UILabel *ar_debugView;
+	
+	NSMutableArray *ar_coordinates;
+	NSMutableArray *ar_coordinateViews;
 }
 
-- (void)startListening;
-- (void)updateLocations;
-- (CGPoint)pointInView:(UIView *)realityView forCoordinate:(ARCoordinate *)coordinate;
-- (BOOL)viewportContainsCoordinate:(ARCoordinate *)coordinate;
-- (bool)isNearCoordinate:(ARGeoCoordinate *)coord newCoordinate:(ARGeoCoordinate *)newCoord;
-- (void)updateProximityLocations;
-- (void)makePanel;
+@property (readonly) NSArray *coordinates;
 
-@property (nonatomic, assign) id delegate;
+@property BOOL debugMode;
+
+@property BOOL scaleViewsBasedOnDistance;
+@property double maximumScaleDistance;
+@property double minimumScaleFactor;
+
+@property BOOL rotateViewsBasedOnPerspective;
+@property double maximumRotationAngle;
+
+@property double updateFrequency;
+
+//adding coordinates to the underlying data model.
+- (void)addCoordinate:(ARCoordinate *)coordinate;
+- (void)addCoordinate:(ARCoordinate *)coordinate animated:(BOOL)animated;
+
+- (void)addCoordinates:(NSArray *)newCoordinates;
+
+
+//removing coordinates
+- (void)removeCoordinate:(ARCoordinate *)coordinate;
+- (void)removeCoordinate:(ARCoordinate *)coordinate animated:(BOOL)animated;
+
+- (void)removeCoordinates:(NSArray *)coordinates;
+
+- (id)initWithLocationManager:(CLLocationManager *)manager;
+
+- (void)startListening;
+- (void)updateLocations:(NSTimer *)timer;
+
+- (CGPoint)pointInView:(UIView *)realityView forCoordinate:(ARCoordinate *)coordinate;
+
+- (BOOL)viewportContainsCoordinate:(ARCoordinate *)coordinate;
+
+@property (nonatomic, retain) UIImagePickerController *cameraController;
+
+@property (nonatomic, assign) NSObject<ARViewDelegate> *delegate;
+@property (nonatomic, assign) NSObject<CLLocationManagerDelegate> *locationDelegate;
+@property (nonatomic, assign) NSObject<UIAccelerometerDelegate> *accelerometerDelegate;
 
 @property (retain) ARCoordinate *centerCoordinate;
-@property (nonatomic, retain) NSArray *locationItems;
-@property (nonatomic, copy) NSMutableArray *locationViews;
-@property (nonatomic, retain) NSMutableArray *locationItemsInView;
-@property (nonatomic, retain) NSMutableArray *baseItems;
+
 @property (nonatomic, retain) UIAccelerometer *accelerometerManager;
 @property (nonatomic, retain) CLLocationManager *locationManager;
-@property (nonatomic, retain) CLLocation *centerLocation;
-@property (nonatomic, retain) UIImageView *popupView;
-@property (nonatomic, retain) UIView *contentView;
-@property (nonatomic, retain) UIView *locationLayerView;
-@property (nonatomic, retain) ARGeoCoordinate *selectedPoint;
-@property (nonatomic, retain) ARGeoCoordinate *selectedSubPoint;
-@property (nonatomic, retain) NSString *currentRadius;
-@property (nonatomic, retain) UILabel *bottomView;
-@property (nonatomic, retain) UIImagePickerController *camera;
-@property (nonatomic, retain) UIActivityIndicatorView *progressView;
-
-@property bool popupIsAdded;
-@property int contentType;
-@property bool updatedLocations;
-@property bool shouldChangeHighlight;
-@property bool recalibrateProximity;
-@property double minDistance;
-@property int currentPage;
-@property CGPoint gestureStartPoint;
 
 @end

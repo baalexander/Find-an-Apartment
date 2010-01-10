@@ -182,20 +182,17 @@
 		C54DE34510B5083B00390127 /* link.png in Resources */ = {isa = PBXBuildFile; fileRef = C54DE34410B5083B00390127 /* link.png */; };
 		C54DE34710B5084F00390127 /* tabbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C54DE34610B5084F00390127 /* tabbar.png */; };
 		C54DE34910B5085B00390127 /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = C54DE34810B5085B00390127 /* video.png */; };
-		C54DE35210B50D4A00390127 /* ARCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = C54DE34B10B50D4A00390127 /* ARCoordinate.m */; };
-		C54DE35310B50D4A00390127 /* ARGeoCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = C54DE34D10B50D4A00390127 /* ARGeoCoordinate.m */; };
-		C54DE35410B50D4A00390127 /* ARGeoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C54DE34F10B50D4A00390127 /* ARGeoViewController.m */; };
-		C54DE35510B50D4A00390127 /* ARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C54DE35110B50D4A00390127 /* ARViewController.m */; };
+		C54DE35510B50D4A00390127 /* ARPropertyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C54DE35110B50D4A00390127 /* ARPropertyViewController.m */; };
 		C556817D10CC3C3900B57CDD /* apt.png in Resources */ = {isa = PBXBuildFile; fileRef = C556817910CC3C3900B57CDD /* apt.png */; };
 		C556817E10CC3C3900B57CDD /* apt_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = C556817A10CC3C3900B57CDD /* apt_selected.png */; };
 		C556817F10CC3C3900B57CDD /* apts_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = C556817B10CC3C3900B57CDD /* apts_selected.png */; };
 		C556818010CC3C3900B57CDD /* apts.png in Resources */ = {isa = PBXBuildFile; fileRef = C556817C10CC3C3900B57CDD /* apts.png */; };
-		C556818110CC3C3900B57CDD /* apt.png in Resources */ = {isa = PBXBuildFile; fileRef = C556817910CC3C3900B57CDD /* apt.png */; };
-		C556818210CC3C3900B57CDD /* apt_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = C556817A10CC3C3900B57CDD /* apt_selected.png */; };
-		C556818310CC3C3900B57CDD /* apts_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = C556817B10CC3C3900B57CDD /* apts_selected.png */; };
-		C556818410CC3C3900B57CDD /* apts.png in Resources */ = {isa = PBXBuildFile; fileRef = C556817C10CC3C3900B57CDD /* apts.png */; };
 		C570E09110C350AB00451BFF /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = C570E09010C350AB00451BFF /* Entitlements.plist */; };
-		C570E09210C350AB00451BFF /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = C570E09010C350AB00451BFF /* Entitlements.plist */; };
+		C58F157510F576C200E6C359 /* ARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F157410F576C200E6C359 /* ARViewController.m */; };
+		C58F168F10F7F84800E6C359 /* ARGeoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F168E10F7F84800E6C359 /* ARGeoViewController.m */; };
+		C58F170310F803BC00E6C359 /* PropertyARGeoCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F170110F803BC00E6C359 /* PropertyARGeoCoordinate.m */; };
+		C58F170910F804AA00E6C359 /* ARCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F170710F804AA00E6C359 /* ARCoordinate.m */; };
+		C58F180C10F80EE100E6C359 /* ARGeoCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F180A10F80EE100E6C359 /* ARGeoCoordinate.m */; };
 		C5A3523810C1E05E004C7045 /* btndone.png in Resources */ = {isa = PBXBuildFile; fileRef = C5A3523710C1E05E004C7045 /* btndone.png */; };
 		DD02AD59100FD399003FD680 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DD4A5DA91002BFB9004599FB /* Default.png */; };
 		DD4581260FEEC7B500783A46 /* Geography.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = DD4581250FEEC7B500783A46 /* Geography.xcdatamodel */; };
@@ -426,22 +423,25 @@
 		C54DE34410B5083B00390127 /* link.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = link.png; sourceTree = "<group>"; };
 		C54DE34610B5084F00390127 /* tabbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbar.png; sourceTree = "<group>"; };
 		C54DE34810B5085B00390127 /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
-		C54DE34A10B50D4A00390127 /* ARCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCoordinate.h; sourceTree = "<group>"; };
-		C54DE34B10B50D4A00390127 /* ARCoordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCoordinate.m; sourceTree = "<group>"; };
-		C54DE34C10B50D4A00390127 /* ARGeoCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARGeoCoordinate.h; sourceTree = "<group>"; };
-		C54DE34D10B50D4A00390127 /* ARGeoCoordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARGeoCoordinate.m; sourceTree = "<group>"; };
-		C54DE34E10B50D4A00390127 /* ARGeoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARGeoViewController.h; sourceTree = "<group>"; };
-		C54DE34F10B50D4A00390127 /* ARGeoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARGeoViewController.m; sourceTree = "<group>"; };
-		C54DE35010B50D4A00390127 /* ARViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewController.h; sourceTree = "<group>"; };
-		C54DE35110B50D4A00390127 /* ARViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARViewController.m; sourceTree = "<group>"; };
+		C54DE35010B50D4A00390127 /* ARPropertyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPropertyViewController.h; sourceTree = "<group>"; };
+		C54DE35110B50D4A00390127 /* ARPropertyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPropertyViewController.m; sourceTree = "<group>"; };
 		C556817910CC3C3900B57CDD /* apt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apt.png; sourceTree = "<group>"; };
 		C556817A10CC3C3900B57CDD /* apt_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apt_selected.png; sourceTree = "<group>"; };
 		C556817B10CC3C3900B57CDD /* apts_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apts_selected.png; sourceTree = "<group>"; };
 		C556817C10CC3C3900B57CDD /* apts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apts.png; sourceTree = "<group>"; };
 		C570E09010C350AB00451BFF /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
+		C58F157310F576C200E6C359 /* ARViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewController.h; sourceTree = "<group>"; };
+		C58F157410F576C200E6C359 /* ARViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARViewController.m; sourceTree = "<group>"; };
+		C58F168D10F7F84800E6C359 /* ARGeoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARGeoViewController.h; sourceTree = "<group>"; };
+		C58F168E10F7F84800E6C359 /* ARGeoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARGeoViewController.m; sourceTree = "<group>"; };
+		C58F170010F803BC00E6C359 /* PropertyARGeoCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyARGeoCoordinate.h; sourceTree = "<group>"; };
+		C58F170110F803BC00E6C359 /* PropertyARGeoCoordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertyARGeoCoordinate.m; sourceTree = "<group>"; };
+		C58F170610F804AA00E6C359 /* ARCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCoordinate.h; sourceTree = "<group>"; };
+		C58F170710F804AA00E6C359 /* ARCoordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCoordinate.m; sourceTree = "<group>"; };
+		C58F180910F80EE100E6C359 /* ARGeoCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARGeoCoordinate.h; sourceTree = "<group>"; };
+		C58F180A10F80EE100E6C359 /* ARGeoCoordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARGeoCoordinate.m; sourceTree = "<group>"; };
 		C5A3523710C1E05E004C7045 /* btndone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btndone.png; sourceTree = "<group>"; };
 		C5A5210010C2FF89005B0688 /* AR Find an Apartment-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AR Find an Apartment-Info.plist"; sourceTree = "<group>"; };
-		C5CB17DE10C30342005C2918 /* FindApt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FindApt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5CB17E010C30342005C2918 /* FindApt-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FindApt-Info.plist"; sourceTree = "<group>"; };
 		DD4581250FEEC7B500783A46 /* Geography.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Geography.xcdatamodel; sourceTree = "<group>"; };
 		DD4A5DA91002BFB9004599FB /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -499,13 +499,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C5CB17DC10C30342005C2918 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -524,7 +517,6 @@
 			children = (
 				1D6058910D05DD3D006BFB54 /* Find an Apartment.app */,
 				45D455511001970000944852 /* Home Finder.app */,
-				C5CB17DE10C30342005C2918 /* FindApt.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -892,14 +884,14 @@
 		45E902CB109CB0410069D41B /* ARKit */ = {
 			isa = PBXGroup;
 			children = (
-				C54DE34A10B50D4A00390127 /* ARCoordinate.h */,
-				C54DE34B10B50D4A00390127 /* ARCoordinate.m */,
-				C54DE34C10B50D4A00390127 /* ARGeoCoordinate.h */,
-				C54DE34D10B50D4A00390127 /* ARGeoCoordinate.m */,
-				C54DE34E10B50D4A00390127 /* ARGeoViewController.h */,
-				C54DE34F10B50D4A00390127 /* ARGeoViewController.m */,
-				C54DE35010B50D4A00390127 /* ARViewController.h */,
-				C54DE35110B50D4A00390127 /* ARViewController.m */,
+				C58F180910F80EE100E6C359 /* ARGeoCoordinate.h */,
+				C58F180A10F80EE100E6C359 /* ARGeoCoordinate.m */,
+				C58F170610F804AA00E6C359 /* ARCoordinate.h */,
+				C58F170710F804AA00E6C359 /* ARCoordinate.m */,
+				C58F168D10F7F84800E6C359 /* ARGeoViewController.h */,
+				C58F168E10F7F84800E6C359 /* ARGeoViewController.m */,
+				C58F157310F576C200E6C359 /* ARViewController.h */,
+				C58F157410F576C200E6C359 /* ARViewController.m */,
 			);
 			name = ARKit;
 			sourceTree = "<group>";
@@ -907,6 +899,7 @@
 		45E902CC109CB0560069D41B /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				C58F15D610F57BA300E6C359 /* PropARKitExtension */,
 				45E902CB109CB0410069D41B /* ARKit */,
 				4526603210795E6D0046610B /* ObjectiveLibxml2.xcodeproj */,
 				DDDF6A91101E2C18001621C7 /* Three20.xcodeproj */,
@@ -934,6 +927,17 @@
 				C54DE33A10B5078900390127 /* closeicon.png */,
 			);
 			name = AR;
+			sourceTree = "<group>";
+		};
+		C58F15D610F57BA300E6C359 /* PropARKitExtension */ = {
+			isa = PBXGroup;
+			children = (
+				C54DE35010B50D4A00390127 /* ARPropertyViewController.h */,
+				C54DE35110B50D4A00390127 /* ARPropertyViewController.m */,
+				C58F170010F803BC00E6C359 /* PropertyARGeoCoordinate.h */,
+				C58F170110F803BC00E6C359 /* PropertyARGeoCoordinate.m */,
+			);
+			name = PropARKitExtension;
 			sourceTree = "<group>";
 		};
 		DDDF6A92101E2C18001621C7 /* Products */ = {
@@ -985,23 +989,6 @@
 			productReference = 45D455511001970000944852 /* Home Finder.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C5CB17DD10C30342005C2918 /* FindApt */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C5CB17E510C30342005C2918 /* Build configuration list for PBXNativeTarget "FindApt" */;
-			buildPhases = (
-				C5CB17DA10C30342005C2918 /* Resources */,
-				C5CB17DB10C30342005C2918 /* Sources */,
-				C5CB17DC10C30342005C2918 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = FindApt;
-			productName = FindApt;
-			productReference = C5CB17DE10C30342005C2918 /* FindApt.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1029,7 +1016,6 @@
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Find an Apartment */,
 				45D455081001970000944852 /* Home Finder */,
-				C5CB17DD10C30342005C2918 /* FindApt */,
 			);
 		};
 /* End PBXProject section */
@@ -1146,18 +1132,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C5CB17DA10C30342005C2918 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C570E09210C350AB00451BFF /* Entitlements.plist in Resources */,
-				C556818110CC3C3900B57CDD /* apt.png in Resources */,
-				C556818210CC3C3900B57CDD /* apt_selected.png in Resources */,
-				C556818310CC3C3900B57CDD /* apts_selected.png in Resources */,
-				C556818410CC3C3900B57CDD /* apts.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1209,10 +1183,12 @@
 				45783B9610841BF000844E51 /* PropertyResultsViewController.m in Sources */,
 				4590CB48109503BA00CB6CF4 /* PropertyDetailsMapViewController.m in Sources */,
 				45E90325109CD87C0069D41B /* PropertyArViewController.m in Sources */,
-				C54DE35210B50D4A00390127 /* ARCoordinate.m in Sources */,
-				C54DE35310B50D4A00390127 /* ARGeoCoordinate.m in Sources */,
-				C54DE35410B50D4A00390127 /* ARGeoViewController.m in Sources */,
-				C54DE35510B50D4A00390127 /* ARViewController.m in Sources */,
+				C54DE35510B50D4A00390127 /* ARPropertyViewController.m in Sources */,
+				C58F157510F576C200E6C359 /* ARViewController.m in Sources */,
+				C58F168F10F7F84800E6C359 /* ARGeoViewController.m in Sources */,
+				C58F170310F803BC00E6C359 /* PropertyARGeoCoordinate.m in Sources */,
+				C58F170910F804AA00E6C359 /* ARCoordinate.m in Sources */,
+				C58F180C10F80EE100E6C359 /* ARGeoCoordinate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1273,13 +1249,6 @@
 				45783B9810841BF000844E51 /* PropertyResultsViewController.m in Sources */,
 				4590CB46109503BA00CB6CF4 /* PropertyDetailsMapViewController.m in Sources */,
 				45E90327109CD87C0069D41B /* PropertyArViewController.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C5CB17DB10C30342005C2918 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1616,101 +1585,6 @@
 			};
 			name = "AR Ad-Hoc";
 		};
-		C5CB17E110C30342005C2918 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/UIKit.framework/Headers/UIKit.h";
-				INFOPLIST_FILE = "FindApt-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					UIKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = FindApt;
-				SDKROOT = iphoneos3.1.2;
-			};
-			name = Debug;
-		};
-		C5CB17E210C30342005C2918 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/UIKit.framework/Headers/UIKit.h";
-				INFOPLIST_FILE = "FindApt-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					UIKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = FindApt;
-				SDKROOT = iphoneos3.1.2;
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
-		C5CB17E310C30342005C2918 /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/UIKit.framework/Headers/UIKit.h";
-				INFOPLIST_FILE = "FindApt-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					UIKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = FindApt;
-				SDKROOT = iphoneos3.1.2;
-			};
-			name = Distribution;
-		};
-		C5CB17E410C30342005C2918 /* AR Ad-Hoc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/UIKit.framework/Headers/UIKit.h";
-				INFOPLIST_FILE = "FindApt-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					UIKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = FindApt;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos3.1.2;
-			};
-			name = "AR Ad-Hoc";
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1743,17 +1617,6 @@
 				C01FCF5008A954540054247B /* Release */,
 				45A239E21058A4F80072C190 /* Distribution */,
 				C5A3527D10C1ECDE004C7045 /* AR Ad-Hoc */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C5CB17E510C30342005C2918 /* Build configuration list for PBXNativeTarget "FindApt" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C5CB17E110C30342005C2918 /* Debug */,
-				C5CB17E210C30342005C2918 /* Release */,
-				C5CB17E310C30342005C2918 /* Distribution */,
-				C5CB17E410C30342005C2918 /* AR Ad-Hoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -3,8 +3,7 @@
 //  ARKitDemo
 //
 //  Created by Zac White on 8/1/09.
-//  Modified by Tim Sears 11/2009.
-//  Copyright 2009 Gravity Mobile. All rights reserved.
+//  Copyright 2009 Zac White. All rights reserved.
 //
 
 #import "ARCoordinate.h"
@@ -13,10 +12,8 @@
 @implementation ARCoordinate
 
 @synthesize radialDistance, inclination, azimuth;
-@synthesize isMultiple, viewSet;
-@synthesize subLocations;
-@synthesize theId, title, subtitle, summary, price;
 
+@synthesize title, subtitle;
 
 + (ARCoordinate *)coordinateWithRadialDistance:(double)newRadialDistance inclination:(double)newInclination azimuth:(double)newAzimuth {
 	ARCoordinate *newCoordinate = [[ARCoordinate alloc] init];
@@ -30,7 +27,7 @@
 }
 
 - (NSUInteger)hash{
-	return [self.title hash];
+	return ([self.title hash] ^ [self.subtitle hash]) + (int)(self.radialDistance + self.inclination + self.azimuth);
 }
 
 - (BOOL)isEqual:(id)other {
@@ -47,7 +44,10 @@
 	BOOL equal = self.radialDistance == otherCoordinate.radialDistance;
 	equal = equal && self.inclination == otherCoordinate.inclination;
 	equal = equal && self.azimuth == otherCoordinate.azimuth;
-	equal = equal && [self.title isEqualToString:otherCoordinate.title];
+		
+	if (self.title && otherCoordinate.title || self.title && !otherCoordinate.title || !self.title && otherCoordinate.title) {
+		equal = equal && [self.title isEqualToString:otherCoordinate.title];
+	}
 	
 	return equal;
 }
@@ -61,7 +61,7 @@
 }
 
 - (NSString *)description {
-	return [NSString stringWithFormat:@"%@ r: %f φ: %f θ: %f", self.title, self.radialDistance, self.azimuth * (180.0/M_PI), self.inclination * (180.0/M_PI)];
+	return [NSString stringWithFormat:@"%@ r: %.3fm φ: %.3f° θ: %.3f°", self.title, self.radialDistance, radiansToDegrees(self.azimuth), radiansToDegrees(self.inclination)];
 }
 
 @end
