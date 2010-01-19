@@ -166,7 +166,7 @@
 #define BOX_WIDTH 70
 #define BOX_HEIGHT 55
 
-- (UIView *)viewForCoordinate:(PropertyARGeoCoordinate *)coordinate {
+- (UIView *)viewForCoordinate:(PropertyArGeoCoordinate *)coordinate {
 	
 	[coordinate calibrateUsingOrigin: self.arViewController.centerLocation];
 		
@@ -176,10 +176,10 @@
 		coordinate.inclination = .4;
 	
 	CGRect theFrame = CGRectMake(0, 0, BOX_WIDTH, BOX_HEIGHT);
-	NSString *theImage = @"apt.png";
+	NSString *theImage = @"arPropertyButton.png";
 	
 	if(coordinate.isMultiple)
-		theImage = @"apts.png";
+		theImage = @"arPropertiesButton.png";
 	
 	UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:theImage]];
 	imgView.frame = theFrame;

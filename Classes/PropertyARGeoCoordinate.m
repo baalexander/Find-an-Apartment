@@ -1,15 +1,15 @@
 //
-//  PropertyARGeoCoordinate.m
+//  PropertyArGeoCoordinate.m
 //  Find an Apartment
 //
 //  Created by Timothy Sears on 1/8/10.
 //  Copyright 2010 Alexander Mobile. All rights reserved.
 //
 
-#import "PropertyARGeoCoordinate.h"
+#import "PropertyArGeoCoordinate.h"
 
 
-@implementation PropertyARGeoCoordinate
+@implementation PropertyArGeoCoordinate
 
 @synthesize isMultiple;
 @synthesize viewSet;
@@ -63,8 +63,8 @@ float CalculateAngle(float nLat1, float nLon1, float nLat2, float nLon2)
 }
 
 
-+ (PropertyARGeoCoordinate *)coordinateWithLocation:(CLLocation *)location {
-	PropertyARGeoCoordinate *newCoordinate = [[PropertyARGeoCoordinate alloc] init];
++ (PropertyArGeoCoordinate *)coordinateWithLocation:(CLLocation *)location {
+	PropertyArGeoCoordinate *newCoordinate = [[PropertyArGeoCoordinate alloc] init];
 	newCoordinate.geoLocation = location;
 	
 	newCoordinate.title = @"GEO";
@@ -72,8 +72,8 @@ float CalculateAngle(float nLat1, float nLon1, float nLat2, float nLon2)
 	return [newCoordinate autorelease];
 }
 
-+ (PropertyARGeoCoordinate *)coordinateWithLocation:(CLLocation *)location fromOrigin:(CLLocation *)origin {
-	PropertyARGeoCoordinate *newCoordinate = [PropertyARGeoCoordinate coordinateWithLocation:location];
++ (PropertyArGeoCoordinate *)coordinateWithLocation:(CLLocation *)location fromOrigin:(CLLocation *)origin {
+	PropertyArGeoCoordinate *newCoordinate = [PropertyArGeoCoordinate coordinateWithLocation:location];
 	
 	[newCoordinate calibrateUsingOrigin:origin];
 	

@@ -62,6 +62,6 @@
 - (void)geocodeNextProperty;
 - (void)resetGeocoding;
 - (IBAction)changeView:(id)sender;
-- (UIView *)viewForCoordinate:(PropertyARGeoCoordinate *)coordinate;
+- (UIView *)viewForCoordinate:(PropertyArGeoCoordinate *)coordinate;
 
 @end

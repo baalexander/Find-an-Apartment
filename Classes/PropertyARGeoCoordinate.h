@@ -1,5 +1,5 @@
 //
-//  PropertyARGeoCoordinate.h
+//  PropertyArGeoCoordinate.h
 //  Find an Apartment
 //
 //  Created by Timothy Sears on 1/8/10.
@@ -10,7 +10,7 @@
 #import "ARGeoCoordinate.h"
 #import <CoreLocation/CoreLocation.h>
 
-@interface PropertyARGeoCoordinate : ARGeoCoordinate {
+@interface PropertyArGeoCoordinate : ARGeoCoordinate {
 
 	bool isMultiple; // represents a group of locations
 	bool viewSet;
@@ -20,8 +20,8 @@
 	NSString *summary;
 }
 
-+ (PropertyARGeoCoordinate *)coordinateWithLocation:(CLLocation *)location;
-+ (PropertyARGeoCoordinate *)coordinateWithLocation:(CLLocation *)location fromOrigin:(CLLocation *)origin;
++ (PropertyArGeoCoordinate *)coordinateWithLocation:(CLLocation *)location;
++ (PropertyArGeoCoordinate *)coordinateWithLocation:(CLLocation *)location fromOrigin:(CLLocation *)origin;
 
 @property bool isMultiple;
 @property bool viewSet;
