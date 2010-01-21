@@ -3,53 +3,52 @@
 #define VIEWPORT_WIDTH_RADIANS .7392
 #define VIEWPORT_HEIGHT_RADIANS .5
 
+@interface PropertyArViewController ()
+@property (nonatomic, retain) UIImageView *popupView;
+@property (nonatomic, retain) UIActivityIndicatorView *progressView;
+@property (nonatomic, retain) UIView *locationLayerView;
+@property (nonatomic, retain) NSMutableArray *locationViews;
+@property (nonatomic, retain) NSArray *locationItems;
+@property (nonatomic, retain) NSMutableArray *baseItems;
+@property (nonatomic, retain) PropertyArGeoCoordinate *selectedPoint;
+@property (nonatomic, assign) BOOL popupIsAdded;
+@property (nonatomic, assign) BOOL updatedLocations;
+@property (nonatomic, assign) BOOL shouldChangeHighlight;
+@property (nonatomic, assign) BOOL recalibrateProximity;
+@property (nonatomic, assign) NSInteger currentPage;
+@property (nonatomic, assign) NSInteger contentType;
+@end
+
+
 @implementation PropertyArViewController
 
 @synthesize propertyDataSource = propertyDataSource_;
 @synthesize propertyDelegate = propertyDelegate_;
-//@synthesize arkitViewController = arkitViewController_;
 @synthesize imgController = imgController_;
 
-// Start of ARProperty
-@synthesize locationItems;
-@synthesize locationViews;
-@synthesize locationItemsInView;
-@synthesize baseItems;
-@synthesize propdelegate;
-@synthesize gestureStartPoint;
-@synthesize popupView;
-@synthesize contentView;
-@synthesize locationLayerView;
-@synthesize selectedPoint;
-@synthesize selectedSubPoint;
-@synthesize contentType;
-@synthesize currentRadius;
-@synthesize bottomView;
-@synthesize camera;
-@synthesize progressView;
-@synthesize updatedLocations;
-@synthesize minDistance;
-@synthesize shouldChangeHighlight;
-@synthesize recalibrateProximity;
-@synthesize currentPage;
-@synthesize popupIsAdded;
-// End of ARProperty
+@synthesize propdelegate = propdelegate_;
+@synthesize camera = camera_;
+@synthesize popupView = popupView_;
+@synthesize progressView = progressView_;
+@synthesize locationLayerView = locationLayerView_;
+@synthesize locationViews = locationViews_;
+@synthesize locationItems = locationItems_;
+@synthesize baseItems = baseItems_;
+@synthesize selectedPoint = selectedPoint_;
+@synthesize recalibrateProximity = recalibrateProximity_;
+@synthesize popupIsAdded = popupIsAdded_;
+@synthesize updatedLocations = updatedLocations_;
+@synthesize shouldChangeHighlight = shouldChangeHighlight_;
+@synthesize minDistance = minDistance_;
+@synthesize currentPage = currentPage_;
+@synthesize contentType = contentType_;
 
 - (id)init
 {
     if ((self = [super init]))
     {
-		/*
-        [self setDebugMode:YES];
-        [self setDelegate:self];
-        [self setScaleViewsBasedOnDistance:YES];
-        [self setMinimumScaleFactor:0.5];
-        [self setRotateViewsBasedOnPerspective:YES];
-        */
-		
-		CLLocation *newCenter = [[CLLocation alloc] initWithLatitude:0 longitude:0];
-		
-		self.centerLocation = newCenter;
+		CLLocation *newCenter = [[CLLocation alloc] initWithLatitude:0 longitude:0];		
+		[self setCenterLocation:newCenter];
 		[newCenter release];
     }
     
@@ -58,7 +57,15 @@
 
 - (void)dealloc
 {
-	//[arkitViewController_ release];
+    [camera_ release];
+    [popupView_ release];
+    [progressView_ release];
+    [locationLayerView_ release];
+    [locationViews_ release];
+    [locationItems_ release];
+    [baseItems_ release];
+    [selectedPoint_ release];
+    
     [super dealloc];
 }
 
@@ -68,42 +75,47 @@
     [[self propertyDelegate] view:[self view] didSelectPropertyAtIndex:[button tag]];
 	
 	
-	[self.camera dismissModalViewControllerAnimated:YES];
+	[[self camera] dismissModalViewControllerAnimated:YES];
 }
 
 - (void)addGeocodedProperty:(PropertySummary *)property atIndex:(NSInteger)index
 {
-	self.recalibrateProximity = true;
+	[self setRecalibrateProximity:YES];
     // Adds coordinate
     CLLocation *location = [[CLLocation alloc] initWithLatitude:[[property latitude] doubleValue]
                                                       longitude:[[property longitude] doubleValue]];
+	PropertyArGeoCoordinate *geoCoordinate = [PropertyArGeoCoordinate coordinateWithLocation:location];
+    [location release];
 
-    PropertyArGeoCoordinate *geoCoordinate = [[PropertyArGeoCoordinate alloc] init];
-	geoCoordinate = [PropertyArGeoCoordinate coordinateWithLocation:location];
     [geoCoordinate setTitle:[property title]];
 	[geoCoordinate setSubtitle:[property subtitle]];
 	[geoCoordinate setSummary:[property summary]];
 	[geoCoordinate setPrice:[[property price] description]];
 	[geoCoordinate setIsMultiple:false];
 	[geoCoordinate setViewSet:false];
-    [location release];
 	
-	[geoCoordinate calibrateUsingOrigin: self.centerLocation];
+	[geoCoordinate calibrateUsingOrigin:[self centerLocation]];
 	
-	if(geoCoordinate.radialDistance < self.minDistance)
+	if ([geoCoordinate radialDistance] < [self minDistance])
 	{
-		self.minDistance = geoCoordinate.radialDistance;
+		[self setMinDistance:[geoCoordinate radialDistance]];
 	}
 	
-	if(self.baseItems == nil)
-		self.baseItems = [[NSMutableArray alloc] init];
+	if (self.baseItems == nil)
+    {
+        NSMutableArray *baseItems = [[NSMutableArray alloc] init];
+        [self setBaseItems:baseItems];
+        [baseItems release];
+    }
 	
-	[self.baseItems addObject:geoCoordinate];
+	[[self baseItems] addObject:geoCoordinate];
 	
-	NSMutableArray *tempArray = [[NSMutableArray alloc] initWithCapacity:[locationItems count] + 1];
+	NSMutableArray *tempArray = [[NSMutableArray alloc] initWithCapacity:[[self locationItems] count] + 1];
 	
-	bool geoAdded = false;
-	for(PropertyArGeoCoordinate *coord in locationItems)
+    // TODO: This code is duplicated in another function. Turn into its own function
+    //       Whiile at it, remove baseItems since functionality is similar to locationItems
+	BOOL geoAdded = false;
+	for (PropertyArGeoCoordinate *coord in [self locationItems])
 	{
 		// if the coordinates are nearby, add coordinate as a subset.
 		if(geoAdded == false && [self isNearCoordinate:coord newCoordinate:geoCoordinate] == true)
@@ -144,24 +156,25 @@
 		[tempArray addObject:geoCoordinate];
 	}
 	
-	[locationItems release];
-	locationItems = [tempArray retain];
+	[[self locationItems] release];
+	[self setLocationItems:[tempArray retain]];
 	
-	for (UIView *view in self.locationLayerView.subviews) {
+	for (UIView *view in [[self locationLayerView] subviews])
+    {
 		[view removeFromSuperview];
 	}
 	
-	NSMutableArray *newTempArray = [NSMutableArray array];
+	NSMutableArray *newTempArray = [[NSMutableArray alloc] init];
 	
-	for (PropertyArGeoCoordinate *coordinate in locationItems) {
-		//create the views here.
-		
-		//call out for the delegate's view.
-		if ([self.propdelegate respondsToSelector:@selector(viewForCoordinate:)]) {
+	for (PropertyArGeoCoordinate *coordinate in [self locationItems])
+    {
+		if ([[self propdelegate] respondsToSelector:@selector(viewForCoordinate:)])
+        {
 			[newTempArray addObject:[self.propdelegate viewForCoordinate:coordinate]];
 		}
 	}
 	
+    
 	self.locationViews = newTempArray;
 		 
 	self.updatedLocations = true;
@@ -177,75 +190,77 @@
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView {
 	
-	popupIsAdded = false;
-	
-	self.updatedLocations = false;
-	self.shouldChangeHighlight = true;
-	self.recalibrateProximity = false;
-	self.contentType = 0;
-	self.minDistance = 1000.0;
-	self.currentPage = 1;
+	[self setPopupIsAdded:NO];
+	[self setUpdatedLocations:NO];
+	[self setShouldChangeHighlight:YES];
+	[self setRecalibrateProximity:NO];
+	[self setContentType:0];
+	[self setMinDistance:1000.0];
+	[self setCurrentPage:1];
+
+    // TODO: Content view is unnecessary? Just use view
+	UIView *contentView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
+    [contentView setBackgroundColor:[UIColor clearColor]];
     
-	// re-cast contentview to UIImagePickerController
-	// after that, everything should work as per normal.
+	UIView *locationLayerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+    [self setLocationLayerView:locationLayerView];
+    [locationLayerView release];
+	[contentView addSubview:locationLayerView];
 	
-	self.contentView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
-	
-	self.locationLayerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
-	[self.contentView addSubview:locationLayerView];
-	
-	self.contentView.backgroundColor = [UIColor clearColor];
-	
-	//MKCoordinateSpan span;
-	//span.latitudeDelta = 0.05;
-	//span.longitudeDelta = 0.05;
-	CLLocationCoordinate2D theLocation;
-	theLocation.latitude = self.centerLocation.coordinate.latitude;
-	theLocation.longitude = self.centerLocation.coordinate.longitude;
+	CLLocationCoordinate2D location;
+	location.latitude = [[self centerLocation] coordinate].latitude;
+	location.longitude = [[self centerLocation] coordinate].longitude;
 	
 	UIImageView *tabView  = [[UIImageView alloc] initWithFrame:CGRectMake(0, 427, 320, 55)];
 	[tabView setImage:[UIImage imageNamed:@"arTabbar.png"]];
 	[contentView addSubview:tabView];
 	[tabView release];
     
-	UIButton *btnDone = [[UIButton alloc] initWithFrame:CGRectMake(10, 440, 73, 29)];
-	[btnDone setImage:[UIImage imageNamed:@"arDoneButton.png"] forState:UIControlStateNormal];
-	[btnDone addTarget:self action:@selector(doneClick:) forControlEvents:(UIControlEvents)UIControlEventTouchUpInside]; 
-	[self.contentView addSubview:btnDone];
-	[btnDone release];
+	UIButton *doneButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 440, 73, 29)];
+	[doneButton setImage:[UIImage imageNamed:@"arDoneButton.png"] forState:UIControlStateNormal];
+	[doneButton addTarget:self action:@selector(doneClick:) forControlEvents:(UIControlEvents)UIControlEventTouchUpInside]; 
+	[contentView addSubview:doneButton];
+	[doneButton release];
 	
-	self.selectedPoint = [PropertyArGeoCoordinate alloc];
+    PropertyArGeoCoordinate *selectedPoint = [[PropertyArGeoCoordinate alloc] init];
+	[self setSelectedPoint:selectedPoint];
+    [selectedPoint release];
 	
-	self.view = contentView;
+    [self setView:contentView];
 	[contentView release];
 }
 
 - (void)doneClick:(id)sender {
 	
-	if ([self.propdelegate respondsToSelector:@selector(onARControllerClose)]) {
-		[self.propdelegate onARControllerClose];
+	if ([[self propdelegate] respondsToSelector:@selector(onARControllerClose)])
+    {
+		[[self propdelegate] onARControllerClose];
 	}
 	
-	[self.camera dismissModalViewControllerAnimated:NO];
+	[[self camera] dismissModalViewControllerAnimated:NO];
 }
 
-- (BOOL)viewportContainsCoordinate:(ARCoordinate *)coordinate {
+- (BOOL)viewportContainsCoordinate:(ARCoordinate *)coordinate
+{
 	double centerAzimuth = self.centerCoordinate.azimuth;
 	double leftAzimuth = centerAzimuth - VIEWPORT_WIDTH_RADIANS / 2.0;
 	
-	if (leftAzimuth < 0.0) {
+	if (leftAzimuth < 0.0)
+    {
 		leftAzimuth = 2 * M_PI + leftAzimuth;
 	}
 	
 	double rightAzimuth = centerAzimuth + VIEWPORT_WIDTH_RADIANS / 2.0;
 	
-	if (rightAzimuth > 2 * M_PI) {
+	if (rightAzimuth > 2 * M_PI)
+    {
 		rightAzimuth = rightAzimuth - 2 * M_PI;
 	}
 	
 	BOOL result = (coordinate.azimuth > leftAzimuth && coordinate.azimuth < rightAzimuth);
 	
-	if(leftAzimuth > rightAzimuth) {
+	if(leftAzimuth > rightAzimuth)
+    {
 		result = (coordinate.azimuth < rightAzimuth || coordinate.azimuth > leftAzimuth);
 	}
 	
@@ -262,28 +277,30 @@
 - (void)startListening {
 	
 	//start our heading readings and our accelerometer readings.
-	if (!self.locationManager) {
-		self.locationManager = [[[CLLocationManager alloc] init] autorelease];
+	if ([self locationManager] == nil)
+    {
+		[self setLocationManager:[[[CLLocationManager alloc] init] autorelease]];
 		
 		//we want every move.
-		self.locationManager.headingFilter = kCLHeadingFilterNone;
+		[[self locationManager] setHeadingFilter:kCLHeadingFilterNone];
 		
-		[self.locationManager startUpdatingHeading];
-		self.locationManager.delegate = self;
-		self.locationManager.distanceFilter = 200;  // .1 miles
-		self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-		[self.locationManager startUpdatingLocation];
-		
+		[[self locationManager] startUpdatingHeading];
+		[[self locationManager] setDelegate:self];
+		[[self locationManager] setDistanceFilter:200];  // .1 miles
+		[[self locationManager] setDesiredAccuracy:kCLLocationAccuracyBest];
+		[[self locationManager] startUpdatingLocation];
 	}
 	
-	if (!self.accelerometerManager) {
-		self.accelerometerManager = [UIAccelerometer sharedAccelerometer];
-		self.accelerometerManager.updateInterval = 0.04;
-		self.accelerometerManager.delegate = self;
+	if ([self accelerometerManager] == nil)
+    {
+		[self setAccelerometerManager:[UIAccelerometer sharedAccelerometer]];
+		[[self accelerometerManager] setUpdateInterval:0.04];
+		[[self accelerometerManager] setDelegate:self];
 	}
 	
-	if (!self.centerCoordinate) {
-		self.centerCoordinate = [ARCoordinate coordinateWithRadialDistance:0 inclination:0 azimuth:0];
+	if ([self centerCoordinate] == nil)
+    {
+		[self setCenterCoordinate:[ARCoordinate coordinateWithRadialDistance:0 inclination:0 azimuth:0]];
 	}
 }
 
@@ -301,14 +318,16 @@
 	theLocation.latitude = self.centerLocation.coordinate.latitude;
 	theLocation.longitude = self.centerLocation.coordinate.longitude;
 	
-	if(recalibrateProximity)
+	if ([self recalibrateProximity])
 	{
-		recalibrateProximity = false;
+		[self setRecalibrateProximity:NO];
 		[self updateProximityLocations];
 	}
     
-	for (PropertyArGeoCoordinate *geoLocation in self.locationItems) {
-		if ([geoLocation isKindOfClass:[PropertyArGeoCoordinate class]]) {
+	for (PropertyArGeoCoordinate *geoLocation in self.locationItems)
+    {
+		if ([geoLocation isKindOfClass:[PropertyArGeoCoordinate class]])
+        {
 			[geoLocation calibrateUsingOrigin:centerLocation];
 		}
 	}
@@ -318,24 +337,24 @@
 
 - (void) updateProximityLocations
 {
-	[locationItems release];
-	locationItems = [[NSMutableArray alloc] init];
+	[[self locationItems] release];
+	[self setLocationItems:[[NSMutableArray alloc] init]];
 	
-	for(PropertyArGeoCoordinate *geoCoordinate in baseItems)
+	for (PropertyArGeoCoordinate *geoCoordinate in [self baseItems])
 	{
 		[geoCoordinate.subLocations release];
 		geoCoordinate.isMultiple = false;
 		[geoCoordinate calibrateUsingOrigin:centerLocation];
 		
-		if(geoCoordinate.radialDistance < self.minDistance)
+		if ([geoCoordinate radialDistance] < [self minDistance])
 		{
-			self.minDistance = geoCoordinate.radialDistance;
+            [self setMinDistance:[geoCoordinate radialDistance]];
 		}
 		
-		NSMutableArray *tempArray = [[NSMutableArray alloc] initWithCapacity:[locationItems count] + 1];
+		NSMutableArray *tempArray = [[NSMutableArray alloc] initWithCapacity:[[self locationItems] count] + 1];
 		
 		bool geoAdded = false;
-		for(PropertyArGeoCoordinate *coord in locationItems)
+		for(PropertyArGeoCoordinate *coord in [self locationItems])
 		{
 			// if the coordinates are nearby, add coordinate as a subset.
 			if(geoAdded == false && [self isNearCoordinate:coord newCoordinate:geoCoordinate] == true)
@@ -376,26 +395,25 @@
 			[tempArray addObject:geoCoordinate];
 		}
 		
-		[locationItems release];
-		locationItems = [tempArray retain];
+		[[self locationItems] release];
+		[self setLocationItems:[tempArray retain]];
 		
-		for (UIView *view in self.locationLayerView.subviews) {
+		for (UIView *view in self.locationLayerView.subviews)
+        {
 			[view removeFromSuperview];
 		}
 		
-		NSMutableArray *newTempArray = [NSMutableArray array];
-		
-		for (PropertyArGeoCoordinate *coordinate in locationItems) {
-			//create the views here.
-			
-			//call out for the delegate's view.
-			if ([self.propdelegate respondsToSelector:@selector(viewForCoordinate:)]) {
-				[newTempArray addObject:[self.propdelegate viewForCoordinate:coordinate]];
+		NSMutableArray *locationViews = [[NSMutableArray alloc] init];
+        [self setLocationViews:locationViews];
+        [locationViews release];
+        
+		for (PropertyArGeoCoordinate *coordinate in [self locationItems])
+        {	
+			if ([[self propdelegate] respondsToSelector:@selector(viewForCoordinate:)])
+            {
+				[[self locationViews] addObject:[self.propdelegate viewForCoordinate:coordinate]];
 			}
 		}
-		
-		self.locationViews = newTempArray;
-		
 		
 		self.updatedLocations = true;
 	}
@@ -494,47 +512,52 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
 
 - (void)updateLocations {
 	
-	if(self.baseItems.count < 25 && progressView == nil)
+	if(self.baseItems.count < 25 && [self progressView] == nil)
 	{
-		progressView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, 10, 320, 480)];
-		[progressView startAnimating];
-		progressView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
-		[progressView sizeToFit];
+        
+		UIActivityIndicatorView *progressView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, 10, 320, 480)];
+        [self setProgressView:progressView];
+        [progressView release];
+        
+		[[self progressView] startAnimating];
+		[[self progressView] setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
+		[[self progressView] sizeToFit];
 		
-		[self.view addSubview:progressView];
+		[[self view] addSubview:[self progressView]];
 		
 	}
-	else if(self.baseItems.count >= 25)
+	else if (self.baseItems.count >= 25)
 	{
-		[progressView removeFromSuperview];
+		[[self progressView] removeFromSuperview];
 	}
 	
-	unsigned int index = 0;
-	
-	for (PropertyArGeoCoordinate *item in self.locationItems) 
+    for (NSUInteger i = 0; i < [[self locationItems] count]; i++)
 	{
-		UIImageView *viewToDraw = [self.locationViews objectAtIndex:index];
+        PropertyArGeoCoordinate *item = [[self locationItems] objectAtIndex:i];
+		UIImageView *viewToDraw = [[self locationViews] objectAtIndex:i];
 		
 		NSString *theImage = @"arPropertyButton.png";
-		if(self.selectedPoint != nil)
+		if (self.selectedPoint != nil)
 		{
-			if(item.geoLocation.coordinate.latitude == self.selectedPoint.geoLocation.coordinate.latitude && 
+			if (item.geoLocation.coordinate.latitude == self.selectedPoint.geoLocation.coordinate.latitude && 
 			   item.geoLocation.coordinate.longitude == self.selectedPoint.geoLocation.coordinate.longitude)
 			{
 				theImage = @"arSelectedPropertyButton.png";
 				
-				if(item.isMultiple)
-					theImage = @"arSelectedPropertiesButton.png";
+				if (item.isMultiple)
+                {
+                    theImage = @"arSelectedPropertiesButton.png";
+                }
 			}
 			else 
 			{
-				if(item.isMultiple)
+				if (item.isMultiple)
 				{
 					theImage = @"arPropertiesButton.png";
 					
-					for(PropertyArGeoCoordinate *coord in item.subLocations)
+					for (PropertyArGeoCoordinate *coord in item.subLocations)
 					{
-						if(coord.geoLocation.coordinate.latitude == self.selectedPoint.geoLocation.coordinate.latitude && 
+						if (coord.geoLocation.coordinate.latitude == self.selectedPoint.geoLocation.coordinate.latitude && 
 						   coord.geoLocation.coordinate.longitude == self.selectedPoint.geoLocation.coordinate.longitude)
 						{
 							theImage = @"arSelectedPropertiesButton.png";
@@ -546,14 +569,17 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
 		
 		int tag = 0;
 		
-		if(item.isMultiple)
-			tag = 1;
+		if ([item isMultiple])
+        {
+            tag = 1;
+        }
         
 		UIImage *img = [UIImage imageNamed:theImage];
 		[viewToDraw setImage:img];
 		[viewToDraw setTag:tag];
 		
-		if ([self viewportContainsCoordinate:item]) {
+		if ([self viewportContainsCoordinate:item])
+        {
 			CGPoint loc = [self pointInView:self.view forCoordinate:item];
 			
 			float width = viewToDraw.frame.size.width;
@@ -564,16 +590,12 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
 			[self.locationLayerView addSubview:viewToDraw];
 			
 			
-		} else {
-			
+		}
+        else
+        {	
 			[viewToDraw removeFromSuperview];
 		}
-		
-		index++;
 	}
-	
-	[self.locationItemsInView release];
-	self.locationItemsInView = [[NSMutableArray alloc] init];
 }
 
 #define BOX_WIDTH 200
@@ -644,7 +666,6 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	UITouch *touch = [touches anyObject];
-	gestureStartPoint = [touch locationInView:self.view];
     
 	if(self.locationViews != nil)
 	{
@@ -670,16 +691,20 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
                 
                 double topPoint = 210.0f;
                 
-                if(contentType == 2)
+                if ([self contentType] == 2)
+                {
                     topPoint = 130.0f;
-                else if(contentType == 1)
+                }
+                else if ([self contentType] == 1)
+                {
                     topPoint = 171.0f;
+                }
                 
-                CGRect tempFrame = popupView.frame;
+                CGRect tempFrame = [[self popupView] frame];
                 tempFrame.origin.y = topPoint;
                 self.popupView.frame = tempFrame;
                 
-                popupIsAdded = true;
+                [self setPopupIsAdded:YES];
                 [UIView commitAnimations];
             }
             
@@ -722,7 +747,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
 	self.selectedPoint.subLocations = subLocations;
 	[self.selectedPoint calibrateUsingOrigin: self.centerLocation];
 	
-	shouldChangeHighlight = false;
+	[self setShouldChangeHighlight:NO];
 	
 	
 	[self makePanel];
@@ -760,31 +785,32 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
 	self.selectedPoint.subLocations = subLocations;
 	[self.selectedPoint calibrateUsingOrigin: self.centerLocation];
 	
-	shouldChangeHighlight = false;
+	[self setShouldChangeHighlight:NO];
 	
 	[self makePanel];
 }
 
 - (void)makePanel 
 {	
-	if(popupIsAdded)
+	if([self popupIsAdded])
 	{
-		if(self.popupView != nil)
+		if ([self popupView] != nil)
 		{
-			[self.popupView removeFromSuperview];
-			[self.popupView release];
+			[[self popupView] removeFromSuperview];
+			[[self popupView] release];
 		}
 	}
 	
-	int topPoint = 500;
-	
-	if(popupIsAdded)
-		topPoint = 210;
+	NSInteger topPoint = 500;
+	if ([self popupIsAdded])
+    {
+        topPoint = 210;
+    }
 	
 	self.popupView = [[UIView alloc] initWithFrame:CGRectMake(14, topPoint, 292, 215)];
     
 	[self.view addSubview:self.popupView];
-	popupIsAdded = true;
+	[self setPopupIsAdded:YES];
 	
 	int buttonStart = 19;
 	
@@ -944,7 +970,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
 	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 	[UIView setAnimationDuration: 0.4f];
 	
-	CGRect tempFrame = popupView.frame;
+	CGRect tempFrame = [[self popupView] frame];
 	tempFrame.origin.y = 500.0f;
 	self.popupView.frame = tempFrame;
 	
@@ -961,7 +987,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
 			[imgView setImage:[UIImage imageNamed:@"apt"]];
 	}
 	
-	popupIsAdded = false;
+	[self setPopupIsAdded:NO];
 }
 
 - (void)nextClick:(id)sender {
