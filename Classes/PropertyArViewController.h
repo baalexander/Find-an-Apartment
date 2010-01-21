@@ -18,7 +18,7 @@
     @private
         id <PropertyResultsDataSource> propertyDataSource_;
         id <PropertyResultsDelegate> propertyDelegate_;
-	    UIImagePickerController *imgController_;
+        UIImagePickerController *imgController_;
     
         id propdelegate_;
         UIImagePickerController *camera_;
