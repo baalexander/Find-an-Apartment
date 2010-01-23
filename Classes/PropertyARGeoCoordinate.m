@@ -1,22 +1,39 @@
-//
-//  PropertyArGeoCoordinate.m
-//  Find an Apartment
-//
-//  Created by Timothy Sears on 1/8/10.
-//  Copyright 2010 Alexander Mobile. All rights reserved.
-//
-
 #import "PropertyArGeoCoordinate.h"
 
 
 @implementation PropertyArGeoCoordinate
 
-@synthesize isMultiple;
-@synthesize viewSet;
-@synthesize subLocations;
-@synthesize theId;
-@synthesize summary;
-@synthesize price;
+@synthesize subLocations = subLocations_;
+@synthesize summary = summary_;
+@synthesize price = price_;
+@synthesize isMultiple = isMultiple_;
+@synthesize viewSet = viewSet_;
+
+- (void)dealloc
+{
+    [subLocations_ release];
+    [summary_ release];
+    [price_ release];
+    
+    [super dealloc];
+}
+
++ (PropertyArGeoCoordinate *)coordinateWithLocation:(CLLocation *)location
+{
+	PropertyArGeoCoordinate *coordinate = [[[PropertyArGeoCoordinate alloc] init] autorelease];
+	[coordinate setGeoLocation:location];
+	[coordinate setTitle:@"GEO"];
+	
+	return coordinate;
+}
+
++ (PropertyArGeoCoordinate *)coordinateWithLocation:(CLLocation *)location fromOrigin:(CLLocation *)origin
+{
+	PropertyArGeoCoordinate *coordinate = [PropertyArGeoCoordinate coordinateWithLocation:location];
+	[coordinate calibrateUsingOrigin:origin];
+	
+	return coordinate;
+}
 
 double ToRad( double nVal )
 {
@@ -45,39 +62,31 @@ double CalculateDistance( double nLat1, double nLon1, double nLat2, double nLon2
 }
 
 float CalculateAngle(float nLat1, float nLon1, float nLat2, float nLon2)
-{
-	
+{	
 	float longitudinalDifference = nLon2 - nLon1;
     float latitudinalDifference = nLat2 - nLat1;
     float azimuth = (M_PI * .5f) - atan(latitudinalDifference / longitudinalDifference);
-    if (longitudinalDifference > 0) return azimuth;
-    else if (longitudinalDifference < 0) return azimuth + M_PI;
-    else if (latitudinalDifference < 0) return M_PI;
+    if (longitudinalDifference > 0)
+    {
+        return azimuth;
+    }
+    else if (longitudinalDifference < 0)
+    {
+        return azimuth + M_PI;
+    }
+    else if (latitudinalDifference < 0)
+    {
+        return M_PI;
+    }
+
     return 0.0f;
 }
 
-- (void)calibrateUsingOrigin:(CLLocation *)origin {
-	self.radialDistance = CalculateDistance(origin.coordinate.latitude, origin.coordinate.longitude, self.geoLocation.coordinate.latitude, self.geoLocation.coordinate.longitude);
+- (void)calibrateUsingOrigin:(CLLocation *)origin
+{
+	[self setRadialDistance:CalculateDistance(origin.coordinate.latitude, origin.coordinate.longitude, self.geoLocation.coordinate.latitude, self.geoLocation.coordinate.longitude)];
 	//self.inclination = 0.0; // TODO: Make with altitude.
-	self.azimuth = CalculateAngle(origin.coordinate.latitude, origin.coordinate.longitude, self.geoLocation.coordinate.latitude, self.geoLocation.coordinate.longitude);
-}
-
-
-+ (PropertyArGeoCoordinate *)coordinateWithLocation:(CLLocation *)location {
-	PropertyArGeoCoordinate *newCoordinate = [[PropertyArGeoCoordinate alloc] init];
-	newCoordinate.geoLocation = location;
-	
-	newCoordinate.title = @"GEO";
-	
-	return [newCoordinate autorelease];
-}
-
-+ (PropertyArGeoCoordinate *)coordinateWithLocation:(CLLocation *)location fromOrigin:(CLLocation *)origin {
-	PropertyArGeoCoordinate *newCoordinate = [PropertyArGeoCoordinate coordinateWithLocation:location];
-	
-	[newCoordinate calibrateUsingOrigin:origin];
-	
-	return newCoordinate;
+	[self setAzimuth:CalculateAngle(origin.coordinate.latitude, origin.coordinate.longitude, self.geoLocation.coordinate.latitude, self.geoLocation.coordinate.longitude)];
 }
 
 @end
