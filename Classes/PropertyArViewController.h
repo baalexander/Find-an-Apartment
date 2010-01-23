@@ -26,7 +26,7 @@
         UIActivityIndicatorView *progressView_;
         UIView *locationLayerView_;
         NSMutableArray *locationViews_;
-        NSArray *locationItems_;
+        NSMutableArray *locationItems_;
         NSMutableArray *baseItems_;
         PropertyArGeoCoordinate *selectedPoint_;
         BOOL recalibrateProximity_;
@@ -52,8 +52,5 @@
 - (void)updateLocations;
 - (CGPoint)pointInView:(UIView *)realityView forCoordinate:(ARCoordinate *)coordinate;
 - (BOOL)viewportContainsCoordinate:(ARCoordinate *)coordinate;
-- (bool)isNearCoordinate:(PropertyArGeoCoordinate *)coord newCoordinate:(PropertyArGeoCoordinate *)newCoord;
-- (void)updateProximityLocations;
-- (void)makePanel;
 
 @end
