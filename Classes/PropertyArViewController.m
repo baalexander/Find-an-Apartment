@@ -29,8 +29,6 @@
 
 @synthesize propertyDataSource = propertyDataSource_;
 @synthesize propertyDelegate = propertyDelegate_;
-@synthesize imgController = imgController_;
-
 @synthesize propdelegate = propdelegate_;
 @synthesize camera = camera_;
 @synthesize popupView = popupView_;
@@ -78,8 +76,7 @@
 {
     UIButton *button = (UIButton *)sender;
     [[self propertyDelegate] view:[self view] didSelectPropertyAtIndex:[button tag]];
-    
-    
+
     [[self camera] dismissModalViewControllerAnimated:YES];
 }
 
@@ -172,7 +169,7 @@
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView
-{    
+{
     [self setPopupIsAdded:NO];
     [self setUpdatedLocations:NO];
     [self setShouldChangeHighlight:YES];
@@ -292,15 +289,15 @@
 - (void)locationManager:(CLLocationManager *)manager
     didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation
-{    
-    self.centerLocation = newLocation;
+{
+    [self setCenterLocation:newLocation];
     
     //MKCoordinateSpan span;
     //span.latitudeDelta = 0.01;
     //span.longitudeDelta = 0.01;
     CLLocationCoordinate2D theLocation;
-    theLocation.latitude = self.centerLocation.coordinate.latitude;
-    theLocation.longitude = self.centerLocation.coordinate.longitude;
+    theLocation.latitude = [[self centerLocation] coordinate].latitude;
+    theLocation.longitude = [[self centerLocation] coordinate].longitude;
     
     if ([self recalibrateProximity])
     {
@@ -472,31 +469,31 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
         PropertyArGeoCoordinate *item = [[self locationItems] objectAtIndex:i];
         UIImageView *viewToDraw = [[self locationViews] objectAtIndex:i];
         
-        NSString *image = @"arPropertyButton.png";
+        NSString *imageName = @"arPropertyButton.png";
         if (self.selectedPoint != nil)
         {
             if (item.geoLocation.coordinate.latitude == self.selectedPoint.geoLocation.coordinate.latitude && 
                item.geoLocation.coordinate.longitude == self.selectedPoint.geoLocation.coordinate.longitude)
             {
-                image = @"arSelectedPropertyButton.png";
+                imageName = @"arSelectedPropertyButton.png";
                 
                 if (item.isMultiple)
                 {
-                    image = @"arSelectedPropertiesButton.png";
+                    imageName = @"arSelectedPropertiesButton.png";
                 }
             }
             else 
             {
                 if (item.isMultiple)
                 {
-                    image = @"arPropertiesButton.png";
+                    imageName = @"arPropertiesButton.png";
                     
                     for (PropertyArGeoCoordinate *coord in item.subLocations)
                     {
                         if (coord.geoLocation.coordinate.latitude == self.selectedPoint.geoLocation.coordinate.latitude && 
                            coord.geoLocation.coordinate.longitude == self.selectedPoint.geoLocation.coordinate.longitude)
                         {
-                            image = @"arSelectedPropertiesButton.png";
+                            imageName = @"arSelectedPropertiesButton.png";
                         }
                     }
                 }
@@ -509,8 +506,8 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
             tag = 1;
         }
         
-        UIImage *img = [UIImage imageNamed:image];
-        [viewToDraw setImage:img];
+        UIImage *image = [UIImage imageNamed:imageName];
+        [viewToDraw setImage:image];
         [viewToDraw setTag:tag];
         
         if ([self viewportContainsCoordinate:item])
@@ -901,7 +898,9 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
 
 - (void)setCenterLocation:(CLLocation *)newLocation
 {
-    [self setCenterLocation:newLocation];
+    [newLocation retain];
+    [[self centerLocation] release];
+    centerLocation = newLocation;
     
     for (PropertyArGeoCoordinate *geoLocation in [self locationItems])
     {

@@ -43,7 +43,7 @@
 		// Misc
         UIAlertView *alertView_;
 		UISegmentedControl *segmentedControl_;
-		int previousSelectedSegment_;
+		NSInteger previousSelectedSegment_;
 		UIImagePickerController *camera_;
 }
 

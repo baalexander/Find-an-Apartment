@@ -18,8 +18,6 @@
     @private
         id <PropertyResultsDataSource> propertyDataSource_;
         id <PropertyResultsDelegate> propertyDelegate_;
-        UIImagePickerController *imgController_;
-    
         id propdelegate_;
         UIImagePickerController *camera_;
         UIImageView *popupView_;
@@ -40,14 +38,11 @@
 
 @property (nonatomic, assign) IBOutlet id <PropertyResultsDataSource> propertyDataSource;
 @property (nonatomic, assign) IBOutlet id <PropertyResultsDelegate> propertyDelegate;
-@property (nonatomic, assign) UIImagePickerController *imgController;
-
 @property (nonatomic, assign) id propdelegate;
 @property (nonatomic, retain) UIImagePickerController *camera;
 @property (nonatomic, assign) double minDistance;
 
 - (void)addGeocodedProperty:(PropertySummary *)property atIndex:(NSInteger)index;
-
 - (void)startListening;
 - (void)updateLocations;
 - (CGPoint)pointInView:(UIView *)realityView forCoordinate:(ARCoordinate *)coordinate;

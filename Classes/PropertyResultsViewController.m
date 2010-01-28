@@ -21,7 +21,7 @@
 @property (nonatomic, retain) PropertyDetails *details;
 @property (nonatomic, retain) UIAlertView *alertView;
 @property (nonatomic, retain) UISegmentedControl *segmentedControl;
-@property (nonatomic, assign, getter=previousSelectedSegment_) int previousSelectedSegment;
+@property (nonatomic, assign) NSInteger previousSelectedSegment;
 @property (nonatomic, retain) Geocoder *geocoder;
 @property (nonatomic, assign) NSInteger geocodeIndex;
 - (void)geocodeProperty:(PropertySummary *)property;
@@ -58,7 +58,7 @@
 {
     [listViewController_ release];
     [mapViewController_ release];
-    //[arViewController_ release];
+    [arViewController_ release];
     [operationQueue_ release];
     [history_ release];
     [property_ release];
@@ -94,14 +94,14 @@
         [[[self mapViewController] mapView] setHidden:YES];
         [[[self arViewController] view] setHidden:YES];
         [[[self listViewController] tableView] setHidden:NO];
-		self.previousSelectedSegment = kListItem;
+		[self setPreviousSelectedSegment:kListItem];
     }
     else if ([segmentedControl selectedSegmentIndex] == kMapItem)
     {
         [[[self mapViewController] mapView] setHidden:NO];
         [[[self arViewController] view] setHidden:YES];
         [[[self listViewController] tableView] setHidden:YES];
-		self.previousSelectedSegment = kMapItem;
+		[self setPreviousSelectedSegment:kMapItem];
     }
     else if ([segmentedControl selectedSegmentIndex] == kArItem)
     {
@@ -109,42 +109,37 @@
         if ([self arViewController] == nil)
         {
             PropertyArViewController *viewController = [[PropertyArViewController alloc] init];
-			viewController.propdelegate = self;
             [self setArViewController:viewController];
             [viewController release];
             
+			[[self arViewController] setPropdelegate:self];
             [[self arViewController] setPropertyDelegate:self];
             [[self arViewController] setPropertyDataSource:self];
             
 			[self setMapIsDirty:YES];
-			
-            //[[self view] addSubview:[[self arViewController] view]];
-			
-			//[[self view] addSubview:camera.view];
-			//[camera viewWillAppear:YES];
         } 
 		
-		[self.arViewController startListening];
+		[[self arViewController] startListening];
 		
-		self.camera = [[UIImagePickerController alloc]init];
-		if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIImagePickerController *camera = [[UIImagePickerController alloc] init];
+        [self setCamera:camera];
+        [camera release];
+        
+		if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        {
 #if !TARGET_IPHONE_SIMULATOR
-			self.camera.sourceType = UIImagePickerControllerSourceTypeCamera;	
-			self.camera.showsCameraControls = NO;
+            [[self camera] setSourceType:UIImagePickerControllerSourceTypeCamera];
+            [[self camera] setShowsCameraControls:NO];
 #endif
 		}
 		
-		self.camera.cameraOverlayView = self.arViewController.view;
-		self.arViewController.camera = self.camera;
-		
-		//[[UIApplication sharedApplication] keyWindow addSubview:self.arViewController.camera];
-		
-		[self presentModalViewController:self.camera animated:NO];
+        [[self camera] setCameraOverlayView:[[self arViewController] view]];
+        [[self arViewController] setCamera:[self camera]];
+		[self presentModalViewController:[self camera] animated:NO];
 		       
         [[[self mapViewController] mapView] setHidden:YES];
         [[[self arViewController] view] setHidden:NO];
         [[[self listViewController] tableView] setHidden:YES];
-		 
     }
     
     // Start geocoding properties if switching to a view requiring geocoded
@@ -166,51 +161,53 @@
 #define BOX_WIDTH 70
 #define BOX_HEIGHT 55
 
-- (UIView *)viewForCoordinate:(PropertyArGeoCoordinate *)coordinate {
+- (UIView *)viewForCoordinate:(PropertyArGeoCoordinate *)coordinate
+{	
+	[coordinate calibrateUsingOrigin:[[self arViewController] centerLocation]];
+	[coordinate setInclination:-.20 + (.05 * ([coordinate radialDistance] - [[self arViewController] minDistance]))];
+	if ([coordinate radialDistance] > 30)
+    {
+        [coordinate setInclination:.4];
+    }
+
+	NSString *image = @"arPropertyButton.png";
+	if ([coordinate isMultiple])
+    {
+        image = @"arPropertiesButton.png";
+    }
 	
-	[coordinate calibrateUsingOrigin: self.arViewController.centerLocation];
-		
-	coordinate.inclination = -.20 + (.05 * (coordinate.radialDistance - self.arViewController.minDistance));
+	UIImageView *imageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:image]] autorelease];
+	[imageView setFrame:CGRectMake(0, 0, BOX_WIDTH, BOX_HEIGHT)];
+	[imageView setUserInteractionEnabled:YES];
 	
-	if(coordinate.radialDistance > 30)
-		coordinate.inclination = .4;
-	
-	CGRect theFrame = CGRectMake(0, 0, BOX_WIDTH, BOX_HEIGHT);
-	NSString *theImage = @"arPropertyButton.png";
-	
-	if(coordinate.isMultiple)
-		theImage = @"arPropertiesButton.png";
-	
-	UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:theImage]];
-	imgView.frame = theFrame;
-	//imgView.alpha = .85;
-	[imgView setUserInteractionEnabled:TRUE];
-	
-	if(coordinate.isMultiple)
+	if ([coordinate isMultiple])
 	{
-		UILabel *numLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 2, 35, 40)];
-		numLabel.backgroundColor = [UIColor clearColor];
-		numLabel.textColor = [UIColor whiteColor];
-		numLabel.font =[UIFont fontWithName:@"Helvetica" size: 28];
-		numLabel.shadowColor = [UIColor grayColor];
-		numLabel.shadowOffset = CGSizeMake(1, 1);
-		numLabel.text = [NSString stringWithFormat:@"%d", coordinate.subLocations.count];
-		[numLabel setTextAlignment:UITextAlignmentCenter];
+        // Label shows number of properties in that grouping
+		UILabel *numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 2, 35, 40)];
+		[numberLabel setBackgroundColor:[UIColor clearColor]];
+        [numberLabel setTextColor:[UIColor whiteColor]];
+		[numberLabel setFont:[UIFont fontWithName:@"Helvetica" size:28]];
+		[numberLabel setShadowColor:[UIColor grayColor]];
+		[numberLabel setShadowOffset:CGSizeMake(1, 1)];
+		[numberLabel setText:[NSString stringWithFormat:@"%d", [[coordinate subLocations] count]]];
+		[numberLabel setTextAlignment:UITextAlignmentCenter];
 		
-		[imgView addSubview:numLabel];
-		[numLabel release];
+		[imageView addSubview:numberLabel];
+		[numberLabel release];
 	}
 	
-	return [imgView autorelease];
+    return imageView;
 }
 
 - (void)onARControllerClose
 {
-	if(self.previousSelectedSegment == kListItem)
+    // TODO: Can this be replaced with:
+    //    [[self segmentedControl] setSelectedSegmentIndex:[self previousSelectedSegment]];
+	if ([self previousSelectedSegment] == kListItem)
 	{
 		[[self segmentedControl] setSelectedSegmentIndex:kListItem];
 	}
-	if(self.previousSelectedSegment == kMapItem)
+	else if ([self previousSelectedSegment] == kMapItem)
 	{
 		[[self segmentedControl] setSelectedSegmentIndex:kMapItem];
 	}
@@ -510,12 +507,14 @@
     
     // Segmented control
     NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", @"ar", nil];
-    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
+    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
     [segmentOptions release];
+    [self setSegmentedControl:segmentedControl];
+    [segmentedControl release];
     
     // Set selected segment index must come before addTarget, otherwise the action will be called as if the segment was pressed
     [[self segmentedControl] setSelectedSegmentIndex:kListItem];
-	self.previousSelectedSegment = kListItem;
+	[self setPreviousSelectedSegment:kListItem];
     [[self segmentedControl] addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventValueChanged];
     [[self segmentedControl] setFrame:CGRectMake(0, 0, 90, 30)];
     [[self segmentedControl] setSegmentedControlStyle:UISegmentedControlStyleBar];
@@ -553,8 +552,8 @@
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    //If a user clicked the button, then the index is 0.
-    //If the parser finished successfully, it will dismiss with a 1
+    // If a user clicked the button, then the index is 0.
+    // If the parser finished successfully, it will dismiss with a 1
     if (buttonIndex == 0)
     {
         [[self navigationController] popViewControllerAnimated:YES];
@@ -592,8 +591,8 @@
 
 - (void)onDetailsClose
 {
-	// if we backed out of the details view, re-click the AR segment button again.
-	if([[self segmentedControl] selectedSegmentIndex] == kArItem)
+	// If we backed out of the details view, re-click the AR segment button again.
+	if ([[self segmentedControl] selectedSegmentIndex] == kArItem)
 	{
 		[[self segmentedControl] setSelectedSegmentIndex:kListItem];
 		[[self segmentedControl] setSelectedSegmentIndex:kArItem];
