@@ -29,7 +29,6 @@
         PropertyArGeoCoordinate *selectedPoint_;
         BOOL recalibrateProximity_;
         BOOL popupIsAdded_;
-        BOOL updatedLocations_;
         BOOL shouldChangeHighlight_;
         double minDistance_;
         NSInteger currentPage_;

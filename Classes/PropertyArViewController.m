@@ -12,13 +12,12 @@
 @property (nonatomic, retain) NSMutableArray *baseItems;
 @property (nonatomic, retain) PropertyArGeoCoordinate *selectedPoint;
 @property (nonatomic, assign) BOOL popupIsAdded;
-@property (nonatomic, assign) BOOL updatedLocations;
 @property (nonatomic, assign) BOOL shouldChangeHighlight;
 @property (nonatomic, assign) BOOL recalibrateProximity;
 @property (nonatomic, assign) NSInteger currentPage;
 @property (nonatomic, assign) NSInteger contentType;
 
-- (bool)isNearCoordinate:(PropertyArGeoCoordinate *)coord newCoordinate:(PropertyArGeoCoordinate *)newCoord;
+- (BOOL)isNearCoordinate:(PropertyArGeoCoordinate *)coord newCoordinate:(PropertyArGeoCoordinate *)newCoord;
 - (void)updateLocationViews;
 - (void)updateProximityLocations;
 - (void)makePanel;
@@ -40,7 +39,6 @@
 @synthesize selectedPoint = selectedPoint_;
 @synthesize recalibrateProximity = recalibrateProximity_;
 @synthesize popupIsAdded = popupIsAdded_;
-@synthesize updatedLocations = updatedLocations_;
 @synthesize shouldChangeHighlight = shouldChangeHighlight_;
 @synthesize minDistance = minDistance_;
 @synthesize currentPage = currentPage_;
@@ -108,7 +106,7 @@
         [self setLocationItems:locationItems];
         [locationItems release];
     }
-    
+
     BOOL nearCoordinate = NO;
     for (NSUInteger i = 0; i < [[self locationItems] count] && !nearCoordinate; i++)
     {
@@ -119,8 +117,8 @@
             if (![coord isMultiple])
             {
                 [coord setIsMultiple:true];
-                CLLocation *location = [[CLLocation alloc] initWithLatitude:coord.geoLocation.coordinate.latitude
-                                                                  longitude:coord.geoLocation.coordinate.longitude];
+                CLLocation *location = [[CLLocation alloc] initWithLatitude:[[coord geoLocation] coordinate].latitude
+                                                                  longitude:[[coord geoLocation] coordinate].longitude];
                 
                 PropertyArGeoCoordinate *newGeoCoordinate = [PropertyArGeoCoordinate coordinateWithLocation:location];
                 [location release];
@@ -164,28 +162,37 @@
         }
     }
     
-    [self setUpdatedLocations:YES];  
+    // TODO: Optimize creating locationViews. Just create once in loadView? Do we need to call this all the time?
+    NSMutableArray *locationViews = [[NSMutableArray alloc] init];
+	for (PropertyArGeoCoordinate *coordinate in [self locationItems])
+    {
+		//call out for the delegate's view.
+		if ([[self propdelegate] respondsToSelector:@selector(viewForCoordinate:)])
+        {
+			[locationViews addObject:[[self propdelegate] viewForCoordinate:coordinate]];
+		}
+	}
+	[self setLocationViews:locationViews];
+    [locationViews release];
 }
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView
 {
     [self setPopupIsAdded:NO];
-    [self setUpdatedLocations:NO];
     [self setShouldChangeHighlight:YES];
     [self setRecalibrateProximity:NO];
     [self setContentType:0];
     [self setMinDistance:1000.0];
     [self setCurrentPage:1];
 
-    // TODO: Content view is unnecessary? Just use view
     UIView *contentView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
     [contentView setBackgroundColor:[UIColor clearColor]];
     
     UIView *locationLayerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
     [self setLocationLayerView:locationLayerView];
     [locationLayerView release];
-    [contentView addSubview:locationLayerView];
+    [contentView addSubview:[self locationLayerView]];
     
     CLLocationCoordinate2D location;
     location.latitude = [[self centerLocation] coordinate].latitude;
@@ -211,7 +218,7 @@
 }
 
 - (void)doneClick:(id)sender
-{    
+{
     if ([[self propdelegate] respondsToSelector:@selector(onARControllerClose)])
     {
         [[self propdelegate] onARControllerClose];
@@ -222,7 +229,7 @@
 
 - (BOOL)viewportContainsCoordinate:(ARCoordinate *)coordinate
 {
-    double centerAzimuth = self.centerCoordinate.azimuth;
+    double centerAzimuth = [[self centerCoordinate] azimuth];
     double leftAzimuth = centerAzimuth - VIEWPORT_WIDTH_RADIANS / 2.0;
     
     if (leftAzimuth < 0.0)
@@ -237,19 +244,19 @@
         rightAzimuth = rightAzimuth - 2 * M_PI;
     }
     
-    BOOL result = (coordinate.azimuth > leftAzimuth && coordinate.azimuth < rightAzimuth);
+    BOOL result = ([coordinate azimuth] > leftAzimuth && [coordinate azimuth] < rightAzimuth);
     
     if (leftAzimuth > rightAzimuth)
     {
-        result = (coordinate.azimuth < rightAzimuth || coordinate.azimuth > leftAzimuth);
+        result = ([coordinate azimuth] < rightAzimuth || [coordinate azimuth] > leftAzimuth);
     }
     
-    double centerInclination = self.centerCoordinate.inclination;
+    double centerInclination = [[self centerCoordinate] inclination];
     double bottomInclination = centerInclination - VIEWPORT_HEIGHT_RADIANS / 2.0;
     double topInclination = centerInclination + VIEWPORT_HEIGHT_RADIANS / 2.0;
     
     //check the height.
-    result = result && (coordinate.inclination > bottomInclination && coordinate.inclination < topInclination);
+    result = result && ([coordinate inclination] > bottomInclination && [coordinate inclination] < topInclination);
     
     return result;
 }
@@ -292,13 +299,6 @@
 {
     [self setCenterLocation:newLocation];
     
-    //MKCoordinateSpan span;
-    //span.latitudeDelta = 0.01;
-    //span.longitudeDelta = 0.01;
-    CLLocationCoordinate2D theLocation;
-    theLocation.latitude = [[self centerLocation] coordinate].latitude;
-    theLocation.longitude = [[self centerLocation] coordinate].longitude;
-    
     if ([self recalibrateProximity])
     {
         [self setRecalibrateProximity:NO];
@@ -320,8 +320,8 @@
 {
     for (PropertyArGeoCoordinate *geoCoordinate in [self locationItems])
     {
-        [geoCoordinate.subLocations release];
-        geoCoordinate.isMultiple = false;
+        [[geoCoordinate subLocations] release];
+        [geoCoordinate setIsMultiple:NO];
         [geoCoordinate calibrateUsingOrigin:centerLocation];
         
         if ([geoCoordinate radialDistance] < [self minDistance])
@@ -333,21 +333,23 @@
     }
 }
 
-- (bool)isNearCoordinate:(PropertyArGeoCoordinate *)coord newCoordinate:(PropertyArGeoCoordinate *)newCoord
+- (BOOL)isNearCoordinate:(PropertyArGeoCoordinate *)coord newCoordinate:(PropertyArGeoCoordinate *)newCoord
 {
-    bool isNear = true;
+    return NO;
+
+    BOOL isNear = YES;
     float baseRange = .0015;
-    float range = baseRange * coord.radialDistance;
-    
-    if ((newCoord.geoLocation.coordinate.latitude > (coord.geoLocation.coordinate.latitude + range)) ||
-       (newCoord.geoLocation.coordinate.latitude < (coord.geoLocation.coordinate.latitude - range)))
+    float range = baseRange * [coord radialDistance];
+
+    if (([[newCoord geoLocation] coordinate].latitude > ([[coord geoLocation] coordinate].latitude + range)) ||
+       ([[newCoord geoLocation] coordinate].latitude < ([[coord geoLocation] coordinate].latitude - range)))
     {
-        isNear = false;
+        isNear = NO;
     }
-    if ((newCoord.geoLocation.coordinate.longitude > (coord.geoLocation.coordinate.longitude + range)) ||
-       (newCoord.geoLocation.coordinate.longitude < (coord.geoLocation.coordinate.longitude - range)))
+    else if (([[newCoord geoLocation] coordinate].longitude > ([[coord geoLocation] coordinate].longitude + range)) ||
+       ([[newCoord geoLocation] coordinate].longitude < ([[coord geoLocation] coordinate].longitude - range)))
     {
-        isNear = false;
+        isNear = NO;
     }
     
     return isNear;
@@ -355,7 +357,6 @@
 
 - (CGPoint)pointInView:(UIView *)realityView forCoordinate:(ARCoordinate *)coordinate
 {
-    
     CGPoint point;
     
     //x coordinate.
@@ -444,7 +445,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
 }
 
 - (void)updateLocations
-{    
+{
     if ([[self locationItems] count] < 25 && [self progressView] == nil)
     {
         
@@ -470,28 +471,29 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
         UIImageView *viewToDraw = [[self locationViews] objectAtIndex:i];
         
         NSString *imageName = @"arPropertyButton.png";
-        if (self.selectedPoint != nil)
+        if ([self selectedPoint] != nil
+            && [[self selectedPoint] geoLocation] != nil)
         {
-            if (item.geoLocation.coordinate.latitude == self.selectedPoint.geoLocation.coordinate.latitude && 
-               item.geoLocation.coordinate.longitude == self.selectedPoint.geoLocation.coordinate.longitude)
+            if ([[item geoLocation] coordinate].latitude == [[[self selectedPoint] geoLocation] coordinate].latitude && 
+               [[item geoLocation] coordinate].longitude == [[[self selectedPoint] geoLocation] coordinate].longitude)
             {
                 imageName = @"arSelectedPropertyButton.png";
                 
-                if (item.isMultiple)
+                if ([item isMultiple])
                 {
                     imageName = @"arSelectedPropertiesButton.png";
                 }
             }
             else 
             {
-                if (item.isMultiple)
+                if ([item isMultiple])
                 {
                     imageName = @"arPropertiesButton.png";
                     
-                    for (PropertyArGeoCoordinate *coord in item.subLocations)
+                    for (PropertyArGeoCoordinate *coord in [item subLocations])
                     {
-                        if (coord.geoLocation.coordinate.latitude == self.selectedPoint.geoLocation.coordinate.latitude && 
-                           coord.geoLocation.coordinate.longitude == self.selectedPoint.geoLocation.coordinate.longitude)
+                        if ([[coord geoLocation] coordinate].latitude == [[[self selectedPoint] geoLocation] coordinate].latitude && 
+                           [[coord geoLocation] coordinate].longitude == [[[self selectedPoint] geoLocation] coordinate].longitude)
                         {
                             imageName = @"arSelectedPropertiesButton.png";
                         }
@@ -505,74 +507,27 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
         {
             tag = 1;
         }
-        
+
         UIImage *image = [UIImage imageNamed:imageName];
         [viewToDraw setImage:image];
         [viewToDraw setTag:tag];
         
         if ([self viewportContainsCoordinate:item])
         {
-            CGPoint loc = [self pointInView:self.view forCoordinate:item];
+            CGPoint loc = [self pointInView:[self view] forCoordinate:item];
             
             float width = [viewToDraw frame].size.width;
             float height = [viewToDraw frame].size.height;
             
-            viewToDraw.frame = CGRectMake(loc.x - width / 2.0, loc.y - width / 2.0, width, height);
-            
-            [self.locationLayerView addSubview:viewToDraw];
+            [viewToDraw setFrame:CGRectMake(loc.x - width / 2.0, loc.y - width / 2.0, width, height)];
+
+            [[self locationLayerView] addSubview:viewToDraw];
         }
         else
-        {    
+        {
             [viewToDraw removeFromSuperview];
         }
     }
-}
-
-#define BOX_WIDTH 200
-#define BOX_HEIGHT 68
-
-- (UIView *)viewForCoordinate:(PropertyArGeoCoordinate *)coordinate
-{    
-    [coordinate calibrateUsingOrigin:[self centerLocation]];
-    
-    double inclinationFactor = 33 * coordinate.radialDistance;
-    
-    if ([coordinate radialDistance] < .5)
-    {
-        inclinationFactor = 27;
-    }
-    
-    coordinate.inclination = -M_PI/inclinationFactor + .05;
-    
-    CGRect frame = CGRectMake(0, 0, BOX_WIDTH, BOX_HEIGHT);
-    NSString *image = @"arFinalPoint.png";
-    
-    UIImageView *imageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:image]] autorelease];
-    [imageView setFrame:frame];
-    [imageView setAlpha:.85];
-    [imageView setUserInteractionEnabled:YES];
-    
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(7, 11, BOX_WIDTH - 10, 20.0)];
-    [titleLabel setBackgroundColor:[UIColor clearColor]];
-    [titleLabel setTextColor:[UIColor whiteColor]];
-    [titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:18]];
-    [titleLabel setShadowColor:[UIColor grayColor]];
-    [titleLabel setShadowOffset:CGSizeMake(1, 1)];
-    [titleLabel setText:[coordinate title]];
-    [imageView addSubview:titleLabel];
-    [titleLabel release];
-    
-    UILabel *distanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(7, 27, BOX_WIDTH - 10, 20.0)];
-    [distanceLabel setBackgroundColor:[UIColor clearColor]];
-    [distanceLabel setTextColor:[UIColor whiteColor]];
-    [distanceLabel setFont:[UIFont fontWithName:@"Helvetica" size: 16]];
-    [distanceLabel setShadowColor:[UIColor grayColor]];
-    [distanceLabel setShadowOffset:CGSizeMake(1, 1)];
-    [distanceLabel setText:[NSString stringWithFormat:@"%.1f miles", [coordinate radialDistance]]];
-    [imageView addSubview:distanceLabel];
-    [distanceLabel release];
-    
-    return imageView;
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading

@@ -1330,6 +1330,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1345,6 +1346,7 @@
 				);
 				INFOPLIST_FILE = "Find_an_Apartment-Info.plist";
 				PRODUCT_NAME = "Find an Apartment";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 			};
 			name = Debug;
 		};
@@ -1352,6 +1354,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1362,6 +1365,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = FIND_AN_APARTMENT;
 				INFOPLIST_FILE = "Find_an_Apartment-Info.plist";
 				PRODUCT_NAME = "Find an Apartment";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 			};
 			name = Release;
 		};
@@ -1408,7 +1412,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1427,6 +1431,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1437,6 +1442,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = HOME_FINDER;
 				INFOPLIST_FILE = "Home_Finder-Info.plist";
 				PRODUCT_NAME = "Home Finder";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 			};
 			name = Distribution;
 		};
@@ -1444,6 +1450,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1459,6 +1466,7 @@
 				);
 				INFOPLIST_FILE = "Home_Finder-Info.plist";
 				PRODUCT_NAME = "Home Finder";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 			};
 			name = Debug;
 		};
@@ -1466,6 +1474,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1476,6 +1485,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = HOME_FINDER;
 				INFOPLIST_FILE = "Home_Finder-Info.plist";
 				PRODUCT_NAME = "Home Finder";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 			};
 			name = Release;
 		};
@@ -1599,7 +1609,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Timothy Sears";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1610,7 +1620,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = FIND_AN_APARTMENT;
 				INFOPLIST_FILE = "Find_an_Apartment-Info.plist";
 				PRODUCT_NAME = "Find an Apartment";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3CD66655-69BB-436D-9CD8-D833432436A2";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 			};
 			name = "AR Ad-Hoc";
 		};
@@ -1618,6 +1628,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1628,6 +1639,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = HOME_FINDER;
 				INFOPLIST_FILE = "Home_Finder-Info.plist";
 				PRODUCT_NAME = "Home Finder";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 			};
 			name = "AR Ad-Hoc";
 		};

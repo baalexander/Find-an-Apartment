@@ -84,9 +84,9 @@ float CalculateAngle(float nLat1, float nLon1, float nLat2, float nLon2)
 
 - (void)calibrateUsingOrigin:(CLLocation *)origin
 {
-	[self setRadialDistance:CalculateDistance(origin.coordinate.latitude, origin.coordinate.longitude, self.geoLocation.coordinate.latitude, self.geoLocation.coordinate.longitude)];
+	[self setRadialDistance:CalculateDistance([origin coordinate].latitude, [origin coordinate].longitude, [[self geoLocation] coordinate].latitude, [[self geoLocation] coordinate].longitude)];
 	//self.inclination = 0.0; // TODO: Make with altitude.
-	[self setAzimuth:CalculateAngle(origin.coordinate.latitude, origin.coordinate.longitude, self.geoLocation.coordinate.latitude, self.geoLocation.coordinate.longitude)];
+	[self setAzimuth:CalculateAngle([origin coordinate].latitude, [origin coordinate].longitude, [[self geoLocation] coordinate].latitude, [[self geoLocation] coordinate].longitude)];
 }
 
 @end
