@@ -91,8 +91,8 @@
     [geoCoordinate setSubtitle:[property subtitle]];
     [geoCoordinate setSummary:[property summary]];
     [geoCoordinate setPrice:[[property price] description]];
-    [geoCoordinate setIsMultiple:false];
-    [geoCoordinate setViewSet:false];    
+    [geoCoordinate setIsMultiple:NO];
+    [geoCoordinate setViewSet:NO];    
     [geoCoordinate calibrateUsingOrigin:[self centerLocation]];
     
     if ([geoCoordinate radialDistance] < [self minDistance])
@@ -116,14 +116,14 @@
         {
             if (![coord isMultiple])
             {
-                [coord setIsMultiple:true];
+                [coord setIsMultiple:YES];
                 CLLocation *location = [[CLLocation alloc] initWithLatitude:[[coord geoLocation] coordinate].latitude
                                                                   longitude:[[coord geoLocation] coordinate].longitude];
                 
                 PropertyArGeoCoordinate *newGeoCoordinate = [PropertyArGeoCoordinate coordinateWithLocation:location];
                 [location release];
                 [newGeoCoordinate setTitle:[coord title]];
-                [newGeoCoordinate setIsMultiple:false];
+                [newGeoCoordinate setIsMultiple:NO];
                 
                 NSMutableArray *subLocations = [[NSMutableArray alloc] init];
                 [subLocations addObject:newGeoCoordinate];
@@ -176,7 +176,6 @@
     [locationViews release];
 }
 
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView
 {
     [self setPopupIsAdded:NO];
@@ -186,7 +185,7 @@
     [self setMinDistance:1000.0];
     [self setCurrentPage:1];
 
-    UIView *contentView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
+    UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
     [contentView setBackgroundColor:[UIColor clearColor]];
     
     UIView *locationLayerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
@@ -263,13 +262,12 @@
 
 - (void)startListening
 {
-    
-    //start our heading readings and our accelerometer readings.
+    // Start our heading readings and our accelerometer readings.
     if ([self locationManager] == nil)
     {
         [self setLocationManager:[[[CLLocationManager alloc] init] autorelease]];
         
-        //we want every move.
+        // We want every move.
         [[self locationManager] setHeadingFilter:kCLHeadingFilterNone];
         
         [[self locationManager] startUpdatingHeading];
@@ -305,7 +303,7 @@
         [self updateProximityLocations];
     }
     
-    for (PropertyArGeoCoordinate *geoLocation in self.locationItems)
+    for (PropertyArGeoCoordinate *geoLocation in [self locationItems])
     {
         if ([geoLocation isKindOfClass:[PropertyArGeoCoordinate class]])
         {
@@ -335,8 +333,6 @@
 
 - (BOOL)isNearCoordinate:(PropertyArGeoCoordinate *)coord newCoordinate:(PropertyArGeoCoordinate *)newCoord
 {
-    return NO;
-
     BOOL isNear = YES;
     float baseRange = .0015;
     float range = baseRange * [coord radialDistance];
