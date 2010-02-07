@@ -135,7 +135,7 @@
 		
         [[self camera] setCameraOverlayView:[[self arViewController] view]];
         [[self arViewController] setCamera:[self camera]];
-		[self presentModalViewController:[self camera] animated:NO];
+		[self presentModalViewController:[self camera] animated:YES];
 		       
         [[[self mapViewController] mapView] setHidden:YES];
         [[[self arViewController] view] setHidden:NO];

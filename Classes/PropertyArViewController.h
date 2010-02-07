@@ -33,6 +33,7 @@
         double minDistance_;
         NSInteger currentPage_;
         NSInteger contentType_;
+        NSInteger locationCount_;
 }
 
 @property (nonatomic, assign) IBOutlet id <PropertyResultsDataSource> propertyDataSource;

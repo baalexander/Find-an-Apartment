@@ -16,6 +16,7 @@
 @property (nonatomic, assign) BOOL recalibrateProximity;
 @property (nonatomic, assign) NSInteger currentPage;
 @property (nonatomic, assign) NSInteger contentType;
+@property (nonatomic, assign) NSInteger locationCount;
 
 - (BOOL)isNearCoordinate:(PropertyArGeoCoordinate *)coord newCoordinate:(PropertyArGeoCoordinate *)newCoord;
 - (void)updateLocationViews;
@@ -43,6 +44,7 @@
 @synthesize minDistance = minDistance_;
 @synthesize currentPage = currentPage_;
 @synthesize contentType = contentType_;
+@synthesize locationCount = locationCount_;
 
 - (id)init
 {
@@ -81,6 +83,8 @@
 - (void)addGeocodedProperty:(PropertySummary *)property atIndex:(NSInteger)index
 {
     [self setRecalibrateProximity:YES];
+    
+    [self setLocationCount:[self locationCount] + 1];
 
     CLLocation *location = [[CLLocation alloc] initWithLatitude:[[property latitude] doubleValue]
                                                       longitude:[[property longitude] doubleValue]];
@@ -173,6 +177,7 @@
     [self setContentType:0];
     [self setMinDistance:1000.0];
     [self setCurrentPage:1];
+    [self setLocationCount:0];
 
     UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
     [contentView setBackgroundColor:[UIColor clearColor]];
@@ -436,9 +441,8 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
 
 - (void)updateLocations
 {
-    if ([[self locationItems] count] < 25 && [self progressView] == nil)
+    if ([self locationCount] < 25 && [self progressView] == nil)
     {
-        
         UIActivityIndicatorView *progressView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, 10, 320, 480)];
         [self setProgressView:progressView];
         [progressView release];
@@ -450,7 +454,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
         [[self view] addSubview:[self progressView]];
         
     }
-    else if ([[self locationItems] count] >= 25)
+    else if ([self locationCount] >= 25)
     {
         [[self progressView] removeFromSuperview];
     }
@@ -664,14 +668,14 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
     [[self view] addSubview:[self popupView]];
     [self setPopupIsAdded:YES];
     
-    NSInteger buttonStart = 19;
+    NSInteger leftMargin = 19;
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 292, 215)];
     [imageView setImage:[UIImage imageNamed:@"arPopupBackground.png"]];
     [[self popupView] addSubview:imageView];
     [imageView release];
     
-    UILabel *titleText = [[UILabel alloc] initWithFrame:CGRectMake(19, 10, 270, 26)];
+    UILabel *titleText = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, 10, 270, 26)];
     [titleText setText:[[self selectedPoint] title]];
     [titleText setShadowColor:[UIColor grayColor]];
     [titleText setShadowOffset:CGSizeMake(1, 1)];
@@ -681,7 +685,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
     [[self popupView] addSubview:titleText];
     [titleText release];
     
-    UILabel *distanceText = [[UILabel alloc] initWithFrame:CGRectMake(19, 32, 270, 20)];
+    UILabel *distanceText = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, 32, 270, 20)];
     [distanceText setText:[NSString stringWithFormat:@"%.1f miles", [[self selectedPoint] radialDistance]]];
     [distanceText setFont:[UIFont fontWithName:@"Helvetica" size:16]];
     [distanceText setTextColor:[UIColor whiteColor]];
@@ -691,7 +695,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
 
     if ([[self selectedPoint] subtitle] != nil)
     {
-        UILabel *subtitleText = [[UILabel alloc] initWithFrame:CGRectMake(19, 65, 270, 18)];
+        UILabel *subtitleText = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, 65, 270, 18)];
         [subtitleText setText:[[self selectedPoint] subtitle]];
         [subtitleText setFont:[UIFont fontWithName:@"Helvetica" size: 16]];
         [subtitleText setTextColor:[UIColor whiteColor]];
@@ -702,7 +706,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
 
     if ([[self selectedPoint] summary] != nil)
     {
-        UILabel *summaryText = [[UILabel alloc] initWithFrame:CGRectMake(19, 85, 270, 18)];
+        UILabel *summaryText = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, 85, 270, 18)];
         [summaryText setText:[NSString stringWithFormat:@"%@", [[self selectedPoint] summary]]];
         [summaryText setFont:[UIFont fontWithName:@"Helvetica" size: 16]];
         [summaryText setTextColor:[UIColor whiteColor]];
@@ -713,7 +717,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
 
     if ([[self selectedPoint] price] != nil)
     {        
-        UILabel *priceText = [[UILabel alloc] initWithFrame:CGRectMake(19, 105, 270, 18)];
+        UILabel *priceText = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, 105, 270, 18)];
         [priceText setText:[NSString stringWithFormat:@"$%@", [[self selectedPoint] price]]];
         [priceText setFont:[UIFont fontWithName:@"Helvetica" size:16]];
         [priceText setTextColor:[UIColor whiteColor]];
@@ -732,7 +736,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
     // TODO: Why is there  an init after the UIButton is being autoreleased? Remove/change and test
     UIButton *detailsButton = [[UIButton buttonWithType:UIButtonTypeDetailDisclosure] initWithFrame:CGRectMake(250, 10, 30, 28)];
     
-    // figure out the tag for the details button
+    // Determines tag for the details button
     BOOL found = NO;
     NSInteger tag = 0;
     for (NSInteger i = 0; i < (NSInteger)[[self locationItems] count] && !found; i++)
@@ -748,50 +752,19 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
     
     [detailsButton setTag:tag];
     [detailsButton addTarget:self action:@selector(clickedButton:) forControlEvents:UIControlEventTouchUpInside];
-    
     [[self popupView] addSubview:detailsButton];
-    
-    if ([[self locationItems] count] > 1)
-    {
-        buttonStart = 55;
-    }
-    
-    // TODO: Can probably remove these three buttons
-    UIButton *buttonCall = [[UIButton alloc] initWithFrame:CGRectMake(buttonStart, 143, 59, 62)];
-    [buttonCall setImage:[UIImage imageNamed:@"Phone2.png"] forState:UIControlStateNormal];
-    [buttonCall addTarget:self action:@selector(callClick:) forControlEvents:(UIControlEvents)UIControlEventTouchUpInside]; 
-    [[self popupView] addSubview:buttonCall];
-    [buttonCall release];
-    
-    buttonStart += 59;
-    
-    UIButton *buttonMaps = [[UIButton alloc] initWithFrame:CGRectMake(buttonStart, 143, 59, 62)];
-    [buttonMaps setImage:[UIImage imageNamed:@"Maps2.png"] forState:UIControlStateNormal];
-    [buttonMaps addTarget:self action:@selector(mapsClick:) forControlEvents:(UIControlEvents)UIControlEventTouchUpInside]; 
-    [[self popupView] addSubview:buttonMaps];
-    [buttonMaps release];
-    
-    buttonStart += 61;
-    
-    UIButton *buttonBing = [[UIButton alloc] initWithFrame:CGRectMake(buttonStart, 145, 59, 62)];
-    [buttonBing setImage:[UIImage imageNamed:@"Bing2.png"] forState:UIControlStateNormal];
-    [buttonBing addTarget:self action:@selector(bingClick:) forControlEvents:(UIControlEvents)UIControlEventTouchUpInside]; 
-    [[self popupView] addSubview:buttonBing];
-    [buttonBing release];
-    
+
     if ([[[self selectedPoint] subLocations] count] > 1)
     {
-        // TODO: Remove button start with hardcoded values
-        buttonStart += 73;
-        UIButton *nextArrowButton = [[UIButton alloc] initWithFrame:CGRectMake(buttonStart, 143, 50, 62)];
+        leftMargin = 248;
+        UIButton *nextArrowButton = [[UIButton alloc] initWithFrame:CGRectMake(leftMargin, 143, 50, 62)];
         [nextArrowButton setImage:[UIImage imageNamed:@"arNext.png"] forState:UIControlStateNormal];
         [nextArrowButton addTarget:self action:@selector(nextPanel:) forControlEvents:(UIControlEvents)UIControlEventTouchUpInside]; 
         [[self popupView] addSubview:nextArrowButton];
         [nextArrowButton release];
         
-        buttonStart = buttonStart - 125;
-
-        UILabel *pageNotification = [[UILabel alloc] initWithFrame:CGRectMake(buttonStart, 149, 100, 62)];
+        leftMargin = leftMargin - 125;
+        UILabel *pageNotification = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, 149, 100, 62)];
         [pageNotification setText:[NSString stringWithFormat:@"%d of %d", [self currentPage], [[[self selectedPoint] subLocations] count]]];
         [pageNotification setFont:[UIFont fontWithName:@"Helvetica" size: 16]];
         [pageNotification setTextColor:[UIColor whiteColor]];
@@ -829,11 +802,11 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
     {
         if ([imageView tag] == 1)
         {
-            [imageView setImage:[UIImage imageNamed:@"apts"]];
+            [imageView setImage:[UIImage imageNamed:@"arPropertiesButton"]];
         }
         else if ([imageView tag] == 2)
         {
-            [imageView setImage:[UIImage imageNamed:@"apt"]];
+            [imageView setImage:[UIImage imageNamed:@"arPropertyButton"]];
         }
     }
     
