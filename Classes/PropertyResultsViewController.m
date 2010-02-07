@@ -520,7 +520,6 @@
     [[self segmentedControl] setSegmentedControlStyle:UISegmentedControlStyleBar];
     
     UIBarButtonItem *segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:[self segmentedControl]];
-    [[self segmentedControl] release];
     [[self navigationItem] setRightBarButtonItem:segmentBarItem];
     [segmentBarItem release];
 }

@@ -108,10 +108,10 @@
     }
 
     BOOL nearCoordinate = NO;
-    for (NSUInteger i = 0; i < [[self locationItems] count] && !nearCoordinate; i++)
+    for (NSUInteger i = 0; i < [[self locationItems] count]; i++)
     {
         PropertyArGeoCoordinate *coord = [[self locationItems] objectAtIndex:i];
-        // if the coordinates are nearby, add coordinate as a subset.
+        // If the coordinates are nearby, add coordinate as a subset.
         if ([self isNearCoordinate:coord newCoordinate:geoCoordinate])
         {
             if (![coord isMultiple])
@@ -127,7 +127,6 @@
                 
                 NSMutableArray *subLocations = [[NSMutableArray alloc] init];
                 [subLocations addObject:newGeoCoordinate];
-                [newGeoCoordinate release];
                 
                 [coord setSubLocations:subLocations];
                 [subLocations release];
@@ -153,16 +152,6 @@
         [view removeFromSuperview];
     }
 
-    [[self locationViews] removeAllObjects];
-    for (PropertyArGeoCoordinate *coordinate in [self locationItems])
-    {
-        if ([[self propdelegate] respondsToSelector:@selector(viewForCoordinate:)])
-        {
-            [[self locationViews] addObject:[[self propdelegate] viewForCoordinate:coordinate]];
-        }
-    }
-    
-    // TODO: Optimize creating locationViews. Just create once in loadView? Do we need to call this all the time?
     NSMutableArray *locationViews = [[NSMutableArray alloc] init];
 	for (PropertyArGeoCoordinate *coordinate in [self locationItems])
     {
@@ -207,10 +196,10 @@
     [doneButton addTarget:self action:@selector(doneClick:) forControlEvents:(UIControlEvents)UIControlEventTouchUpInside]; 
     [contentView addSubview:doneButton];
     [doneButton release];
-    
-    PropertyArGeoCoordinate *selectedPoint = [[PropertyArGeoCoordinate alloc] init];
-    [self setSelectedPoint:selectedPoint];
-    [selectedPoint release];
+
+    CLLocation *placeholderLocation = [[CLLocation alloc] initWithLatitude:0 longitude:0];
+    [self setSelectedPoint:[PropertyArGeoCoordinate coordinateWithLocation:placeholderLocation]];
+    [placeholderLocation release];
     
     [self setView:contentView];
     [contentView release];
@@ -265,7 +254,9 @@
     // Start our heading readings and our accelerometer readings.
     if ([self locationManager] == nil)
     {
-        [self setLocationManager:[[[CLLocationManager alloc] init] autorelease]];
+        CLLocationManager *newLocationManager = [[CLLocationManager alloc] init];
+        [self setLocationManager:newLocationManager];
+        [newLocationManager release];
         
         // We want every move.
         [[self locationManager] setHeadingFilter:kCLHeadingFilterNone];
@@ -318,16 +309,19 @@
 {
     for (PropertyArGeoCoordinate *geoCoordinate in [self locationItems])
     {
-        [[geoCoordinate subLocations] release];
-        [geoCoordinate setIsMultiple:NO];
-        [geoCoordinate calibrateUsingOrigin:centerLocation];
-        
-        if ([geoCoordinate radialDistance] < [self minDistance])
+        if (geoCoordinate != nil)
         {
-            [self setMinDistance:[geoCoordinate radialDistance]];
+            [geoCoordinate setSubLocations:nil];
+            [geoCoordinate setIsMultiple:NO];
+            [geoCoordinate calibrateUsingOrigin:centerLocation];
+            
+            if ([geoCoordinate radialDistance] < [self minDistance])
+            {
+                [self setMinDistance:[geoCoordinate radialDistance]];
+            }
+            
+            [self updateLocationViews];            
         }
-        
-        [self updateLocationViews];
     }
 }
 
@@ -466,35 +460,34 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
         PropertyArGeoCoordinate *item = [[self locationItems] objectAtIndex:i];
         UIImageView *viewToDraw = [[self locationViews] objectAtIndex:i];
         
-        NSString *imageName = @"arPropertyButton.png";
-        if ([self selectedPoint] != nil
-            && [[self selectedPoint] geoLocation] != nil)
+        NSString *imageName;
+        if ([item isMultiple])
         {
-            if ([[item geoLocation] coordinate].latitude == [[[self selectedPoint] geoLocation] coordinate].latitude && 
-               [[item geoLocation] coordinate].longitude == [[[self selectedPoint] geoLocation] coordinate].longitude)
+            imageName = @"arPropertiesButton.png";
+            
+            for (PropertyArGeoCoordinate *coord in [item subLocations])
             {
-                imageName = @"arSelectedPropertyButton.png";
-                
-                if ([item isMultiple])
+                if ([self selectedPoint] != nil)
                 {
-                    imageName = @"arSelectedPropertiesButton.png";
-                }
-            }
-            else 
-            {
-                if ([item isMultiple])
-                {
-                    imageName = @"arPropertiesButton.png";
-                    
-                    for (PropertyArGeoCoordinate *coord in [item subLocations])
+                    if ([[coord geoLocation] coordinate].latitude == [[[self selectedPoint] geoLocation] coordinate].latitude && 
+                        [[coord geoLocation] coordinate].longitude == [[[self selectedPoint] geoLocation] coordinate].longitude)
                     {
-                        if ([[coord geoLocation] coordinate].latitude == [[[self selectedPoint] geoLocation] coordinate].latitude && 
-                           [[coord geoLocation] coordinate].longitude == [[[self selectedPoint] geoLocation] coordinate].longitude)
-                        {
-                            imageName = @"arSelectedPropertiesButton.png";
-                        }
+                        imageName = @"arSelectedPropertiesButton.png";
                     }
                 }
+            }
+        }
+        else
+        {
+            imageName = @"arPropertyButton.png";
+            
+            if ([self selectedPoint] != nil)
+            {
+                if ([[item geoLocation] coordinate].latitude == [[[self selectedPoint] geoLocation] coordinate].latitude && 
+                    [[item geoLocation] coordinate].longitude == [[[self selectedPoint] geoLocation] coordinate].longitude)
+                {
+                    imageName = @"arSelectedPropertyButton.png";
+                }                
             }
         }
         
@@ -549,7 +542,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
         if ([touch view] == item)
         {
             [self setCurrentPage:1];
-            [self setSelectedPoint:(PropertyArGeoCoordinate *)[[self locationItems] objectAtIndex:i]];
+            [self setSelectedPoint:[[self locationItems] objectAtIndex:i]];
             
             [self makePanel];
             
@@ -571,7 +564,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
             
             CGRect frame = [[self popupView] frame];
             frame.origin.y = topPoint;
-            self.popupView.frame = frame;
+            [[self popupView] setFrame:frame];
             
             [self setPopupIsAdded:YES];
             [UIView commitAnimations];
@@ -588,8 +581,8 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
     for (i = 0; i < (NSInteger)[[[self selectedPoint] subLocations] count]; i++)
     {
         PropertyArGeoCoordinate *coord = [[[self selectedPoint] subLocations] objectAtIndex:i];
-        if (coord.geoLocation.coordinate.latitude == self.selectedPoint.geoLocation.coordinate.latitude && 
-           coord.geoLocation.coordinate.longitude == self.selectedPoint.geoLocation.coordinate.longitude
+        if ([[coord geoLocation] coordinate].latitude == [[[self selectedPoint] geoLocation] coordinate].latitude && 
+           [[coord geoLocation] coordinate].longitude == [[[self selectedPoint] geoLocation] coordinate].longitude
            && [coord title] == [[self selectedPoint] title])
         {
             currentIndex = i + 1;
@@ -604,7 +597,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
     }
     
     NSMutableArray *subLocations = [[[self selectedPoint] subLocations] mutableCopy];
-    [self setSelectedPoint:(PropertyArGeoCoordinate *)[subLocations objectAtIndex:currentIndex]];
+    [self setSelectedPoint:[subLocations objectAtIndex:currentIndex]];
     [[self selectedPoint] setSubLocations:subLocations];
     [subLocations release];
     [[self selectedPoint] calibrateUsingOrigin:[self centerLocation]];
@@ -621,9 +614,9 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
     for (i = 0; i < (NSInteger)[[[self selectedPoint] subLocations] count]; i++)
     {
         PropertyArGeoCoordinate *coord = [[[self selectedPoint] subLocations] objectAtIndex:i];        
-        if (coord.geoLocation.coordinate.latitude == self.selectedPoint.geoLocation.coordinate.latitude && 
-           coord.geoLocation.coordinate.longitude == self.selectedPoint.geoLocation.coordinate.longitude
-           && coord.title == self.selectedPoint.title)
+        if ([[coord geoLocation] coordinate].latitude == [[[self selectedPoint] geoLocation] coordinate].latitude && 
+           [[coord geoLocation] coordinate].longitude == [[[self selectedPoint] geoLocation] coordinate].longitude
+           && [coord title] == [[self selectedPoint] title])
         {
             currentIndex = i - 1;
         }
@@ -637,7 +630,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
     }
 
     NSMutableArray *subLocations = [[[self selectedPoint] subLocations] mutableCopy];
-    [self setSelectedPoint:(PropertyArGeoCoordinate *)[subLocations objectAtIndex:currentIndex]];
+    [self setSelectedPoint:[subLocations objectAtIndex:currentIndex]];
     [[self selectedPoint] setSubLocations:subLocations];
     [subLocations release];
     [[self selectedPoint] calibrateUsingOrigin:[self centerLocation]];
@@ -654,7 +647,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
         if ([self popupView] != nil)
         {
             [[self popupView] removeFromSuperview];
-            [[self popupView] release];
+            [self setPopupView:nil];
         }
     }
     
@@ -827,10 +820,10 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
     [[self popupView] setFrame:frame];
     
     [UIView commitAnimations];
-    
-    // TODO: What is happening here?
-    [self.selectedPoint release];
-    self.selectedPoint = [PropertyArGeoCoordinate alloc];
+
+    PropertyArGeoCoordinate *selectedPoint = [[PropertyArGeoCoordinate alloc] init];
+    [self setSelectedPoint:selectedPoint];
+    [selectedPoint release];
     
     for (UIImageView *imageView in [self locationViews])
     {
@@ -850,7 +843,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
 - (void)setCenterLocation:(CLLocation *)newLocation
 {
     [newLocation retain];
-    [[self centerLocation] release];
+    [centerLocation release];
     centerLocation = newLocation;
     
     for (PropertyArGeoCoordinate *geoLocation in [self locationItems])
