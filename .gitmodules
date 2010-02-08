@@ -6,4 +6,4 @@
 	url = git://github.com/zac/iphonearkit.git
 [submodule "three20"]
 	path = three20
-	url = git://github.com/uprise78/three20-P31.git
+	url = git://github.com/facebook/three20.git

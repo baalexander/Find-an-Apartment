@@ -255,6 +255,13 @@
 			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = ObjectiveLibxml2;
 		};
+		45F24533111FCFEC0038A23E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DDDF6A91101E2C18001621C7 /* Three20.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EB9E6C6210B6A8F800DE563C /* UnitTests.octest */;
+			remoteInfo = UnitTests;
+		};
 		DDDF6A98101E2C18001621C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DDDF6A91101E2C18001621C7 /* Three20.xcodeproj */;
@@ -974,6 +981,7 @@
 			isa = PBXGroup;
 			children = (
 				DDDF6A99101E2C18001621C7 /* libThree20.a */,
+				45F24534111FCFEC0038A23E /* UnitTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1056,6 +1064,13 @@
 			fileType = archive.ar;
 			path = libObjectiveLibxml2.a;
 			remoteRef = 4526603910795E6D0046610B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		45F24534111FCFEC0038A23E /* UnitTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = UnitTests.octest;
+			remoteRef = 45F24533111FCFEC0038A23E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		DDDF6A99101E2C18001621C7 /* libThree20.a */ = {
