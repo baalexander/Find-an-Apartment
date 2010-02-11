@@ -25,7 +25,7 @@
 
 - (IBAction)backForward:(id)sender
 {
-	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     NSInteger selectedSegment = [segmentedControl selectedSegmentIndex];
     if (selectedSegment == kWebBack)
     {

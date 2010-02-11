@@ -157,15 +157,15 @@
     }
 
     NSMutableArray *locationViews = [[NSMutableArray alloc] init];
-	for (PropertyArGeoCoordinate *coordinate in [self locationItems])
+    for (PropertyArGeoCoordinate *coordinate in [self locationItems])
     {
-		//call out for the delegate's view.
-		if ([[self propdelegate] respondsToSelector:@selector(viewForCoordinate:)])
+        //call out for the delegate's view.
+        if ([[self propdelegate] respondsToSelector:@selector(viewForCoordinate:)])
         {
-			[locationViews addObject:[[self propdelegate] viewForCoordinate:coordinate]];
-		}
-	}
-	[self setLocationViews:locationViews];
+            [locationViews addObject:[[self propdelegate] viewForCoordinate:coordinate]];
+        }
+    }
+    [self setLocationViews:locationViews];
     [locationViews release];
 }
 

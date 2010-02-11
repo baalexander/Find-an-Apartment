@@ -59,15 +59,15 @@ static const char *kItemName = "loan";
     //Principal
     float loanAmount = [[[self criteria] loanAmount] floatValue];
     //Term = years
-	float loanTerm = [[[self criteria] loanTerm] floatValue];
+    float loanTerm = [[[self criteria] loanTerm] floatValue];
     //Interest rate
-	float interestRate = [[[self criteria] interestRate] floatValue];
-	//12 = monthly
-	NSInteger paymentFrequency = 12;
-	//Monthly interest rate = rate divided by 100 to turn into percentage then divided by payments per year
-	float monthlyInterestRate = interestRate / 100 / paymentFrequency;
-	//Payment formula: c = (r / (1 − (1 + r)^−N) ) * P 
-	float payment = (float)(monthlyInterestRate / (1 - pow(1 + monthlyInterestRate, -loanTerm * paymentFrequency)) * loanAmount);
+    float interestRate = [[[self criteria] interestRate] floatValue];
+    //12 = monthly
+    NSInteger paymentFrequency = 12;
+    //Monthly interest rate = rate divided by 100 to turn into percentage then divided by payments per year
+    float monthlyInterestRate = interestRate / 100 / paymentFrequency;
+    //Payment formula: c = (r / (1 − (1 + r)^−N) ) * P 
+    float payment = (float)(monthlyInterestRate / (1 - pow(1 + monthlyInterestRate, -loanTerm * paymentFrequency)) * loanAmount);
     
     //Adds values as Loan to results
     NSMutableDictionary *loan = [[NSMutableDictionary alloc] init];

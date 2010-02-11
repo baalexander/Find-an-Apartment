@@ -204,7 +204,7 @@
     [super viewDidLoad];
     
     // Add Load in Google Maps button
-	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Load in Maps"
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Load in Maps"
                                                                style:UIBarButtonItemStyleBordered
                                                               target:self
                                                               action:@selector(loadInGoogleMaps:)];

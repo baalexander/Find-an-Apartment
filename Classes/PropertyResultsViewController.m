@@ -65,9 +65,9 @@
     [details_ release];
     [fetchedResultsController_ release];
     [alertView_ release];
-	[segmentedControl_ release];
+    [segmentedControl_ release];
     [geocoder_ release];
-	[camera_ release];
+    [camera_ release];
     
     [super dealloc];
 }
@@ -77,31 +77,31 @@
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     
     // Create a tranisiton animation to switch views
-	CATransition *transition = [CATransition animation];
-	transition.duration = .5;
-	// Using the ease in/out timing function
-	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-	// Type of transition
-	transition.type = kCATransitionFade;
-	
-	// Add the transition to the containerView's layer. This will perform the
+    CATransition *transition = [CATransition animation];
+    transition.duration = .5;
+    // Using the ease in/out timing function
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    // Type of transition
+    transition.type = kCATransitionFade;
+    
+    // Add the transition to the containerView's layer. This will perform the
     // transition based on how the contents change.
-	[[[self view] layer] addAnimation:transition forKey:nil];
-	
+    [[[self view] layer] addAnimation:transition forKey:nil];
+    
     // Switch between views based on selected segment
     if ([segmentedControl selectedSegmentIndex] == kListItem)
     {
         [[[self mapViewController] mapView] setHidden:YES];
         [[[self arViewController] view] setHidden:YES];
         [[[self listViewController] tableView] setHidden:NO];
-		[self setPreviousSelectedSegment:kListItem];
+        [self setPreviousSelectedSegment:kListItem];
     }
     else if ([segmentedControl selectedSegmentIndex] == kMapItem)
     {
         [[[self mapViewController] mapView] setHidden:NO];
         [[[self arViewController] view] setHidden:YES];
         [[[self listViewController] tableView] setHidden:YES];
-		[self setPreviousSelectedSegment:kMapItem];
+        [self setPreviousSelectedSegment:kMapItem];
     }
     else if ([segmentedControl selectedSegmentIndex] == kArItem)
     {
@@ -112,31 +112,31 @@
             [self setArViewController:viewController];
             [viewController release];
             
-			[[self arViewController] setPropdelegate:self];
+            [[self arViewController] setPropdelegate:self];
             [[self arViewController] setPropertyDelegate:self];
             [[self arViewController] setPropertyDataSource:self];
             
-			[self setMapIsDirty:YES];
+            [self setMapIsDirty:YES];
         } 
-		
-		[[self arViewController] startListening];
-		
+        
+        [[self arViewController] startListening];
+        
         UIImagePickerController *camera = [[UIImagePickerController alloc] init];
         [self setCamera:camera];
         [camera release];
         
-		if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
         {
 #if !TARGET_IPHONE_SIMULATOR
             [[self camera] setSourceType:UIImagePickerControllerSourceTypeCamera];
             [[self camera] setShowsCameraControls:NO];
 #endif
-		}
-		
+        }
+        
         [[self camera] setCameraOverlayView:[[self arViewController] view]];
         [[self arViewController] setCamera:[self camera]];
-		[self presentModalViewController:[self camera] animated:NO];
-		       
+        [self presentModalViewController:[self camera] animated:NO];
+               
         [[[self mapViewController] mapView] setHidden:YES];
         [[[self arViewController] view] setHidden:NO];
         [[[self listViewController] tableView] setHidden:YES];
@@ -355,40 +355,40 @@
 #pragma mark ARViewDelegate
 
 - (UIView *)viewForCoordinate:(PropertyArGeoCoordinate *)coordinate
-{	
-	[coordinate calibrateUsingOrigin:[[self arViewController] centerLocation]];
-	[coordinate setInclination:-.20 + (.05 * ([coordinate radialDistance] - [[self arViewController] minDistance]))];
-	if ([coordinate radialDistance] > 30)
+{    
+    [coordinate calibrateUsingOrigin:[[self arViewController] centerLocation]];
+    [coordinate setInclination:-.20 + (.05 * ([coordinate radialDistance] - [[self arViewController] minDistance]))];
+    if ([coordinate radialDistance] > 30)
     {
         [coordinate setInclination:.4];
     }
     
-	NSString *image = @"arPropertyButton.png";
-	if ([coordinate isMultiple])
+    NSString *image = @"arPropertyButton.png";
+    if ([coordinate isMultiple])
     {
         image = @"arPropertiesButton.png";
     }
-	
-	UIImageView *imageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:image]] autorelease];
-	[imageView setFrame:CGRectMake(0, 0, 70, 55)];
-	[imageView setUserInteractionEnabled:YES];
-	
-	if ([coordinate isMultiple])
-	{
+    
+    UIImageView *imageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:image]] autorelease];
+    [imageView setFrame:CGRectMake(0, 0, 70, 55)];
+    [imageView setUserInteractionEnabled:YES];
+    
+    if ([coordinate isMultiple])
+    {
         // Label shows number of properties in that grouping
-		UILabel *numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 2, 35, 40)];
-		[numberLabel setBackgroundColor:[UIColor clearColor]];
+        UILabel *numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 2, 35, 40)];
+        [numberLabel setBackgroundColor:[UIColor clearColor]];
         [numberLabel setTextColor:[UIColor whiteColor]];
-		[numberLabel setFont:[UIFont fontWithName:@"Helvetica" size:28]];
-		[numberLabel setShadowColor:[UIColor grayColor]];
-		[numberLabel setShadowOffset:CGSizeMake(1, 1)];
-		[numberLabel setText:[NSString stringWithFormat:@"%d", [[coordinate subLocations] count]]];
-		[numberLabel setTextAlignment:UITextAlignmentCenter];
-		
-		[imageView addSubview:numberLabel];
-		[numberLabel release];
-	}
-	
+        [numberLabel setFont:[UIFont fontWithName:@"Helvetica" size:28]];
+        [numberLabel setShadowColor:[UIColor grayColor]];
+        [numberLabel setShadowOffset:CGSizeMake(1, 1)];
+        [numberLabel setText:[NSString stringWithFormat:@"%d", [[coordinate subLocations] count]]];
+        [numberLabel setTextAlignment:UITextAlignmentCenter];
+        
+        [imageView addSubview:numberLabel];
+        [numberLabel release];
+    }
+    
     return imageView;
 }
 
@@ -396,14 +396,14 @@
 {
     // TODO: Can this be replaced with:
     //    [[self segmentedControl] setSelectedSegmentIndex:[self previousSelectedSegment]];
-	if ([self previousSelectedSegment] == kListItem)
-	{
-		[[self segmentedControl] setSelectedSegmentIndex:kListItem];
-	}
-	else if ([self previousSelectedSegment] == kMapItem)
-	{
-		[[self segmentedControl] setSelectedSegmentIndex:kMapItem];
-	}
+    if ([self previousSelectedSegment] == kListItem)
+    {
+        [[self segmentedControl] setSelectedSegmentIndex:kListItem];
+    }
+    else if ([self previousSelectedSegment] == kMapItem)
+    {
+        [[self segmentedControl] setSelectedSegmentIndex:kMapItem];
+    }
 }
 
 
@@ -511,7 +511,7 @@
     
     // Set selected segment index must come before addTarget, otherwise the action will be called as if the segment was pressed
     [[self segmentedControl] setSelectedSegmentIndex:kListItem];
-	[self setPreviousSelectedSegment:kListItem];
+    [self setPreviousSelectedSegment:kListItem];
     [[self segmentedControl] addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventValueChanged];
     [[self segmentedControl] setSegmentedControlStyle:UISegmentedControlStyleBar];
     [[self segmentedControl] setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
@@ -587,12 +587,12 @@
 
 - (void)onDetailsClose
 {
-	// If we backed out of the details view, re-click the AR segment button again.
-	if ([[self segmentedControl] selectedSegmentIndex] == kArItem)
-	{
-		[[self segmentedControl] setSelectedSegmentIndex:kListItem];
-		[[self segmentedControl] setSelectedSegmentIndex:kArItem];
-	}
+    // If we backed out of the details view, re-click the AR segment button again.
+    if ([[self segmentedControl] selectedSegmentIndex] == kArItem)
+    {
+        [[self segmentedControl] setSelectedSegmentIndex:kListItem];
+        [[self segmentedControl] setSelectedSegmentIndex:kArItem];
+    }
 }
 
 
@@ -607,13 +607,13 @@
     
     // Pushes the Details view controller
     PropertyDetailsViewController *detailsViewController = [[PropertyDetailsViewController alloc] initWithNibName:@"PropertyDetailsView" bundle:nil];
-	detailsViewController.delegate = self;
+    [detailsViewController setDelegate:self];
     [detailsViewController setPropertyDataSource:self];
     [detailsViewController setPropertyIndex:index];
     [detailsViewController setDetails:details];
-	
+    
     [[self navigationController] pushViewController:detailsViewController animated:YES];
-	
+    
     [detailsViewController release];
 }
 

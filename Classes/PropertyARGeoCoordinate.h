@@ -4,11 +4,11 @@
 
 @interface PropertyArGeoCoordinate : ARGeoCoordinate
 {
-	NSMutableArray *subLocations_;
-	NSString *price_;
-	NSString *summary_;
+    NSMutableArray *subLocations_;
+    NSString *price_;
+    NSString *summary_;
     BOOL isMultiple_;
-	BOOL viewSet_;
+    BOOL viewSet_;
 }
 
 + (PropertyArGeoCoordinate *)coordinateWithLocation:(CLLocation *)location;

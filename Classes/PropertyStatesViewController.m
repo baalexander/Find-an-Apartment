@@ -120,14 +120,14 @@
     // Search setup
     [self setFilteredContent:[[NSArray alloc] init]];
     [self setSearchDisplayController:[[[UISearchDisplayController alloc]
-									 initWithSearchBar:[self searchBar] contentsController:self] autorelease]];
+                                     initWithSearchBar:[self searchBar] contentsController:self] autorelease]];
     [[self searchDisplayController] setSearchResultsDataSource:self];
     [[self searchDisplayController] setSearchResultsDelegate:self];
     [[self searchDisplayController] setDelegate:self];
-	
-	[[self searchBar] setAutocorrectionType:UITextAutocorrectionTypeNo]; // Don't get in the way of user typing.
-	[[self searchBar] setAutocapitalizationType:UITextAutocapitalizationTypeNone]; // Don't capitalize each word.
-	[[self searchBar] setDelegate:self]; // Become delegate to detect changes in scope.
+    
+    [[self searchBar] setAutocorrectionType:UITextAutocorrectionTypeNo]; // Don't get in the way of user typing.
+    [[self searchBar] setAutocapitalizationType:UITextAutocapitalizationTypeNone]; // Don't capitalize each word.
+    [[self searchBar] setDelegate:self]; // Become delegate to detect changes in scope.
     
     // Setup the location button
     [[Locator sharedInstance] setDelegate:self];
@@ -278,8 +278,8 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 #pragma mark Content Filtering
 
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
-{	
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+{    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"State" 
                                               inManagedObjectContext:[self geographyObjectContext]];

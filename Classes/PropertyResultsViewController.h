@@ -40,11 +40,11 @@
         BOOL geocoding_;
         BOOL mapIsDirty_;
     
-		// Misc
+        // Misc
         UIAlertView *alertView_;
-		UISegmentedControl *segmentedControl_;
-		NSInteger previousSelectedSegment_;
-		UIImagePickerController *camera_;
+        UISegmentedControl *segmentedControl_;
+        NSInteger previousSelectedSegment_;
+        UIImagePickerController *camera_;
 }
 
 @property (nonatomic, retain) PropertyHistory *history;

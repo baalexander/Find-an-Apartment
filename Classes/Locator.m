@@ -89,22 +89,22 @@ static Locator *instance_ = NULL;
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
 {
-	// We only want a single location, so stop updating
-	[[self locationManager] stopUpdatingLocation];
+    // We only want a single location, so stop updating
+    [[self locationManager] stopUpdatingLocation];
     
-	if (signbit([newLocation horizontalAccuracy]))
+    if (signbit([newLocation horizontalAccuracy]))
     {
-		// Negative accuracy means an invalid or unavailable measurement
-		DebugLog(@"Invalid or unavailable measurement");
+        // Negative accuracy means an invalid or unavailable measurement
+        DebugLog(@"Invalid or unavailable measurement");
         return;
-	}
+    }
     [self setUserLocation:newLocation];
     
     MKReverseGeocoder *reverseGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:[newLocation coordinate]];
     [reverseGeocoder setDelegate:self];
     [self setReverseGeocoder:reverseGeocoder];
     [reverseGeocoder release];
-    [[self reverseGeocoder] start];    	
+    [[self reverseGeocoder] start];        
 }
 
 // Called when there is an error getting the location
@@ -115,9 +115,9 @@ static Locator *instance_ = NULL;
     NSString *errorMessage = @"Error getting your location.";
 
      //Core location related errors
-	if ([error domain] == kCLErrorDomain)
+    if ([error domain] == kCLErrorDomain)
     {    
-		switch ([error code]) 
+        switch ([error code]) 
         {
             // This error code is usually returned whenever user taps "Don't Allow" in response to
             // being told your app wants to access the current location. Once this happens, you cannot
@@ -126,20 +126,20 @@ static Locator *instance_ = NULL;
             // "Don't Allow" on two successive app launches is the same as saying "never allow". The user
             // can reset this for all apps by going to Settings > General > Reset > Reset Location Warnings.
             //
-			case kCLErrorDenied:
+            case kCLErrorDenied:
                 errorMessage = @"Not allowed to access your location.";
-				break;
+                break;
                 
             // This error code is usually returned whenever the device has no data or WiFi connectivity,
             // or when the location cannot be determined for some other reason.
             //
             // CoreLocation will keep trying, so you can keep waiting, or prompt the user.
             //
-			case kCLErrorLocationUnknown:
+            case kCLErrorLocationUnknown:
                 errorMessage = @"Could not determine your location.";
-				break;
-		}
-	} 
+                break;
+        }
+    } 
     
     [self alertErrorWithTitle:nil withMessage:errorMessage];
 }

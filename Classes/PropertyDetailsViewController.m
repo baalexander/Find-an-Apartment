@@ -54,10 +54,10 @@
     [truliaCopyrightCell_ release];
     [providedByTruliaCell_ release];
 #endif
-	
-	if ([self.delegate respondsToSelector:@selector(onDetailsClose)]) {
-		[self.delegate onDetailsClose];
-	}
+    
+    if ([self.delegate respondsToSelector:@selector(onDetailsClose)]) {
+        [self.delegate onDetailsClose];
+    }
     
     [super dealloc];
 }
@@ -67,7 +67,7 @@
     NSInteger propertyCount = [[self propertyDataSource] numberOfPropertiesInView:[self tableView]];
     
     // Gets the previous or next property
-	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     NSInteger selectedSegment = [segmentedControl selectedSegmentIndex];
     if (selectedSegment == kDetailsPrevious)
     {
@@ -325,20 +325,20 @@
     [title release];    
     
     //Segmented control to the right
-	UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:
+    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:
                                             [NSArray arrayWithObjects:
                                              [UIImage imageNamed:@"up.png"],
                                              [UIImage imageNamed:@"down.png"],
                                              nil]];
-	[segmentedControl addTarget:self action:@selector(previousNext:) forControlEvents:UIControlEventValueChanged];
-	[segmentedControl setFrame:CGRectMake(0, 0, 90, 30)];
-	[segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
-	[segmentedControl setMomentary:YES];
+    [segmentedControl addTarget:self action:@selector(previousNext:) forControlEvents:UIControlEventValueChanged];
+    [segmentedControl setFrame:CGRectMake(0, 0, 90, 30)];
+    [segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
+    [segmentedControl setMomentary:YES];
     
-	UIBarButtonItem *segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
+    UIBarButtonItem *segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
     [segmentedControl release];
     
-	[[self navigationItem] setRightBarButtonItem:segmentBarItem];
+    [[self navigationItem] setRightBarButtonItem:segmentBarItem];
     [segmentBarItem release];
     
     // Disable "Add to Favorites" if the property is already saved
@@ -624,8 +624,8 @@ static NSString *kSimpleCellId = @"SIMPLE_CELL_ID";
 {    
     [self dismissModalViewControllerAnimated:YES];
     
-	NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
-	[[self tableView] deselectRowAtIndexPath:indexPath animated:YES];
+    NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
+    [[self tableView] deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

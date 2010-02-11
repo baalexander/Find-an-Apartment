@@ -39,8 +39,8 @@
 {
     @private
         UITableView *tableView_;
-		
-		id delegate;
+        
+        id delegate;
         id <PropertyResultsDataSource> propertyDataSource_;
         NSInteger propertyIndex_;
     
