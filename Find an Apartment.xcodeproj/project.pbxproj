@@ -202,7 +202,6 @@
 		45E9CE0C102BE338003D157D /* LocationParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E9CE0A102BE338003D157D /* LocationParser.m */; };
 		45FF76C80FE9FF810053B4D8 /* PropertyFavoritesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */; };
 		C54DE28E10B3B29900390127 /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C54DE28D10B3B29900390127 /* libxml2.2.dylib */; };
-		C570E09110C350AB00451BFF /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = C570E09010C350AB00451BFF /* Entitlements.plist */; };
 		C58F170310F803BC00E6C359 /* PropertyArGeoCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F170110F803BC00E6C359 /* PropertyArGeoCoordinate.m */; };
 		DD02AD59100FD399003FD680 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DD4A5DA91002BFB9004599FB /* Default.png */; };
 		DD4581260FEEC7B500783A46 /* Geography.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = DD4581250FEEC7B500783A46 /* Geography.xcdatamodel */; };
@@ -449,11 +448,8 @@
 		45FF76C70FE9FF810053B4D8 /* PropertyFavoritesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyFavoritesView.xib; path = Classes/PropertyFavoritesView.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Find_an_Apartment-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Find_an_Apartment-Info.plist"; sourceTree = "<group>"; };
 		C54DE28D10B3B29900390127 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
-		C570E09010C350AB00451BFF /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		C58F170010F803BC00E6C359 /* PropertyArGeoCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyArGeoCoordinate.h; path = Classes/PropertyArGeoCoordinate.h; sourceTree = "<group>"; };
 		C58F170110F803BC00E6C359 /* PropertyArGeoCoordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyArGeoCoordinate.m; path = Classes/PropertyArGeoCoordinate.m; sourceTree = "<group>"; };
-		C5A5210010C2FF89005B0688 /* AR Find an Apartment-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AR Find an Apartment-Info.plist"; sourceTree = "<group>"; };
-		C5CB17E010C30342005C2918 /* FindApt-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FindApt-Info.plist"; sourceTree = "<group>"; };
 		DD4581250FEEC7B500783A46 /* Geography.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Geography.xcdatamodel; sourceTree = "<group>"; };
 		DD4A5DA91002BFB9004599FB /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		DD6F1F571026718C000C8207 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = back.png; path = Images/back.png; sourceTree = "<group>"; };
@@ -547,9 +543,6 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				C5A5210010C2FF89005B0688 /* AR Find an Apartment-Info.plist */,
-				C5CB17E010C30342005C2918 /* FindApt-Info.plist */,
-				C570E09010C350AB00451BFF /* Entitlements.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -1099,7 +1092,6 @@
 				45011E6610815FFD0045DAB5 /* Geography2.sqlite in Resources */,
 				45783B9710841BF000844E51 /* PropertyResultsView.xib in Resources */,
 				4590CB49109503BA00CB6CF4 /* PropertyDetailsMapView.xib in Resources */,
-				C570E09110C350AB00451BFF /* Entitlements.plist in Resources */,
 				451B269D110559DE00F1E610 /* arDoneButton.png in Resources */,
 				451B26A0110559DE00F1E610 /* arNext.png in Resources */,
 				451B26A1110559DE00F1E610 /* arPopupBackground.png in Resources */,
