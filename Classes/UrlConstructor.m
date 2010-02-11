@@ -1,6 +1,8 @@
 #import "UrlConstructor.h"
 
+#import "Constants.h"
 #import "UrlUtil.h"
+#import "ApiKeys.h"
 
 
 @implementation UrlConstructor
@@ -22,6 +24,16 @@
 - (void)dealloc
 {
     [super dealloc];
+}
+
+- (NSString *)apiKey
+{
+    return [NSString stringWithFormat:@"&api_key=%@", kAlexanderMobileApiKey];
+}
+
+- (NSString *)version
+{
+    return [NSString stringWithFormat:@"&version=%@", kAppVersion];
 }
 
 - (NSString *)deviceParams

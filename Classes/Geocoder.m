@@ -1,5 +1,5 @@
 #import "Geocoder.h"
-#import "GeocoderGoogleMapsKey.h"
+#import "ApiKeys.h"
 #import "UrlUtil.h"
 
 
@@ -59,7 +59,7 @@
     
     // Sets URL
     NSString *encodedLocation = [UrlUtil encodeUrl:[self location]];
-    NSString *urlString = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps/geo?q=%@&output=xml&oe=utf8&sensor=false&key=%@", encodedLocation, kGoogleMapsKey];
+    NSString *urlString = [[NSString alloc] initWithFormat:@"http://maps.google.com/maps/geo?q=%@&output=xml&oe=utf8&sensor=false&key=%@", encodedLocation, kGoogleMapsApiKey];
     NSURL *url = [[NSURL alloc] initWithString:urlString];
     [urlString release];
     [parser setUrl:url];

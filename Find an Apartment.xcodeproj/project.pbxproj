@@ -324,6 +324,7 @@
 		45267CF6102EA866007BED9D /* MortgageResultsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MortgageResultsConstants.h; path = Classes/MortgageResultsConstants.h; sourceTree = "<group>"; };
 		452A8AD31033AED400AD21AB /* Placemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Placemark.h; path = Classes/Placemark.h; sourceTree = "<group>"; };
 		452A8AD41033AED400AD21AB /* Placemark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Placemark.m; path = Classes/Placemark.m; sourceTree = "<group>"; };
+		4538ED951123AF100078249D /* ApiKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ApiKeys.h; path = Classes/ApiKeys.h; sourceTree = "<group>"; };
 		453EE36D0FF084DB0044390F /* DescriptionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DescriptionCell.xib; path = Classes/DescriptionCell.xib; sourceTree = "<group>"; };
 		453EE36F0FF084EC0044390F /* DescriptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DescriptionCell.h; path = Classes/DescriptionCell.h; sourceTree = "<group>"; };
 		453EE3700FF084EC0044390F /* DescriptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DescriptionCell.m; path = Classes/DescriptionCell.m; sourceTree = "<group>"; };
@@ -338,7 +339,6 @@
 		4558D65710058CF30065C4DD /* MortgageCriteriaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MortgageCriteriaViewController.m; path = Classes/MortgageCriteriaViewController.m; sourceTree = "<group>"; };
 		4558D65810058CF30065C4DD /* MortgageCriteriaView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MortgageCriteriaView.xib; path = Classes/MortgageCriteriaView.xib; sourceTree = "<group>"; };
 		455BFE3F0FDC9BC4000BCD39 /* PropertyDetailsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyDetailsView.xib; path = Classes/PropertyDetailsView.xib; sourceTree = "<group>"; };
-		45691745108D5B3200B061E9 /* GeocoderGoogleMapsKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GeocoderGoogleMapsKey.h; path = Classes/GeocoderGoogleMapsKey.h; sourceTree = "<group>"; };
 		4576665B104DF8F500EEFF22 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Location.h; path = Classes/Location.h; sourceTree = "<group>"; };
 		4576665C104DF8F500EEFF22 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Location.m; path = Classes/Location.m; sourceTree = "<group>"; };
 		45783B9310841BF000844E51 /* PropertyResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyResultsViewController.h; path = Classes/PropertyResultsViewController.h; sourceTree = "<group>"; };
@@ -878,8 +878,8 @@
 		457931EC0FE58F84008E2ACD /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				4538ED951123AF100078249D /* ApiKeys.h */,
 				458C8075106085DF005CD7A2 /* Constants.h */,
-				45691745108D5B3200B061E9 /* GeocoderGoogleMapsKey.h */,
 				457932490FE59771008E2ACD /* PropertyCriteriaConstants.h */,
 				45991A220FF0927F00627B7D /* PropertyDetailsConstants.h */,
 				455733CD103779940013278E /* PropertyResultsConstants.h */,

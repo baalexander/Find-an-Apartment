@@ -2,7 +2,6 @@
 
 #import "PropertyCriteriaConstants.h"
 #import "UrlUtil.h"
-#import "Constants.h"
 
 
 @interface PropertyUrlConstructor ()
@@ -171,11 +170,6 @@
                     withUnits:@"square_feet"];
 }
 
-- (NSString *)version
-{
-    return [NSString stringWithFormat:@"&version=%@", kAppVersion];
-}
-
 - (NSURL *)urlFromCriteria:(PropertyCriteria *)criteria
 {
     [self setCriteria:criteria];
@@ -198,6 +192,7 @@
     [mutableUrl appendString:[self saleType]];
     [mutableUrl appendString:[self searchSource]];
     [mutableUrl appendString:[self version]];
+    [mutableUrl appendString:[self apiKey]];
     
     NSURL *url = [[[NSURL alloc] initWithString:mutableUrl] autorelease];
     DebugLog(@"URL:%@", url);
