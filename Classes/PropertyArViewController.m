@@ -77,7 +77,7 @@
     UIButton *button = (UIButton *)sender;
     [[self propertyDelegate] view:[self view] didSelectPropertyAtIndex:[button tag]];
 
-    [[self camera] dismissModalViewControllerAnimated:YES];
+    [[self camera] dismissModalViewControllerAnimated:NO];
 }
 
 - (void)addGeocodedProperty:(PropertySummary *)property atIndex:(NSInteger)index

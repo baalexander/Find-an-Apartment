@@ -135,7 +135,7 @@
 		
         [[self camera] setCameraOverlayView:[[self arViewController] view]];
         [[self arViewController] setCamera:[self camera]];
-		[self presentModalViewController:[self camera] animated:YES];
+		[self presentModalViewController:[self camera] animated:NO];
 		       
         [[[self mapViewController] mapView] setHidden:YES];
         [[[self arViewController] view] setHidden:NO];
@@ -154,65 +154,6 @@
         [self geocodeNextProperty];
     }
 }
-
-#pragma mark -
-#pragma mark ARViewDelegate
-
-#define BOX_WIDTH 70
-#define BOX_HEIGHT 55
-
-- (UIView *)viewForCoordinate:(PropertyArGeoCoordinate *)coordinate
-{	
-	[coordinate calibrateUsingOrigin:[[self arViewController] centerLocation]];
-	[coordinate setInclination:-.20 + (.05 * ([coordinate radialDistance] - [[self arViewController] minDistance]))];
-	if ([coordinate radialDistance] > 30)
-    {
-        [coordinate setInclination:.4];
-    }
-
-	NSString *image = @"arPropertyButton.png";
-	if ([coordinate isMultiple])
-    {
-        image = @"arPropertiesButton.png";
-    }
-	
-	UIImageView *imageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:image]] autorelease];
-	[imageView setFrame:CGRectMake(0, 0, BOX_WIDTH, BOX_HEIGHT)];
-	[imageView setUserInteractionEnabled:YES];
-	
-	if ([coordinate isMultiple])
-	{
-        // Label shows number of properties in that grouping
-		UILabel *numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 2, 35, 40)];
-		[numberLabel setBackgroundColor:[UIColor clearColor]];
-        [numberLabel setTextColor:[UIColor whiteColor]];
-		[numberLabel setFont:[UIFont fontWithName:@"Helvetica" size:28]];
-		[numberLabel setShadowColor:[UIColor grayColor]];
-		[numberLabel setShadowOffset:CGSizeMake(1, 1)];
-		[numberLabel setText:[NSString stringWithFormat:@"%d", [[coordinate subLocations] count]]];
-		[numberLabel setTextAlignment:UITextAlignmentCenter];
-		
-		[imageView addSubview:numberLabel];
-		[numberLabel release];
-	}
-	
-    return imageView;
-}
-
-- (void)onARControllerClose
-{
-    // TODO: Can this be replaced with:
-    //    [[self segmentedControl] setSelectedSegmentIndex:[self previousSelectedSegment]];
-	if ([self previousSelectedSegment] == kListItem)
-	{
-		[[self segmentedControl] setSelectedSegmentIndex:kListItem];
-	}
-	else if ([self previousSelectedSegment] == kMapItem)
-	{
-		[[self segmentedControl] setSelectedSegmentIndex:kMapItem];
-	}
-}
-
 
 - (void)parse:(NSURL *)url
 {
@@ -407,6 +348,62 @@
     // Activate the network indicator if geocoding or parsing
     BOOL activity = [self isGeocoding] || [self isParsing];
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:activity];
+}
+
+
+#pragma mark -
+#pragma mark ARViewDelegate
+
+- (UIView *)viewForCoordinate:(PropertyArGeoCoordinate *)coordinate
+{	
+	[coordinate calibrateUsingOrigin:[[self arViewController] centerLocation]];
+	[coordinate setInclination:-.20 + (.05 * ([coordinate radialDistance] - [[self arViewController] minDistance]))];
+	if ([coordinate radialDistance] > 30)
+    {
+        [coordinate setInclination:.4];
+    }
+    
+	NSString *image = @"arPropertyButton.png";
+	if ([coordinate isMultiple])
+    {
+        image = @"arPropertiesButton.png";
+    }
+	
+	UIImageView *imageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:image]] autorelease];
+	[imageView setFrame:CGRectMake(0, 0, 70, 55)];
+	[imageView setUserInteractionEnabled:YES];
+	
+	if ([coordinate isMultiple])
+	{
+        // Label shows number of properties in that grouping
+		UILabel *numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 2, 35, 40)];
+		[numberLabel setBackgroundColor:[UIColor clearColor]];
+        [numberLabel setTextColor:[UIColor whiteColor]];
+		[numberLabel setFont:[UIFont fontWithName:@"Helvetica" size:28]];
+		[numberLabel setShadowColor:[UIColor grayColor]];
+		[numberLabel setShadowOffset:CGSizeMake(1, 1)];
+		[numberLabel setText:[NSString stringWithFormat:@"%d", [[coordinate subLocations] count]]];
+		[numberLabel setTextAlignment:UITextAlignmentCenter];
+		
+		[imageView addSubview:numberLabel];
+		[numberLabel release];
+	}
+	
+    return imageView;
+}
+
+- (void)onARControllerClose
+{
+    // TODO: Can this be replaced with:
+    //    [[self segmentedControl] setSelectedSegmentIndex:[self previousSelectedSegment]];
+	if ([self previousSelectedSegment] == kListItem)
+	{
+		[[self segmentedControl] setSelectedSegmentIndex:kListItem];
+	}
+	else if ([self previousSelectedSegment] == kMapItem)
+	{
+		[[self segmentedControl] setSelectedSegmentIndex:kMapItem];
+	}
 }
 
 
