@@ -506,7 +506,7 @@
     [[self mapViewController] centerOnCriteria:[[self history] criteria]];
     
     // Segmented control
-    NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", @"ar", nil];
+    NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", @"augmented", nil];
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
     [segmentOptions release];
     [self setSegmentedControl:segmentedControl];
@@ -516,8 +516,8 @@
     [[self segmentedControl] setSelectedSegmentIndex:kListItem];
 	[self setPreviousSelectedSegment:kListItem];
     [[self segmentedControl] addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventValueChanged];
-    [[self segmentedControl] setFrame:CGRectMake(0, 0, 90, 30)];
     [[self segmentedControl] setSegmentedControlStyle:UISegmentedControlStyleBar];
+    [[self segmentedControl] setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     
     UIBarButtonItem *segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:[self segmentedControl]];
     [[self navigationItem] setRightBarButtonItem:segmentBarItem];
