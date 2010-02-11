@@ -18,33 +18,25 @@
 		45011EC5108164E10045DAB5 /* Geocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45011EC4108164E10045DAB5 /* Geocoder.m */; };
 		45011EC6108164E10045DAB5 /* Geocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45011EC4108164E10045DAB5 /* Geocoder.m */; };
 		451B269D110559DE00F1E610 /* arDoneButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B268F110559DE00F1E610 /* arDoneButton.png */; };
-		451B269E110559DE00F1E610 /* arFinalPoint.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2690110559DE00F1E610 /* arFinalPoint.png */; };
-		451B269F110559DE00F1E610 /* arLink.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2691110559DE00F1E610 /* arLink.png */; };
 		451B26A0110559DE00F1E610 /* arNext.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2692110559DE00F1E610 /* arNext.png */; };
 		451B26A1110559DE00F1E610 /* arPopupBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2693110559DE00F1E610 /* arPopupBackground.png */; };
 		451B26A2110559DE00F1E610 /* arPopupCloseButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2694110559DE00F1E610 /* arPopupCloseButton.png */; };
 		451B26A3110559DE00F1E610 /* arPrevious.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2695110559DE00F1E610 /* arPrevious.png */; };
 		451B26A4110559DE00F1E610 /* arPropertiesButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2696110559DE00F1E610 /* arPropertiesButton.png */; };
 		451B26A5110559DE00F1E610 /* arPropertyButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2697110559DE00F1E610 /* arPropertyButton.png */; };
-		451B26A6110559DE00F1E610 /* arSelectedFinalPoint.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2698110559DE00F1E610 /* arSelectedFinalPoint.png */; };
 		451B26A7110559DE00F1E610 /* arSelectedPropertiesButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2699110559DE00F1E610 /* arSelectedPropertiesButton.png */; };
 		451B26A8110559DE00F1E610 /* arSelectedPropertyButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B269A110559DE00F1E610 /* arSelectedPropertyButton.png */; };
 		451B26A9110559DE00F1E610 /* arTabbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B269B110559DE00F1E610 /* arTabbar.png */; };
-		451B26AA110559DE00F1E610 /* arVideo.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B269C110559DE00F1E610 /* arVideo.png */; };
 		451B26AB110559DE00F1E610 /* arDoneButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B268F110559DE00F1E610 /* arDoneButton.png */; };
-		451B26AC110559DE00F1E610 /* arFinalPoint.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2690110559DE00F1E610 /* arFinalPoint.png */; };
-		451B26AD110559DE00F1E610 /* arLink.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2691110559DE00F1E610 /* arLink.png */; };
 		451B26AE110559DE00F1E610 /* arNext.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2692110559DE00F1E610 /* arNext.png */; };
 		451B26AF110559DE00F1E610 /* arPopupBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2693110559DE00F1E610 /* arPopupBackground.png */; };
 		451B26B0110559DE00F1E610 /* arPopupCloseButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2694110559DE00F1E610 /* arPopupCloseButton.png */; };
 		451B26B1110559DE00F1E610 /* arPrevious.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2695110559DE00F1E610 /* arPrevious.png */; };
 		451B26B2110559DE00F1E610 /* arPropertiesButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2696110559DE00F1E610 /* arPropertiesButton.png */; };
 		451B26B3110559DE00F1E610 /* arPropertyButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2697110559DE00F1E610 /* arPropertyButton.png */; };
-		451B26B4110559DE00F1E610 /* arSelectedFinalPoint.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2698110559DE00F1E610 /* arSelectedFinalPoint.png */; };
 		451B26B5110559DE00F1E610 /* arSelectedPropertiesButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B2699110559DE00F1E610 /* arSelectedPropertiesButton.png */; };
 		451B26B6110559DE00F1E610 /* arSelectedPropertyButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B269A110559DE00F1E610 /* arSelectedPropertyButton.png */; };
 		451B26B7110559DE00F1E610 /* arTabbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B269B110559DE00F1E610 /* arTabbar.png */; };
-		451B26B8110559DE00F1E610 /* arVideo.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B269C110559DE00F1E610 /* arVideo.png */; };
 		451B26BF11055AB900F1E610 /* PropertyArGeoCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F170110F803BC00E6C359 /* PropertyArGeoCoordinate.m */; };
 		451EE79F11226E9900F5C8F4 /* ARCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = 451EE79611226E9900F5C8F4 /* ARCoordinate.m */; };
 		451EE7A011226E9900F5C8F4 /* ARGeoCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = 451EE79811226E9900F5C8F4 /* ARGeoCoordinate.m */; };
@@ -298,19 +290,15 @@
 		45011EC3108164E10045DAB5 /* Geocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geocoder.h; sourceTree = "<group>"; };
 		45011EC4108164E10045DAB5 /* Geocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Geocoder.m; sourceTree = "<group>"; };
 		451B268F110559DE00F1E610 /* arDoneButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arDoneButton.png; path = Images/ar/arDoneButton.png; sourceTree = "<group>"; };
-		451B2690110559DE00F1E610 /* arFinalPoint.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arFinalPoint.png; path = Images/ar/arFinalPoint.png; sourceTree = "<group>"; };
-		451B2691110559DE00F1E610 /* arLink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arLink.png; path = Images/ar/arLink.png; sourceTree = "<group>"; };
 		451B2692110559DE00F1E610 /* arNext.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arNext.png; path = Images/ar/arNext.png; sourceTree = "<group>"; };
 		451B2693110559DE00F1E610 /* arPopupBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arPopupBackground.png; path = Images/ar/arPopupBackground.png; sourceTree = "<group>"; };
 		451B2694110559DE00F1E610 /* arPopupCloseButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arPopupCloseButton.png; path = Images/ar/arPopupCloseButton.png; sourceTree = "<group>"; };
 		451B2695110559DE00F1E610 /* arPrevious.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arPrevious.png; path = Images/ar/arPrevious.png; sourceTree = "<group>"; };
 		451B2696110559DE00F1E610 /* arPropertiesButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arPropertiesButton.png; path = Images/ar/arPropertiesButton.png; sourceTree = "<group>"; };
 		451B2697110559DE00F1E610 /* arPropertyButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arPropertyButton.png; path = Images/ar/arPropertyButton.png; sourceTree = "<group>"; };
-		451B2698110559DE00F1E610 /* arSelectedFinalPoint.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arSelectedFinalPoint.png; path = Images/ar/arSelectedFinalPoint.png; sourceTree = "<group>"; };
 		451B2699110559DE00F1E610 /* arSelectedPropertiesButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arSelectedPropertiesButton.png; path = Images/ar/arSelectedPropertiesButton.png; sourceTree = "<group>"; };
 		451B269A110559DE00F1E610 /* arSelectedPropertyButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arSelectedPropertyButton.png; path = Images/ar/arSelectedPropertyButton.png; sourceTree = "<group>"; };
 		451B269B110559DE00F1E610 /* arTabbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arTabbar.png; path = Images/ar/arTabbar.png; sourceTree = "<group>"; };
-		451B269C110559DE00F1E610 /* arVideo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arVideo.png; path = Images/ar/arVideo.png; sourceTree = "<group>"; };
 		451EE79511226E9900F5C8F4 /* ARCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARCoordinate.h; path = arkit/ARKitDemo/Classes/ARCoordinate.h; sourceTree = SOURCE_ROOT; };
 		451EE79611226E9900F5C8F4 /* ARCoordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARCoordinate.m; path = arkit/ARKitDemo/Classes/ARCoordinate.m; sourceTree = SOURCE_ROOT; };
 		451EE79711226E9900F5C8F4 /* ARGeoCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARGeoCoordinate.h; path = arkit/ARKitDemo/Classes/ARGeoCoordinate.h; sourceTree = SOURCE_ROOT; };
@@ -615,19 +603,15 @@
 			isa = PBXGroup;
 			children = (
 				451B268F110559DE00F1E610 /* arDoneButton.png */,
-				451B2690110559DE00F1E610 /* arFinalPoint.png */,
-				451B2691110559DE00F1E610 /* arLink.png */,
 				451B2692110559DE00F1E610 /* arNext.png */,
 				451B2693110559DE00F1E610 /* arPopupBackground.png */,
 				451B2694110559DE00F1E610 /* arPopupCloseButton.png */,
 				451B2695110559DE00F1E610 /* arPrevious.png */,
 				451B2696110559DE00F1E610 /* arPropertiesButton.png */,
 				451B2697110559DE00F1E610 /* arPropertyButton.png */,
-				451B2698110559DE00F1E610 /* arSelectedFinalPoint.png */,
 				451B2699110559DE00F1E610 /* arSelectedPropertiesButton.png */,
 				451B269A110559DE00F1E610 /* arSelectedPropertyButton.png */,
 				451B269B110559DE00F1E610 /* arTabbar.png */,
-				451B269C110559DE00F1E610 /* arVideo.png */,
 			);
 			name = AR;
 			sourceTree = "<group>";
@@ -1117,19 +1101,15 @@
 				4590CB49109503BA00CB6CF4 /* PropertyDetailsMapView.xib in Resources */,
 				C570E09110C350AB00451BFF /* Entitlements.plist in Resources */,
 				451B269D110559DE00F1E610 /* arDoneButton.png in Resources */,
-				451B269E110559DE00F1E610 /* arFinalPoint.png in Resources */,
-				451B269F110559DE00F1E610 /* arLink.png in Resources */,
 				451B26A0110559DE00F1E610 /* arNext.png in Resources */,
 				451B26A1110559DE00F1E610 /* arPopupBackground.png in Resources */,
 				451B26A2110559DE00F1E610 /* arPopupCloseButton.png in Resources */,
 				451B26A3110559DE00F1E610 /* arPrevious.png in Resources */,
 				451B26A4110559DE00F1E610 /* arPropertiesButton.png in Resources */,
 				451B26A5110559DE00F1E610 /* arPropertyButton.png in Resources */,
-				451B26A6110559DE00F1E610 /* arSelectedFinalPoint.png in Resources */,
 				451B26A7110559DE00F1E610 /* arSelectedPropertiesButton.png in Resources */,
 				451B26A8110559DE00F1E610 /* arSelectedPropertyButton.png in Resources */,
 				451B26A9110559DE00F1E610 /* arTabbar.png in Resources */,
-				451B26AA110559DE00F1E610 /* arVideo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1175,19 +1155,15 @@
 				45783B9910841BF000844E51 /* PropertyResultsView.xib in Resources */,
 				4590CB47109503BA00CB6CF4 /* PropertyDetailsMapView.xib in Resources */,
 				451B26AB110559DE00F1E610 /* arDoneButton.png in Resources */,
-				451B26AC110559DE00F1E610 /* arFinalPoint.png in Resources */,
-				451B26AD110559DE00F1E610 /* arLink.png in Resources */,
 				451B26AE110559DE00F1E610 /* arNext.png in Resources */,
 				451B26AF110559DE00F1E610 /* arPopupBackground.png in Resources */,
 				451B26B0110559DE00F1E610 /* arPopupCloseButton.png in Resources */,
 				451B26B1110559DE00F1E610 /* arPrevious.png in Resources */,
 				451B26B2110559DE00F1E610 /* arPropertiesButton.png in Resources */,
 				451B26B3110559DE00F1E610 /* arPropertyButton.png in Resources */,
-				451B26B4110559DE00F1E610 /* arSelectedFinalPoint.png in Resources */,
 				451B26B5110559DE00F1E610 /* arSelectedPropertiesButton.png in Resources */,
 				451B26B6110559DE00F1E610 /* arSelectedPropertyButton.png in Resources */,
 				451B26B7110559DE00F1E610 /* arTabbar.png in Resources */,
-				451B26B8110559DE00F1E610 /* arVideo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
