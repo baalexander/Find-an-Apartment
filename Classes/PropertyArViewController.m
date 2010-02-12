@@ -95,6 +95,7 @@
     [geoCoordinate setSubtitle:[property subtitle]];
     [geoCoordinate setSummary:[property summary]];
     [geoCoordinate setPrice:[[property price] description]];
+    [geoCoordinate setIndex:index];
     [geoCoordinate setIsMultiple:NO];
     [geoCoordinate setViewSet:NO];    
     [geoCoordinate calibrateUsingOrigin:[self centerLocation]];
@@ -735,22 +736,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
     // to pop the details view.
     // TODO: Why is there  an init after the UIButton is being autoreleased? Remove/change and test
     UIButton *detailsButton = [[UIButton buttonWithType:UIButtonTypeDetailDisclosure] initWithFrame:CGRectMake(250, 10, 30, 28)];
-    
-    // Determines tag for the details button
-    BOOL found = NO;
-    NSInteger tag = 0;
-    for (NSInteger i = 0; i < (NSInteger)[[self locationItems] count] && !found; i++)
-    {
-        PropertyArGeoCoordinate *coord = [[self locationItems] objectAtIndex:i];
-        if ([[coord title] isEqual:[[self selectedPoint] title]]
-            && [[coord geoLocation] coordinate].longitude == [[[self selectedPoint] geoLocation] coordinate].longitude
-            && [[coord geoLocation] coordinate].latitude == [[[self selectedPoint] geoLocation] coordinate].latitude)
-        {
-            tag = i;
-        }
-    }
-    
-    [detailsButton setTag:tag];
+    [detailsButton setTag:[[self selectedPoint] index]];
     [detailsButton addTarget:self action:@selector(clickedButton:) forControlEvents:UIControlEventTouchUpInside];
     [[self popupView] addSubview:detailsButton];
 

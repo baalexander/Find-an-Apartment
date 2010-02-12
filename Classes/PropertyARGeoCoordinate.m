@@ -6,6 +6,7 @@
 @synthesize subLocations = subLocations_;
 @synthesize summary = summary_;
 @synthesize price = price_;
+@synthesize index = index_;
 @synthesize isMultiple = isMultiple_;
 @synthesize viewSet = viewSet_;
 

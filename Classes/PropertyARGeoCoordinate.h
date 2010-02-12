@@ -7,6 +7,7 @@
     NSMutableArray *subLocations_;
     NSString *price_;
     NSString *summary_;
+    NSInteger index_;
     BOOL isMultiple_;
     BOOL viewSet_;
 }
@@ -17,6 +18,7 @@
 @property (nonatomic, retain) NSMutableArray *subLocations;
 @property (nonatomic, retain) NSString *summary;
 @property (nonatomic, retain) NSString *price;
+@property (nonatomic, assign) NSInteger index;
 @property (nonatomic, assign) BOOL isMultiple;
 @property (nonatomic, assign) BOOL viewSet;
 
