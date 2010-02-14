@@ -1,7 +1,10 @@
 #import "PropertyArViewController.h"
+#import "PropertyResultsConstants.h"
+
 
 #define VIEWPORT_WIDTH_RADIANS .7392
 #define VIEWPORT_HEIGHT_RADIANS .5
+
 
 @interface PropertyArViewController ()
 @property (nonatomic, retain) UIImageView *popupView;
@@ -442,7 +445,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
 
 - (void)updateLocations
 {
-    if ([self locationCount] < 25 && [self progressView] == nil)
+    if ([self locationCount] < kMaxGeocodeProperties && [self progressView] == nil)
     {
         UIActivityIndicatorView *progressView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, 10, 320, 480)];
         [self setProgressView:progressView];
@@ -455,7 +458,7 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
         [[self view] addSubview:[self progressView]];
         
     }
-    else if ([self locationCount] >= 25)
+    else if ([self locationCount] >= kMaxGeocodeProperties)
     {
         [[self progressView] removeFromSuperview];
     }
