@@ -7,7 +7,7 @@
 
 @class PropertyArViewController;
 @protocol PropertyArViewDelegate <NSObject>
-- (void)arViewWillClose:(PropertyArViewController *)arView;
+- (void)arViewWillHide:(PropertyArViewController *)arView;
 @end
 
 
@@ -16,7 +16,7 @@
     @private
         id <PropertyResultsDataSource> propertyDataSource_;
         id <PropertyResultsDelegate> propertyDelegate_;
-        id <PropertyArViewDelegate> propertyArViewDelegate_;
+        UIViewController <PropertyArViewDelegate> *propertyArViewDelegate_;
         UIImagePickerController *camera_;
         UIImageView *popupView_;
         UIActivityIndicatorView *progressView_;
@@ -36,9 +36,10 @@
 
 @property (nonatomic, assign) IBOutlet id <PropertyResultsDataSource> propertyDataSource;
 @property (nonatomic, assign) IBOutlet id <PropertyResultsDelegate> propertyDelegate;
-@property (nonatomic, assign) IBOutlet id <PropertyArViewDelegate> propertyArViewDelegate;
+@property (nonatomic, assign) IBOutlet UIViewController <PropertyArViewDelegate> *propertyArViewDelegate;
 @property (nonatomic, retain) UIImagePickerController *camera;
 
 - (void)addGeocodedProperty:(PropertySummary *)property atIndex:(NSInteger)index;
+- (IBAction)show;
 
 @end

@@ -45,7 +45,6 @@
         UIAlertView *alertView_;
         UISegmentedControl *segmentedControl_;
         NSInteger previousSelectedSegment_;
-        UIImagePickerController *camera_;
 }
 
 @property (nonatomic, retain) PropertyHistory *history;
@@ -57,7 +56,6 @@
 // These would be "protected" for Favorites to use, if such a thing existed
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, assign) BOOL mapIsDirty;
-@property (nonatomic, retain) UIImagePickerController *camera;
 
 - (void)parse:(NSURL *)url;
 - (void)geocodeNextProperty;

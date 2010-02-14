@@ -46,7 +46,6 @@
 @synthesize geocoder = geocoder_;
 @synthesize geocodeIndex = geocodeIndex_;
 @synthesize mapIsDirty = mapIsDirty_;
-@synthesize camera = camera_;
 
 
 #pragma mark -
@@ -65,7 +64,6 @@
     [alertView_ release];
     [segmentedControl_ release];
     [geocoder_ release];
-    [camera_ release];
     
     [super dealloc];
 }
@@ -90,54 +88,29 @@
     if ([segmentedControl selectedSegmentIndex] == kListItem)
     {
         [[[self mapViewController] mapView] setHidden:YES];
-        [[[self arViewController] view] setHidden:YES];
         [[[self listViewController] tableView] setHidden:NO];
         [self setPreviousSelectedSegment:kListItem];
     }
     else if ([segmentedControl selectedSegmentIndex] == kMapItem)
     {
         [[[self mapViewController] mapView] setHidden:NO];
-        [[[self arViewController] view] setHidden:YES];
         [[[self listViewController] tableView] setHidden:YES];
         [self setPreviousSelectedSegment:kMapItem];
     }
     else if ([segmentedControl selectedSegmentIndex] == kArItem)
     {
-        // Lazily initialize the AR view controller
+        // Lazily creates AR view controller if supported
         if ([self arViewController] == nil)
         {
-            PropertyArViewController *viewController = [[PropertyArViewController alloc] init];
-            [self setArViewController:viewController];
-            [viewController release];
-            
+            PropertyArViewController *arViewController = [[PropertyArViewController alloc] init];
+            [self setArViewController:arViewController];
+            [arViewController release];
             [[self arViewController] setPropertyArViewDelegate:self];
             [[self arViewController] setPropertyDelegate:self];
             [[self arViewController] setPropertyDataSource:self];
-            
-            [self setMapIsDirty:YES];
-        } 
-        
-        [[self arViewController] startListening];
-        
-        UIImagePickerController *camera = [[UIImagePickerController alloc] init];
-        [self setCamera:camera];
-        [camera release];
-        
-        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-        {
-#if !TARGET_IPHONE_SIMULATOR
-            [[self camera] setSourceType:UIImagePickerControllerSourceTypeCamera];
-            [[self camera] setShowsCameraControls:NO];
-#endif
         }
-        
-        [[self camera] setCameraOverlayView:[[self arViewController] view]];
-        [[self arViewController] setCamera:[self camera]];
-        [self presentModalViewController:[self camera] animated:NO];
-               
-        [[[self mapViewController] mapView] setHidden:YES];
-        [[[self arViewController] view] setHidden:NO];
-        [[[self listViewController] tableView] setHidden:YES];
+
+        [[self arViewController] show];
     }
     
     // Start geocoding properties if switching to a view requiring geocoded
@@ -352,7 +325,7 @@
 #pragma mark -
 #pragma mark PropertyArViewDelegate
 
-- (void)arViewWillClose:(PropertyArViewController *)arView;
+- (void)arViewWillHide:(PropertyArViewController *)arView;
 {
     [[self segmentedControl] setSelectedSegmentIndex:[self previousSelectedSegment]];
 }

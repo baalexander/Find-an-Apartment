@@ -53,6 +53,18 @@
         CLLocation *newCenter = [[CLLocation alloc] initWithLatitude:0 longitude:0];        
         [self setCenterLocation:newCenter];
         [newCenter release];
+        
+        UIImagePickerController *camera = [[UIImagePickerController alloc] init];
+        [self setCamera:camera];
+        [camera release];
+        
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        {
+            [[self camera] setSourceType:UIImagePickerControllerSourceTypeCamera];
+            [[self camera] setShowsCameraControls:NO];
+        }
+        
+        [[self camera] setCameraOverlayView:[self view]];        
     }
     
     return self;
@@ -60,6 +72,9 @@
 
 - (void)dealloc
 {
+    [[self accelerometerManager] setDelegate:nil];
+    [[self locationManager] setDelegate:nil];
+    
     [camera_ release];
     [popupView_ release];
     [progressView_ release];
@@ -72,12 +87,26 @@
     [super dealloc];
 }
 
-- (IBAction)clickedButton:(id)sender
+- (IBAction)show
 {
+    [[self propertyArViewDelegate] presentModalViewController:[self camera] animated:NO];
+    
+    [self startListening];    
+}
+
+- (IBAction)hide:(id)sender
+{
+    [[self propertyArViewDelegate] dismissModalViewControllerAnimated:NO];
+    
+    [[self propertyArViewDelegate] arViewWillHide:self];
+}
+
+- (IBAction)viewDetails:(id)sender
+{
+    [[self propertyArViewDelegate] dismissModalViewControllerAnimated:NO];
+    
     UIButton *button = (UIButton *)sender;
     [[self propertyDelegate] view:[self view] didSelectPropertyAtIndex:[button tag]];
-
-    [[self camera] dismissModalViewControllerAnimated:NO];
 }
 
 - (void)addGeocodedProperty:(PropertySummary *)property atIndex:(NSInteger)index
@@ -164,13 +193,6 @@
     }
     [self setLocationViews:locationViews];
     [locationViews release];
-}
-
-- (void)doneClick:(id)sender
-{
-    [[self propertyArViewDelegate] arViewWillClose:self];
-    
-    [[self camera] dismissModalViewControllerAnimated:NO];
 }
 
 - (void)updateProximityLocations
@@ -371,7 +393,7 @@
     // TODO: Why is there  an init after the UIButton is being autoreleased? Remove/change and test
     UIButton *detailsButton = [[UIButton buttonWithType:UIButtonTypeDetailDisclosure] initWithFrame:CGRectMake(250, 10, 30, 28)];
     [detailsButton setTag:[[self selectedPoint] index]];
-    [detailsButton addTarget:self action:@selector(clickedButton:) forControlEvents:UIControlEventTouchUpInside];
+    [detailsButton addTarget:self action:@selector(viewDetails:) forControlEvents:UIControlEventTouchUpInside];
     [[self popupView] addSubview:detailsButton];
 
     if ([[[self selectedPoint] subLocations] count] > 1)
@@ -720,7 +742,7 @@
     
     UIButton *doneButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 440, 73, 29)];
     [doneButton setImage:[UIImage imageNamed:@"arDoneButton.png"] forState:UIControlStateNormal];
-    [doneButton addTarget:self action:@selector(doneClick:) forControlEvents:(UIControlEvents)UIControlEventTouchUpInside]; 
+    [doneButton addTarget:self action:@selector(hide:) forControlEvents:(UIControlEvents)UIControlEventTouchUpInside]; 
     [contentView addSubview:doneButton];
     [doneButton release];
     
