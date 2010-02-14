@@ -5,20 +5,18 @@
 #import "PropertyResultsDataSource.h"
 #import "PropertyResultsDelegate.h"
 
-@protocol ARPropViewDelegate
-
-- (UIView *)viewForCoordinate:(ARCoordinate *)coordinate;
-- (void)onArControllerClose;
-
+@class PropertyArViewController;
+@protocol PropertyArViewDelegate <NSObject>
+- (void)arViewWillClose:(PropertyArViewController *)arView;
 @end
 
 
-@interface PropertyArViewController : ARGeoViewController
+@interface PropertyArViewController : ARGeoViewController <ARViewDelegate>
 {
     @private
         id <PropertyResultsDataSource> propertyDataSource_;
         id <PropertyResultsDelegate> propertyDelegate_;
-        id propdelegate_;
+        id <PropertyArViewDelegate> propertyArViewDelegate_;
         UIImagePickerController *camera_;
         UIImageView *popupView_;
         UIActivityIndicatorView *progressView_;
@@ -38,9 +36,8 @@
 
 @property (nonatomic, assign) IBOutlet id <PropertyResultsDataSource> propertyDataSource;
 @property (nonatomic, assign) IBOutlet id <PropertyResultsDelegate> propertyDelegate;
-@property (nonatomic, assign) id propdelegate;
+@property (nonatomic, assign) IBOutlet id <PropertyArViewDelegate> propertyArViewDelegate;
 @property (nonatomic, retain) UIImagePickerController *camera;
-@property (nonatomic, assign) double minDistance;
 
 - (void)addGeocodedProperty:(PropertySummary *)property atIndex:(NSInteger)index;
 - (void)startListening;

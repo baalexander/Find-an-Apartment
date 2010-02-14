@@ -20,6 +20,7 @@
 @property (nonatomic, assign) NSInteger currentPage;
 @property (nonatomic, assign) NSInteger contentType;
 @property (nonatomic, assign) NSInteger locationCount;
+@property (nonatomic, assign) double minDistance;
 
 - (BOOL)isNearCoordinate:(PropertyArGeoCoordinate *)coord newCoordinate:(PropertyArGeoCoordinate *)newCoord;
 - (void)updateLocationViews;
@@ -32,7 +33,7 @@
 
 @synthesize propertyDataSource = propertyDataSource_;
 @synthesize propertyDelegate = propertyDelegate_;
-@synthesize propdelegate = propdelegate_;
+@synthesize propertyArViewDelegate = propertyArViewDelegate_;
 @synthesize camera = camera_;
 @synthesize popupView = popupView_;
 @synthesize progressView = progressView_;
@@ -163,11 +164,7 @@
     NSMutableArray *locationViews = [[NSMutableArray alloc] init];
     for (PropertyArGeoCoordinate *coordinate in [self locationItems])
     {
-        //call out for the delegate's view.
-        if ([[self propdelegate] respondsToSelector:@selector(viewForCoordinate:)])
-        {
-            [locationViews addObject:[[self propdelegate] viewForCoordinate:coordinate]];
-        }
+        [locationViews addObject:[self viewForCoordinate:coordinate]];
     }
     [self setLocationViews:locationViews];
     [locationViews release];
@@ -216,10 +213,7 @@
 
 - (void)doneClick:(id)sender
 {
-    if ([[self propdelegate] respondsToSelector:@selector(onArControllerClose)])
-    {
-        [[self propdelegate] onArControllerClose];
-    }
+    [[self propertyArViewDelegate] arViewWillClose:self];
     
     [[self camera] dismissModalViewControllerAnimated:NO];
 }
@@ -815,6 +809,48 @@ NSComparisonResult LocationSortFarthesttFirst(ARCoordinate *s1, ARCoordinate *s2
             [geoLocation calibrateUsingOrigin:centerLocation];
         }
     }
+}
+
+
+#pragma mark -
+#pragma mark ARViewDelegate
+
+- (UIView *)viewForCoordinate:(PropertyArGeoCoordinate *)coordinate
+{    
+    [coordinate calibrateUsingOrigin:[self centerLocation]];
+    [coordinate setInclination:-.20 + (.05 * ([coordinate radialDistance] - [self minDistance]))];
+    if ([coordinate radialDistance] > 30)
+    {
+        [coordinate setInclination:.4];
+    }
+    
+    NSString *image = @"arPropertyButton.png";
+    if ([coordinate isMultiple])
+    {
+        image = @"arPropertiesButton.png";
+    }
+    
+    UIImageView *imageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:image]] autorelease];
+    [imageView setFrame:CGRectMake(0, 0, 70, 55)];
+    [imageView setUserInteractionEnabled:YES];
+    
+    if ([coordinate isMultiple])
+    {
+        // Label shows number of properties in that grouping
+        UILabel *numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 2, 35, 40)];
+        [numberLabel setBackgroundColor:[UIColor clearColor]];
+        [numberLabel setTextColor:[UIColor whiteColor]];
+        [numberLabel setFont:[UIFont fontWithName:@"Helvetica" size:28]];
+        [numberLabel setShadowColor:[UIColor grayColor]];
+        [numberLabel setShadowOffset:CGSizeMake(1, 1)];
+        [numberLabel setText:[NSString stringWithFormat:@"%d", [[coordinate subLocations] count]]];
+        [numberLabel setTextAlignment:UITextAlignmentCenter];
+        
+        [imageView addSubview:numberLabel];
+        [numberLabel release];
+    }
+    
+    return imageView;
 }
 
 @end

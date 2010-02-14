@@ -14,6 +14,7 @@
 
 @interface PropertyResultsViewController : UIViewController <PropertyResultsDelegate,
                                                              PropertyResultsDataSource,
+                                                             PropertyArViewDelegate,
                                                              GeocoderDelegate,
                                                              XmlParserDelegate,
                                                              UIAlertViewDelegate>
@@ -62,6 +63,5 @@
 - (void)geocodeNextProperty;
 - (void)resetGeocoding;
 - (IBAction)changeView:(id)sender;
-- (UIView *)viewForCoordinate:(PropertyArGeoCoordinate *)coordinate;
 
 @end

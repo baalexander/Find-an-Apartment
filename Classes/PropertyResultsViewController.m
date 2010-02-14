@@ -110,7 +110,7 @@
             [self setArViewController:viewController];
             [viewController release];
             
-            [[self arViewController] setPropdelegate:self];
+            [[self arViewController] setPropertyArViewDelegate:self];
             [[self arViewController] setPropertyDelegate:self];
             [[self arViewController] setPropertyDataSource:self];
             
@@ -350,47 +350,9 @@
 
 
 #pragma mark -
-#pragma mark ARViewDelegate
+#pragma mark PropertyArViewDelegate
 
-- (UIView *)viewForCoordinate:(PropertyArGeoCoordinate *)coordinate
-{    
-    [coordinate calibrateUsingOrigin:[[self arViewController] centerLocation]];
-    [coordinate setInclination:-.20 + (.05 * ([coordinate radialDistance] - [[self arViewController] minDistance]))];
-    if ([coordinate radialDistance] > 30)
-    {
-        [coordinate setInclination:.4];
-    }
-    
-    NSString *image = @"arPropertyButton.png";
-    if ([coordinate isMultiple])
-    {
-        image = @"arPropertiesButton.png";
-    }
-    
-    UIImageView *imageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:image]] autorelease];
-    [imageView setFrame:CGRectMake(0, 0, 70, 55)];
-    [imageView setUserInteractionEnabled:YES];
-    
-    if ([coordinate isMultiple])
-    {
-        // Label shows number of properties in that grouping
-        UILabel *numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 2, 35, 40)];
-        [numberLabel setBackgroundColor:[UIColor clearColor]];
-        [numberLabel setTextColor:[UIColor whiteColor]];
-        [numberLabel setFont:[UIFont fontWithName:@"Helvetica" size:28]];
-        [numberLabel setShadowColor:[UIColor grayColor]];
-        [numberLabel setShadowOffset:CGSizeMake(1, 1)];
-        [numberLabel setText:[NSString stringWithFormat:@"%d", [[coordinate subLocations] count]]];
-        [numberLabel setTextAlignment:UITextAlignmentCenter];
-        
-        [imageView addSubview:numberLabel];
-        [numberLabel release];
-    }
-    
-    return imageView;
-}
-
-- (void)onArControllerClose
+- (void)arViewWillClose:(PropertyArViewController *)arView;
 {
     [[self segmentedControl] setSelectedSegmentIndex:[self previousSelectedSegment]];
 }
