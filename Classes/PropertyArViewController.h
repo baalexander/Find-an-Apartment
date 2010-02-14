@@ -40,9 +40,5 @@
 @property (nonatomic, retain) UIImagePickerController *camera;
 
 - (void)addGeocodedProperty:(PropertySummary *)property atIndex:(NSInteger)index;
-- (void)startListening;
-- (void)updateLocations;
-- (CGPoint)pointInView:(UIView *)realityView forCoordinate:(ARCoordinate *)coordinate;
-- (BOOL)viewportContainsCoordinate:(ARCoordinate *)coordinate;
 
 @end
