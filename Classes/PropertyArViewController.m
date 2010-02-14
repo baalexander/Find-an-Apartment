@@ -213,9 +213,9 @@
 
 - (void)doneClick:(id)sender
 {
-    if ([[self propdelegate] respondsToSelector:@selector(onARControllerClose)])
+    if ([[self propdelegate] respondsToSelector:@selector(onArControllerClose)])
     {
-        [[self propdelegate] onARControllerClose];
+        [[self propdelegate] onArControllerClose];
     }
     
     [[self camera] dismissModalViewControllerAnimated:NO];

@@ -8,7 +8,7 @@
 @protocol ARPropViewDelegate
 
 - (UIView *)viewForCoordinate:(ARCoordinate *)coordinate;
-- (void)onARControllerClose;
+- (void)onArControllerClose;
 
 @end
 

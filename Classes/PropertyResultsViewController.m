@@ -11,8 +11,6 @@
 #import "ARGeoCoordinate.h"
 
 
-// TODO: Implement low memory functions
-
 @interface PropertyResultsViewController ()
 @property (nonatomic, retain) NSOperationQueue *operationQueue;
 @property (nonatomic, assign, getter=isParsing) BOOL parsing;
@@ -392,18 +390,9 @@
     return imageView;
 }
 
-- (void)onARControllerClose
+- (void)onArControllerClose
 {
-    // TODO: Can this be replaced with:
-    //    [[self segmentedControl] setSelectedSegmentIndex:[self previousSelectedSegment]];
-    if ([self previousSelectedSegment] == kListItem)
-    {
-        [[self segmentedControl] setSelectedSegmentIndex:kListItem];
-    }
-    else if ([self previousSelectedSegment] == kMapItem)
-    {
-        [[self segmentedControl] setSelectedSegmentIndex:kMapItem];
-    }
+    [[self segmentedControl] setSelectedSegmentIndex:[self previousSelectedSegment]];
 }
 
 
