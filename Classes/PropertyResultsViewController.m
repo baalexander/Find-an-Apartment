@@ -71,14 +71,36 @@
 - (IBAction)changeView:(id)sender
 {
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+
+    // These views require geocoded properties
+    if ([segmentedControl selectedSegmentIndex] == kMapItem
+        || [segmentedControl selectedSegmentIndex] == kArItem)
+    {
+        // Lazily creates AR view controller
+        if ([self arViewController] == nil)
+        {
+            PropertyArViewController *arViewController = [[PropertyArViewController alloc] init];
+            [self setArViewController:arViewController];
+            [arViewController release];
+            [[self arViewController] setPropertyArViewDelegate:self];
+            [[self arViewController] setPropertyDelegate:self];
+            [[self arViewController] setPropertyDataSource:self];
+        }        
+        
+        if (![self isGeocoding] && [self mapIsDirty])
+        {
+            [self setMapIsDirty:NO];
+            [self geocodeNextProperty];            
+        }
+    }
     
     // Create a tranisiton animation to switch views
     CATransition *transition = [CATransition animation];
-    transition.duration = .5;
+    [transition setDuration:.5];
     // Using the ease in/out timing function
-    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    [transition setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
     // Type of transition
-    transition.type = kCATransitionFade;
+    [transition setType:kCATransitionFade];
     
     // Add the transition to the containerView's layer. This will perform the
     // transition based on how the contents change.
@@ -99,30 +121,7 @@
     }
     else if ([segmentedControl selectedSegmentIndex] == kArItem)
     {
-        // Lazily creates AR view controller if supported
-        if ([self arViewController] == nil)
-        {
-            PropertyArViewController *arViewController = [[PropertyArViewController alloc] init];
-            [self setArViewController:arViewController];
-            [arViewController release];
-            [[self arViewController] setPropertyArViewDelegate:self];
-            [[self arViewController] setPropertyDelegate:self];
-            [[self arViewController] setPropertyDataSource:self];
-        }
-
         [[self arViewController] show];
-    }
-    
-    // Start geocoding properties if switching to a view requiring geocoded
-    // properties, not already geocoding, and map view is out of sync (dirty)
-    if (![self isGeocoding]
-        && [self mapIsDirty]
-        && ([segmentedControl selectedSegmentIndex] == kMapItem
-            || [segmentedControl selectedSegmentIndex] == kArItem))
-    {
-        [self setMapIsDirty:NO];
-        
-        [self geocodeNextProperty];
     }
 }
 
@@ -228,7 +227,7 @@
     {
         return;
     }
-    
+
     // Create a Geocoder with the property's location
     Geocoder *geocoder = [[Geocoder alloc] initWithLocation:[property location]];
     [self setGeocoder:geocoder];
@@ -341,7 +340,7 @@
     {
         return;
     }
-    
+
     [self setGeocoding:NO];
 
     // Sorry equator and Prime Meridian, no 0 coordinates allowed because
@@ -387,7 +386,7 @@
     {
         return;
     }
-    
+
     [self setGeocoding:NO];
 
     // User doesn't need to know of geocoding error... probably
@@ -459,11 +458,16 @@
     // Cancels any operations in the queue. This is for when pressing the back
     // button and dismissing the view controller. This prevents any asynchronous
     // actions like parser or geocoder from still running and failing when
-    // calling its delegate.
-    [[self operationQueue] cancelAllOperations];
-    [[self geocoder] cancel];
-    [self setParsing:NO];
-    [self setGeocoding:NO];
+    // calling its delegate. Does not apply when presenting a modal view, like
+    // when showing the AR view, since we still want to geocode then and this 
+    // class isn't really going away at that point.
+    if ([self modalViewController] == nil)
+    {
+        [[self operationQueue] cancelAllOperations];
+        [[self geocoder] cancel];
+        [self setParsing:NO];
+        [self setGeocoding:NO];
+    }
 }
 
 

@@ -90,8 +90,6 @@
 - (IBAction)show
 {
     [[self propertyArViewDelegate] presentModalViewController:[self camera] animated:NO];
-    
-    [self startListening];    
 }
 
 - (IBAction)hide:(id)sender
@@ -752,6 +750,8 @@
     
     [self setView:contentView];
     [contentView release];
+    
+    [self startListening];
 }
 
 
