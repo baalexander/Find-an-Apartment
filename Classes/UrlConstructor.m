@@ -3,6 +3,7 @@
 #import "Constants.h"
 #import "UrlUtil.h"
 #import "ApiKeys.h"
+#import "NSString+Crypto.h"
 
 
 @implementation UrlConstructor
@@ -28,7 +29,17 @@
 
 - (NSString *)apiKey
 {
-    return [NSString stringWithFormat:@"&api_key=%@", kAlexanderMobileApiKey];
+    // Gets timestamp as epoch
+    NSDate *now = [[NSDate alloc] init];
+    double seconds = [now timeIntervalSince1970];
+    [now release];
+    
+    // Hashes timestamp and API key
+    NSString *keyToHash = [[NSString alloc] initWithFormat:@"%d%@", (NSInteger)seconds, kAlexanderMobileApiKey];
+    NSString *hash = [keyToHash sha1];
+    [keyToHash release];
+    
+    return [NSString stringWithFormat:@"&timestamp=%d&api_key=%@", (NSInteger)seconds, hash];
 }
 
 - (NSString *)version
