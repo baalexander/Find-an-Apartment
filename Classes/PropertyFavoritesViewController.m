@@ -278,6 +278,9 @@
 {
     [super viewDidLoad];
     
+    // Remove title because not enough room
+    [self setTitle:@""];
+    
     // Add the Edit button to the left in the navigation bar
     UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
                                                                                 target:self
