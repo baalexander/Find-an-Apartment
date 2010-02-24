@@ -77,7 +77,8 @@
         || [segmentedControl selectedSegmentIndex] == kArItem)
     {
         // Lazily creates AR view controller
-        if ([self arViewController] == nil)
+        BOOL arViewControllerWasNil = [self arViewController] == nil;
+        if (arViewControllerWasNil)
         {
             PropertyArViewController *arViewController = [[PropertyArViewController alloc] init];
             [self setArViewController:arViewController];
@@ -85,12 +86,28 @@
             [[self arViewController] setPropertyArViewDelegate:self];
             [[self arViewController] setPropertyDelegate:self];
             [[self arViewController] setPropertyDataSource:self];
-        }        
-        
+        }            
+
+        // Start geocoding properties if not already geocoding and there are 
+        // ungeocoded items
         if (![self isGeocoding] && [self mapIsDirty])
         {
             [self setMapIsDirty:NO];
-            [self geocodeNextProperty];            
+            
+            // The AR view controller needs a second or so to get its heading 
+            // when first initialized. The heading (current location) is used 
+            // when calculating distances to the properties and if the 
+            // properties are nearby.
+            if (arViewControllerWasNil)
+            {
+                // Uses nil object since no performSelector:afterDelay
+                [self performSelector:@selector(geocodeNextProperty) withObject:nil afterDelay:2.0]; 
+            }
+            // Start geocoding right away, no need for a delay
+            else
+            {
+                [self geocodeNextProperty];
+            }
         }
     }
     
@@ -242,6 +259,13 @@
     // Updates the Map view with the new property
     [[self mapViewController] addGeocodedProperty:property atIndex:index];
     [[self arViewController] addGeocodedProperty:property atIndex:index];    
+}
+
+- (void)updateViewsWithGeocodedProperty:(PropertySummary *)property
+{
+    // Updates the Map view with the new property
+    [[self mapViewController] addGeocodedProperty:property atIndex:1];
+    [[self arViewController] addGeocodedProperty:property atIndex:1];    
 }
 
 - (NSFetchedResultsController *)fetchedResultsController
