@@ -261,13 +261,6 @@
     [[self arViewController] addGeocodedProperty:property atIndex:index];    
 }
 
-- (void)updateViewsWithGeocodedProperty:(PropertySummary *)property
-{
-    // Updates the Map view with the new property
-    [[self mapViewController] addGeocodedProperty:property atIndex:1];
-    [[self arViewController] addGeocodedProperty:property atIndex:1];    
-}
-
 - (NSFetchedResultsController *)fetchedResultsController
 {
     if (fetchedResultsController_ == nil)
