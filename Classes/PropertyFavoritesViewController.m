@@ -296,7 +296,9 @@
     // Could be switching tabs to the Favorites view controller. If the
     // Favorites view controller is already on the Map view and the Map view is
     // out of sync (dirty), then need to repopulate the Map view
-    if ([self mapIsDirty])
+    // AR View controller would only be initiated if has switched to map or AR 
+    // view at one point
+    if ([self mapIsDirty] && [self arViewController] != nil)
     {
         [self setMapIsDirty:NO];
         
