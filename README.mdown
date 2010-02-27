@@ -1,8 +1,13 @@
 Home Finder and Find an Apartment
 =================================
 
-Home Finder and Find and Apartment are two real estate apps for the iPhone OS
-focusing on for-sale and for-rent properties, respectively. 
+Home Finder and Find and Apartment are two real estate apps for the iPhone OS.
+
+These apps were open sourced to demonstrate technologies like Core Data, Map 
+kit, augmented reality, XML parsing, REST interaction, the three20 library, 
+and more. But beware! Open source does not mean the code is great, or
+efficient, or even correct. And aside from inline comments, there is a serious
+lack of documentation for now.
 
 
 Technical Overview
@@ -91,7 +96,13 @@ List, Map, and AR view. The view controller is responsible for parsing the XML
 REST results, geocoding properties, transitioning between List, Map, and AR
 views, and pushing the Details view when a property is selected for more
 information. Pay attention to the Property Results View xib to how the
-children view controllers are being connected.
+children view controllers are being connected. Frankly, this class is too big.
+
+* Property AR View Controller
+
+The AR view controller is in charge of the augmented reality view and 
+displaying properties for-sale or for-rent. The view controller extends
+a third-party augmented reality library ARKit. This class could be optimized. 
 
 
 To run
@@ -108,4 +119,5 @@ To run
 License
 =======
 
+All third-party libraries are git submodules and follow their own licenses.
 
