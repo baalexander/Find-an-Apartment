@@ -121,3 +121,5 @@ License
 
 All third-party libraries are git submodules and follow their own licenses.
 
+This project is released under the MIT license. 
+
