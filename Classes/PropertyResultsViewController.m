@@ -178,7 +178,7 @@
     {
         return;
     }
-    
+
     [self setGeocoding:YES];
     
     // Looks for next property that has not been geocoded
@@ -321,6 +321,13 @@
     geocoding_ = geocoding;
     
     [self updateNetworkActivityIndicator];
+    
+    // AR View is in charge of informing the user since its view covers the 
+    // network activity indicator
+    if ([self arViewController] != nil)
+    {
+        [[self arViewController] setGeocoding:geocoding];
+    }
 }
 
 - (void)setParsing:(BOOL)parsing

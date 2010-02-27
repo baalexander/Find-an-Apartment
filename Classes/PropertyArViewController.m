@@ -1,5 +1,4 @@
 #import "PropertyArViewController.h"
-#import "PropertyResultsConstants.h"
 
 
 @interface PropertyArViewController ()
@@ -45,6 +44,7 @@
 @synthesize currentPage = currentPage_;
 @synthesize contentType = contentType_;
 @synthesize locationCount = locationCount_;
+@synthesize geocoding = geocoding_;
 
 - (id)init
 {
@@ -583,7 +583,7 @@
 
 - (void)updateLocations
 {
-    if ([self locationCount] < kMaxGeocodeProperties && [self progressView] == nil)
+    if ([self isGeocoding] && [self progressView] == nil)
     {
         UIActivityIndicatorView *progressView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, 10, 320, 480)];
         [self setProgressView:progressView];
@@ -596,7 +596,7 @@
         [[self view] addSubview:[self progressView]];
         
     }
-    else if ([self locationCount] >= kMaxGeocodeProperties)
+    else if (![self isGeocoding])
     {
         [[self progressView] removeFromSuperview];
     }

@@ -32,12 +32,14 @@
         NSInteger currentPage_;
         NSInteger contentType_;
         NSInteger locationCount_;
+        BOOL geocoding_;
 }
 
 @property (nonatomic, assign) IBOutlet id <PropertyResultsDataSource> propertyDataSource;
 @property (nonatomic, assign) IBOutlet id <PropertyResultsDelegate> propertyDelegate;
 @property (nonatomic, assign) IBOutlet UIViewController <PropertyArViewDelegate> *propertyArViewDelegate;
 @property (nonatomic, retain) UIImagePickerController *camera;
+@property (nonatomic, assign, getter=isGeocoding) BOOL geocoding;
 
 - (void)addGeocodedProperty:(PropertySummary *)property atIndex:(NSInteger)index;
 - (IBAction)show;
