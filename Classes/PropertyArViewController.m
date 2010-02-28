@@ -381,7 +381,9 @@
         [priceText release];
     }
     
-    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(-5, -5, 30, 28)];
+    // Pop up close button
+    // Uses a larger frame than image for more touch event space
+    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(-40, -40, 100, 100)];
     [closeButton setImage:[UIImage imageNamed:@"arPopupCloseButton.png"] forState:UIControlStateNormal];
     [closeButton addTarget:self action:@selector(panelCloseClick:) forControlEvents:(UIControlEvents)UIControlEventTouchDown];
     [[self popupView] addSubview:closeButton];
