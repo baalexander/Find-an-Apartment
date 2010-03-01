@@ -87,6 +87,13 @@
     [super dealloc];
 }
 
+// Could be moved to AR singleton, perhaps with other general AR functions
+// Not in AppDelegate, see http://cocoawithlove.com/2008/11/singletons-appdelegates-and-top-level.html
++ (BOOL)deviceSupportsAugmentedReality
+{
+    return [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
+}
+
 - (IBAction)show
 {
     [[self propertyArViewDelegate] presentModalViewController:[self camera] animated:NO];

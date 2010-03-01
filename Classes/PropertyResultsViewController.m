@@ -76,30 +76,27 @@
     if ([segmentedControl selectedSegmentIndex] == kMapItem
         || [segmentedControl selectedSegmentIndex] == kArItem)
     {
-        // Lazily creates AR view controller
-        BOOL arViewControllerWasNil = [self arViewController] == nil;
-        if (arViewControllerWasNil)
-        {
-            PropertyArViewController *arViewController = [[PropertyArViewController alloc] init];
-            [self setArViewController:arViewController];
-            [arViewController release];
-            [[self arViewController] setPropertyArViewDelegate:self];
-            [[self arViewController] setPropertyDelegate:self];
-            [[self arViewController] setPropertyDataSource:self];
-        }            
-
         // Start geocoding properties if not already geocoding and there are 
         // ungeocoded items
         if (![self isGeocoding] && [self mapIsDirty])
         {
             [self setMapIsDirty:NO];
             
-            // The AR view controller needs a second or so to get its heading 
-            // when first initialized. The heading (current location) is used 
-            // when calculating distances to the properties and if the 
-            // properties are nearby.
-            if (arViewControllerWasNil)
+            // Lazily creates AR view controller if supported
+            if ([PropertyArViewController deviceSupportsAugmentedReality]
+                && [self arViewController] == nil)
             {
+                PropertyArViewController *arViewController = [[PropertyArViewController alloc] init];
+                [self setArViewController:arViewController];
+                [arViewController release];
+                [[self arViewController] setPropertyArViewDelegate:self];
+                [[self arViewController] setPropertyDelegate:self];
+                [[self arViewController] setPropertyDataSource:self];
+                
+                // The AR view controller needs a second or so to get its heading 
+                // when first initialized. The heading (current location) is used 
+                // when calculating distances to the properties and if the 
+                // properties are nearby.
                 // Uses nil object since no performSelector:afterDelay
                 [self performSelector:@selector(geocodeNextProperty) withObject:nil afterDelay:2.0]; 
             }
@@ -449,8 +446,18 @@
     // Centers the Map view controller
     [[self mapViewController] centerOnCriteria:[[self history] criteria]];
     
-    // Segmented control
-    NSArray *segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", @"augmented", nil];
+    // Segmented control options
+    NSArray *segmentOptions;
+    // Adds augmented option if supports Augmented Reality
+    if ([PropertyArViewController deviceSupportsAugmentedReality])
+    {
+        segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", @"augmented", nil];
+    }
+    else
+    {
+        segmentOptions = [[NSArray alloc] initWithObjects:@"list", @"map", nil];
+    }
+
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentOptions];
     [segmentOptions release];
     [self setSegmentedControl:segmentedControl];

@@ -41,6 +41,7 @@
 @property (nonatomic, retain) UIImagePickerController *camera;
 @property (nonatomic, assign, getter=isGeocoding) BOOL geocoding;
 
++ (BOOL)deviceSupportsAugmentedReality;
 - (void)addGeocodedProperty:(PropertySummary *)property atIndex:(NSInteger)index;
 - (IBAction)show;
 
