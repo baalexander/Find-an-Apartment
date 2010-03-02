@@ -267,47 +267,52 @@
         {
             DebugLog(@"History cannot be nil");
         }
-        
-        // Get managed object context from History
-        NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
-        
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertySummary" inManagedObjectContext:managedObjectContext];
-        [fetchRequest setEntity:entity];
-        
-        // Create the sort descriptors array based on the users sort by selection.
-        PropertyCriteria *criteria = [[self history] criteria];
-        NSSortDescriptor *descriptor;
-        if ([[criteria sortBy] isEqual:kPropertyCriteriaSortByPriceAscending])
-        {
-            descriptor = [[NSSortDescriptor alloc] initWithKey:@"price" ascending:YES];
-        }
-        else if ([[criteria sortBy] isEqual:kPropertyCriteriaSortByPriceDescending])
-        {
-            descriptor = [[NSSortDescriptor alloc] initWithKey:@"price" ascending:NO];
-        }
-        // Distance is the default search
         else
         {
-            descriptor = [[NSSortDescriptor alloc] initWithKey:@"distance" ascending:YES];
+            // Get managed object context from History
+            NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
+            // Managed object context can be nil if there was an error parsing
+            if (managedObjectContext != nil)
+            {
+                NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+                NSEntityDescription *entity = [NSEntityDescription entityForName:@"PropertySummary" inManagedObjectContext:managedObjectContext];
+                [fetchRequest setEntity:entity];
+                
+                // Create the sort descriptors array based on the users sort by selection.
+                PropertyCriteria *criteria = [[self history] criteria];
+                NSSortDescriptor *descriptor;
+                if ([[criteria sortBy] isEqual:kPropertyCriteriaSortByPriceAscending])
+                {
+                    descriptor = [[NSSortDescriptor alloc] initWithKey:@"price" ascending:YES];
+                }
+                else if ([[criteria sortBy] isEqual:kPropertyCriteriaSortByPriceDescending])
+                {
+                    descriptor = [[NSSortDescriptor alloc] initWithKey:@"price" ascending:NO];
+                }
+                // Distance is the default search
+                else
+                {
+                    descriptor = [[NSSortDescriptor alloc] initWithKey:@"distance" ascending:YES];
+                }
+                NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:descriptor, nil];
+                [descriptor release];
+                [fetchRequest setSortDescriptors:sortDescriptors];
+                [sortDescriptors release];
+                
+                // Search all summaries for the most recent search (summaries with this stored history)
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(history = %@)", [self history]];
+                [fetchRequest setPredicate:predicate];
+                
+                // Create and initialize the fetch results controller.
+                NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
+                                                                                                           managedObjectContext:managedObjectContext
+                                                                                                             sectionNameKeyPath:nil 
+                                                                                                                      cacheName:@"Properties"];
+                [fetchRequest release];
+                [self setFetchedResultsController:fetchedResultsController];
+                [fetchedResultsController release];
+            }
         }
-        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:descriptor, nil];
-        [descriptor release];
-        [fetchRequest setSortDescriptors:sortDescriptors];
-        [sortDescriptors release];
-        
-        // Search all summaries for the most recent search (summaries with this stored history)
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(history = %@)", [self history]];
-        [fetchRequest setPredicate:predicate];
-        
-        // Create and initialize the fetch results controller.
-        NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
-                                                                                                   managedObjectContext:managedObjectContext
-                                                                                                     sectionNameKeyPath:nil 
-                                                                                                              cacheName:@"Properties"];
-        [fetchRequest release];
-        [self setFetchedResultsController:fetchedResultsController];
-        [fetchedResultsController release];
     }
     
     return fetchedResultsController_;
@@ -802,12 +807,15 @@
     
     [self setParsing:NO];
     
-    // Do not record these results
+    // Do not record these results in History
     NSManagedObjectContext *managedObjectContext = [[self history] managedObjectContext];
     [managedObjectContext deleteObject:[self history]];    
+
+    [[self alertView] setTitle:nil];
+    [[self alertView] setMessage:@"Can not fetch the properties"];
     
-    [[self alertView] setTitle:@"Error finding results"];
-    [[self alertView] setMessage:[error localizedDescription]];
+    // Logs error
+    DebugLog(@"%@", [error localizedDescription]);
 }
 
 @end
