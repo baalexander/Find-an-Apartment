@@ -546,12 +546,14 @@
     return [[self fetchedResultsController] objectAtIndexPath:indexPath];
 }
 
+
 #pragma mark -
 #pragma mark PropertyDetailsViewControllerDelegate
 
 - (void)onDetailsClose
 {
-    // If we backed out of the details view, re-click the AR segment button again.
+    // If pressed back in Details view, re-click the AR segment button again.
+    // This re-opens the AR view by simulating a change view
     if ([[self segmentedControl] selectedSegmentIndex] == kArItem)
     {
         [[self segmentedControl] setSelectedSegmentIndex:kListItem];

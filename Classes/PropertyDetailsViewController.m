@@ -55,8 +55,9 @@
     [providedByTruliaCell_ release];
 #endif
     
-    if ([self.delegate respondsToSelector:@selector(onDetailsClose)]) {
-        [self.delegate onDetailsClose];
+    if ([[self delegate] respondsToSelector:@selector(onDetailsClose)])
+    {
+        [[self delegate] onDetailsClose];
     }
     
     [super dealloc];
