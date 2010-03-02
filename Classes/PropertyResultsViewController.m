@@ -582,6 +582,8 @@
 }
 
 
+// To clean up this beast of a file, it would be nice to move the parsing logic 
+// to another class.
 #pragma mark -
 #pragma mark ParserDelegate
 
