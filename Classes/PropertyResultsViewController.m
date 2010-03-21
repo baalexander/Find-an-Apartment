@@ -816,7 +816,7 @@
     [managedObjectContext deleteObject:[self history]];    
 
     [[self alertView] setTitle:nil];
-    [[self alertView] setMessage:@"Can not fetch the properties"];
+    [[self alertView] setMessage:@"Cannot fetch the properties"];
     
     // Logs error
     DebugLog(@"%@", [error localizedDescription]);
