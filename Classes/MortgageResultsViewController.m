@@ -396,8 +396,8 @@ static NSString *kDetailCellId = @"DETAIL_CELL_ID";
     
     [self setParsing:NO];
     
-    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error downloading rates"
-                                                         message:[error localizedDescription] 
+    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:nil
+                                                         message:@"Cannot download rates"
                                                         delegate:self 
                                                cancelButtonTitle:@"Ok"
                                                otherButtonTitles:nil];
