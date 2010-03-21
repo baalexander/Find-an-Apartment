@@ -97,6 +97,8 @@
 		458783A70FDB45F7000B4F5D /* PropertyMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458783A50FDB45F7000B4F5D /* PropertyMapView.xib */; };
 		458A49AA1031373000375D4C /* PropertySummary.m in Sources */ = {isa = PBXBuildFile; fileRef = 458A49A91031373000375D4C /* PropertySummary.m */; };
 		458A49AB1031373000375D4C /* PropertySummary.m in Sources */ = {isa = PBXBuildFile; fileRef = 458A49A91031373000375D4C /* PropertySummary.m */; };
+		458D906B1156D94F0000E3E6 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 458D906A1156D94F0000E3E6 /* Entitlements.plist */; };
+		458D906C1156D94F0000E3E6 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 458D906A1156D94F0000E3E6 /* Entitlements.plist */; };
 		4590CB46109503BA00CB6CF4 /* PropertyDetailsMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590CB44109503BA00CB6CF4 /* PropertyDetailsMapViewController.m */; };
 		4590CB47109503BA00CB6CF4 /* PropertyDetailsMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4590CB45109503BA00CB6CF4 /* PropertyDetailsMapView.xib */; };
 		4590CB48109503BA00CB6CF4 /* PropertyDetailsMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590CB44109503BA00CB6CF4 /* PropertyDetailsMapViewController.m */; };
@@ -376,6 +378,7 @@
 		458A49A81031373000375D4C /* PropertySummary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertySummary.h; path = Classes/PropertySummary.h; sourceTree = "<group>"; };
 		458A49A91031373000375D4C /* PropertySummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertySummary.m; path = Classes/PropertySummary.m; sourceTree = "<group>"; };
 		458C8075106085DF005CD7A2 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = Classes/Constants.h; sourceTree = "<group>"; };
+		458D906A1156D94F0000E3E6 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		4590CB43109503BA00CB6CF4 /* PropertyDetailsMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyDetailsMapViewController.h; path = Classes/PropertyDetailsMapViewController.h; sourceTree = "<group>"; };
 		4590CB44109503BA00CB6CF4 /* PropertyDetailsMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyDetailsMapViewController.m; path = Classes/PropertyDetailsMapViewController.m; sourceTree = "<group>"; };
 		4590CB45109503BA00CB6CF4 /* PropertyDetailsMapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PropertyDetailsMapView.xib; path = Classes/PropertyDetailsMapView.xib; sourceTree = "<group>"; };
@@ -547,6 +550,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				458D906A1156D94F0000E3E6 /* Entitlements.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -1108,6 +1112,7 @@
 				451B26A7110559DE00F1E610 /* arSelectedPropertiesButton.png in Resources */,
 				451B26A8110559DE00F1E610 /* arSelectedPropertyButton.png in Resources */,
 				451B26A9110559DE00F1E610 /* arTabbar.png in Resources */,
+				458D906B1156D94F0000E3E6 /* Entitlements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1162,6 +1167,7 @@
 				451B26B5110559DE00F1E610 /* arSelectedPropertiesButton.png in Resources */,
 				451B26B6110559DE00F1E610 /* arSelectedPropertyButton.png in Resources */,
 				451B26B7110559DE00F1E610 /* arTabbar.png in Resources */,
+				458D906C1156D94F0000E3E6 /* Entitlements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1360,10 +1366,11 @@
 			};
 			name = Release;
 		};
-		45A239E21058A4F80072C190 /* Distribution */ = {
+		458D906D1156D9620000E3E6 /* Ad Hoc */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Brandon Alexander";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
@@ -1394,7 +1401,85 @@
 					"-ObjC",
 				);
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3714B723-2869-4B46-837F-354F224EC063";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0E82534B-4A6E-4B88-B5E0-F257765945B1";
+				SDKROOT = iphoneos3.1;
+			};
+			name = "Ad Hoc";
+		};
+		458D906E1156D9620000E3E6 /* Ad Hoc */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/Volumes/Skiiing2/CD/ViewBased/Unknown Path/System/Library/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Find_an_Apartment_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = FIND_AN_APARTMENT;
+				INFOPLIST_FILE = "Find_an_Apartment-Info.plist";
+				PRODUCT_NAME = "Find an Apartment";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+			};
+			name = "Ad Hoc";
+		};
+		458D906F1156D9620000E3E6 /* Ad Hoc */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\\\"/Volumes/Skiiing2/CD/ViewBased/Unknown\\ Path/System/Library/Frameworks\\\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Find_an_Apartment_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = HOME_FINDER;
+				INFOPLIST_FILE = "Home_Finder-Info.plist";
+				PRODUCT_NAME = "Home Finder";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+			};
+			name = "Ad Hoc";
+		};
+		45A239E21058A4F80072C190 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_ENTITLEMENTS = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MISSING_PARENTHESES = NO;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					objectiveLibxml2/src,
+					three20/src,
+					"/usr/include/libxml2/**",
+				);
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
+				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos3.1;
 			};
 			name = Distribution;
@@ -1484,7 +1569,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Timothy Sears (PNWPC9QK66)";
+				CODE_SIGN_ENTITLEMENTS = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -1515,7 +1601,7 @@
 					"-ObjC",
 				);
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0B73F7A8-DCEC-403B-ACA0-73185ABEC102";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos3.1;
 			};
 			name = Debug;
@@ -1524,6 +1610,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_ENTITLEMENTS = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
@@ -1554,86 +1641,6 @@
 			};
 			name = Release;
 		};
-		C5A3527D10C1ECDE004C7045 /* AR Ad-Hoc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Timothy Sears";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
-				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
-				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
-				GCC_WARN_MISSING_PARENTHESES = NO;
-				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
-				GCC_WARN_SIGN_COMPARE = YES;
-				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
-				GCC_WARN_UNKNOWN_PRAGMAS = YES;
-				GCC_WARN_UNUSED_LABEL = YES;
-				GCC_WARN_UNUSED_VALUE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/usr/include/libxml2,
-					"/usr/include/**",
-					objectiveLibxml2/src,
-					three20/src,
-					"/usr/include/libxml2/**",
-				);
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3CD66655-69BB-436D-9CD8-D833432436A2";
-				SDKROOT = iphoneos3.1;
-			};
-			name = "AR Ad-Hoc";
-		};
-		C5A3527E10C1ECDE004C7045 /* AR Ad-Hoc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"/Volumes/Skiiing2/CD/ViewBased/Unknown Path/System/Library/Frameworks\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Find_an_Apartment_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = FIND_AN_APARTMENT;
-				INFOPLIST_FILE = "Find_an_Apartment-Info.plist";
-				PRODUCT_NAME = "Find an Apartment";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-			};
-			name = "AR Ad-Hoc";
-		};
-		C5A3527F10C1ECDE004C7045 /* AR Ad-Hoc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\\\"/Volumes/Skiiing2/CD/ViewBased/Unknown\\ Path/System/Library/Frameworks\\\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Find_an_Apartment_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = HOME_FINDER;
-				INFOPLIST_FILE = "Home_Finder-Info.plist";
-				PRODUCT_NAME = "Home Finder";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-			};
-			name = "AR Ad-Hoc";
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1643,7 +1650,7 @@
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
 				45A239E31058A4F80072C190 /* Distribution */,
-				C5A3527E10C1ECDE004C7045 /* AR Ad-Hoc */,
+				458D906E1156D9620000E3E6 /* Ad Hoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1654,7 +1661,7 @@
 				45D4554F1001970000944852 /* Debug */,
 				45D455501001970000944852 /* Release */,
 				45A239E41058A4F80072C190 /* Distribution */,
-				C5A3527F10C1ECDE004C7045 /* AR Ad-Hoc */,
+				458D906F1156D9620000E3E6 /* Ad Hoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1665,7 +1672,7 @@
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
 				45A239E21058A4F80072C190 /* Distribution */,
-				C5A3527D10C1ECDE004C7045 /* AR Ad-Hoc */,
+				458D906D1156D9620000E3E6 /* Ad Hoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
