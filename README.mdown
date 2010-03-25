@@ -4,7 +4,7 @@ Home Finder and Find an Apartment
 Home Finder and Find and Apartment are two real estate apps for the iPhone OS.
 
 These apps were open sourced to demonstrate technologies like Core Data, Map 
-kit, augmented reality, XML parsing, REST interaction, the three20 library, 
+kit, augmented reality, XML parsing, REST interaction, the [three20][1] library, 
 and more. But beware! Open source does not mean the code is great, or
 efficient, or even correct. And aside from inline comments, there is a serious
 lack of documentation for now.
@@ -115,11 +115,17 @@ To run
         git submodule init
         git submodule add
 
+3. You'll need to follow the instructions for [three20][1] and [ObjectiveLibxml2][2] 
+  to add these static libraries to the project.
+
 
 License
 =======
 
 All third-party libraries are git submodules and follow their own licenses.
 
-This project is released under the MIT license. 
+This project is released under the MIT license. See LICENSE for details. 
+
+[1]: http://github.com/facebook/three20
+[2]: http://github.com/baalexander/ObjectiveLibxml2
 
